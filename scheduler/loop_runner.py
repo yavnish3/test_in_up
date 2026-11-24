@@ -7,9 +7,10 @@ carousel_loop.yml) then starts a fresh run of itself, so every post has its own 
 When the series is finished it writes .loop_done_<kind> so the workflow stops
 restarting itself.
 
-Posting times (UTC):
-  reels      00:17 06:17 12:17 18:17              (IST 05:47 11:47 17:47 23:47)
-  carousels  01:47 05:47 09:47 13:47 17:47 21:47  (IST 07:17 11:17 15:17 19:17 23:17 03:17)
+Posting times:
+  reels      every 5 hours, counted from the last posted reel (posted.csv)
+  carousels  fixed UTC 01:47 05:47 09:47 13:47 17:47 21:47
+             (IST 07:17 11:17 15:17 19:17 23:17 03:17)
 
 POST_NOW=yes posts right away instead of waiting (only for hand-started runs).
 """
@@ -23,16 +24,27 @@ from datetime import datetime, timedelta, timezone
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(HERE)
 
-TIMES = {
-    "reel": [(0, 17), (6, 17), (12, 17), (18, 17)],
+TIMES = {  # fixed daily times (UTC)
     "carousel": [(1, 47), (5, 47), (9, 47), (13, 47), (17, 47), (21, 47)],
 }
+EVERY = {"reel": timedelta(hours=5)}  # gap after the last post
 CSV = {"reel": "posted.csv", "carousel": "posted_posts.csv"}
 BUDGET = 5 * 3600 + 30 * 60  # GitHub stops a job at 6 h; leave room to post and restart
 START = time.time()
 
 
+def last_posted_at(kind):
+    import csv
+    with open(os.path.join(HERE, CSV[kind]), encoding="utf-8") as f:
+        times = [datetime.fromisoformat(r["posted_at"]) for r in csv.DictReader(f) if r["posted_at"]]
+    times = [t if t.tzinfo else t.replace(tzinfo=timezone.utc) for t in times]
+    return max(times) if times else None
+
+
 def next_slot(now, kind):
+    if kind in EVERY:
+        last = last_posted_at(kind)
+        return max(last + EVERY[kind], now) if last else now
     slots = []
     for day in (0, 1):
         d = (now + timedelta(days=day)).replace(second=0, microsecond=0)
@@ -75,13 +87,14 @@ def main():
     away (GitHub's 6 h job limit), the run ends without posting and the next
     run continues the wait."""
     kind = os.environ.get("LOOP_KIND", "")
-    if kind not in TIMES:
+    if kind not in TIMES and kind not in EVERY:
         sys.exit("Set LOOP_KIND to reel or carousel")
     done_file = os.path.join(HERE, f".loop_done_{kind}")
 
     if os.environ.get("POST_NOW", "no") == "yes":
         print(f"POST NOW: {kind}", flush=True)
     else:
+        git("pull", "--rebase", check=False)  # latest posted CSV
         now = datetime.now(timezone.utc)
         slot = next_slot(now, kind)
         wait = (slot - now).total_seconds()
