@@ -1,20 +1,20 @@
-name: Post loop
+name: Carousel loop
 
 on:
   workflow_dispatch:   # start it once by hand; after that it restarts itself
     inputs:
       post_now:
-        description: "Post right away when this run starts, then continue on schedule"
+        description: "Post one carousel right away when this run starts, then continue on schedule"
         type: choice
-        options: [none, reel, carousel, both]
-        default: none
+        options: ["no", "yes"]
+        default: "no"
 
 permissions:
   contents: write      # save posted CSVs
   actions: write       # start the next run of this workflow
 
 concurrency:
-  group: post-loop
+  group: carousel-loop
   cancel-in-progress: false   # only one loop at a time
 
 jobs:
@@ -41,11 +41,12 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           MEDIA_BASE_URL: ${{ secrets.MEDIA_BASE_URL }}
-          POST_NOW: ${{ inputs.post_now || 'none' }}
+          POST_NOW: ${{ inputs.post_now || 'no' }}
+          LOOP_KIND: carousel
         run: python -u loop_runner.py
 
       - name: Start the next loop run
-        if: ${{ !cancelled() && hashFiles('scheduler/.loop_done') == '' }}
+        if: ${{ !cancelled() && hashFiles('scheduler/.loop_done_carousel') == '' }}
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run post_loop.yml --ref main
+        run: gh workflow run carousel_loop.yml --ref main
