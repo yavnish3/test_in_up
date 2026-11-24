@@ -56,18 +56,31 @@ def save(csv_name):
     print(f"Warning: could not push {csv_name}")
 
 
+def post(kind, finished):
+    """Post the next reel/carousel and save progress. Returns True when both series are done."""
+    git("pull", "--rebase", check=False)  # pick up manual runs / other changes
+    result = subprocess.run([sys.executable, "-u", "post_next.py", kind], cwd=HERE,
+                            capture_output=True, text=True)
+    print(result.stdout, result.stderr, flush=True)
+    save("posted.csv" if kind == "reel" else "posted_posts.csv")
+    if "Nothing to post" in result.stdout:
+        finished[kind] = True
+    return all(finished.values())
+
+
 def main():
     finished = {"reel": False, "carousel": False}
-    # Optional test: post the next carousel N minutes after start (workflow input).
-    test_min = int(os.environ.get("TEST_POST_IN_MINUTES") or 0)
-    test_slot = datetime.now(timezone.utc) + timedelta(minutes=test_min) if test_min > 0 else None
-    while True:
+    # Optional: post right away when this run starts (workflow input "post_now").
+    # Only the first, hand-started run uses it; the auto-started runs get "none".
+    now_kinds = {"reel": ["reel"], "carousel": ["carousel"],
+                 "both": ["reel", "carousel"]}.get(os.environ.get("POST_NOW", "none"), [])
+    for kind in now_kinds:
+        print(f"POST NOW: {kind}", flush=True)
+        if post(kind, finished):
+            break
+    while not all(finished.values()):
         now = datetime.now(timezone.utc)
         slot, kind = next_slot(now)
-        if test_slot and test_slot < slot:
-            slot, kind = test_slot, "carousel"
-            test_slot = None
-            print(f"TEST: extra carousel post in {test_min} min", flush=True)
         if finished[kind]:
             time.sleep(max(0, (slot - now).total_seconds()) + 1)
             continue
@@ -77,20 +90,9 @@ def main():
             return
         print(f"Next: {kind} at {slot:%Y-%m-%d %H:%M} UTC, sleeping {wait / 60:.0f} min", flush=True)
         time.sleep(max(0, wait))
-
-        git("pull", "--rebase", check=False)  # pick up manual runs / other changes
-        result = subprocess.run([sys.executable, "-u", "post_next.py", kind], cwd=HERE,
-                                capture_output=True, text=True)
-        print(result.stdout, result.stderr, flush=True)
-        save("posted.csv" if kind == "reel" else "posted_posts.csv")
-
-        if "Nothing to post" in result.stdout:
-            finished[kind] = True
-            if all(finished.values()):
-                print("Both series are finished. Stopping the loop.")
-                open(DONE_FILE, "w").close()
-                return
-
+        post(kind, finished)
+    print("Both series are finished. Stopping the loop.")
+    open(DONE_FILE, "w").close()
 
 if __name__ == "__main__":
     main()

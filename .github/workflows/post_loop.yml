@@ -3,10 +3,11 @@ name: Post loop
 on:
   workflow_dispatch:   # start it once by hand; after that it restarts itself
     inputs:
-      test_post_in_minutes:
-        description: "Test: post the next carousel after this many minutes (0 = normal schedule only)"
-        required: false
-        default: "0"
+      post_now:
+        description: "Post right away when this run starts, then continue on schedule"
+        type: choice
+        options: [none, reel, carousel, both]
+        default: none
 
 permissions:
   contents: write      # save posted CSVs
@@ -40,7 +41,7 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           MEDIA_BASE_URL: ${{ secrets.MEDIA_BASE_URL }}
-          TEST_POST_IN_MINUTES: ${{ inputs.test_post_in_minutes }}
+          POST_NOW: ${{ inputs.post_now || 'none' }}
         run: python -u loop_runner.py
 
       - name: Start the next loop run
