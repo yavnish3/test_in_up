@@ -144,6 +144,34 @@ def main():
             time.sleep(wait)
     mark_posted(kind, post_id, media_id)
     print(f"Posted {kind} {post_id}")
+    delete_from_cloudinary(kind, post_id, item, media)
+
+
+def delete_from_cloudinary(kind, post_id, item, media):
+    """After a successful post, remove its files from Cloudinary (needs
+    CLOUDINARY_API_KEY / CLOUDINARY_API_SECRET). Never fails the post."""
+    key = os.environ.get("CLOUDINARY_API_KEY")
+    secret = os.environ.get("CLOUDINARY_API_SECRET")
+    if not key or not secret:
+        print("Cloudinary keys not set: keeping the files")
+        return
+    cloud = media.rstrip("/").rsplit("/", 1)[-1]
+    if kind == "reel":
+        groups = {"video": [f"insta/reel/{post_id}"], "image": [f"insta/thumbnails/{post_id}"]}
+    else:
+        stems = [os.path.splitext(s)[0] for s in item["slides"]]
+        groups = {"image": [f"insta/post/{post_id}/{s}" for s in stems],
+                  "raw": [f"insta/post/{post_id}/caption.txt"]}
+    for rtype, ids in groups.items():
+        try:
+            resp = requests.delete(
+                f"https://api.cloudinary.com/v1_1/{cloud}/resources/{rtype}/upload",
+                params=[("public_ids[]", i) for i in ids], auth=(key, secret), timeout=60)
+            resp.raise_for_status()
+            gone = [i for i, v in resp.json().get("deleted", {}).items() if v == "deleted"]
+            print(f"Deleted from Cloudinary ({rtype}): {len(gone)}/{len(ids)}")
+        except requests.RequestException as e:
+            print(f"Warning: could not delete {rtype} files from Cloudinary: {e}")
 
 
 if __name__ == "__main__":
