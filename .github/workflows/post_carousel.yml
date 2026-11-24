@@ -1,9 +1,7 @@
 name: Post carousel
 
 on:
-  schedule:
-    - cron: "47 1,5,9,13,17,21 * * *"   # every 4 h: IST 07:17 11:17 15:17 19:17 23:17 03:17
-  workflow_dispatch:
+  workflow_dispatch:   # manual only; the Post loop does the scheduled posting
 
 permissions:
   contents: write
