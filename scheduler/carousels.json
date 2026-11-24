@@ -1,0 +1,1217 @@
+{
+ "SQL001": {
+  "caption": "Instagram tumhari saari photos kahan chhupata hai? 🤔\n\nJawab: DATABASE mein! 📦\nIs post mein:\n✅ Database kya hota hai\n✅ Har app ke peeche ek DB\n✅ Excel vs Database\n✅ DB se baat kaise hoti hai (SQL)\n\nSQL Series · Part 1/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #database #sqlinhindi #learnsql #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL002": {
+  "caption": "Database se baat karni hai? Hindi nahi, SQL bolo 🗣️\n\nIs post mein:\n✅ SQL ka full form aur matlab\n✅ Pehli query: SELECT name FROM employees\n✅ Python vs SQL: loop vs set\n✅ MySQL, PostgreSQL, SQL Server: sab SQL\n\nSQL Series · Part 2/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL003": {
+  "caption": "Excel ka bada bhai: Table, Row aur Column 📊\n\nIs post mein:\n✅ Table kya hota hai\n✅ Row vs Column, ekdum clear\n✅ Cell = ek value\n✅ Excel vs SQL table\n\nSQL Series · Part 3/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL004": {
+  "caption": "Paise ko FLOAT mein rakha? Bank waale ro denge 💸\n\nIs post mein:\n✅ INT, VARCHAR, DECIMAL, DATE, BOOLEAN\n✅ CREATE TABLE mein types kaise lagate hain\n✅ FLOAT vs DECIMAL: paisa kahan rakhein\n✅ BOOLEAN har DB mein alag kaise\n\nSQL Series · Part 4/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL005": {
+  "caption": "Har row ka Aadhaar card: Primary Key 🪪\n\nIs post mein:\n✅ Primary key kya hoti hai\n✅ Do same naam? id bachayegi\n✅ PK lagane ka code\n✅ Auto-increment id har DB mein\n\nSQL Series · Part 5/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL006": {
+  "caption": "10 second mein apni pehli table, chai thandi hone se pehle ☕\n\nIs post mein:\n✅ CREATE TABLE ka formula\n✅ employees table ka poora code\n✅ Naam rakhne ke rules\n✅ IF NOT EXISTS ka jugaad\n\nSQL Series · Part 6/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL007": {
+  "caption": "Khaali table udaas hai, chalo data khilaate hain 🍽️\n\nIs post mein:\n✅ INSERT INTO ka formula\n✅ Ek query mein multiple rows\n✅ Text vs number: quotes ka scene\n✅ D'Souza jaise naam kaise daalein\n\nSQL Series · Part 7/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL008": {
+  "caption": "SELECT * : SQL ka 'sab kuch dikha do bhai' button 🔘\n\nIs post mein:\n✅ SELECT, *, FROM aur ; ka matlab\n✅ Poori table ek query mein\n✅ Kab use karein, kab nahi\n✅ Keywords CAPS mein kyun\n\nSQL Series · Part 8/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL009": {
+  "caption": "Poori table nahi chahiye, bas naam aur salary 🎯\n\nIs post mein:\n✅ Specific columns kaise select karein\n✅ Column order apni marzi ka\n✅ SELECT * vs specific columns\n✅ Spelling galti ka error\n\nSQL Series · Part 9/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL010": {
+  "caption": "Column ka naam pasand nahi? AS laga ke naamkaran karo 🏷️\n\nIs post mein:\n✅ AS se column ka naya naam\n✅ salary * 12 AS yearly_salary\n✅ Space wale naam ka scene\n✅ WHERE mein alias kyun fail hota hai\n\nSQL Series · Part 10/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL011": {
+  "caption": "Delhi 3 baar dikh raha hai? DISTINCT bolega 'ek hi kaafi hai' ☝️\n\nIs post mein:\n✅ DISTINCT se duplicates hatao\n✅ Multiple columns pe DISTINCT ka twist\n✅ COUNT(DISTINCT) se unique ginti\n✅ Interview wala one-liner\n\nSQL Series · Part 11/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL012": {
+  "caption": "Poori duniya nahi, sirf Delhi waale chahiye 📍\n\nIs post mein:\n✅ WHERE clause kaise filter karta hai\n✅ city = 'Delhi' ka poora result\n✅ MySQL vs PostgreSQL: case ka scene\n✅ = vs == wali galti\n\nSQL Series · Part 12/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL013": {
+  "caption": "6 symbols jo tumhara data judge karte hain ⚖️\n\nIs post mein:\n✅ =, <>, !=, >, <, >=, <= ek jagah\n✅ salary > 60000 ka result\n✅ > vs >= ka boundary twist\n✅ Dates compare karna\n\nSQL Series · Part 13/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL014": {
+  "caption": "AND, OR, NOT: SQL ka relationship status 💞\n\nIs post mein:\n✅ AND vs OR, real result ke saath\n✅ NOT se ulta filter\n✅ AND pehle chalta hai, OR baad mein\n✅ Brackets bhoole toh kya hota hai\n\nSQL Series · Part 14/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL015": {
+  "caption": "Itne saare OR? Bhai IN laga le, ungli thak jaayegi 🫵\n\nIs post mein:\n✅ OR ki line vs IN\n✅ city IN ('Delhi','Mumbai') ka result\n✅ NOT IN aur subquery ke saath IN\n✅ NOT IN + NULL wala trap\n\nSQL Series · Part 15/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL016": {
+  "caption": "Salary 40k se 60k ke beech? BETWEEN hai na ↔️\n\nIs post mein:\n✅ BETWEEN ka formula\n✅ Boundary values andar ya bahar?\n✅ Dates pe BETWEEN aur DATETIME trap\n✅ Galat order = zero rows\n\nSQL Series · Part 16/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL017": {
+  "caption": "Naam ka sirf 'A' yaad hai? LIKE detective bulao 🕵️\n\nIs post mein:\n✅ LIKE aur wildcards % aur _\n✅ Pattern cheat sheet: 'A%', '%a', '_e%'\n✅ Case-sensitivity: MySQL vs PostgreSQL\n✅ Bina % ke LIKE wala trap\n\nSQL Series · Part 17/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL018": {
+  "caption": "NULL zero nahi hota, ye baat dil pe likh lo 👻\n\nIs post mein:\n✅ NULL ka asli matlab\n✅ NULL vs 0 vs khaali text\n✅ IS NULL se boss dhoondho\n✅ = NULL kyun chupchaap fail hota hai\n\nSQL Series · Part 18/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL019": {
+  "caption": "Salary ke hisaab se line mein lag jao sab 🧍\n\nIs post mein:\n✅ ORDER BY ASC vs DESC\n✅ Salary ranking ka result\n✅ Do columns pe sort\n✅ NULLs kahan aate hain, DB ke hisaab se\n\nSQL Series · Part 19/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL020": {
+  "caption": "Top 3 kaun? LIMIT bolega baaki ghar jao 🥉\n\nIs post mein:\n✅ LIMIT se top N nikalo\n✅ MySQL LIMIT vs SQL Server TOP\n✅ OFFSET se pagination\n✅ Bina ORDER BY ke LIMIT ka trap\n\nSQL Series · Part 20/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL021": {
+  "caption": "Kitne log Delhi mein? COUNT ginti mein topper hai 🔢\n\nIs post mein:\n✅ COUNT(*) se rows gino\n✅ COUNT(col) NULL kyun skip karta\n✅ COUNT(DISTINCT) se unique ginti\n✅ Teen COUNT, teen alag jawab\n\nSQL Series · Part 21/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL022": {
+  "caption": "Company kitni salary baant rahi hai? 💸\n\nSUM aur AVG se ek line mein pata karo!\nIs post mein:\n✅ SUM() vs AVG() simple bhasha mein\n✅ Worked example with result\n✅ NULL ka twist (÷4 ya ÷5?)\n✅ COALESCE se NULL ko 0 banao\n\nSQL Series · Part 22/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #aggregatefunctions #dataanalytics #dataanalyst #coding #techhindi #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL023": {
+  "caption": "Sabse ameer aur sabse gareeb kaun? 🕵️\n\nMAX aur MIN ne sab expose kar diya!\nIs post mein:\n✅ MAX() aur MIN() basics\n✅ Dates aur text pe bhi chalte hain\n✅ MAX vs ORDER BY + LIMIT\n✅ Topper ka naam sahi tareeke se\n\nSQL Series · Part 23/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #aggregatefunctions #dataanalytics #sqlinterview #coding #techhindi #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL024": {
+  "caption": "Department wise gossip chahiye? 🗣️\n\nGROUP BY se har dept ka hisaab ek query mein!\nIs post mein:\n✅ GROUP BY kya karta hai\n✅ 5 rows → 3 groups worked example\n✅ SELECT ka golden rule\n✅ Multiple columns pe grouping\n\nSQL Series · Part 24/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #groupby #sqlinhindi #learnsql #dataanalytics #dataanalyst #sqlinterview #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL025": {
+  "caption": "WHERE groups pe nahi chalta, HAVING ko bulao! 🚪\n\nIs post mein:\n✅ HAVING kya hai aur kab lagta hai\n✅ COUNT(*) > 1 worked example\n✅ WHERE vs HAVING quick compare\n✅ AVG wala filter bonus\n\nSQL Series · Part 25/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #having #groupby #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL026": {
+  "caption": "WHERE vs HAVING: interviewer ka favourite jaal 🪤\n\nIs post ke baad kabhi nahi phasoge!\n✅ Ek line mein farak\n✅ Dono ek query mein\n✅ Step-by-step execution order\n✅ Interview mein kya bolna hai\n\nSQL Series · Part 26/81\nSave karo 📌 interview se pehle kaam aayega · Follow karo daily SQL ke liye!\n\n#sql #wherevshaving #sqlinterview #sqlinhindi #learnsql #dataanalyst #interviewprep #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL027": {
+  "caption": "Ek WHERE bhoola aur sabki salary same ho gayi 😱\n\nUPDATE seekho, par dhyaan se!\nIs post mein:\n✅ UPDATE ... SET ... WHERE syntax\n✅ Ek row vs multiple columns update\n✅ WHERE ke saath vs bina WHERE\n✅ Safe UPDATE habits\n\nSQL Series · Part 27/81\nSave karo 📌 · Us dost ko bhejo jo WHERE bhoolta hai 🔁 · Follow karo daily SQL ke liye!\n\n#sql #update #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL028": {
+  "caption": "DELETE bina WHERE ke = naukri bhi delete 🗑️\n\nIs post mein:\n✅ DELETE ka sahi syntax\n✅ Before vs after example\n✅ SELECT-pehle wali safe habit\n✅ ROLLBACK kab bachata hai\n\nSQL Series · Part 28/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #delete #sqlinhindi #learnsql #database #dataengineering #coding #techhindi #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL029": {
+  "caption": "DELETE, TRUNCATE, DROP: teeno bhai, teeno khatarnaak 💣\n\nIs post mein:\n✅ Teeno kya hatate hain\n✅ Kya bachta hai: table ya kuch nahi\n✅ DML vs DDL aur rollback scene\n✅ Kab kaunsa use karna hai\n\nSQL Series · Part 29/81\nSave karo 📌 interview mein pakka poochte hain · Follow karo daily SQL ke liye!\n\n#sql #deletevstruncate #sqlinterview #sqlinhindi #learnsql #database #dataengineering #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL030": {
+  "caption": "Table ban gayi, ab email column bhool gaye? 🔧\n\nTension nahi, ALTER TABLE hai na!\nIs post mein:\n✅ Column ADD, DROP, RENAME\n✅ MySQL vs PostgreSQL vs SQL Server syntax\n✅ ALTER vs UPDATE\n✅ NOT NULL column ka jaal\n\nSQL Series · Part 30/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #altertable #sqlinhindi #learnsql #database #ddl #coding #techhindi #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL031": {
+  "caption": "Data ke bouncers: NOT NULL, UNIQUE, DEFAULT 🕶️\n\nGalat data ki entry band!\nIs post mein:\n✅ 4 constraints ek table mein\n✅ CREATE TABLE mein kaise lagate hain\n✅ INSERT pe bouncer kaise rokta hai\n✅ UNIQUE vs PRIMARY KEY\n\nSQL Series · Part 31/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #constraints #sqlinhindi #learnsql #database #sqlinterview #coding #techhindi #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL032": {
+  "caption": "Do tables ki dosti ka dhaaga: Foreign Key 🧵\n\nIs post mein:\n✅ Foreign Key kya hai\n✅ orders → customers example\n✅ FK kaise galat data block karta hai\n✅ ON DELETE CASCADE / SET NULL\n\nSQL Series · Part 32/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #foreignkey #constraints #sqlinhindi #learnsql #database #sqlinterview #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL033": {
+  "caption": "Data do jagah, answer ek jagah: JOIN ka jaadu 🪄\n\nJoins module shuru!\nIs post mein:\n✅ Data alag tables mein kyun hota hai\n✅ customers + orders example\n✅ JOIN ... ON kaise likhte hain\n✅ JOIN ke 4 types ka intro\n\nSQL Series · Part 33/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #joins #sqljoins #sqlinhindi #learnsql #dataanalytics #dataanalyst #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL034": {
+  "caption": "INNER JOIN: sirf jo dono taraf match ho 💞\n\nBaaki sab single reh jaate hain!\nIs post mein:\n✅ INNER JOIN kaise kaam karta hai\n✅ customers + orders worked example\n✅ Kaun result se gayab hua aur kyun\n✅ JOIN = INNER JOIN\n\nSQL Series · Part 34/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #innerjoin #sqljoins #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL035": {
+  "caption": "LEFT JOIN: koi customer peeche nahi chhootega 🫂\n\nIs post mein:\n✅ LEFT JOIN kaise kaam karta hai\n✅ NULL wali rows ka matlab\n✅ \"Kisne order nahi kiya?\" trick\n✅ WHERE vs ON wala jaal\n\nSQL Series · Part 35/81\nSave karo 📌 interview mein pakka aata hai · Follow karo daily SQL ke liye!\n\n#sql #leftjoin #sqljoins #sqlinhindi #learnsql #dataanalyst #sqlinterview #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL036": {
+  "caption": "RIGHT JOIN: LEFT ka ulta 🔄\n\nPar log fir bhi LEFT hi likhte hain, kyun? Is post mein:\n✅ RIGHT JOIN kaise kaam karta hai\n✅ Ghost order wala example\n✅ Tables swap = LEFT JOIN\n✅ Database support ka scene\n\nSQL Series · Part 36/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #rightjoin #sqljoins #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL037": {
+  "caption": "FULL OUTER JOIN: sabko bulao, koi naraz na ho 🎊\n\nIs post mein:\n✅ FULL OUTER JOIN kya karta hai\n✅ Worked example: koi nahi chhoota\n✅ LEFT vs FULL\n✅ MySQL ka LEFT UNION RIGHT jugaad\n\nSQL Series · Part 37/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #fullouterjoin #sqljoins #sqlinhindi #learnsql #mysql #postgresql #dataanalyst #coding #techhindi",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL038": {
+  "caption": "Table khud se hi join? Haan, boss dhundhne ke liye! 🪞\n\nIs post mein:\n✅ SELF JOIN kya hai\n✅ manager_id wala worked example\n✅ INNER vs LEFT, top boss ka scene\n✅ Interview ka classic sawaal\n\nSQL Series · Part 38/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #selfjoin #sqljoins #sqlinhindi #learnsql #sqlinterview #dataanalyst #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL039": {
+  "caption": "UNION vs UNION ALL: ek duplicate se nafrat karta hai 🥞\n\nIs post mein:\n✅ UNION kya karta hai (JOIN se alag kaise)\n✅ Duplicate gayab wala example\n✅ UNION vs UNION ALL: speed aur result\n✅ Columns ke rules\n\nSQL Series · Part 39/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #union #unionall #sqlinhindi #learnsql #sqlinterview #dataanalyst #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL040": {
+  "caption": "Query ke andar query: SQL ka Inception 🌀\n\nIs post mein:\n✅ Subquery kya hai aur kaise chalti hai\n✅ Average se upar salary wala example\n✅ WHERE, FROM, SELECT mein subquery\n✅ = vs IN ka jaal\n\nSQL Series · Part 40/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #subquery #sqlinhindi #learnsql #sqlinterview #dataanalyst #dataanalytics #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL041": {
+  "caption": "SQL mein if-else? CASE WHEN bolta hai 'main hoon na' 🦸\n\nIs post mein:\n✅ CASE WHEN ... THEN ... ELSE ... END\n✅ Salary band wala worked example\n✅ Conditions ka order kyun matter karta\n✅ GROUP BY ke saath CASE\n\nSQL Series · Part 41/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #casewhen #sqlinhindi #learnsql #sqlinterview #dataanalyst #dataanalytics #coding #techhindi #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL042": {
+  "caption": "Naam ko CAPITAL karo, naapo, jodo: text ka jaadu 🔤\n\nIs post mein:\n✅ UPPER, LOWER, LENGTH, CONCAT, TRIM\n✅ Ek query mein sab\n✅ MySQL vs SQL Server naam ka farq\n✅ TRIM se JOIN/search fix\n\nSQL Series · Part 42/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #stringfunctions #learnsql #sqlinhindi #dataanalytics #dataanalyst #coding #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL043": {
+  "caption": "Aaj ki date se bachpan tak: Date functions 📅\n\nIs post mein:\n✅ CURRENT_DATE vs GETDATE()\n✅ YEAR() aur EXTRACT\n✅ DATEDIFF har DB mein\n✅ Date format ka golden rule\n\nSQL Series · Part 43/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #datefunctions #learnsql #sqlinhindi #dataanalytics #dataanalyst #coding #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL044": {
+  "caption": "Tum SELECT pehle likhte ho, SQL usse pehle padhta hi nahi 🔄\n\nIs post mein:\n✅ SQL ka asli execution order (7 steps)\n✅ Ek query step-by-step\n✅ Alias kahan chalega, kahan nahi\n✅ Interview ka favourite sawaal\n\nSQL Series · Part 44/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinterview #learnsql #sqlinhindi #dataanalytics #dataanalyst #coding #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL045": {
+  "caption": "Lambi query baar baar likhte ho? VIEW bana lo, aalsi bano 🪟\n\nIs post mein:\n✅ VIEW kya hai (saved query)\n✅ CREATE VIEW + use\n✅ Table vs View\n✅ View update aur drop kaise karein\n\nSQL Series · Part 45/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlview #learnsql #sqlinhindi #dataanalytics #dataanalyst #coding #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL046": {
+  "caption": "Query 100x fast karni hai? INDEX ka shortcut ⚡\n\nIs post mein:\n✅ INDEX kya hai (book wala example)\n✅ CREATE INDEX syntax\n✅ Kahan lagana, kahan nahi\n✅ Index ka hidden price\n\nSQL Series · Part 46/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlindex #learnsql #sqlinhindi #dataanalytics #performance #coding #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL047": {
+  "caption": "Second highest salary: har interview ka pakka sawaal! 💼\n\n2 tareeke, dono pakke:\n1️⃣ MAX < MAX subquery\n2️⃣ DISTINCT + ORDER BY DESC + LIMIT 1 OFFSET 1\n\nBonus: Nth highest ke liye OFFSET N-1 🔥\n⚠️ DISTINCT bhoole to galat answer!\n\nSQL Series · Part 47/81\nSave karo 📌 interview se pehle kaam aayega · Follow karo daily SQL ke liye!\n\n#sql #sqlinterview #interviewprep #learnsql #sqlinhindi #dataanalyst #coding #datascience #placement #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL048": {
+  "caption": "Poori SQL basics ek post mein, ab koi bahana nahi 🚀\n\nIs post mein:\n✅ SELECT, WHERE, ORDER BY, LIMIT\n✅ Aggregates + GROUP BY + HAVING\n✅ INNER vs LEFT JOIN\n✅ INSERT, UPDATE, DELETE\n✅ Ek boss query mein sab\n\nSQL Series · Part 48/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlbasics #sqlinterview #learnsql #sqlinhindi #dataanalyst #coding #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL049": {
+  "caption": "Ek group se mann nahi bhara? Do columns se group karo 🧩\n\nIs post mein:\n✅ GROUP BY dept, city kaise kaam karta\n✅ Worked example with result\n✅ Column order matter karta ya nahi\n✅ SELECT ka golden rule\n\nSQL Series · Part 49/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #groupby #learnsql #sqlinhindi #dataanalytics #dataanalyst #coding #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL050": {
+  "caption": "Ek query, das counts: SQL ki multitasking 🎛️\n\nIs post mein:\n✅ SUM(CASE WHEN ...) trick\n✅ Ek query mein kai metrics\n✅ SUM vs COUNT style\n✅ ELSE 0 kyun zaroori\n\nSQL Series · Part 50/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #casewhen #learnsql #sqlinhindi #dataanalytics #dataanalyst #reporting #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL051": {
+  "caption": "Grand total ke liye calculator mat uthao 🧾\n\nIs post mein:\n✅ ROLLUP kya karta hai\n✅ PostgreSQL / SQL Server syntax\n✅ MySQL ka WITH ROLLUP\n✅ NULL row ko TOTAL label kaise dein\n\nSQL Series · Part 51/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #rollup #learnsql #sqlinhindi #dataanalytics #dataanalyst #reporting #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL052": {
+  "caption": "Rows ko 90 degree ghuma do, Excel bhi sharma jaaye 🔄\n\nIs post mein:\n✅ Pivot kya hota hai\n✅ SUM(CASE) se pivot\n✅ Before vs after table\n✅ CASE vs PIVOT keyword\n\nSQL Series · Part 52/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #pivot #learnsql #sqlinhindi #dataanalytics #dataanalyst #excel #datascience #sqlforbeginners #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL053": {
+  "caption": "GROUP BY rows kha jaata hai, window function nahi khaata 🪟\n\nIs post mein:\n✅ Window function kya hai\n✅ OVER() ka pehla example\n✅ GROUP BY vs Window\n✅ WHERE wali galti ka fix\n\nSQL Series · Part 53/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #learnsql #sqlinhindi #dataanalytics #dataanalyst #sqlinterview #datascience #coding #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL054": {
+  "caption": "Naam bhi chahiye aur average bhi? Dono milega 🤝\n\nIs post mein:\n✅ AVG() OVER (PARTITION BY dept)\n✅ Har row ko apne dept ka avg\n✅ GROUP BY vs PARTITION BY\n✅ Salary vs avg compare trick\n\nSQL Series · Part 54/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #partitionby #learnsql #sqlinhindi #dataanalyst #sqlinterview #datascience #coding #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL055": {
+  "caption": "Har row ko roll number do, class monitor style 🔢\n\nIs post mein:\n✅ ROW_NUMBER() kaise kaam karta\n✅ Tie pe kya hota hai\n✅ Duplicates hatane ki trick\n✅ ORDER BY kyun zaroori\n\nSQL Series · Part 55/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #rownumber #windowfunctions #learnsql #sqlinhindi #dataanalyst #sqlinterview #datascience #coding #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL056": {
+  "caption": "Do toppers ke same marks, ab rank pe jhagda 🏅\n\nIs post mein:\n✅ ROW_NUMBER vs RANK vs DENSE_RANK\n✅ Tie pe kya hota hai\n✅ Olympics wala logic\n✅ Nth highest ke liye sahi choice\n\nSQL Series · Part 56/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #rank #denserank #windowfunctions #sqlinterview #learnsql #sqlinhindi #dataanalyst #datascience #coding",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL057": {
+  "caption": "Har department ka apna topper, koi jealous nahi 🏆\n\nIs post mein:\n✅ PARTITION BY kya karta hai\n✅ Dept wise ranking\n✅ PARTITION vs ORDER BY ka role\n✅ Syntax order wali galti\n\nSQL Series · Part 57/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #partitionby #windowfunctions #learnsql #sqlinhindi #dataanalyst #sqlinterview #datascience #coding #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL058": {
+  "caption": "Har department ka boss nikalo ek query mein 👑\n\nIs post mein:\n✅ Top N per group ka 3-step pattern\n✅ CTE + ROW_NUMBER full query\n✅ Top 1 vs Top N\n✅ Tie ke liye DENSE_RANK\n\nSQL Series · Part 58/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinterview #windowfunctions #cte #learnsql #sqlinhindi #dataanalyst #datascience #coding #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL059": {
+  "caption": "Paisa jodte jao, SQL hisaab rakhega 💰\n\nIs post mein:\n✅ Running total kya hai\n✅ SUM() OVER (ORDER BY ...)\n✅ Saal wise reset with PARTITION BY\n✅ Month sorting wali galti\n\nSQL Series · Part 59/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #runningtotal #windowfunctions #learnsql #sqlinhindi #dataanalyst #finance #datascience #coding #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL060": {
+  "caption": "Share market wala moving average, ab SQL mein 📉\n\nIs post mein:\n✅ Moving average kyun chahiye\n✅ ROWS BETWEEN ... PRECEDING\n✅ Frame vs no frame ka farq\n✅ 3-month, 7-day window kaise\n\nSQL Series · Part 60/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #movingaverage #windowfunctions #learnsql #sqlinhindi #dataanalyst #analytics #datascience #coding #programming",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL061": {
+  "caption": "Pichle mahine se kitna badha? LAG peeche mud ke dekhta hai ⏪\n\nIs post mein:\n✅ LAG() kya karta hai\n✅ Month-on-month growth\n✅ LAG ke 3 options (offset, default)\n✅ Growth % nikalne ki trick\n\nSQL Series · Part 61/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #lag #windowfunctions #learnsql #sqlinhindi #dataanalyst #analytics #sqlinterview #datascience #coding",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL062": {
+  "caption": "Future dekhna hai? LEAD agli row bata deta hai 🔮\n\nWindow functions ka time-traveller!\nIs post mein:\n✅ LEAD() kya karta hai\n✅ Agle month ki sale side-by-side\n✅ LAG vs LEAD direction\n✅ Offset + default ka pro trick\n\nSQL Series · Part 62/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #sqlinhindi #learnsql #dataanalytics #sqlinterview #dataanalyst #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL063": {
+  "caption": "Sabko barabar baaltiyon mein baanto, no favouritism 🪣\n\nNTILE() se segmentation 2 minute mein!\nIs post mein:\n✅ NTILE(n) kya karta hai\n✅ Uneven rows kahan jaati hain\n✅ Quartile / top 25% trick\n✅ NTILE vs value range\n\nSQL Series · Part 63/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #sqlinhindi #learnsql #dataanalytics #sqlinterview #dataanalyst #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL064": {
+  "caption": "LAST_VALUE ka trap jisme 90% log phaste hain 🪤\n\nFIRST_VALUE easy hai, LAST_VALUE tricky!\nIs post mein:\n✅ FIRST_VALUE se dept ka top earner\n✅ Default window frame ka trap\n✅ ROWS BETWEEN ... UNBOUNDED FOLLOWING fix\n✅ Ulta ORDER BY shortcut\n\nSQL Series · Part 64/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #sqlinhindi #learnsql #dataanalytics #sqlinterview #dataanalyst #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL065": {
+  "caption": "Kiska kitna hissa? Pizza ki tarah baanto 🍕\n\nPercent of total = har report ka favourite column!\nIs post mein:\n✅ SUM() OVER () se grand total\n✅ Percent query + result\n✅ Dept ke andar share\n✅ 100 vs 100.0 ka integer trap\n\nSQL Series · Part 65/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #sqlinhindi #learnsql #dataanalytics #sqlinterview #dataanalyst #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL066": {
+  "caption": "3rd highest salary ab 1 line ka kaam 🥉\n\nNth highest ka sabse pakka tareeka: DENSE_RANK!\nIs post mein:\n✅ Ties wala tricky data\n✅ CTE + DENSE_RANK query\n✅ ROW_NUMBER vs RANK vs DENSE_RANK\n✅ Dept-wise Nth highest bonus\n\nSQL Series · Part 66/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #sqlinhindi #learnsql #dataanalytics #sqlinterview #dataanalyst #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL067": {
+  "caption": "Spaghetti query ko saaf thaali mein parosna 🍝\n\nCTE = WITH clause = clean SQL ka secret!\nIs post mein:\n✅ CTE kya hai, kyun use karein\n✅ Subquery vs CTE\n✅ Multiple CTEs comma se\n✅ CTE temporary hai, table nahi\n\nSQL Series · Part 67/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #cte #subquery #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL068": {
+  "caption": "SQL mein loop? Haan bhai, ho sakta hai 🔁\n\nRecursive CTE = SQL ka for-loop!\nIs post mein:\n✅ Anchor + recursive part\n✅ 1 se 5 tak ginti, round by round\n✅ Org chart wala real example\n✅ Stop condition bhoole to kya hoga\n\nSQL Series · Part 68/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #cte #subquery #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL069": {
+  "caption": "Apne hi department se zyada kaun kamata hai? 🕵️\n\nCorrelated subquery = har row ka apna sawaal!\nIs post mein:\n✅ Normal vs correlated subquery\n✅ Dept average se zyada salary\n✅ Kyun slow hoti hai\n✅ Window function wala fast version\n\nSQL Series · Part 69/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #cte #subquery #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL070": {
+  "caption": "NOT IN aur NULL ka khatarnaak combo ☠️\n\nYe bug error bhi nahi deta, chupchaap 0 rows!\nIs post mein:\n✅ EXISTS kaise kaam karta hai\n✅ IN vs EXISTS\n✅ NOT IN + NULL ka trap, step by step\n✅ NOT EXISTS: safe tareeka\n\nSQL Series · Part 70/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #cte #subquery #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL071": {
+  "caption": "NULL ka ilaaj: COALESCE ki goli 💊\n\nNULL ke do doctor: COALESCE aur NULLIF!\nIs post mein:\n✅ COALESCE se default value\n✅ Phone → email → N/A fallback\n✅ NULLIF se divide-by-zero se bachao\n✅ COALESCE vs ISNULL / IFNULL\n\nSQL Series · Part 71/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlfunctions #nullvalues #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL072": {
+  "caption": "'10' chhota hai '9' se? Text ki duniya alag hai 🔤\n\nCAST = SQL ka type converter!\nIs post mein:\n✅ CAST(x AS type) basics\n✅ Text sorting ka kaand: '10' < '9'\n✅ ORDER BY CAST se fix\n✅ MySQL / PostgreSQL / SQL Server differences\n\nSQL Series · Part 72/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlfunctions #cast #sqlinhindi #learnsql #dataanalytics #sqltips #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL073": {
+  "caption": "3 shirts x 2 colours = 6 outfits, SQL ne pehna diye 👕\n\nCROSS JOIN = saare combinations ek query mein!\nIs post mein:\n✅ CROSS JOIN kya hai\n✅ Size × colour outfit generator\n✅ INNER vs CROSS JOIN\n✅ Accidental cross join ka khatra\n\nSQL Series · Part 73/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqljoins #crossjoin #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL074": {
+  "caption": "Ek email, do baar? Doppelganger pakdo 👯\n\nDuplicates dhundo aur hatao, 3 steps mein!\nIs post mein:\n✅ GROUP BY + HAVING se duplicates dhundo\n✅ ROW_NUMBER se numbering\n✅ rn > 1 wale delete\n✅ Backup + UNIQUE constraint safety\n\nSQL Series · Part 74/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #dataquality #datacleaning #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL075": {
+  "caption": "Paise kat gaye par pahunche nahi? Ye kabhi nahi hoga 💸\n\nTransactions: bank ka sabse bada bodyguard!\nIs post mein:\n✅ All or nothing ka matlab\n✅ BEGIN / COMMIT / ROLLBACK\n✅ Money transfer example\n✅ COMMIT bhoolne ka nuksaan\n\nSQL Series · Part 75/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #transactions #database #sqlinhindi #learnsql #backend #sqlinterview #coding #techhindi #dbms",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL076": {
+  "caption": "Bank ka database kabhi galti kyun nahi karta? 🏦\n\nJawab: ACID properties! 🧪\nIs post mein:\n✅ Atomicity: all or nothing\n✅ Consistency: rules safe\n✅ Isolation: no clash (seat booking example)\n✅ Durability: crash ke baad bhi saved\n\nSQL Series · Part 76/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #acid #dbms #database #sqlinhindi #learnsql #sqlinterview #placement #techhindi #backend",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL077": {
+  "caption": "Ek table mein poora ghar bhar diya? Normalize karo 🧹\n\nNormalization = database ki safai!\nIs post mein:\n✅ Bikhre table ki problems\n✅ 1NF, 2NF, 3NF ek-ek karke\n✅ Normalize ke baad tables\n✅ Over-normalization ka nuksaan\n\nSQL Series · Part 77/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #normalization #dbms #databasedesign #sqlinhindi #learnsql #sqlinterview #placement #techhindi #backend",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL078": {
+  "caption": "Query ko function bana do, ek button mein kaam 🔘\n\nStored Procedure = reusable SQL recipe!\nIs post mein:\n✅ Stored procedure kya hai\n✅ IN parameter + CALL\n✅ MySQL ka DELIMITER scene\n✅ MySQL vs SQL Server syntax\n\nSQL Series · Part 78/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #storedprocedure #mysql #sqlinhindi #learnsql #backend #sqlinterview #coding #techhindi #database",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL079": {
+  "caption": "Kaun apne boss se zyada kama raha hai? 😏\n\nClassic interview question: Self JOIN se solve!\nIs post mein:\n✅ manager_id wala table samjho\n✅ Self JOIN + aliases\n✅ Query + result\n✅ INNER vs LEFT JOIN ka confusion\n\nSQL Series · Part 79/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #selfjoin #sqlinterview #interviewprep #sqlinhindi #learnsql #dataanalyst #placement #coding #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL080": {
+  "caption": "Boss ne monthly report maangi? 10 second ka kaam 📅\n\nMonth-wise report: interview + job dono mein kaam aayega!\nIs post mein:\n✅ Date ko month mein badlo\n✅ GROUP BY + SUM query\n✅ MySQL / PostgreSQL / SQL Server functions\n✅ Date pe seedha GROUP BY ki galti\n\nSQL Series · Part 80/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinterview #datereport #dataanalyst #sqlinhindi #learnsql #dataanalytics #mysql #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ },
+ "SQL081": {
+  "caption": "Advanced SQL ek post mein, ab interview tumhara 🏆\n\n81 parts ka safar complete! 🎉\nIs post mein:\n✅ ROW_NUMBER vs RANK vs DENSE_RANK\n✅ CTE + DENSE_RANK: dept ke top 2\n✅ LAG, LEAD, running total, NTILE\n✅ CTE vs Recursive CTE\n✅ NOT EXISTS, Transactions, ACID\n\nSQL Series · Part 81/81 · FINALE 🏁\nSave karo 📌 interview se pehle revise karna · Dost ko bhejo 🔁 · Follow karo aur bhi series ke liye!\n\n#sql #advancedsql #sqlinterview #windowfunctions #sqlinhindi #learnsql #dataanalyst #placement #techhindi #datascience",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
+ }
+}

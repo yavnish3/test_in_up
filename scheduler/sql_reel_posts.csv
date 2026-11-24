@@ -1,0 +1,568 @@
+﻿id,module,topic,description,title,caption,hashtags
+SQL001,Introduction,Database kya hota hai?,"Is reel mein seekho: Database = organized data ka ghar, Apps data yahin store karte hain, Excel jaisa, par bahut bada aur fast, Baat karne ki language: SQL.",Part 1 | Instagram tumhari saari photos kahan chhupata hai? 🤫,"Instagram tumhari saari photos kahan chhupata hai? 🤫
+
+SQL Series Part 1: Database kya hota hai?
+Galti mat karna: Database aur Excel ko same samajhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: SQL kya hai?",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #database #dbms #rdbms
+SQL002,Introduction,SQL kya hai?,"Is reel mein seekho: SQL = Structured Query Language, Database se sawaal poochho, Answer table ki form mein, MySQL, PostgreSQL, SQL Server sab SQL bolte hain. Example: SELECT name FROM employees;","Part 2 | Database se baat karni hai? Hindi nahi, SQL bolo 😎","Database se baat karni hai? Hindi nahi, SQL bolo 😎
+
+SQL Series Part 2: SQL kya hai?
+Galti mat karna: SQL ko programming language jaisa loop-wala samajhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Table, Row aur Column",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #sql #mysql #postgresql
+SQL003,Introduction,"Table, Row aur Column","Is reel mein seekho: Table = data ka grid, Column = field (name, salary), Row = record (ek employee), Cell = ek value. Example: SELECT * FROM employees;","Part 3 | Excel ka bada bhai: Table, Row aur Column 📊","Excel ka bada bhai: Table, Row aur Column 📊
+
+SQL Series Part 3: Table, Row aur Column
+Galti mat karna: Row aur column ko ulta samajhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Data Types",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #table #rows #columns
+SQL004,Introduction,Data Types,"Is reel mein seekho: INT = whole numbers, VARCHAR(n) = text, DECIMAL(10,2) = paisa, DATE = taareekh, BOOLEAN = true/false. Example: CREATE TABLE products (id INT, name VARCHAR(50), price DECIMAL(10,2), added_on DATE);",Part 4 | Paise ko FLOAT mein rakha? Bank waale ro denge 😭,"Paise ko FLOAT mein rakha? Bank waale ro denge 😭
+
+SQL Series Part 4: Data Types
+Galti mat karna: Paise ke liye FLOAT use karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Primary Key",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #datatypes #varchar #int
+SQL005,Introduction,Primary Key,"Is reel mein seekho: PRIMARY KEY = unique + NOT NULL, Har row ki pehchaan, Ek table, ek primary key, Usually id column. Example: CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(50));",Part 5 | Har row ka Aadhaar card: Primary Key 🪪,"Har row ka Aadhaar card: Primary Key 🪪
+
+SQL Series Part 5: Primary Key
+Galti mat karna: Name ya phone ko primary key banana
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: CREATE TABLE",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #primarykey #constraints #sqlbasics
+SQL006,Create & Insert,CREATE TABLE,"Is reel mein seekho: CREATE TABLE naam (...), Har column: naam + type, Comma se alag karo, Semicolon se khatam. Example: CREATE TABLE employees (id INT PRIMARY KEY, name VARCHAR(50), dept VARCHAR(20), salary INT, city VARCHAR(30));","Part 6 | 10 second mein apni pehli table, chai thandi hone se pehle ☕","10 second mein apni pehli table, chai thandi hone se pehle ☕
+
+SQL Series Part 6: CREATE TABLE
+Galti mat karna: Last column ke baad extra comma lagana
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: INSERT INTO",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #createtable #ddl #sqlbasics
+SQL007,Create & Insert,INSERT INTO,"Is reel mein seekho: INSERT INTO table (cols), VALUES (...), Text 'single quotes' mein, Multiple rows: comma se. Example: INSERT INTO employees (id, name, dept, salary, city) VALUES (1, 'Aarav', 'IT', 60000, 'Delhi'), (2, 'Meera', 'HR', 45000, 'Mumbai');","Part 7 | Khaali table udaas hai, chalo data khilaate hain 🍽️","Khaali table udaas hai, chalo data khilaate hain 🍽️
+
+SQL Series Part 7: INSERT INTO
+Galti mat karna: Text par quotes bhoolna ya double quotes use karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: SELECT * FROM",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #insert #dml #sqlbasics
+SQL008,Select Basics,SELECT * FROM,"Is reel mein seekho: SELECT = kya chahiye, * = saare columns, FROM = kis table se, ; = query khatam. Example: SELECT * FROM employees;",Part 8 | SELECT * : SQL ka 'sab kuch dikha do bhai' button 👀,"SELECT * : SQL ka 'sab kuch dikha do bhai' button 👀
+
+SQL Series Part 8: SELECT * FROM
+Galti mat karna: Bade production tables par SELECT * chalana
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Specific Columns Select karna",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #select #sqlquery #sqlbasics
+SQL009,Select Basics,Specific Columns Select karna,"Is reel mein seekho: SELECT col1, col2, Comma se alag, Order aap decide karo, Fast + clean result. Example: SELECT name, salary FROM employees;","Part 9 | Poori table nahi chahiye, bas naam aur salary 💸","Poori table nahi chahiye, bas naam aur salary 💸
+
+SQL Series Part 9: Specific Columns Select karna
+Galti mat karna: Column naam ki spelling galat
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Alias (AS)",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #select #columns #sqlbasics
+SQL010,Select Basics,Alias (AS),"Is reel mein seekho: AS = temporary naam, Sirf result mein, Space ho toh quotes mein, Calculation ke saath useful. Example: SELECT name AS employee_name, salary * 12 AS yearly_salary FROM employees;",Part 10 | Column ka naam pasand nahi? AS laga ke naamkaran karo 🏷️,"Column ka naam pasand nahi? AS laga ke naamkaran karo 🏷️
+
+SQL Series Part 10: Alias (AS)
+Galti mat karna: Alias ko WHERE mein use karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: DISTINCT",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #alias #as #sqltips
+SQL011,Select Basics,DISTINCT,"Is reel mein seekho: DISTINCT = unique values, Duplicates hatao, Multiple columns par combination unique, COUNT(DISTINCT) bhi hota hai. Example: SELECT DISTINCT city FROM employees;",Part 11 | Delhi 3 baar dikh raha hai? DISTINCT bolega 'ek hi kaafi hai' ✋,"Delhi 3 baar dikh raha hai? DISTINCT bolega 'ek hi kaafi hai' ✋
+
+SQL Series Part 11: DISTINCT
+Galti mat karna: DISTINCT ko sirf ek column par samajhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: WHERE Clause",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #distinct #duplicates #sqltips
+SQL012,Filtering,WHERE Clause,"Is reel mein seekho: WHERE = filter, Condition true → row rahegi, Text 'quotes' mein, FROM ke baad aata hai. Example: SELECT * FROM employees WHERE city = 'Delhi';","Part 12 | Poori duniya nahi, sirf Delhi waale chahiye 🎯","Poori duniya nahi, sirf Delhi waale chahiye 🎯
+
+SQL Series Part 12: WHERE Clause
+Galti mat karna: = ki jagah == likhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Comparison Operators",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #where #filter #sqlbasics
+SQL013,Filtering,Comparison Operators,"Is reel mein seekho: = barabar, <> ya != not equal, > < bada/chhota, >= <= barabar bhi. Example: SELECT name, salary FROM employees WHERE salary > 60000;",Part 13 | 6 symbols jo tumhara data judge karte hain ⚖️,"6 symbols jo tumhara data judge karte hain ⚖️
+
+SQL Series Part 13: Comparison Operators
+Galti mat karna: > aur >= ka fark bhoolna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: AND, OR, NOT",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #operators #where #sqlbasics
+SQL014,Filtering,"AND, OR, NOT","Is reel mein seekho: AND = dono true, OR = koi ek true, NOT = ulta, Mix karo toh ( ) lagao. Example: SELECT * FROM employees WHERE dept = 'IT' AND city = 'Delhi';","Part 14 | AND, OR, NOT: SQL ka relationship status 💔","AND, OR, NOT: SQL ka relationship status 💔
+
+SQL Series Part 14: AND, OR, NOT
+Galti mat karna: AND/OR mix karte waqt brackets na lagana
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: IN Operator",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #and #or #logic
+SQL015,Filtering,IN Operator,"Is reel mein seekho: IN (list) = koi bhi value match, Multiple OR ka shortcut, NOT IN = list ke bahar, Subquery ke saath bhi chalta hai. Example: SELECT name, city FROM employees WHERE city IN ('Delhi', 'Mumbai');","Part 15 | Itne saare OR? Bhai IN laga le, ungli thak jaayegi 🙏","Itne saare OR? Bhai IN laga le, ungli thak jaayegi 🙏
+
+SQL Series Part 15: IN Operator
+Galti mat karna: NOT IN ki list mein NULL hone par result khaali aa sakta hai
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: BETWEEN",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #in #filter #sqltips
+SQL016,Filtering,BETWEEN,"Is reel mein seekho: BETWEEN a AND b, Dono ends include, Numbers + dates, NOT BETWEEN bhi hai. Example: SELECT name, salary FROM employees WHERE salary BETWEEN 40000 AND 60000;",Part 16 | Salary 40k se 60k ke beech? BETWEEN hai na 📏,"Salary 40k se 60k ke beech? BETWEEN hai na 📏
+
+SQL Series Part 16: BETWEEN
+Galti mat karna: Ye sochna ki boundary values exclude hoti hain
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: LIKE aur Wildcards",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #between #range #sqlbasics
+SQL017,Filtering,LIKE aur Wildcards,"Is reel mein seekho: LIKE = pattern search, % = kuch bhi, _ = ek character, 'A%' = A se shuru. Example: SELECT name FROM employees WHERE name LIKE 'A%';",Part 17 | Naam ka sirf 'A' yaad hai? LIKE detective bulao 🕵️,"Naam ka sirf 'A' yaad hai? LIKE detective bulao 🕵️
+
+SQL Series Part 17: LIKE aur Wildcards
+Galti mat karna: LIKE bina % ke = jaisa hi kaam karta hai
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: IS NULL",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #like #wildcards #search
+SQL018,Filtering,IS NULL,"Is reel mein seekho: NULL = missing value, NULL ≠ 0 ≠ '', = NULL kaam nahi karta, IS NULL / IS NOT NULL. Example: SELECT name FROM employees WHERE manager_id IS NULL;","Part 18 | NULL zero nahi hota, ye baat dil pe likh lo ✍️","NULL zero nahi hota, ye baat dil pe likh lo ✍️
+
+SQL Series Part 18: IS NULL
+Galti mat karna: WHERE col = NULL likhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: ORDER BY",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #null #isnull #sqltips
+SQL019,Sorting & Limit,ORDER BY,"Is reel mein seekho: ORDER BY col, ASC = chhote se bada (default), DESC = bade se chhota, Multiple: ORDER BY dept, salary DESC. Example: SELECT name, salary FROM employees ORDER BY salary DESC;",Part 19 | Salary ke hisaab se line mein lag jao sab 📶,"Salary ke hisaab se line mein lag jao sab 📶
+
+SQL Series Part 19: ORDER BY
+Galti mat karna: ORDER BY ko WHERE se pehle likhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: LIMIT / TOP",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #orderby #sorting #sqlbasics
+SQL020,Sorting & Limit,LIMIT / TOP,"Is reel mein seekho: LIMIT n = pehli n rows, ORDER BY ke saath use karo, SQL Server: SELECT TOP 3, OFFSET = rows skip. Example: SELECT name, salary FROM employees ORDER BY salary DESC LIMIT 3;",Part 20 | Top 3 kaun? LIMIT bolega baaki ghar jao 🏆,"Top 3 kaun? LIMIT bolega baaki ghar jao 🏆
+
+SQL Series Part 20: LIMIT / TOP
+Galti mat karna: Bina ORDER BY ke LIMIT
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: COUNT()",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #limit #top #sqltips
+SQL021,Aggregate Functions,COUNT(),"Is reel mein seekho: COUNT(*) = saari rows, COUNT(col) = non-NULL, COUNT(DISTINCT col) = unique, Result = ek number. Example: SELECT COUNT(*) FROM employees WHERE city = 'Delhi';",Part 21 | Kitne log Delhi mein? COUNT ginti mein topper hai 🔢,"Kitne log Delhi mein? COUNT ginti mein topper hai 🔢
+
+SQL Series Part 21: COUNT()
+Galti mat karna: COUNT(col) aur COUNT(*) ko same samajhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: SUM() aur AVG()",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #count #aggregate #sqlbasics
+SQL022,Aggregate Functions,SUM() aur AVG(),"Is reel mein seekho: SUM(col) = total, AVG(col) = average, Sirf numbers, NULL ignore. Example: SELECT SUM(salary) AS total, AVG(salary) AS average FROM employees;",Part 22 | Company kitni salary baant rahi hai? SUM aur AVG se poochho 🧮,"Company kitni salary baant rahi hai? SUM aur AVG se poochho 🧮
+
+SQL Series Part 22: SUM() aur AVG()
+Galti mat karna: AVG mein NULL ko 0 maan lena
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: MIN() aur MAX()",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #sum #avg #aggregate
+SQL023,Aggregate Functions,MIN() aur MAX(),"Is reel mein seekho: MAX(col) = sabse bada, MIN(col) = sabse chhota, Numbers, dates, text, NULL ignore. Example: SELECT MAX(salary) AS highest, MIN(salary) AS lowest FROM employees;","Part 23 | Sabse ameer aur sabse gareeb, MAX aur MIN ne expose kar diya 👑","Sabse ameer aur sabse gareeb, MAX aur MIN ne expose kar diya 👑
+
+SQL Series Part 23: MIN() aur MAX()
+Galti mat karna: MAX ke saath name select karke sochna sahi naam aayega
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: GROUP BY",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #max #min #aggregate
+SQL024,Aggregate Functions,GROUP BY,"Is reel mein seekho: GROUP BY = same value ka group, Har group par aggregate, SELECT mein group col + aggregate, Ek group = ek result row. Example: SELECT dept, COUNT(*) AS people, AVG(salary) AS avg_salary FROM employees GROUP BY dept;",Part 24 | Department wise gossip: GROUP BY 🗂️,"Department wise gossip: GROUP BY 🗂️
+
+SQL Series Part 24: GROUP BY
+Galti mat karna: SELECT mein aisa column jo GROUP BY mein nahi hai
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: HAVING",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #groupby #aggregate #dataanalysis
+SQL025,Aggregate Functions,HAVING,"Is reel mein seekho: HAVING = groups ka filter, GROUP BY ke baad, Aggregates ke saath, WHERE rows, HAVING groups. Example: SELECT dept, COUNT(*) AS people FROM employees GROUP BY dept HAVING COUNT(*) > 1;","Part 25 | WHERE groups pe nahi chalta, HAVING ko bulao 🚪","WHERE groups pe nahi chalta, HAVING ko bulao 🚪
+
+SQL Series Part 25: HAVING
+Galti mat karna: HAVING ki jagah WHERE COUNT(*) > 1 likhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: WHERE vs HAVING",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #having #groupby #sqltips
+SQL026,Aggregate Functions,WHERE vs HAVING,"Is reel mein seekho: WHERE → rows, pehle, HAVING → groups, baad mein, WHERE mein aggregate nahi, Dono saath: WHERE → GROUP BY → HAVING. Example: SELECT dept, AVG(salary) FROM employees WHERE city = 'Delhi' GROUP BY dept HAVING AVG(salary) > 55000;",Part 26 | WHERE vs HAVING: interviewer ka favourite jaal 🪤,"WHERE vs HAVING: interviewer ka favourite jaal 🪤
+
+SQL Series Part 26: WHERE vs HAVING
+Galti mat karna: Dono ko interchangeable samajhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: UPDATE",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #wherevshaving #sqlinterview #sqltips
+SQL027,Modify Data,UPDATE,"Is reel mein seekho: UPDATE table, SET col = value, WHERE zaroori!, Bina WHERE = saari rows. Example: UPDATE employees SET salary = 65000 WHERE id = 1;",Part 27 | Ek WHERE bhoola aur sabki salary same ho gayi 😱,"Ek WHERE bhoola aur sabki salary same ho gayi 😱
+
+SQL Series Part 27: UPDATE
+Galti mat karna: WHERE bhoolna — sabse khatarnaak galti
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: DELETE",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #update #dml #sqltips
+SQL028,Modify Data,DELETE,"Is reel mein seekho: DELETE FROM table, WHERE se chuno, Bina WHERE = saari rows gone, Table structure rehta hai. Example: DELETE FROM employees WHERE id = 5;",Part 28 | DELETE bina WHERE ke = naukri bhi delete 💀,"DELETE bina WHERE ke = naukri bhi delete 💀
+
+SQL Series Part 28: DELETE
+Galti mat karna: Production mein bina WHERE ke DELETE
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: DELETE vs TRUNCATE vs DROP",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #delete #dml #sqlbasics
+SQL029,Modify Data,DELETE vs TRUNCATE vs DROP,"Is reel mein seekho: DELETE = kuch rows (WHERE), TRUNCATE = saari rows, fast, DROP = table hi khatam, DELETE DML, TRUNCATE/DROP DDL. Example: DELETE FROM employees WHERE id = 5; | TRUNCATE TABLE employees; | DROP TABLE employees;","Part 29 | DELETE, TRUNCATE, DROP: teeno bhai, teeno khatarnaak 💣","DELETE, TRUNCATE, DROP: teeno bhai, teeno khatarnaak 💣
+
+SQL Series Part 29: DELETE vs TRUNCATE vs DROP
+Galti mat karna: TRUNCATE ko WHERE ke saath likhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: ALTER TABLE",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #truncate #drop #sqlinterview
+SQL030,Modify Data,ALTER TABLE,"Is reel mein seekho: ALTER TABLE ... ADD col type, DROP COLUMN col, RENAME COLUMN, Structure badlo, data safe. Example: ALTER TABLE employees ADD email VARCHAR(100);","Part 30 | Table ban gayi, ab email column bhool gaye? ALTER hai na 🛠️","Table ban gayi, ab email column bhool gaye? ALTER hai na 🛠️
+
+SQL Series Part 30: ALTER TABLE
+Galti mat karna: Naye NOT NULL column bina DEFAULT ke existing data par add karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: NOT NULL, UNIQUE, DEFAULT",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #altertable #ddl #sqlbasics
+SQL031,Constraints,"NOT NULL, UNIQUE, DEFAULT","Is reel mein seekho: NOT NULL = khaali nahi, UNIQUE = repeat nahi, DEFAULT = automatic value, CHECK = condition (salary > 0). Example: CREATE TABLE users (id INT PRIMARY KEY, email VARCHAR(100) UNIQUE NOT NULL, country VARCHAR(20) DEFAULT 'India');","Part 31 | Data ke bouncers: NOT NULL, UNIQUE, DEFAULT 🛡️","Data ke bouncers: NOT NULL, UNIQUE, DEFAULT 🛡️
+
+SQL Series Part 31: NOT NULL, UNIQUE, DEFAULT
+Galti mat karna: UNIQUE aur PRIMARY KEY ko same samajhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Foreign Key",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #constraints #unique #notnull
+SQL032,Constraints,Foreign Key,"Is reel mein seekho: FOREIGN KEY = doosri table ka reference, Child → Parent, Galat value block, Relationships banata hai. Example: CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, amount INT, FOREIGN KEY (customer_id) REFERENCES customers(id));",Part 32 | Do tables ki dosti ka dhaaga: Foreign Key 🔗,"Do tables ki dosti ka dhaaga: Foreign Key 🔗
+
+SQL Series Part 32: Foreign Key
+Galti mat karna: Parent row delete karna jab child rows exist karti hain
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Joins kyun chahiye?",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #foreignkey #relationships #sqlbasics
+SQL033,Joins,Joins kyun chahiye?,"Is reel mein seekho: Data alag tables mein, Common column = key, JOIN = tables jodo, 4 types: INNER, LEFT, RIGHT, FULL. Example: SELECT * FROM customers JOIN orders ON customers.id = orders.customer_id;","Part 33 | Data do jagah, answer ek jagah: JOIN ka jaadu 🪄","Data do jagah, answer ek jagah: JOIN ka jaadu 🪄
+
+SQL Series Part 33: Joins kyun chahiye?
+Galti mat karna: ON condition bhoolna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: INNER JOIN",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #joins #sqljoins #sqlbasics
+SQL034,Joins,INNER JOIN,"Is reel mein seekho: INNER JOIN = sirf match, Unmatched dono taraf gayab, Venn diagram ka beech, JOIN = INNER JOIN. Example: SELECT c.name, o.amount FROM customers c INNER JOIN orders o ON c.id = o.customer_id;","Part 34 | INNER JOIN: sirf jo dono taraf match ho, baaki single 💑","INNER JOIN: sirf jo dono taraf match ho, baaki single 💑
+
+SQL Series Part 34: INNER JOIN
+Galti mat karna: INNER JOIN se sab customers aane ki ummeed
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: LEFT JOIN",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #innerjoin #joins #sqlinterview
+SQL035,Joins,LEFT JOIN,"Is reel mein seekho: LEFT JOIN = left ki saari rows, No match → NULL, Pura left circle, WHERE right.col IS NULL = jinka match nahi. Example: SELECT c.name, o.amount FROM customers c LEFT JOIN orders o ON c.id = o.customer_id;",Part 35 | LEFT JOIN: koi customer peeche nahi chhootega 🫂,"LEFT JOIN: koi customer peeche nahi chhootega 🫂
+
+SQL Series Part 35: LEFT JOIN
+Galti mat karna: LEFT JOIN ke baad WHERE right column par filter lagake use INNER bana dena
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: RIGHT JOIN",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #leftjoin #joins #sqlinterview
+SQL036,Joins,RIGHT JOIN,"Is reel mein seekho: RIGHT JOIN = right ki saari rows, No match → NULL, Tables swap = LEFT JOIN, SQLite purane versions mein nahi. Example: SELECT c.name, o.order_id, o.amount FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id;","Part 36 | RIGHT JOIN: LEFT ka ulta, par log fir bhi LEFT hi likhte hain 🙃","RIGHT JOIN: LEFT ka ulta, par log fir bhi LEFT hi likhte hain 🙃
+
+SQL Series Part 36: RIGHT JOIN
+Galti mat karna: LEFT aur RIGHT mein table ka order confuse karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: FULL OUTER JOIN",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #rightjoin #joins #sqlbasics
+SQL037,Joins,FULL OUTER JOIN,"Is reel mein seekho: FULL JOIN = dono ki saari rows, Unmatched → NULL, Dono circles poore, MySQL: LEFT UNION RIGHT. Example: SELECT c.name, o.order_id FROM customers c FULL OUTER JOIN orders o ON c.id = o.customer_id;","Part 37 | FULL OUTER JOIN: sabko bulao, koi naraz na ho 🎉","FULL OUTER JOIN: sabko bulao, koi naraz na ho 🎉
+
+SQL Series Part 37: FULL OUTER JOIN
+Galti mat karna: MySQL mein FULL OUTER JOIN chalane ki koshish
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: SELF JOIN",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #fullouterjoin #joins #sqlinterview
+SQL038,Joins,SELF JOIN,"Is reel mein seekho: SELF JOIN = table khud se, Do aliases zaroori, Hierarchy ke liye, Employee → Manager. Example: SELECT e.name AS employee, m.name AS manager FROM employees e LEFT JOIN employees m ON e.manager_id = m.id;","Part 38 | Table khud se hi join? Haan, boss dhundhne ke liye 👔","Table khud se hi join? Haan, boss dhundhne ke liye 👔
+
+SQL Series Part 38: SELF JOIN
+Galti mat karna: Alias na dena
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: UNION vs UNION ALL",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #selfjoin #joins #sqlinterview
+SQL039,Joins,UNION vs UNION ALL,"Is reel mein seekho: UNION = rows upar-neeche, UNION duplicates hatata hai, UNION ALL sab rakhta hai, fast, Columns same count + type. Example: SELECT city FROM employees WHERE dept = 'IT' UNION SELECT city FROM employees WHERE dept = 'Sales';",Part 39 | UNION vs UNION ALL: ek duplicate se nafrat karta hai 🙅,"UNION vs UNION ALL: ek duplicate se nafrat karta hai 🙅
+
+SQL Series Part 39: UNION vs UNION ALL
+Galti mat karna: Alag number of columns wali queries ko UNION karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Subquery",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #union #unionall #sqltips
+SQL040,Advanced Basics,Subquery,"Is reel mein seekho: Subquery = query ke andar query, ( ) mein, Andar wali pehle chalti hai, WHERE, FROM, SELECT mein. Example: SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);",Part 40 | Query ke andar query: SQL ka Inception 🌀,"Query ke andar query: SQL ka Inception 🌀
+
+SQL Series Part 40: Subquery
+Galti mat karna: Subquery multiple rows de aur = use karo
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: CASE WHEN",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #subquery #nestedquery #sqlinterview
+SQL041,Advanced Basics,CASE WHEN,"Is reel mein seekho: CASE WHEN cond THEN val, ELSE default, END se band, New column bana sakte ho. Example: SELECT name, salary, CASE WHEN salary > 70000 THEN 'High' WHEN salary >= 50000 THEN 'Mid' ELSE 'Low' END AS band FROM employees;",Part 41 | SQL mein if-else? CASE WHEN bolta hai 'main hoon na' 🤝,"SQL mein if-else? CASE WHEN bolta hai 'main hoon na' 🤝
+
+SQL Series Part 41: CASE WHEN
+Galti mat karna: END bhoolna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: String Functions",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #casewhen #ifelse #sqltips
+SQL042,Advanced Basics,String Functions,"Is reel mein seekho: UPPER / LOWER, LENGTH (SQL Server: LEN), CONCAT(a, b), TRIM = extra spaces hatao. Example: SELECT UPPER(name) AS caps, LENGTH(name) AS letters, CONCAT(name, ' - ', city) AS label FROM employees;","Part 42 | Naam ko CAPITAL kar do, lamba naap lo, jod do: text ka jaadu ✨","Naam ko CAPITAL kar do, lamba naap lo, jod do: text ka jaadu ✨
+
+SQL Series Part 42: String Functions
+Galti mat karna: Har database mein same function naam samajhna (LEN vs LENGTH)
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Date Functions",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #stringfunctions #concat #sqltips
+SQL043,Advanced Basics,Date Functions,"Is reel mein seekho: CURRENT_DATE = aaj, YEAR(date) / EXTRACT(YEAR FROM date), DATEDIFF = farq, Syntax DB ke hisaab se. Example: SELECT order_id, order_date, YEAR(order_date) AS yr FROM orders WHERE order_date >= '2025-01-01';",Part 43 | Aaj ki date se bachpan ki date tak: Date functions 📅,"Aaj ki date se bachpan ki date tak: Date functions 📅
+
+SQL Series Part 43: Date Functions
+Galti mat karna: Dates ko text ki tarah galat format mein compare karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Query Execution Order",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #datefunctions #dates #sqltips
+SQL044,Advanced Basics,Query Execution Order,"Is reel mein seekho: 1 FROM / JOIN, 2 WHERE, 3 GROUP BY, 4 HAVING, 5 SELECT, 6 ORDER BY, 7 LIMIT. Example: SELECT dept, COUNT(*) FROM employees WHERE salary > 40000 GROUP BY dept HAVING COUNT(*) > 1 ORDER BY 2 DESC LIMIT 2;","Part 44 | Tum SELECT pehle likhte ho, SQL usse pehle padhta hi nahi 🤯","Tum SELECT pehle likhte ho, SQL usse pehle padhta hi nahi 🤯
+
+SQL Series Part 44: Query Execution Order
+Galti mat karna: WHERE mein SELECT ka alias use karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: VIEW",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #executionorder #sqlinterview #sqltips
+SQL045,Advanced Basics,VIEW,"Is reel mein seekho: VIEW = saved query, Virtual table, Data store nahi karta, Security + simplicity. Example: CREATE VIEW it_team AS SELECT name, salary FROM employees WHERE dept = 'IT'; SELECT * FROM it_team;","Part 45 | Lambi query baar baar likhte ho? VIEW bana lo, aalsi bano 😴","Lambi query baar baar likhte ho? VIEW bana lo, aalsi bano 😴
+
+SQL Series Part 45: VIEW
+Galti mat karna: View ko alag copy samajhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: INDEX",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #view #sqlviews #sqltips
+SQL046,Advanced Basics,INDEX,"Is reel mein seekho: INDEX = book ka index, Search fast, WHERE/JOIN columns par, Zyada index = slow writes. Example: CREATE INDEX idx_city ON employees(city);",Part 46 | Query 100x fast karni hai? INDEX ka shortcut 🚀,"Query 100x fast karni hai? INDEX ka shortcut 🚀
+
+SQL Series Part 46: INDEX
+Galti mat karna: Har column par index bana dena
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Second Highest Salary",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #index #performance #sqlinterview
+SQL047,Interview Prep,Second Highest Salary,"Is reel mein seekho: Method 1: MAX < MAX subquery, Method 2: ORDER BY DESC LIMIT 1 OFFSET 1, DISTINCT zaroor, Nth: OFFSET N-1. Example: SELECT MAX(salary) FROM employees WHERE salary < (SELECT MAX(salary) FROM employees);",Part 47 | Second highest salary: har interview ka pakka sawaal 🎯,"Second highest salary: har interview ka pakka sawaal 🎯
+
+SQL Series Part 47: Second Highest Salary
+Galti mat karna: ORDER BY + OFFSET method mein DISTINCT na lagana
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: SQL Basics Recap",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #sqlinterview #secondhighestsalary #sqlquestions
+SQL048,Interview Prep,SQL Basics Recap,"Is reel mein seekho: SELECT · FROM, WHERE · ORDER BY · LIMIT, COUNT · SUM · AVG · GROUP BY · HAVING, JOINs, INSERT · UPDATE · DELETE. Example: SELECT c.name, SUM(o.amount) AS spent FROM customers c JOIN orders o ON c.id = o.customer_id GROUP BY c.name HAVING SUM(o.amount) > 400 ORDER BY spent DESC LIMIT 5;","Part 48 | Poori SQL basics 45 second mein, ab koi bahana nahi 🏁","Poori SQL basics 45 second mein, ab koi bahana nahi 🏁
+
+SQL Series Part 48: SQL Basics Recap
+Galti mat karna: Sirf padhna, practice na karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: GROUP BY Multiple Columns",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #sqlrecap #learnsql #sqlinterview
+SQL049,Aggregate Advanced,GROUP BY Multiple Columns,"Is reel mein seekho: GROUP BY col1, col2, Har unique combination = ek group, SELECT mein dono columns, Order matter nahi karta (result same). Example: SELECT dept, city, COUNT(*) AS people FROM employees GROUP BY dept, city;",Part 49 | Ek group se mann nahi bhara? Do columns se group karo 👯,"Ek group se mann nahi bhara? Do columns se group karo 👯
+
+SQL Series Part 49: GROUP BY Multiple Columns
+Galti mat karna: SELECT mein group wala column chhodna ya extra non-grouped column daalna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Conditional Aggregation",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #groupby #dataanalysis #sqltips
+SQL050,Aggregate Advanced,Conditional Aggregation,"Is reel mein seekho: SUM(CASE WHEN ... THEN 1 ELSE 0 END), Ek query, kai metrics, Reports ka favourite, COUNT(CASE WHEN ...) bhi chalta hai. Example: SELECT dept, SUM(CASE WHEN city = 'Delhi' THEN 1 ELSE 0 END) AS delhi_people, COUNT(*) AS total FROM employees GROUP BY dept;","Part 50 | Ek query, das counts: SQL ka multitasking 🤹","Ek query, das counts: SQL ka multitasking 🤹
+
+SQL Series Part 50: Conditional Aggregation
+Galti mat karna: ELSE 0 bhoolna aur SUM ka NULL aana
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: ROLLUP (Subtotal + Grand Total)",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #conditionalaggregation #casewhen #dataanalyst
+SQL051,Aggregate Advanced,ROLLUP (Subtotal + Grand Total),"Is reel mein seekho: ROLLUP = subtotals + grand total, Extra row mein NULL, MySQL: WITH ROLLUP, PostgreSQL/SQL Server: ROLLUP(col). Example: SELECT dept, SUM(salary) AS total FROM employees GROUP BY ROLLUP(dept);",Part 51 | Grand total ke liye calculator mat uthao 🧾,"Grand total ke liye calculator mat uthao 🧾
+
+SQL Series Part 51: ROLLUP (Subtotal + Grand Total)
+Galti mat karna: MySQL mein ROLLUP(dept) likhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Pivot with CASE",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #rollup #groupby #sqlreports
+SQL052,Aggregate Advanced,Pivot with CASE,"Is reel mein seekho: Pivot = rows → columns, Har naya column = ek SUM(CASE), GROUP BY se rows, Excel pivot table jaisa. Example: SELECT dept, SUM(CASE WHEN city='Delhi' THEN 1 ELSE 0 END) AS delhi, SUM(CASE WHEN city='Mumbai' THEN 1 ELSE 0 END) AS mumbai, SUM(CASE WHEN city='Pune' THEN 1 ELSE 0 END) AS pune FROM employees GROUP BY dept;","Part 52 | Rows ko 90 degree ghuma do, Excel bhi sharma jaaye 🔄","Rows ko 90 degree ghuma do, Excel bhi sharma jaaye 🔄
+
+SQL Series Part 52: Pivot with CASE
+Galti mat karna: Har city ke liye alag query likhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Window Functions kya hain?",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #pivot #casewhen #sqlreports
+SQL053,Window Functions,Window Functions kya hain?,"Is reel mein seekho: Window function = har row + calculation, Keyword: OVER(), Rows merge nahi hoti, Ranking, totals, LAG/LEAD. Example: SELECT name, salary, AVG(salary) OVER () AS company_avg FROM employees;","Part 53 | GROUP BY rows kha jaata hai, ye nahi khaata 🪟","GROUP BY rows kha jaata hai, ye nahi khaata 🪟
+
+SQL Series Part 53: Window Functions kya hain?
+Galti mat karna: Window function ko WHERE mein use karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Aggregate vs Window (PARTITION BY)",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #windowfunctions #over #sqladvanced
+SQL054,Window Functions,Aggregate vs Window (PARTITION BY),"Is reel mein seekho: AVG() OVER (PARTITION BY dept), Rows rehti hain, Har row ko apne group ka average, Compare karna easy. Example: SELECT name, dept, salary, AVG(salary) OVER (PARTITION BY dept) AS dept_avg FROM employees;",Part 54 | Naam bhi chahiye aur average bhi? Dono milega 🤝,"Naam bhi chahiye aur average bhi? Dono milega 🤝
+
+SQL Series Part 54: Aggregate vs Window (PARTITION BY)
+Galti mat karna: PARTITION BY aur GROUP BY ko same samajhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: ROW_NUMBER()",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #partitionby #windowfunctions #sqladvanced
+SQL055,Window Functions,ROW_NUMBER(),"Is reel mein seekho: ROW_NUMBER() = 1,2,3..., OVER (ORDER BY ...) zaroori, Tie mein bhi unique number, Duplicates hatane mein kaam aata hai. Example: SELECT name, salary, ROW_NUMBER() OVER (ORDER BY salary DESC) AS rn FROM employees;","Part 55 | Har row ko roll number do, class monitor style 🎒","Har row ko roll number do, class monitor style 🎒
+
+SQL Series Part 55: ROW_NUMBER()
+Galti mat karna: ORDER BY bhoolna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: RANK vs DENSE_RANK",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #rownumber #windowfunctions #sqlinterview
+SQL056,Window Functions,RANK vs DENSE_RANK,"Is reel mein seekho: ROW_NUMBER: 1,2,3,4, RANK: 1,2,2,4 (gap), DENSE_RANK: 1,2,2,3 (no gap), Interview favourite. Example: SELECT name, marks, ROW_NUMBER() OVER (ORDER BY marks DESC) AS rn, RANK() OVER (ORDER BY marks DESC) AS rnk, DENSE_RANK() OVER (ORDER BY marks DESC) AS drnk FROM students;","Part 56 | Do toppers ke same marks, ab rank pe jhagda 🥈","Do toppers ke same marks, ab rank pe jhagda 🥈
+
+SQL Series Part 56: RANK vs DENSE_RANK
+Galti mat karna: Nth highest ke liye RANK use karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: PARTITION BY",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #rank #denserank #sqlinterview
+SQL057,Window Functions,PARTITION BY,"Is reel mein seekho: PARTITION BY = groups mein todo, Har partition mein numbering 1 se, ORDER BY partition ke andar, GROUP BY jaisa, par rows rehti hain. Example: SELECT name, dept, salary, ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC) AS rank_in_dept FROM employees;","Part 57 | Har department ka apna topper, koi jealous nahi 🏅","Har department ka apna topper, koi jealous nahi 🏅
+
+SQL Series Part 57: PARTITION BY
+Galti mat karna: PARTITION BY aur ORDER BY ka order ulta likhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Top N per Group",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #partitionby #windowfunctions #sqladvanced
+SQL058,Window Functions,Top N per Group,"Is reel mein seekho: Step 1: ROW_NUMBER PARTITION BY dept, Step 2: CTE/subquery, Step 3: WHERE rn = 1, Top N: rn <= N. Example: WITH r AS (SELECT name, dept, salary, ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC) AS rn FROM employees) SELECT name, dept, salary FROM r WHERE rn = 1;",Part 58 | Har department ka boss nikalo ek query mein 👑,"Har department ka boss nikalo ek query mein 👑
+
+SQL Series Part 58: Top N per Group
+Galti mat karna: Window function ko seedha WHERE mein likhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Running Total",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #topn #windowfunctions #sqlinterview
+SQL059,Window Functions,Running Total,"Is reel mein seekho: SUM() OVER (ORDER BY ...), Har row = ab tak ka total, Cumulative sum, Finance aur sales reports. Example: SELECT month, amount, SUM(amount) OVER (ORDER BY month_no) AS running_total FROM sales;","Part 59 | Paisa jodte jao, SQL hisaab rakhega 💰","Paisa jodte jao, SQL hisaab rakhega 💰
+
+SQL Series Part 59: Running Total
+Galti mat karna: Month ko text order mein sort karna (Apr Feb Jan Mar)
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Moving Average (ROWS BETWEEN)",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #runningtotal #windowfunctions #dataanalyst
+SQL060,Window Functions,Moving Average (ROWS BETWEEN),"Is reel mein seekho: ROWS BETWEEN n PRECEDING AND CURRENT ROW, Sliding window, Trend smooth karo, 7-day average jaise metrics. Example: SELECT month, amount, AVG(amount) OVER (ORDER BY month_no ROWS BETWEEN 1 PRECEDING AND CURRENT ROW) AS moving_avg FROM sales;","Part 60 | Share market wala moving average, ab SQL mein 📈","Share market wala moving average, ab SQL mein 📈
+
+SQL Series Part 60: Moving Average (ROWS BETWEEN)
+Galti mat karna: Frame na dena aur cumulative average aa jaana
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: LAG()",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #movingaverage #windowfunctions #dataanalyst
+SQL061,Window Functions,LAG(),"Is reel mein seekho: LAG(col) = pichli row, LAG(col, 2) = do row peeche, Pehli row → NULL, Growth: amount - LAG(amount). Example: SELECT month, amount, LAG(amount) OVER (ORDER BY month_no) AS prev, amount - LAG(amount) OVER (ORDER BY month_no) AS growth FROM sales;",Part 61 | Pichle mahine se kitna badha? LAG peeche mud ke dekhta hai 👀,"Pichle mahine se kitna badha? LAG peeche mud ke dekhta hai 👀
+
+SQL Series Part 61: LAG()
+Galti mat karna: ORDER BY na dena
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: LEAD()",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #lag #windowfunctions #sqlinterview
+SQL062,Window Functions,LEAD(),"Is reel mein seekho: LEAD(col) = agli row, Aakhri row → NULL, Next event, next date, LAG ka jodidaar. Example: SELECT month, amount, LEAD(amount) OVER (ORDER BY month_no) AS next_month FROM sales;",Part 62 | Future dekhna hai? LEAD agli row bata deta hai 🔮,"Future dekhna hai? LEAD agli row bata deta hai 🔮
+
+SQL Series Part 62: LEAD()
+Galti mat karna: LAG aur LEAD ki direction confuse karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: NTILE()",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #lead #windowfunctions #sqladvanced
+SQL063,Window Functions,NTILE(),"Is reel mein seekho: NTILE(n) = n barabar buckets, Quartile: NTILE(4), Top 25% nikalna, Customer segmentation. Example: SELECT name, salary, NTILE(2) OVER (ORDER BY salary DESC) AS bucket FROM employees;","Part 63 | Sabko barabar baaltiyon mein baanto, no favouritism 🪣","Sabko barabar baaltiyon mein baanto, no favouritism 🪣
+
+SQL Series Part 63: NTILE()
+Galti mat karna: Ye sochna ki buckets values ke range se bante hain
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: FIRST_VALUE & LAST_VALUE",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #ntile #windowfunctions #sqladvanced
+SQL064,Window Functions,FIRST_VALUE & LAST_VALUE,"Is reel mein seekho: FIRST_VALUE = window ki pehli value, LAST_VALUE = aakhri, Trap: default frame, ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING. Example: SELECT name, dept, FIRST_VALUE(name) OVER (PARTITION BY dept ORDER BY salary DESC) AS top_earner FROM employees;",Part 64 | LAST_VALUE ka trap jisme 90% log phaste hain 🪤,"LAST_VALUE ka trap jisme 90% log phaste hain 🪤
+
+SQL Series Part 64: FIRST_VALUE & LAST_VALUE
+Galti mat karna: LAST_VALUE bina full frame ke
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Percent of Total",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #firstvalue #lastvalue #windowfunctions
+SQL065,Window Functions,Percent of Total,"Is reel mein seekho: SUM() OVER () = grand total, salary * 100.0 / total, ROUND(..., 1), Share/contribution report. Example: SELECT name, salary, ROUND(salary * 100.0 / SUM(salary) OVER (), 1) AS pct FROM employees;",Part 65 | Kiska kitna hissa? Pizza ki tarah baanto 🍕,"Kiska kitna hissa? Pizza ki tarah baanto 🍕
+
+SQL Series Part 65: Percent of Total
+Galti mat karna: 100 ki jagah 100.0 na likhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Nth Highest Salary (DENSE_RANK)",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #percentoftotal #windowfunctions #dataanalyst
+SQL066,Window Functions,Nth Highest Salary (DENSE_RANK),"Is reel mein seekho: DENSE_RANK() OVER (ORDER BY salary DESC), CTE mein daalo, WHERE rnk = N, Ties handle. Example: WITH r AS (SELECT name, salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS rnk FROM employees) SELECT name, salary FROM r WHERE rnk = 3;",Part 66 | 3rd highest salary ab 1 line ka kaam 🥉,"3rd highest salary ab 1 line ka kaam 🥉
+
+SQL Series Part 66: Nth Highest Salary (DENSE_RANK)
+Galti mat karna: ROW_NUMBER use karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: CTE (WITH clause)",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #nthhighestsalary #denserank #sqlinterview
+SQL067,CTE & Subqueries,CTE (WITH clause),"Is reel mein seekho: WITH naam AS (query), Temporary result, Table ki tarah use, Multiple CTEs: comma se. Example: WITH dept_avg AS (SELECT dept, AVG(salary) AS avg_sal FROM employees GROUP BY dept) SELECT * FROM dept_avg WHERE avg_sal > 50000;",Part 67 | Spaghetti query ko saaf thaali mein parosna 🍝,"Spaghetti query ko saaf thaali mein parosna 🍝
+
+SQL Series Part 67: CTE (WITH clause)
+Galti mat karna: CTE ko permanent table samajhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Recursive CTE",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #cte #withclause #sqladvanced
+SQL068,CTE & Subqueries,Recursive CTE,"Is reel mein seekho: WITH RECURSIVE, Anchor + recursive part, UNION ALL, Stop condition zaroori. Example: WITH RECURSIVE nums AS (SELECT 1 AS n UNION ALL SELECT n + 1 FROM nums WHERE n < 5) SELECT n FROM nums;","Part 68 | SQL mein loop? Haan bhai, ho sakta hai 🔁","SQL mein loop? Haan bhai, ho sakta hai 🔁
+
+SQL Series Part 68: Recursive CTE
+Galti mat karna: Stop condition bhoolna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Correlated Subquery",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #recursivecte #cte #sqladvanced
+SQL069,CTE & Subqueries,Correlated Subquery,"Is reel mein seekho: Inner query outer column use karti hai, Har row ke liye chalti hai, Powerful par slow, Window function se replace ho sakti hai. Example: SELECT name, dept, salary FROM employees e WHERE salary > (SELECT AVG(salary) FROM employees WHERE dept = e.dept);",Part 69 | Apne hi department se zyada kaun kamata hai? 🕵️,"Apne hi department se zyada kaun kamata hai? 🕵️
+
+SQL Series Part 69: Correlated Subquery
+Galti mat karna: Inner query mein alias galat jodna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: EXISTS vs IN",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #correlatedsubquery #subquery #sqlinterview
+SQL070,CTE & Subqueries,EXISTS vs IN,"Is reel mein seekho: EXISTS = hai ya nahi, Pehla match milte hi stop, IN = list se match, NOT IN + NULL = trap, NOT EXISTS safe. Example: SELECT name FROM customers c WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id);",Part 70 | NOT IN aur NULL ka khatarnaak combo 💥,"NOT IN aur NULL ka khatarnaak combo 💥
+
+SQL Series Part 70: EXISTS vs IN
+Galti mat karna: NOT IN ko NULL wali list ke saath use karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: COALESCE & NULLIF",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #exists #subquery #sqlinterview
+SQL071,Functions,COALESCE & NULLIF,"Is reel mein seekho: COALESCE(a, b, c) = pehli non-NULL, NULL ki jagah default, NULLIF(a, b) = barabar toh NULL, x / NULLIF(y, 0) = no divide error. Example: SELECT name, COALESCE(CAST(manager_id AS VARCHAR(10)), 'No manager') AS manager FROM employees;",Part 71 | NULL ka ilaaj: COALESCE ki goli 💊,"NULL ka ilaaj: COALESCE ki goli 💊
+
+SQL Series Part 71: COALESCE & NULLIF
+Galti mat karna: Har jagah ISNULL/IFNULL likhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: CAST (Type Conversion)",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #coalesce #nullif #sqltips
+SQL072,Functions,CAST (Type Conversion),"Is reel mein seekho: CAST(x AS type), '123' → 123, 123 → '123', Text sorting: '10' < '9'. Example: SELECT CAST('123' AS INT) + 7 AS result;",Part 72 | '10' chhota hai '9' se? Text ki duniya alag hai 🤨,"'10' chhota hai '9' se? Text ki duniya alag hai 🤨
+
+SQL Series Part 72: CAST (Type Conversion)
+Galti mat karna: Number ko text ki tarah sort karna (10 se pehle 9 aata hai galat)
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: CROSS JOIN",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #cast #typeconversion #sqltips
+SQL073,Joins Advanced,CROSS JOIN,"Is reel mein seekho: CROSS JOIN = har row x har row, Rows = A x B, ON nahi lagta, Combinations / calendars. Example: SELECT s.size, c.color FROM sizes s CROSS JOIN colors c;","Part 73 | 3 shirts x 2 colours = 6 outfits, SQL ne pehna diye 👕","3 shirts x 2 colours = 6 outfits, SQL ne pehna diye 👕
+
+SQL Series Part 73: CROSS JOIN
+Galti mat karna: Galti se bina ON ke JOIN karke cross join bana dena
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Duplicates dhundo aur hatao",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #crossjoin #joins #sqltips
+SQL074,Data Quality,Duplicates dhundo aur hatao,"Is reel mein seekho: Find: GROUP BY + HAVING COUNT(*) > 1, Number: ROW_NUMBER PARTITION BY email, Keep rn = 1, Delete rn > 1. Example: SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1;","Part 74 | Ek email, do baar? Doppelganger pakdo 👯‍♂️","Ek email, do baar? Doppelganger pakdo 👯‍♂️
+
+SQL Series Part 74: Duplicates dhundo aur hatao
+Galti mat karna: Bina backup ke seedha DELETE chalana
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Transactions (COMMIT / ROLLBACK)",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #duplicates #rownumber #sqlinterview
+SQL075,Transactions,Transactions (COMMIT / ROLLBACK),"Is reel mein seekho: BEGIN = shuru, COMMIT = pakka save, ROLLBACK = sab wapas, All or nothing. Example: BEGIN; UPDATE accounts SET balance = balance - 200 WHERE name = 'A'; UPDATE accounts SET balance = balance + 200 WHERE name = 'B'; COMMIT;",Part 75 | Paise kat gaye par pahunche nahi? Ye kabhi nahi hoga 🏦,"Paise kat gaye par pahunche nahi? Ye kabhi nahi hoga 🏦
+
+SQL Series Part 75: Transactions (COMMIT / ROLLBACK)
+Galti mat karna: COMMIT bhoolna aur changes ka save na hona
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: ACID Properties",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #transactions #commit #rollback
+SQL076,Transactions,ACID Properties,"Is reel mein seekho: A = Atomicity (all or nothing), C = Consistency (rules safe), I = Isolation (no clash), D = Durability (saved forever).",Part 76 | Bank ka database kabhi galti kyun nahi karta? 🔐,"Bank ka database kabhi galti kyun nahi karta? 🔐
+
+SQL Series Part 76: ACID Properties
+Galti mat karna: Isolation aur Consistency ko mix karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Normalization (1NF, 2NF, 3NF)",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #acid #dbms #sqlinterview
+SQL077,Database Design,"Normalization (1NF, 2NF, 3NF)","Is reel mein seekho: 1NF = ek cell, ek value, 2NF = partial dependency hatao, 3NF = transitive dependency hatao, Kam duplicate, kam bugs.",Part 77 | Ek table mein poora ghar bhar diya? Normalize karo 🧹,"Ek table mein poora ghar bhar diya? Normalize karo 🧹
+
+SQL Series Part 77: Normalization (1NF, 2NF, 3NF)
+Galti mat karna: Har cheez itni normalize karna ki har query mein 10 joins lagein
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Stored Procedure",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #normalization #dbms #databasedesign
+SQL078,Database Programming,Stored Procedure,"Is reel mein seekho: CREATE PROCEDURE, Parameters (IN), CALL proc('IT'), Reusable logic. Example: CREATE PROCEDURE get_dept(IN d VARCHAR(20)) BEGIN SELECT name, salary FROM employees WHERE dept = d; END; CALL get_dept('IT');","Part 78 | Query ko function bana do, ek button mein kaam 🔘","Query ko function bana do, ek button mein kaam 🔘
+
+SQL Series Part 78: Stored Procedure
+Galti mat karna: MySQL mein DELIMITER change bhoolna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Manager se zyada salary",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #storedprocedure #mysql #sqladvanced
+SQL079,Interview Prep,Manager se zyada salary,"Is reel mein seekho: Self JOIN: e.manager_id = m.id, WHERE e.salary > m.salary, Aliases zaroori, Classic interview question. Example: SELECT e.name AS employee, e.salary, m.name AS manager, m.salary AS manager_salary FROM employees e JOIN employees m ON e.manager_id = m.id WHERE e.salary > m.salary;",Part 79 | Kaun apne boss se zyada kama raha hai? 👀💸,"Kaun apne boss se zyada kama raha hai? 👀💸
+
+SQL Series Part 79: Manager se zyada salary
+Galti mat karna: LEFT JOIN se boss-less row ke NULL compare mein uljhna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Month-wise Report",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #sqlinterview #selfjoin #sqlquestions
+SQL080,Interview Prep,Month-wise Report,"Is reel mein seekho: Date → month, GROUP BY month, SUM(amount), ORDER BY month. Example: SELECT DATE_FORMAT(order_date, '%Y-%m') AS month, SUM(amount) AS total FROM orders GROUP BY month ORDER BY month;",Part 80 | Boss ne monthly report maangi? 10 second ka kaam 📅,"Boss ne monthly report maangi? 10 second ka kaam 📅
+
+SQL Series Part 80: Month-wise Report
+Galti mat karna: Date ko seedha GROUP BY karna
+
+💾 Save kar lo, interview se pehle kaam aayega
+➡️ Next: Advanced SQL Recap",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #monthlyreport #dates #dataanalyst
+SQL081,Interview Prep,Advanced SQL Recap,"Is reel mein seekho: Window: ROW_NUMBER · RANK · DENSE_RANK, LAG · LEAD · Running total, CTE · Recursive CTE, EXISTS · Transactions · ACID. Example: WITH r AS (SELECT dept, name, salary, DENSE_RANK() OVER (PARTITION BY dept ORDER BY salary DESC) rnk FROM employees) SELECT * FROM r WHERE rnk <= 2;","Part 81 | Advanced SQL ek reel mein, ab interview tumhara 🚀","Advanced SQL ek reel mein, ab interview tumhara 🚀
+
+SQL Series Part 81: Advanced SQL Recap
+Galti mat karna: Window functions ko ratna, samajhna nahi
+
+💾 Save kar lo, interview se pehle kaam aayega
+🎉 Series complete!",#sql #learnsql #sqlinhindi #dataanalyst #coding #programming #sqlforbeginners #techreels #advancedsql #windowfunctions #sqlinterview
