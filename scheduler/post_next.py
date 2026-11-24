@@ -172,6 +172,14 @@ def delete_from_cloudinary(kind, post_id, item, media):
             print(f"Deleted from Cloudinary ({rtype}): {len(gone)}/{len(ids)}")
         except requests.RequestException as e:
             print(f"Warning: could not delete {rtype} files from Cloudinary: {e}")
+    if kind == "carousel":  # the now-empty folder insta/post/<id> stays otherwise
+        try:
+            time.sleep(5)
+            resp = requests.delete(f"https://api.cloudinary.com/v1_1/{cloud}/folders/insta/post/{post_id}",
+                                   auth=(key, secret), timeout=60)
+            print(f"Deleted folder insta/post/{post_id}: {resp.status_code} {resp.text[:100]}")
+        except requests.RequestException as e:
+            print(f"Warning: could not delete folder insta/post/{post_id}: {e}")
 
 
 if __name__ == "__main__":
