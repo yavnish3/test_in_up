@@ -1,17 +1,17 @@
 """
 Self-restarting posting loop for ONE kind of post (LOOP_KIND = reel | carousel).
 
-Runs inside one GitHub Actions job for about 5.5 hours: sleeps until each posting
-time, posts with post_next.py, saves the posted CSV to the repo, and repeats.
-The workflow (reel_loop.yml / carousel_loop.yml) then starts a fresh run of
-itself. When the series is finished it writes .loop_done_<kind> so the workflow
-stops restarting itself.
+Each GitHub Actions run sleeps until the next posting time, posts once with
+post_next.py, saves the posted CSV and ends. The workflow (reel_loop.yml /
+carousel_loop.yml) then starts a fresh run of itself, so every post has its own run.
+When the series is finished it writes .loop_done_<kind> so the workflow stops
+restarting itself.
 
 Posting times (UTC):
   reels      00:17 06:17 12:17 18:17              (IST 05:47 11:47 17:47 23:47)
   carousels  01:47 05:47 09:47 13:47 17:47 21:47  (IST 07:17 11:17 15:17 19:17 23:17 03:17)
 
-POST_NOW=yes posts once right away when the run starts (only for hand-started runs).
+POST_NOW=yes posts right away instead of waiting (only for hand-started runs).
 """
 
 import os
@@ -70,27 +70,30 @@ def post(kind):
 
 
 def main():
+    """One post per run: wait for the next posting time, post, then end.
+    The workflow then starts the next run. If the next time is more than ~5.5 h
+    away (GitHub's 6 h job limit), the run ends without posting and the next
+    run continues the wait."""
     kind = os.environ.get("LOOP_KIND", "")
     if kind not in TIMES:
         sys.exit("Set LOOP_KIND to reel or carousel")
     done_file = os.path.join(HERE, f".loop_done_{kind}")
 
-    finished = False
     if os.environ.get("POST_NOW", "no") == "yes":
         print(f"POST NOW: {kind}", flush=True)
-        finished = post(kind)
-    while not finished:
+    else:
         now = datetime.now(timezone.utc)
         slot = next_slot(now, kind)
         wait = (slot - now).total_seconds()
-        if time.time() - START + wait > BUDGET:
+        if wait > BUDGET:
             print(f"Next {kind} at {slot:%H:%M} UTC is beyond this run; handing over to the next run.")
+            time.sleep(BUDGET)
             return
         print(f"Next: {kind} at {slot:%Y-%m-%d %H:%M} UTC, sleeping {wait / 60:.0f} min", flush=True)
         time.sleep(max(0, wait))
-        finished = post(kind)
-    print(f"All {kind}s are posted. Stopping the {kind} loop.")
-    open(done_file, "w").close()
+    if post(kind):
+        print(f"All {kind}s are posted. Stopping the {kind} loop.")
+        open(done_file, "w").close()
 
 
 if __name__ == "__main__":

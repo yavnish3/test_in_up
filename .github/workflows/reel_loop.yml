@@ -35,7 +35,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Post at the scheduled times (about 5.5 hours)
+      - name: Wait for the next posting time and post once
         working-directory: scheduler
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
