@@ -1,10 +1,11 @@
 """
 Post the next SQL reel or carousel to Instagram.
 
-Media lives in a public Cloudflare R2 bucket (MEDIA_BASE_URL):
-    reels/SQLxxx.mp4          reel video
-    covers/SQLxxx.jpg         reel cover
-    carousels/SQLxxx/01.jpg   carousel slides (01.jpg ... 10.jpg)
+Media lives on Cloudinary (MEDIA_BASE_URL = https://res.cloudinary.com/<cloud>):
+    video/upload/sql/reels/SQLxxx.mp4          reel video
+    image/upload/sql/covers/SQLxxx.jpg         reel cover
+    image/upload/sql/carousels/SQLxxx/01.jpg   carousel slides (01.jpg ... 10.jpg)
+Uploaded from the Mac with cloud_upload.py.
 
 Captions: reels from sql_reel_posts.csv, carousels from carousels.json.
 Progress: posted.csv (reels) and posted_posts.csv (carousels). Posted ids are
@@ -68,10 +69,10 @@ def carousel_queue():
 
 
 def post_reel(base, user_id, token, media, post_id, caption):
-    video_url = f"{media}/reels/{post_id}.mp4"
-    cover_url = f"{media}/covers/{post_id}.jpg"
+    video_url = f"{media}/video/upload/sql/reels/{post_id}.mp4"
+    cover_url = f"{media}/image/upload/sql/covers/{post_id}.jpg"
     if not reachable(video_url):
-        raise SystemExit(f"Video not found in R2: {video_url}")
+        raise SystemExit(f"Video not found on Cloudinary: {video_url}")
     if not reachable(cover_url):
         print(f"Warning: no cover at {cover_url}, posting without a custom cover")
         cover_url = None
@@ -82,10 +83,10 @@ def post_reel(base, user_id, token, media, post_id, caption):
 
 
 def post_carousel(base, user_id, token, media, post_id, item):
-    urls = [f"{media}/carousels/{post_id}/{s}" for s in item["slides"]]
+    urls = [f"{media}/image/upload/sql/carousels/{post_id}/{s}" for s in item["slides"]]
     missing = [u for u in urls if not reachable(u)]
     if missing:
-        raise SystemExit(f"Slides not found in R2: {missing[:2]}")
+        raise SystemExit(f"Slides not found on Cloudinary: {missing[:2]}")
     children = []
     for url in urls:
         data = check(requests.post(f"{base}/{user_id}/media", data={
