@@ -115,6 +115,10 @@ b{color:var(--gold);font-weight:800}
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[\[(.+?)\]\]/g, '<span class="mk">$1</span>');
 const KW = /\b(SELECT|FROM|WHERE|AND|OR|NOT|IN|IS|NULL|AS|ON|JOIN|LEFT|RIGHT|INNER|OUTER|FULL|GROUP|BY|ORDER|HAVING|LIMIT|DISTINCT|INSERT|INTO|VALUES|UPDATE|SET|DELETE|CREATE|TABLE|VIEW|INDEX|DROP|ALTER|ADD|PRIMARY|KEY|FOREIGN|REFERENCES|UNIQUE|DEFAULT|CASE|WHEN|THEN|ELSE|END|UNION|ALL|EXISTS|BETWEEN|LIKE|ASC|DESC|WITH|RECURSIVE|OVER|PARTITION|EXPLAIN|ANALYZE|ANALYSE|BEGIN|COMMIT|ROLLBACK|COUNT|SUM|AVG|MIN|MAX|COALESCE|ROW_NUMBER|RANK|DENSE_RANK|LAG|LEAD|TRUNCATE|PROCEDURE|TRIGGER|FUNCTION|RETURNS)\b/g;
+function fitFont(lines) {
+  const n = Math.max(0, ...lines.map(l => String(l.code || '').length));
+  return n > 36 ? ` style="font-size:${Math.max(26, Math.floor(40 * 36 / n))}px"` : '';
+}
 function hl(line) {
   let cm = '', i = line.indexOf('--');
   if (i >= 0) { cm = line.slice(i); line = line.slice(0, i); }
@@ -161,10 +165,10 @@ R.beats.forEach((b, bi) => {
   } else if (t === 'kinetic') {
     (v.lines || []).slice(0, 4).forEach((l, k) => { h += `<div class="kl s${k % 3 + 1}" id="${id}-k${k}" style="top:${600 + k * 140}px">${md(l.text)}</div>`; els.push({ sel: `#${id}-k${k}`, at: l.at }); });
   } else if (t === 'code') {
-    const lines = (v.lines || []).slice(0, 8);
+    const lines = (v.lines || []).slice(0, 8), fs = fitFont(lines);
     h += `<div class="cpanel" id="${id}-c"><div class="bar"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i>&nbsp;${esc(v.file || 'query.sql')}</div>` +
       `<div class="run" id="${id}-run">▶ RUN</div><div class="lhl" id="${id}-hl"></div>` +
-      lines.map((l, k) => `<span class="cl" id="${id}-l${k}">${hl(l.code) || ' '}</span>`).join('') +
+      lines.map((l, k) => `<span class="cl" id="${id}-l${k}"${fs}>${hl(l.code) || ' '}</span>`).join('') +
       (v.output ? `<div class="out" id="${id}-o">${esc(v.output)}</div>` : '') + `</div>`;
     els.push({ sel: `#${id}-c`, kind: 'box' });
     lines.forEach((l, k) => els.push({ sel: `#${id}-l${k}`, at: l.at, kind: 'line', n: String(l.code).length, k }));
@@ -204,9 +208,9 @@ R.beats.forEach((b, bi) => {
     els.push({ sel: `#${id}-tl`, kind: 'box' });
     ev.forEach((x, k) => els.push({ sel: `#${id}-t${k}`, at: x.at, kind: 'tev', k, y: k * gap }));
   } else if (t === 'query') {
-    const lines = (v.lines || []).slice(0, 8), ph = 84 + lines.length * 64 + 30;
+    const lines = (v.lines || []).slice(0, 8), ph = 84 + lines.length * 64 + 30, fs = fitFont(lines);
     h += `<div class="qpanel" id="${id}-qp"><div class="bar"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i>&nbsp;${esc(v.file || 'interview.sql')}</div>` +
-      lines.map((l, k) => `<span class="ql" id="${id}-ql${k}">${hl(l.code) || ' '}</span>`).join('') + `</div>`;
+      lines.map((l, k) => `<span class="ql" id="${id}-ql${k}"${fs}>${hl(l.code) || ' '}</span>`).join('') + `</div>`;
     els.push({ sel: `#${id}-qp`, kind: 'box' });
     lines.forEach((l, k) => {
       h += `<div class="qx" id="${id}-qx${k}" style="top:${560 + ph + 30}px"><span class="arr">L${k + 1} →</span>${md(l.explain || '')}</div>`;
