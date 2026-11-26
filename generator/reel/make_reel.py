@@ -28,9 +28,8 @@ GEN = os.path.dirname(HERE)
 sys.path.insert(0, GEN)
 
 FPS = 30
-# Default voice: "gemini" (Zephyr, the young Gen Z girl voice the user wants). If the Gemini
-# TTS quota is used up on every key, the reel falls back to "neerja_expressive" (no limit).
-# REEL_VOICE=<name> forces a voice.
+# Default voice: "neerja_expressive" (user's final choice: clear, no daily limit, captions synced).
+# REEL_VOICE=gemini uses the Gemini Zephyr voice (falls back to Neerja if its quota is used up).
 # REEL_VOICE=<name> forces another one, REEL_VOICE=random picks one at random.
 #   name: (engine, voice, rate, script) ; script "deva" = Hindi in Devanagari, "roman" = Roman Hinglish
 VOICES = {
@@ -45,7 +44,7 @@ ENGINE, VOICE, RATE, SCRIPT = VOICES["swara"]
 def pick_voice():
     import random
     global ENGINE, VOICE, RATE, SCRIPT
-    name = os.environ.get("REEL_VOICE") or "gemini"
+    name = os.environ.get("REEL_VOICE") or "neerja_expressive"
     if name == "random":
         name = random.choice(list(VOICES))
     ENGINE, VOICE, RATE, SCRIPT = VOICES[name]
