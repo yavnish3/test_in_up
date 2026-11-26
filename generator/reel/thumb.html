@@ -46,17 +46,20 @@ document.getElementById('code').style.color = A3;
 const hot = document.createElement('div');  // second soft glow bottom-right like the reel background
 hot.style.cssText = `position:absolute;right:-420px;bottom:-200px;width:1100px;height:1100px;border-radius:50%;filter:blur(40px);opacity:.35;background:radial-gradient(circle, ${A1}55, transparent 62%)`;
 document.body.insertBefore(hot, document.getElementById('fade'));
-const hook = document.getElementById('hook');
-hook.innerHTML = esc(T.hook) + (T.emoji ? ` <span style="font-family:'Apple Color Emoji','Noto Color Emoji',sans-serif">${esc(T.emoji)}</span>` : '');
-let fs = 112;  // shrink the hook until it fits (old covers used 100-112px)
-while (hook.scrollHeight > 560 && fs > 70) { fs -= 4; hook.style.fontSize = fs + 'px'; }
-const topic = document.getElementById('topic');
-topic.textContent = T.topic;
-topic.style.top = (470 + Math.min(hook.scrollHeight, 560) + 20) + 'px';
-if (T.code) {
-  document.getElementById('code').textContent = T.code;
-  card.style.top = (topic.offsetTop + topic.offsetHeight + 70) + 'px';
-} else card.style.display = 'none';
-window.ready = true;
+function layout() {
+  const hook = document.getElementById('hook');
+  hook.innerHTML = esc(T.hook) + (T.emoji ? ` <span style="font-family:'Apple Color Emoji','Noto Color Emoji',sans-serif">${esc(T.emoji)}</span>` : '');
+  let fs = 112;  // shrink the hook until it fits (old covers used 100-112px)
+  while (hook.scrollHeight > 560 && fs > 70) { fs -= 4; hook.style.fontSize = fs + 'px'; }
+  const topic = document.getElementById('topic');
+  topic.textContent = T.topic;
+  topic.style.top = (470 + Math.min(hook.scrollHeight, 560) + 20) + 'px';
+  if (T.code) {
+    document.getElementById('code').textContent = T.code;
+    card.style.top = (topic.offsetTop + topic.offsetHeight + 70) + 'px';
+  } else card.style.display = 'none';
+  window.ready = true;
+}
+Promise.all([document.fonts.load("400 112px 'Archivo Black'"), document.fonts.load('800 58px Inter'), document.fonts.load("400 40px 'JetBrains Mono'")]).then(layout, layout);
 </script>
 </body></html>

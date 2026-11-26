@@ -549,7 +549,10 @@ def rerender(wd):
     scene = os.path.join(wd, "scene.html")
     open(scene, "w", encoding="utf-8").write(html)
     pid = os.path.basename(wd).replace("reel_", "")
-    asyncio.run(capture(scene, os.path.join(wd, "silent.mp4"), os.path.join(wd, f"{pid}.jpg"), tl["duration"]))
+    frame = os.path.join(wd, "frame.jpg")
+    asyncio.run(capture(scene, os.path.join(wd, "silent.mp4"), frame, tl["duration"]))
+    if os.path.exists(frame):
+        os.remove(frame)
     mix(wd, tl, os.path.join(wd, "silent.mp4"), os.path.join(wd, f"{pid}.mp4"))
     print(f"  re-rendered: {os.path.join(wd, pid + '.mp4')}", flush=True)
 
