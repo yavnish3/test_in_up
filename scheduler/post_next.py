@@ -20,6 +20,7 @@ Usage:
 import csv
 import json
 import os
+import re
 import sys
 import time
 from datetime import datetime, timezone
@@ -30,6 +31,33 @@ from upload import check, create_container, graph_host, load_env, publish, wait_
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 POSTED = {"reel": "posted.csv", "carousel": "posted_posts.csv"}
+
+
+# Instagram allows at most 30 hashtags per post. Captions get topped up to 30
+# from this pool (relevant tags only; ones already in the caption are skipped).
+MAX_TAGS = 30
+TAG_POOL = """#sql #learnsql #sqlinhindi #sqltutorial #sqlforbeginners #sqlqueries #sqlserver
+#mysql #postgresql #database #databases #dbms #rdbms #dataanalyst #dataanalytics
+#dataanalysis #datascience #dataengineering #dataengineer #bigdata #analytics #coding
+#programming #codinglife #coder #developer #softwaredeveloper #techhindi #codinginhindi
+#learncoding #programminglife #interviewprep #sqlinterview #placement #techjobs
+#careerintech #businessintelligence #powerbi #excel #python""".split()
+
+
+def fill_hashtags(caption):
+    have = re.findall(r"#\w+", caption)
+    seen = {t.lower() for t in have}
+    extra = []
+    for tag in TAG_POOL:
+        if len(have) + len(extra) >= MAX_TAGS:
+            break
+        if tag.lower() not in seen:
+            extra.append(tag)
+            seen.add(tag.lower())
+    if not extra:
+        return caption
+    out = caption.rstrip() + " " + " ".join(extra)
+    return out if len(out) <= 2200 else caption  # Instagram caption limit
 
 
 def load_posted(kind):
@@ -116,6 +144,8 @@ def main():
         return
     post_id = todo[0]
     item = queue[post_id]
+    original = item
+    item = fill_hashtags(item) if kind == "reel" else {**item, "caption": fill_hashtags(item["caption"])}
     print(f"=== {kind} {post_id} ({len(todo)} left) ===")
     print(item if kind == "reel" else item["caption"])
     if dry_run:
@@ -138,6 +168,9 @@ def main():
         except RuntimeError as e:
             if attempt == 3:
                 raise
+            if "hashtag" in str(e).lower() or "caption" in str(e).lower():
+                print("Instagram rejected the caption: using the original hashtags")
+                item = original
             limited = "request limit" in str(e).lower() or "'code': 4," in str(e)
             wait = 900 if limited else 120
             print(f"{post_id} failed ({e}). Retrying in {wait}s (attempt {attempt + 1}/3)...")

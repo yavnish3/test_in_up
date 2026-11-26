@@ -103,7 +103,8 @@ Rules:
 - "next": the topic of the following post (short, <= 18 chars), a natural next step.
 - "caption": hook line + emoji, blank line, "Is post mein:" + 4-5 "✅ ..." lines,
   blank line, "SQL Series · Part {part}", "Save karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!",
-  blank line, 10 hashtags starting with #sql (include #sqlinhindi #learnsql).
+  blank line, exactly 30 hashtags (Instagram max) starting with #sql: topic-specific ones first,
+  then broad ones (#sqlinhindi #learnsql #dataanalyst #datascience #coding ...). No duplicates.
 - Never repeat a topic that was already covered (list below). If a related basic
   topic exists (e.g. INDEX was covered), do NOT re-explain its basics: write only
   NEW, deeper material and say "Part N mein basics dekhe the" once if useful. Go deeper: advanced
