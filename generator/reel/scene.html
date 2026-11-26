@@ -44,6 +44,24 @@ b{color:var(--gold);font-weight:800}
 .qx{position:absolute;left:50px;width:980px;font:700 44px/1.25 var(--text);color:#0B0716;background:var(--cyan);padding:20px 30px;border-radius:24px;box-shadow:8px 8px 0 var(--pink);opacity:0}
 .qx .arr{font:800 30px var(--mono);margin-right:12px}
 .qres{position:absolute;left:50px;width:980px;font:500 36px/1.4 var(--mono);color:var(--green);background:rgba(92,255,176,.08);border:3px dashed rgba(92,255,176,.5);border-radius:24px;padding:18px 28px;opacity:0;white-space:pre-wrap}
+/* venn (joins) */
+.venn{position:absolute;left:90px;top:570px;width:900px;height:640px}
+.venn svg{width:100%;height:100%;overflow:visible}
+.venn .lab{font:800 46px var(--head);fill:var(--ink)}
+.venn .cap2{position:absolute;left:0;right:0;top:560px;text-align:center;font:800 50px var(--head);color:var(--gold)}
+/* bars (aggregates) */
+.bars{position:absolute;left:90px;top:600px;width:900px;height:620px;display:flex;align-items:flex-end;gap:36px;border-bottom:4px solid rgba(255,255,255,.25)}
+.bars .b{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bars .bv{font:800 44px var(--head);color:var(--gold);margin-bottom:10px;opacity:0}
+.bars .bb{width:100%;border-radius:18px 18px 6px 6px;background:linear-gradient(180deg,var(--gold),var(--pink));height:0}
+.bars .bl{position:absolute;bottom:-64px;font:700 34px var(--text);color:var(--ink)}
+.bars .b{position:relative}
+/* timeline */
+.tline{position:absolute;left:150px;top:600px;width:6px;height:640px;background:rgba(255,255,255,.15);border-radius:3px}
+.tfill{position:absolute;left:0;top:0;width:6px;height:0;background:linear-gradient(180deg,var(--gold),var(--pink));border-radius:3px}
+.tev{position:absolute;left:110px;height:100px;display:flex;align-items:center;gap:34px;font:800 52px var(--head);white-space:nowrap}
+.tev .nd{width:86px;height:86px;border-radius:50%;background:var(--card);border:5px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font:800 36px var(--head);color:var(--ink)}
+.tev small{display:block;font:600 34px var(--text);color:var(--muted)}
 /* table */
 .tb{position:absolute;left:60px;top:580px;width:960px;border-radius:26px;background:rgba(18,12,34,.92);border:3px solid rgba(139,124,255,.5);overflow:hidden}
 .tb .tr{display:flex;align-items:center;height:92px;position:relative}
@@ -121,6 +139,22 @@ function hl(line) {
 }
 const norm = w => String(w).toLowerCase().normalize('NFKD').replace(/[^a-z0-9_]/g, '');
 const P = R.post, stage = document.getElementById('stage');
+// topic theme: colour palette picked by the script writer (falls back by part number)
+const THEMES = {
+  neon:   ['#C6FF3D', '#FF4FD8', '#3DF5FF', '#0B0716'],
+  fire:   ['#FFC93D', '#FF5A36', '#FF9F45', '#140806'],
+  ocean:  ['#3DF5FF', '#4F7BFF', '#9DFFDF', '#05101C'],
+  matrix: ['#5CFF8A', '#00C26E', '#C6FF3D', '#03100A'],
+  gold:   ['#FFD23F', '#FF7EB6', '#B79BFF', '#100C04'],
+  candy:  ['#FF7EB6', '#B79BFF', '#7CC4FF', '#120818'],
+};
+{
+  const names = Object.keys(THEMES), th = THEMES[R.theme] || THEMES[names[(P.part || 0) % names.length]];
+  const root = document.documentElement.style;
+  root.setProperty('--gold', th[0]); root.setProperty('--pink', th[1]); root.setProperty('--cyan', th[2]); root.setProperty('--bg', th[3]);
+  document.body.style.background = th[3];
+}
+const ACC = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim();  // theme accent
 const add = (html) => stage.insertAdjacentHTML('beforeend', html);
 const V = {};   // beat id -> { root, els: [{sel, at, kind}], fx: [] }
 
@@ -151,6 +185,41 @@ R.beats.forEach((b, bi) => {
     els.push({ sel: `#${id}-c`, kind: 'box' });
     lines.forEach((l, k) => els.push({ sel: `#${id}-l${k}`, at: l.at, kind: 'line', n: String(l.code).length, k }));
     if (v.output) els.push({ sel: `#${id}-o`, at: v.output_at, kind: 'out' });
+  } else if (t === 'venn') {
+    // 2 circles; the part the query returns lights up (left_only / both / right_only / left / all)
+    const part = v.highlight || 'left_only', L = 330, Rr = 570, Y = 280, r = 230;
+    const fillFor = which => ({ left_only: ['url(#hatch)', 'none'], both: ['none', 'none'] })[which];
+    h += `<div class="venn" id="${id}-vn"><svg viewBox="0 0 900 600">
+      <defs><clipPath id="${id}-cl"><circle cx="${L}" cy="${Y}" r="${r}"/></clipPath>
+        <clipPath id="${id}-cr"><circle cx="${Rr}" cy="${Y}" r="${r}"/></clipPath>
+        <mask id="${id}-mlo"><rect width="900" height="600" fill="black"/><circle cx="${L}" cy="${Y}" r="${r}" fill="white"/><circle cx="${Rr}" cy="${Y}" r="${r}" fill="black"/></mask>
+        <mask id="${id}-mro"><rect width="900" height="600" fill="black"/><circle cx="${Rr}" cy="${Y}" r="${r}" fill="white"/><circle cx="${L}" cy="${Y}" r="${r}" fill="black"/></mask></defs>
+      <g id="${id}-hi" opacity="0">
+        ${part === 'left_only' ? `<rect width="900" height="600" fill="var(--gold)" mask="url(#${id}-mlo)"/>` : ''}
+        ${part === 'right_only' ? `<rect width="900" height="600" fill="var(--gold)" mask="url(#${id}-mro)"/>` : ''}
+        ${part === 'both' ? `<circle cx="${Rr}" cy="${Y}" r="${r}" fill="var(--gold)" clip-path="url(#${id}-cl)"/>` : ''}
+        ${part === 'left' ? `<circle cx="${L}" cy="${Y}" r="${r}" fill="var(--gold)"/>` : ''}
+        ${part === 'all' ? `<circle cx="${L}" cy="${Y}" r="${r}" fill="var(--gold)"/><circle cx="${Rr}" cy="${Y}" r="${r}" fill="var(--gold)"/>` : ''}
+      </g>
+      <circle id="${id}-c1" cx="${L}" cy="${Y}" r="${r}" fill="rgba(61,245,255,.10)" stroke="var(--cyan)" stroke-width="6"/>
+      <circle id="${id}-c2" cx="${Rr}" cy="${Y}" r="${r}" fill="rgba(255,79,216,.10)" stroke="var(--pink)" stroke-width="6"/>
+      <text class="lab" x="${L - 120}" y="${Y + 14}" text-anchor="middle">${esc(v.left || 'A')}</text>
+      <text class="lab" x="${Rr + 120}" y="${Y + 14}" text-anchor="middle">${esc(v.right || 'B')}</text></svg>
+      <div class="cap2" id="${id}-vl">${md(v.label || '')}</div></div>`;
+    els.push({ sel: `#${id}-c1`, at: v.left_at, kind: 'circ' }, { sel: `#${id}-c2`, at: v.right_at, kind: 'circ' },
+              { sel: `#${id}-hi`, at: v.at, kind: 'vhi' }, { sel: `#${id}-vl`, at: v.at });
+  } else if (t === 'bars') {
+    const bars = (v.bars || []).slice(0, 5), max = Math.max(1, ...bars.map(x => Number(x.value) || 0));
+    h += `<div class="bars" id="${id}-bs">` + bars.map((x, k) => `<div class="b"><div class="bv" id="${id}-bv${k}">${esc(x.value)}${esc(v.unit || '')}</div>` +
+      `<div class="bb" id="${id}-bb${k}" data-h="${Math.round(560 * (Number(x.value) || 0) / max)}"></div><div class="bl">${esc(x.label)}</div></div>`).join('') + `</div>`;
+    els.push({ sel: `#${id}-bs`, kind: 'box' });
+    bars.forEach((x, k) => els.push({ sel: `#${id}-bb${k}`, at: x.at, kind: 'bar', k }));
+  } else if (t === 'timeline') {
+    const ev = (v.events || []).slice(0, 5), gap = ev.length > 1 ? Math.min(160, 540 / (ev.length - 1)) : 0;
+    h += `<div class="tline" id="${id}-tl"><div class="tfill" id="${id}-tf"></div></div>`;
+    ev.forEach((x, k) => { h += `<div class="tev" id="${id}-t${k}" style="top:${600 + k * gap - 50}px"><span class="nd" id="${id}-n${k}">${k + 1}</span><span>${md(x.text)}${x.note ? `<small>${md(x.note)}</small>` : ''}</span></div>`; });
+    els.push({ sel: `#${id}-tl`, kind: 'box' });
+    ev.forEach((x, k) => els.push({ sel: `#${id}-t${k}`, at: x.at, kind: 'tev', k, y: k * gap }));
   } else if (t === 'query') {
     const lines = (v.lines || []).slice(0, 8), ph = 84 + lines.length * 64 + 30;
     h += `<div class="qpanel" id="${id}-qp"><div class="bar"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i>&nbsp;${esc(v.file || 'interview.sql')}</div>` +
@@ -238,6 +307,18 @@ Reel.build(R2 => {
         master.to(`#${b.id}-hl`, { opacity: 1, top: 88 + e.k * 62, duration: 0.25, ease: 'power2.out' }, at);
       }
       else if (e.kind === 'out') { master.to(`#${b.id}-run`, { scale: 1.25, backgroundColor: '#5CFFB0', duration: 0.15, yoyo: true, repeat: 1 }, at - 0.2); gsap.set(e.sel, { opacity: 0, y: 20 }); master.to(e.sel, { opacity: 1, y: 0, duration: 0.4 }, at); }
+      else if (e.kind === 'circ') { gsap.set(e.sel, { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' }); master.to(e.sel, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)' }, at); }
+      else if (e.kind === 'vhi') { master.to(e.sel, { opacity: 0.85, duration: 0.35 }, at); master.to(e.sel, { opacity: 0.55, duration: 0.5, yoyo: true, repeat: 3 }, at + 0.4); }
+      else if (e.kind === 'bar') {
+        const hgt = +document.querySelector(e.sel).dataset.h;
+        master.to(e.sel, { height: hgt, duration: 0.6, ease: 'back.out(1.4)' }, at);
+        master.to(`#${b.id}-bv${e.k}`, { opacity: 1, duration: 0.3 }, at + 0.35);
+      }
+      else if (e.kind === 'tev') {
+        gsap.set(e.sel, { opacity: 0, x: 60 }); master.to(e.sel, { opacity: 1, x: 0, duration: 0.35, ease: 'expo.out' }, at);
+        master.to(`#${b.id}-n${e.k}`, { borderColor: ACC, backgroundColor: ACC, color: '#0B0716', duration: 0.25 }, at + 0.1);
+        master.to(`#${b.id}-tf`, { height: e.y + 10, duration: 0.35, ease: 'power2.out' }, at);
+      }
       else if (e.kind === 'qline') {
         // light this clause, dim the previous one, swap the explanation chip
         master.to(e.sel, { opacity: 1, borderLeftColor: '#3DF5FF', backgroundColor: 'rgba(61,245,255,.10)', duration: 0.2 }, at);
@@ -259,9 +340,9 @@ Reel.build(R2 => {
       else if (e.kind === 'step') {
         gsap.set(e.sel, { opacity: 0, scale: 0.7 }); master.to(e.sel, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }, at);
         // the step being spoken glows; the previous one calms down (highlight moves down the flow)
-        master.to(e.sel, { borderColor: '#C6FF3D', boxShadow: '0 0 50px rgba(198,255,61,.35)', duration: 0.2 }, at + 0.1);
+        master.to(e.sel, { borderColor: ACC, boxShadow: `0 0 50px ${ACC}66`, duration: 0.2 }, at + 0.1);
         if (e.k > 0) master.to(`#${b.id}-f${e.k - 1}`, { borderColor: 'rgba(139,124,255,.6)', boxShadow: '0 0 0 rgba(0,0,0,0)', duration: 0.25 }, at + 0.1);
-        if (e.k > 0) master.to(`#${b.id}-a${e.k - 1}`, { backgroundColor: '#C6FF3D', duration: 0.25 }, at - 0.1);
+        if (e.k > 0) master.to(`#${b.id}-a${e.k - 1}`, { backgroundColor: ACC, duration: 0.25 }, at - 0.1);
       }
       else if (e.kind === 'arrow') { gsap.set(e.sel, { scaleY: 0, transformOrigin: '50% 0' }); master.to(e.sel, { scaleY: 1, duration: 0.3 }, at); }
       else if (e.kind === 'stat') {
@@ -275,7 +356,7 @@ Reel.build(R2 => {
       }
       else if (e.kind === 'check') {
         gsap.set(e.sel, { opacity: 0, x: 60 }); master.to(e.sel, { opacity: 1, x: 0, duration: 0.35, ease: 'expo.out' }, at - 0.15);
-        master.to(`#${b.id}-x${e.k}`, { backgroundColor: '#C6FF3D', duration: 0.15 }, at + 0.25);
+        master.to(`#${b.id}-x${e.k}`, { backgroundColor: ACC, duration: 0.15 }, at + 0.25);
         master.to(`#${b.id}-x${e.k} span`, { opacity: 1, scale: 1.3, duration: 0.2, yoyo: true, repeat: 1 }, at + 0.25);
       }
       else if (e.kind === 'vs') { gsap.set(e.sel, { opacity: 0, scale: 0, rotate: -90 }); master.to(e.sel, { opacity: 1, scale: 1, rotate: 0, duration: 0.5, ease: 'back.out(3)' }, at); }

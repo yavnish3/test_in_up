@@ -87,7 +87,12 @@ Do NOT copy the carousel post. The post below is only the topic reference: make 
 feel like a real Instagram reel with its OWN fresh examples, mini story, numbers, and
 visuals (new example tables, a flow of how it works, a Gen Z chat, a big stat...).
 
-Return JSON: {"beats": [...], "caption": "..."}
+Pick the visuals that fit THIS topic (any JOIN / anti-join topic MUST include one "venn" beat; aggregates -> bars, transactions / order -> timeline,
+queries -> query walkthrough...), and a colour "theme" for the mood of the topic:
+"fire" (performance, speed, slow queries), "ocean" (joins, relations), "matrix" (data quality, NULLs,
+cleaning), "gold" (transactions, money, banking), "candy" (functions, strings, dates), "neon" (anything else).
+
+Return JSON: {"theme": "...", "beats": [...], "caption": "..."}
 beats = exactly 7, in this order, ids: "hook", "b1", "b2", "b3", "b4", "galti", "recap"
   hook:  a question that states the real problem this topic solves (__W_HOOK__ words). No visual needed.
   b1-b4: teach the topic step by step (__W_BEAT__ words each; a "query" walkthrough beat needs 6-8 words
@@ -102,7 +107,7 @@ Each beat (except hook) has:
       never the same type twice in a row):
     {"type":"code","file":"x.sql","lines":[{"code":"<= 30 chars","at":"word"}, ... max 7],
        "output":"<= 60 chars result shown after RUN (optional)","output_at":"word"}
-    {"type":"query","file":"x.sql","lines":[{"code":"<= 30 chars, one clause","at":"word","explain":"<= 34 chars: what this clause does"}, ... 3-7],
+    {"type":"query","file":"x.sql","lines":[{"code":"<= 30 chars, one clause","at":"word","explain":"4-7 Hinglish words: what it does + why"}, ... 3-7],
        "output":"real result rows, <= 60 chars","output_at":"word"}   (WALKTHROUGH: full query shown, each clause lit + explained as you say it)
     {"type":"table","columns":["<= 10 chars", ... max 4],"rows":[[...], ... max 4],
        "row_at":["word for row 1", ...],"highlight":[row indexes]}
@@ -112,6 +117,10 @@ Each beat (except hook) has:
                       "right":{ same }}
     {"type":"chat","name":"<= 16 chars","messages":[{"side":"l|r","text":"<= 40 chars Gen Z style","at":"word"}, ... max 4]}
     {"type":"checklist","items":[{"text":"<= 30 chars","at":"word"}, ... max 4]}   (best for recap)
+    {"type":"venn","left":"users","right":"orders","highlight":"left_only|both|right_only|left|all",
+       "label":"<= 26 chars","left_at":"word","right_at":"word","at":"word"}   (JOIN topics: which part is returned)
+    {"type":"bars","unit":"k","bars":[{"label":"<= 8 chars","value":90,"at":"word"}, ... 2-5]}   (GROUP BY / SUM / COUNT / AVG)
+    {"type":"timeline","events":[{"text":"<= 14 chars","note":"<= 26 chars","at":"word"}, ... 3-5]}   (transactions, execution order, steps in time)
     {"type":"kinetic","lines":[{"text":"<= 12 chars","at":"word"}, ... max 3]}  (big words, use sparingly)
 __SAYCAP__
   "cues": 2-4 extra effects on exact words, each {"word": "<word from this beat's cap>", "do": "...", "target": ...}
@@ -186,7 +195,7 @@ def ask_script(post, feedback=None, previous=None):
     return ask_gemini(prompt)
 
 
-VISUALS = {"query": "lines", "code": "lines", "table": "columns", "flow": "steps", "stat": "value", "compare": "left",
+VISUALS = {"venn": "left", "bars": "bars", "timeline": "events", "query": "lines", "code": "lines", "table": "columns", "flow": "steps", "stat": "value", "compare": "left",
            "chat": "messages", "checklist": "items", "kinetic": "lines"}
 
 
@@ -207,8 +216,9 @@ def check_script(sc, post):
                 full = " ".join(str(l.get("code", "")) for l in v["lines"]).upper()
                 if len(v["lines"]) < 3 or "SELECT" not in full or "FROM" not in full:
                     raise ValueError(f"beat {b['id']}: a query visual must hold the FULL query (SELECT ... FROM ..., 3-7 lines)")
-                if not all(l.get("explain") for l in v["lines"]):
-                    raise ValueError(f"beat {b['id']}: every query line needs an 'explain'")
+                if not all(len(str(l.get("explain", "")).split()) >= 4 for l in v["lines"]):
+                    raise ValueError(f"beat {b['id']}: every query line needs an 'explain' of 4-7 Hinglish words "
+                                     f"saying what the clause does and why (e.g. 'Har user rakho, order ho ya na ho')")
                 code_words = set(re.findall(r"[a-z_]+", full.lower()))
                 said = re.findall(r"[a-z_]+", str(b.get("cap", "")).lower())
                 need = max(28, 6 * len(v["lines"]))
@@ -492,7 +502,8 @@ def make_reel(post, out_root):
     caps = [[w["w"] for w in b["words"]] for b in tl["beats"]]
     html = (html.replace("__TL__", json.dumps(tl, ensure_ascii=False))
                 .replace("__CAPS__", json.dumps(caps, ensure_ascii=False))
-                .replace("__REEL__", json.dumps({"post": post, "beats": sc["beats"]}, ensure_ascii=False)))
+                .replace("__REEL__", json.dumps({"post": post, "beats": sc["beats"], "theme": sc.get("theme")},
+                                             ensure_ascii=False)))
     scene = os.path.join(wd, "scene.html")
     open(scene, "w", encoding="utf-8").write(html)
 
