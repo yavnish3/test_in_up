@@ -1,0 +1,122 @@
+{
+ "id": "SQL083",
+ "part": 83,
+ "module": "Database Design",
+ "topic": "Partitioning Part 2",
+ "next": "Sharding",
+ "hook": "Badi table slow? [[Partitioning]] se fast karo",
+ "cover_sticker": "📂",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Partitioning = [[alvida, badi table]]",
+   "sticker": "✂️",
+   "points": [
+    "Badi table ko **chote tukdo** mein baantna",
+    "Data ek hi table jaisa dikhta hai",
+    "Query sirf **zaroori tukde** pe chalti hai"
+   ],
+   "note": "Bole toh: Pura ghar ek sath saaf karne ki jagah, **ek ek room** saaf karna 🧹",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Date ke hisaab se [[Partition]]",
+   "sticker": "📅",
+   "file": "create_partition.sql",
+   "code": "CREATE TABLE orders (\n  id INT, \n  order_date DATE,\n  amount INT\n) PARTITION BY RANGE (YEAR(order_date));",
+   "note": "Saal ke basis pe data **alag alag files** mein save hoga 🗂️",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "Files ke andar ka [[tukda]]",
+   "sticker": "📦",
+   "columns": [
+    "PARTITION",
+    "YEAR RANGE",
+    "ROWS"
+   ],
+   "rows": [
+    [
+     "p_2022",
+     "<= 2022",
+     "10 Lakh"
+    ],
+    [
+     "p_2023",
+     "2023",
+     "50 Lakh"
+    ],
+    [
+     "p_2024",
+     "2024",
+     "80 Lakh"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "2024 ki query chalegi toh **sirf p_2024 scan hoga**, baaki ignore! ⚡",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Kyun [[fast]] ho jaata hai?",
+   "sticker": "🚀",
+   "points": [
+    "**Partition Pruning**: faltu data skip",
+    "Index ka size **chota** rehta hai",
+    "Purana data delete karna **super fast**"
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "Range vs [[List]] Partition",
+   "left": {
+    "label": "Range 📈",
+    "points": [
+     "Dates ya numbers pe",
+     "<= 2023, <= 2024",
+     "Logs aur orders ke liye"
+    ]
+   },
+   "right": {
+    "label": "List 🏷️",
+    "points": [
+     "Specific values pe",
+     "Region = 'India'/'USA'",
+     "Country wise data"
+    ]
+   },
+   "note": "PostgreSQL aur MySQL dono mein **Hash Partition** bhi hota hai 🔄",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "code",
+   "title": "Purana data [[hatao]]",
+   "sticker": "🗑️",
+   "file": "drop_partition.sql",
+   "code": "-- Puraana saal ek jhatke mein gayab\nALTER TABLE orders \nDROP PARTITION p_2022;",
+   "note": "DELETE query chalane se **log table bhar jaati hai**, partition drop karna best hai!",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Partitioning aur Sharding **dono same** hote hain bhai",
+   "right": "Partitioning = **ek DB** mein tukde. Sharding = **alag servers** par data",
+   "why": "Table bohot badi ho toh partition, server hi full ho toh shard karte hain 🌐"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Partitioning = Badi table ke **chote tukde**",
+    "**Partition Pruning** se queries fast",
+    "Range, List aur Hash **types**",
+    "Purana data drop karna **easy**"
+   ]
+  }
+ ],
+ "caption": "Badi table queries slow kar rahi hai? Partitioning use karo bhai 📂\n\nIs post mein:\n✅ Partitioning kya hai (chote tukde)\n✅ RANGE aur LIST partition\n✅ Partition Pruning ka magic\n✅ Purana data drop karna super fast\n\nSQL Series · Part 83/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #database #partitioning #learnsql #sqlinhindi #dataanalytics #coding #datascience #databaseadmin #sqlperformance",
+ "revisit_of": "SQL054"
+}

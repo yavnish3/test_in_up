@@ -81,3 +81,4 @@ SQL079,Interview Prep,Manager se zyada salary,"Self JOIN: e.manager_id = m.id, W
 SQL080,Interview Prep,Month-wise Report,"Date → month, GROUP BY month, SUM(amount), ORDER BY month.",
 SQL081,Interview Prep,Advanced SQL Recap,"Window: ROW_NUMBER · RANK · DENSE_RANK, LAG · LEAD · Running total, CTE · Recursive CTE, EXISTS · Transactions · ACID.",
 SQL082,Advanced Basics,EXPLAIN ANALYZE,"EXPLAIN ANALYZE se execution plan milta hai, type, rows, Extra se bottleneck pehchano, Index ya column selection se plan improve karo, Har query ke liye plan check karna best practice",
+SQL083,Database Design,Partitioning Part 2,"Partitioning = Badi table ke chote tukde, Partition Pruning se queries fast, Range, List aur Hash types, Purana data drop karna easy",SQL054
