@@ -212,6 +212,8 @@ def validate(c, pid, part, promised=None):
     for k in ("module", "topic", "hook", "slides", "caption"):
         if not c.get(k):
             raise ValueError(f"missing {k}")
+    if c.get("next") and len(c["next"]) > 22:  # becomes the next post's topic name on the cover
+        raise ValueError(f'"next" topic "{c["next"]}" is too long; keep it <= 18 chars')
     if len(c["topic"]) > 24:  # longer names run under the "Save kar lo" sticker on the cover
         raise ValueError(f'topic "{c["topic"]}" is {len(c["topic"])} chars; keep it <= 22 (short name)')
     if len(re.sub(r"\[\[|\]\]", "", c["hook"])) > 50:
