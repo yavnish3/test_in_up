@@ -31,7 +31,7 @@ def pick_voice():
     ENGINE, VOICE, RATE, SCRIPT = VOICES[name]
     print(f"  voice: {name}", flush=True)
     return name
-GEMINI_TTS_MODELS = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"]
+GEMINI_TTS_MODELS = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview", "gemini-3.8-flash-lite-tts"]
 MAX_TEMPO = 1.35
 GAP, HOOK_GAP, TAIL = 0.18, 0.1, 0.25
 MIN_SECONDS, MAX_SECONDS = 20, 90
@@ -132,9 +132,11 @@ WORDS = {"edge": ("10-14", "24-30", "18-24", "14-20", "135-155"),
 
 def style():
     w = WORDS[ENGINE]
+    tone = os.environ.get("REEL_TONE", "").strip()
     return (STYLE.replace("__SAYCAP__", SAYCAP[SCRIPT].replace("__TOTAL__", w[4]))
             .replace("__W_HOOK__", w[0]).replace("__W_BEAT__", w[1])
-            .replace("__W_GALTI__", w[2]).replace("__W_RECAP__", w[3]))
+            .replace("__W_GALTI__", w[2]).replace("__W_RECAP__", w[3])
+            + (f"\nTONE (overrides the tone rules above, the teaching rules still apply): {tone}\n" if tone else ""))
 
 
 def targets(s):
@@ -263,9 +265,11 @@ def gemini_tts(text, wav, trim=True):
     import requests
     from generate import gemini_keys
     combos = [(m, k) for k in gemini_keys() for m in GEMINI_TTS_MODELS]
-    body = {"contents": [{"parts": [{"text": text}]}],
+    direction = os.environ.get("REEL_TTS_STYLE", "").strip()
+    voice = os.environ.get("REEL_GEMINI_VOICE", "").strip() or VOICE
+    body = {"contents": [{"parts": [{"text": f"{direction}:\n{text}" if direction else text}]}],
             "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {
-                "voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOICE}}}}}
+                "voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}}}}
     for attempt in range(5 * len(combos)):
         model, key = combos[attempt % len(combos)]
         try:

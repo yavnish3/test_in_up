@@ -17,7 +17,8 @@ TOPICS = os.path.join(HERE, "topics.csv")
 CAROUSELS = os.path.join(SCHED, "carousels.json")
 POSTED = os.path.join(SCHED, "posted_posts.csv")
 STOCK = int(os.environ.get("STOCK", "5"))
-MODELS = [os.environ.get("GEMINI_MODEL", "gemini-flash-latest"), "gemini-flash-lite-latest"]
+MODELS = [os.environ.get("GEMINI_MODEL", "gemini-flash-latest"), "gemini-3-flash-preview",
+          "gemini-flash-lite-latest", "gemini-3.1-flash-lite"]
 EXAMPLES = ["SQL045", "SQL068"]
 MAX_PART = 4
 SLIDE_TYPES = {"concept", "code", "table", "compare", "mistake", "recap"}
