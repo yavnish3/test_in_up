@@ -165,20 +165,22 @@ def gemini_tts(text, wav):
     import time
     import wave
     import requests
-    key = os.environ["GEMINI_API_KEY"]
+    from generate import gemini_keys
+    combos = [(m, k) for k in gemini_keys() for m in GEMINI_TTS_MODELS]
     body = {"contents": [{"parts": [{"text": TTS_STYLE + text}]}],
             "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {
                 "voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOICE}}}}}
-    for attempt in range(8):
-        model = GEMINI_TTS_MODELS[attempt % len(GEMINI_TTS_MODELS)]
+    for attempt in range(5 * len(combos)):
+        model, key = combos[attempt % len(combos)]
         try:
             r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
                               headers={"x-goog-api-key": key}, json=body, timeout=180)
         except requests.RequestException:
             continue
         if r.status_code in (429, 500, 503):
-            print(f"  {model}: busy ({r.status_code}), waiting", flush=True)
-            time.sleep(20 * (attempt + 1))
+            print(f"  {model} (key {gemini_keys().index(key) + 1}): busy ({r.status_code})", flush=True)
+            if (attempt + 1) % len(combos) == 0:  # every model on every key is busy: wait
+                time.sleep(30 * (attempt + 1) // len(combos))
             continue
         r.raise_for_status()
         pcm = base64.b64decode(r.json()["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])

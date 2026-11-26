@@ -16,7 +16,7 @@ Usage:
     python generator/generate.py --count 1  # make exactly 1 new post
     python generator/generate.py --preview  # make the next post in generator/out/ only (no upload, no save)
 
-Env: GEMINI_API_KEY, MEDIA_BASE_URL (https://res.cloudinary.com/<cloud>),
+Env: GEMINI_API_KEY (+ optional GEMINI_API_KEY_2 used when the first is busy), MEDIA_BASE_URL (https://res.cloudinary.com/<cloud>),
      CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, optional GEMINI_MODEL, STOCK.
 """
 
@@ -119,26 +119,37 @@ Rules:
 """
 
 
+def gemini_keys():
+    """All configured Gemini keys; the 2nd is tried when the 1st is busy / over its limit."""
+    keys = [os.environ.get(k, "").strip() for k in ("GEMINI_API_KEY", "GEMINI_API_KEY_2")]
+    keys = [k for k in keys if k]
+    if not keys:
+        raise RuntimeError("GEMINI_API_KEY is not set")
+    return keys
+
+
 def ask_gemini(prompt):
     import requests
-    key = os.environ["GEMINI_API_KEY"]
+    combos = [(m, k) for k in gemini_keys() for m in MODELS]  # every model on every key
     body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
             "generationConfig": {"responseMimeType": "application/json", "temperature": 0.9}}
-    for attempt in range(6):
-        model = MODELS[attempt % 2]  # alternate: Flash, then Flash-Lite if Flash is busy
+    for attempt in range(3 * len(combos)):
+        model, key = combos[attempt % len(combos)]
+        tag = f"{model} (key {gemini_keys().index(key) + 1})"
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
         t0 = time.time()
         try:
             resp = requests.post(url, headers={"x-goog-api-key": key}, json=body, timeout=300)
         except requests.RequestException as e:
-            print(f"{model}: no answer ({type(e).__name__}), trying again", flush=True)
+            print(f"{tag}: no answer ({type(e).__name__}), trying again", flush=True)
             continue
         if resp.status_code in (429, 500, 503):  # free-tier limit / busy
-            print(f"{model}: busy ({resp.status_code}), trying again", flush=True)
-            time.sleep(10 * (attempt + 1))
+            print(f"{tag}: busy ({resp.status_code}), trying again", flush=True)
+            if (attempt + 1) % len(combos) == 0:  # all busy: wait before the next round
+                time.sleep(20 * (attempt + 1) // len(combos))
             continue
         resp.raise_for_status()
-        print(f"{model}: answered in {time.time() - t0:.0f}s", flush=True)
+        print(f"{tag}: answered in {time.time() - t0:.0f}s", flush=True)
         text = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
         return json.loads(re.sub(r"^```(json)?|```$", "", text.strip()))
     raise RuntimeError("Gemini did not answer")
