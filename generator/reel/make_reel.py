@@ -266,9 +266,8 @@ def gemini_tts(text, wav, trim=True):
     import requests
     from generate import gemini_keys
     combos = [(m, k) for k in gemini_keys() for m in GEMINI_TTS_MODELS]
-    direction = os.environ.get("REEL_TTS_STYLE", "").strip()
     voice = os.environ.get("REEL_GEMINI_VOICE", "").strip() or VOICE
-    body = {"contents": [{"parts": [{"text": f"{direction}:\n{text}" if direction else text}]}],
+    body = {"contents": [{"parts": [{"text": text}]}],
             "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {
                 "voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}}}}
     for attempt in range(5 * len(combos)):
