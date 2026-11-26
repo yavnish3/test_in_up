@@ -334,6 +334,8 @@ def main():
         sys.exit(0 if need > 0 else 1)
     if "--preview" in args:
         need = 1
+    if "--preview" not in args and "--no-reel" not in args:
+        retry_missing_reels()
     if need <= 0:
         print(f"Stock is fine: {len(left)} unposted carousels ready.")
         return
@@ -390,8 +392,34 @@ def make_reel_for(c):
             csv.writer(f).writerow([pid, c["module"], c["topic"], c.get("revisit_of") or "",
                                     f"Part {c['part']} | {c['topic']}", caption, ""])
         print(f"{pid}: reel ready", flush=True)
+        return True
     except Exception as e:
         print(f"{pid}: reel failed ({type(e).__name__}: {e}); the carousel is still queued", flush=True)
+        return False
+
+
+FIRST_AUTO, MAX_REEL_TRIES, RETRIES_PER_RUN = 82, 3, 2
+
+
+def retry_missing_reels():
+    with open(REELS_CSV, encoding="utf-8-sig") as f:
+        have = {r["id"] for r in csv.DictReader(f)}
+    todo = []
+    for name in sorted(os.listdir(CONTENT)):
+        pid = name[:-5]
+        if not (name.endswith(".json") and pid[3:].isdigit() and int(pid[3:]) >= FIRST_AUTO) or pid in have:
+            continue
+        path = os.path.join(CONTENT, name)
+        c = json.load(open(path, encoding="utf-8"))
+        if c.get("reel_tries", 1) < MAX_REEL_TRIES:
+            todo.append((path, c))
+    for path, c in todo[:RETRIES_PER_RUN]:
+        print(f"{c['id']}: reel missing, trying again (try {c.get('reel_tries', 1) + 1}/{MAX_REEL_TRIES})", flush=True)
+        ok = make_reel_for(c)
+        if not ok:
+            c["reel_tries"] = c.get("reel_tries", 1) + 1
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(c, f, ensure_ascii=False, indent=1)
 
 
 if __name__ == "__main__":
