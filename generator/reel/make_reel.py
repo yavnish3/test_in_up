@@ -28,7 +28,13 @@ GEN = os.path.dirname(HERE)
 sys.path.insert(0, GEN)
 
 FPS = 30
-VOICE, RATE = "hi-IN-SwaraNeural", "+30%"
+ENGINE = os.environ.get("REEL_VOICE", "gemini")  # "gemini" (Gemini TTS) or "edge" (Swara)
+VOICE, RATE = "hi-IN-SwaraNeural", "+30%"          # edge-tts voice
+GEMINI_TTS_MODELS = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"]
+GEMINI_VOICE = "Kore"
+TTS_STYLE = ("Read this as a fast-talking, energetic young Indian Gen Z girl making an Instagram reel. "
+             "Natural Hinglish, quick pace, no long pauses, upbeat: ")
+MAX_TEMPO = 1.35  # Gemini TTS speaks slowly; speed it up (pitch kept) by at most this much
 GAP, HOOK_GAP, TAIL = 0.18, 0.1, 0.25
 MIN_SECONDS, MAX_SECONDS = 50, 59  # every reel lands between 50 and 59 seconds
 
@@ -42,27 +48,44 @@ Desi touch too: "yaar", "bhai", "arre". Max 1-2 slang words per sentence.
 
 Return JSON: {"beats": [...], "caption": "..."}
 beats = exactly 7, in this order:
-  1. {"id":"hook","slide":"hook", ...}  scroll-stopping first line (10-14 words)
+  1. {"id":"hook","slide":"hook", ...}  scroll-stopping first line (__W_HOOK__ words)
   2-5. four teaching beats, each {"id":"b1".."b4","slide":<index 0-5 of the post's slides>}
        pick 4 DIFFERENT slides that teach best (prefer code/table/compare), in a logical order.
-       Talk about exactly what that slide shows, with a quick example. 24-30 words each.
-  6. {"id":"galti","slide":"mistake", ...}  the common mistake + fix (18-24 words)
-  7. {"id":"recap","slide":"recap", ...}  quick recap + "save karo, follow karo" CTA (14-20 words)
-Each beat has:
-  "say": what the TTS speaks: Hindi words in Devanagari, English/tech words in Latin
-         (e.g. "EXPLAIN लगाओ और plan देखो, no cap!"). SQL keywords stay English.
-  "cap": the SAME sentence in Roman Hinglish with EXACTLY the same number of words as "say"
-         (word by word, same order). Count carefully.
-Total words of all "say" must be 135-155 (that is 50-58 seconds of speech).
+       Talk about exactly what that slide shows, with a quick example. __W_BEAT__ words each.
+  6. {"id":"galti","slide":"mistake", ...}  the common mistake + fix (__W_GALTI__ words)
+  7. {"id":"recap","slide":"recap", ...}  quick recap + "save karo, follow karo" CTA (__W_RECAP__ words)
+__SAYCAP__
 caption: reel caption like the carousel's (hook line + emoji, 3-4 "✅" lines,
 "SQL Series · Part N", "Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!", 30 hashtags).
 """
 
 
+SAYCAP = {
+    "edge": """Each beat has:
+  "say": what the TTS speaks: Hindi words in Devanagari, English/tech words in Latin
+         (e.g. "EXPLAIN लगाओ और plan देखो, no cap!"). SQL keywords stay English.
+  "cap": the SAME sentence in Roman Hinglish with EXACTLY the same number of words as "say"
+         (word by word, same order). Count carefully.
+Total words of all "say" must be 135-155 (that is 50-58 seconds of speech).""",
+    "gemini": """Each beat has:
+  "cap": the sentence in natural Roman Hinglish (it is spoken by the voice AND shown as captions),
+         e.g. "EXPLAIN lagao aur plan dekho, no cap!". SQL keywords stay English.
+  "say": same text as "cap".
+Total words of all beats must be 100-115 (that is about 55 seconds of speech).""",
+}
+WORDS = {"edge": ("10-14", "24-30", "18-24", "14-20"), "gemini": ("8-11", "16-20", "13-16", "10-13")}
+
+
+def style():
+    w = WORDS[ENGINE]
+    return (STYLE.replace("__SAYCAP__", SAYCAP[ENGINE]).replace("__W_HOOK__", w[0])
+            .replace("__W_BEAT__", w[1]).replace("__W_GALTI__", w[2]).replace("__W_RECAP__", w[3]))
+
+
 def ask_script(post, feedback=None):
     from generate import ask_gemini
     slides = [{"index": i, **s} for i, s in enumerate(post["slides"][:6])]
-    prompt = (STYLE + "\nThe post (carousel content) this reel is about:\n"
+    prompt = (style() + "\nThe post (carousel content) this reel is about:\n"
               + json.dumps({"part": post["part"], "topic": post["topic"], "hook": post["hook"],
                             "next": post.get("next"), "slides": slides,
                             "mistake": post["slides"][6], "recap": post["slides"][7]},
@@ -87,8 +110,12 @@ def check_script(sc, post):
             if not isinstance(s, int) or not 0 <= s <= 5 or s in seen:
                 raise ValueError(f"beat {i + 1}: slide must be a new index 0-5, got {s}")
             seen.add(s)
+        if ENGINE == "gemini":
+            b["say"] = b.get("cap") or b.get("say")
         if not b.get("say") or not b.get("cap"):
             raise ValueError(f"beat {i + 1}: say/cap missing")
+        if ENGINE == "edge" and not re.search(r"[\u0900-\u097F]", b["say"]):
+            raise ValueError(f'beat {i + 1}: "say" must have Hindi words in Devanagari')
     return sc
 
 
@@ -111,8 +138,75 @@ def duration(path):
     return float(out.strip())
 
 
+def gemini_tts(text, wav):
+    """Gemini TTS -> 24 kHz mono WAV with leading/trailing silence trimmed. Returns seconds."""
+    import base64
+    import time
+    import wave
+    import requests
+    key = os.environ["GEMINI_API_KEY"]
+    body = {"contents": [{"parts": [{"text": TTS_STYLE + text}]}],
+            "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {
+                "voiceConfig": {"prebuiltVoiceConfig": {"voiceName": GEMINI_VOICE}}}}}
+    for attempt in range(8):
+        model = GEMINI_TTS_MODELS[attempt % len(GEMINI_TTS_MODELS)]
+        try:
+            r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                              headers={"x-goog-api-key": key}, json=body, timeout=180)
+        except requests.RequestException:
+            continue
+        if r.status_code in (429, 500, 503):
+            print(f"  {model}: busy ({r.status_code}), waiting", flush=True)
+            time.sleep(20 * (attempt + 1))
+            continue
+        r.raise_for_status()
+        pcm = base64.b64decode(r.json()["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])
+        raw = wav + ".raw.wav"
+        with wave.open(raw, "wb") as w:
+            w.setnchannels(1)
+            w.setsampwidth(2)
+            w.setframerate(24000)
+            w.writeframes(pcm)
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-af",
+                        "silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
+                        "silenceremove=start_periods=1:start_threshold=-45dB,areverse", wav], check=True)
+        os.remove(raw)
+        return duration(wav)
+    raise RuntimeError("Gemini TTS did not answer")
+
+
+def spread_words(cap, t0, length):
+    """No word timings from Gemini TTS: spread the caption words by their length."""
+    ws = cap.split()
+    weight = [len(w) + 2 for w in ws]
+    total, acc, out = sum(weight), 0, []
+    for w, k in zip(ws, weight):
+        out.append({"w": w, "t": round(t0 + 0.05 + length * acc / total, 3), "d": 0.2})
+        acc += k
+    return out
+
+
 def build_timeline(sc, wd, rate=RATE):
     os.makedirs(os.path.join(wd, "voice"), exist_ok=True)
+    if ENGINE == "gemini":
+        lens = []
+        for i, b in enumerate(sc["beats"]):
+            lens.append(gemini_tts(b["say"], os.path.join(wd, "voice", f"beat_{i}.wav")))
+        gaps = HOOK_GAP + GAP * (len(lens) - 1)
+        tempo = min(MAX_TEMPO, max(1.0, sum(lens) / (55 - gaps)))
+        beats, t = [], 0.0
+        for i, b in enumerate(sc["beats"]):
+            wav, mp3 = os.path.join(wd, "voice", f"beat_{i}.wav"), os.path.join(wd, "voice", f"beat_{i}.mp3")
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", wav, "-af", f"atempo={tempo:.3f}",
+                            "-ar", "44100", mp3], check=True)
+            speech = duration(mp3)
+            dur = speech + (HOOK_GAP if i == 0 else GAP)
+            beats.append({"id": b["id"], "start": round(t, 3), "end": round(t + dur, 3),
+                          "voice_start": round(t, 3), "words": spread_words(b["cap"], t, speech)})
+            t += dur
+        print(f"  gemini voice: {sum(lens):.1f}s raw, tempo x{tempo:.2f}", flush=True)
+        return {"fps": FPS, "duration": round(t, 3), "beats": beats}
+
     beats, t = [], 0.0
     for i, b in enumerate(sc["beats"]):
         mp3 = os.path.join(wd, "voice", f"beat_{i}.mp3")
@@ -202,7 +296,7 @@ def make_reel(post, out_root):
             raise RuntimeError(f"{pid}: could not make a reel script of 50-59 seconds")
         sc, tl = best
         # a little short: speak the same script slower to stretch it into the window
-        for rate in ("+22%", "+15%", "+8%"):
+        for rate in (("+22%", "+15%", "+8%") if ENGINE == "edge" else ()):
             tl = build_timeline(sc, wd, rate)
             print(f"  slower voice {rate}: {tl['duration']:.1f}s", flush=True)
             if tl["duration"] >= MIN_SECONDS:
