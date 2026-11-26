@@ -35,7 +35,7 @@ VOICES = {
     "swara": ("edge", "hi-IN-SwaraNeural", "+30%", "deva"),
     "neerja_expressive": ("edge", "en-IN-NeerjaExpressiveNeural", "+20%", "roman"),
     "neerja": ("edge", "en-IN-NeerjaNeural", "+20%", "roman"),
-    "gemini": ("gemini", "Kore", None, "roman"),
+    "gemini": ("gemini", "Zephyr", None, "roman"),  # bright young female voice
 }
 ENGINE, VOICE, RATE, SCRIPT = VOICES["swara"]
 
@@ -50,8 +50,7 @@ def pick_voice():
     print(f"  voice: {name}", flush=True)
     return name
 GEMINI_TTS_MODELS = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"]
-TTS_STYLE = ("Read this as a young Indian Gen Z girl teaching on her Instagram reel: clear, friendly, "
-             "confident, natural Hinglish, quick pace, no long pauses: ")
+# No style instruction is sent to Gemini TTS: it would read the instruction aloud.
 MAX_TEMPO = 1.35  # Gemini TTS speaks slowly; speed it up (pitch kept) by at most this much
 GAP, HOOK_GAP, TAIL = 0.18, 0.1, 0.25
 MIN_SECONDS, MAX_SECONDS = 20, 90  # Instagram accepts 3 s - 15 min; keep reels 20-90 s
@@ -163,15 +162,15 @@ def duration(path):
     return float(out.strip())
 
 
-def gemini_tts(text, wav):
-    """Gemini TTS -> 24 kHz mono WAV with leading/trailing silence trimmed. Returns seconds."""
+def gemini_tts(text, wav, trim=True):
+    """Gemini TTS -> 24 kHz mono WAV (leading/trailing silence trimmed). Returns seconds."""
     import base64
     import time
     import wave
     import requests
     from generate import gemini_keys
     combos = [(m, k) for k in gemini_keys() for m in GEMINI_TTS_MODELS]
-    body = {"contents": [{"parts": [{"text": TTS_STYLE + text}]}],
+    body = {"contents": [{"parts": [{"text": text}]}],
             "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {
                 "voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOICE}}}}}
     for attempt in range(5 * len(combos)):
@@ -194,12 +193,47 @@ def gemini_tts(text, wav):
             w.setsampwidth(2)
             w.setframerate(24000)
             w.writeframes(pcm)
-        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-af",
-                        "silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
-                        "silenceremove=start_periods=1:start_threshold=-45dB,areverse", wav], check=True)
-        os.remove(raw)
+        if trim:
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-af", TRIM, wav], check=True)
+            os.remove(raw)
+        else:
+            os.replace(raw, wav)
         return duration(wav)
     raise RuntimeError("Gemini TTS did not answer")
+
+
+TRIM = ("silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
+        "silenceremove=start_periods=1:start_threshold=-45dB,areverse")
+
+
+def gemini_tts_once(texts, wd):
+    """Whole script in ONE TTS request (saves free quota), then cut it into beats at the
+    pauses between paragraphs. Returns per-beat lengths, or None if the cut is unclear."""
+    full = os.path.join(wd, "voice", "full.wav")
+    gemini_tts("\n\n".join(texts), full, trim=False)
+    out = subprocess.run(["ffmpeg", "-i", full, "-af", "silencedetect=noise=-40dB:d=0.2", "-f", "null", "-"],
+                         capture_output=True, text=True).stderr
+    starts = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", out)]
+    ends = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", out)]
+    total = duration(full)
+    gaps = [(e - st, (st + e) / 2) for st, e in zip(starts, ends) if st > 0.3 and e < total - 0.3]
+    need = len(texts) - 1
+    if len(gaps) < need:
+        return None
+    cuts = sorted(m for _, m in sorted(gaps, reverse=True)[:need])
+    bounds = [0.0] + cuts + [total]
+    words = [len(t.split()) for t in texts]
+    lens = []
+    for i in range(len(texts)):
+        seg = bounds[i + 1] - bounds[i]
+        expect = total * words[i] / sum(words)
+        if not 0.45 <= seg / expect <= 2.2:  # a cut landed inside a sentence
+            return None
+        wav = os.path.join(wd, "voice", f"beat_{i}.wav")
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", full, "-ss", f"{bounds[i]:.3f}",
+                        "-to", f"{bounds[i + 1]:.3f}", "-af", TRIM, wav], check=True)
+        lens.append(duration(wav))
+    return lens
 
 
 def spread_words(cap, t0, length):
@@ -216,9 +250,11 @@ def spread_words(cap, t0, length):
 def build_timeline(sc, wd, rate=RATE):
     os.makedirs(os.path.join(wd, "voice"), exist_ok=True)
     if ENGINE == "gemini":
-        lens = []
-        for i, b in enumerate(sc["beats"]):
-            lens.append(gemini_tts(b["say"], os.path.join(wd, "voice", f"beat_{i}.wav")))
+        lens = gemini_tts_once([b["say"] for b in sc["beats"]], wd)
+        if lens is None:  # pauses unclear: one request per beat instead
+            print("  could not split the voice cleanly, using one request per beat", flush=True)
+            lens = [gemini_tts(b["say"], os.path.join(wd, "voice", f"beat_{i}.wav"))
+                    for i, b in enumerate(sc["beats"])]
         gaps = HOOK_GAP + GAP * (len(lens) - 1)
         tempo = min(MAX_TEMPO, max(1.0, sum(lens) / (80 - gaps)))  # only speed up very long ones
         beats, t = [], 0.0
