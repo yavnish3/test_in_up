@@ -1,0 +1,126 @@
+{
+ "id": "SQL084",
+ "part": 84,
+ "module": "Database Design",
+ "topic": "Sharding",
+ "next": "Replication",
+ "hook": "Ek database pe [[bojh]]? Data baanto [[sharding]] se",
+ "cover_sticker": "🔀",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Sharding = Data ke [[tukde]]",
+   "sticker": "🍕",
+   "points": [
+    "Badi table ko **alag servers** par baanto",
+    "Har server pe **chhota data**, fast query",
+    "Swiggy jaise apps ke **crore users** ke liye"
+   ],
+   "note": "Bole toh: Ek bade restaurant mein ek hi waiter ke bajaye **alag tables pe alag waiters** rakhna",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "concept",
+   "title": "Kyun zaroori hai [[bhai]]?",
+   "sticker": "📈",
+   "points": [
+    "Single machine ki **RAM/Disk** full ho gayi",
+    "**Scale-up** (bada server) bahot mehanga hai",
+    "**Scale-out** (kai servers) sasta aur infinite hai"
+   ],
+   "note": "Facebook ya Instagram ka data **ek hard drive** mein aa hi nahi sakta 🤯",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "compare",
+   "title": "Partitioning vs [[Sharding]]",
+   "left": {
+    "label": "Partitioning 📂",
+    "points": [
+     "Ek hi DB server",
+     "Tables ke tukde",
+     "Local disk management"
+    ]
+   },
+   "right": {
+    "label": "Sharding 🌐",
+    "points": [
+     "Alag-alag DB servers",
+     "Network par faila data",
+     "Distributed system"
+    ]
+   },
+   "note": "Partitioning ek ghar ke alag kamre hain, Sharding **alag-alag shehron mein ghar** hain",
+   "who": "DHYAAN DO"
+  },
+  {
+   "type": "code",
+   "title": "Shard Key kaise [[chunein]]?",
+   "sticker": "🔑",
+   "file": "shard_key.sql",
+   "code": "-- Example: Range Sharding by ID\n-- Server 1: user_id 1 to 10000\n-- Server 2: user_id 10001 to 20000\n\nSELECT * FROM users \nWHERE user_id = 15050; -- Server 2 pe jaayega",
+   "note": "Galat Shard Key chuni toh **saare servers pe query chalani padegi** (Scatter-Gather)",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "Sharding ke [[tareeqe]]",
+   "sticker": "🛠️",
+   "points": [
+    "**Range Based**: ID ke hisaab se (A-M, N-Z)",
+    "**Hash Based**: Hash(id) % total_servers",
+    "**Directory Based**: Look-up table bataegi kahan hai"
+   ],
+   "note": "Hash sharding se **data evenly baant** jaata hai, koi ek server overload nahi hota",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "Hash Sharding ka [[funda]]",
+   "sticker": "📊",
+   "columns": [
+    "USER_ID",
+    "HASH VAL",
+    "SERVER"
+   ],
+   "rows": [
+    [
+     "101",
+     "45",
+     "Server A"
+    ],
+    [
+     "102",
+     "88",
+     "Server B"
+    ],
+    [
+     "103",
+     "12",
+     "Server A"
+    ]
+   ],
+   "note": "Har user ka ID hash hoke decide karta hai ki **kaunse server pe save** hoga",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Sharding **shuru se hi** laga lo har chote project par, future-proof banega",
+   "right": "Sharding sirf **tab lagao** jab single DB handle na kar paaye",
+   "why": "Complexities badh jaati hain (JOINs mushkil, transactions slow). Premature sharding = headache 💀",
+   "wrong_is_code": false,
+   "right_is_code": false
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Sharding = data **alag servers** par baantna",
+    "Scale-out ke liye **zaroori**",
+    "**Shard Key** dhyan se chunni padti hai",
+    "Complexity laata hai, **jab zaroorat ho tabhi** use karo"
+   ]
+  }
+ ],
+ "caption": "Ek database pe bojh badh gaya? Data baanto sharding se 🔀\n\nIs post mein:\n✅ Sharding kya hai aur kyun chahiye\n✅ Partitioning aur Sharding ka farq\n✅ Shard Key chunne ka tarika\n✅ Range aur Hash Sharding ke funde\n\nSQL Series · Part 84/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #sharding #databasedesign #systemdesign #learnsql #sqlinhindi #dataengineering #backend #database #scalability #softwareengineering #techhindi #coding #dataanalyst #datascience #sqlqueries #mysql #postgresql #distributed #devops #tech #programming #computerscience #cleancode #webdev #interviewprep #sqltricks #analytics #bigdata",
+ "revisit_of": null
+}
