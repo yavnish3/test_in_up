@@ -1,15 +1,14 @@
 name: Generate loop
 
-# Own self-restarting loop: each run tops up the stock of ready (unposted)
-# carousels to 5 (Gemini writes, Playwright renders, Cloudinary stores),
-# waits ~5 hours, then starts the next run of itself.
+# Own self-restarting loop: every ~4.5 hours one new carousel is generated
+# (Gemini writes, Playwright renders) and saved to Cloudinary + carousels.json.
 on:
   workflow_dispatch:
     inputs:
       count:
-        description: "Make this many new posts now (0 = only top up the stock)"
+        description: "How many new posts this run makes"
         required: false
-        default: "0"
+        default: "1"
 
 permissions:
   contents: write
@@ -37,32 +36,18 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Are new posts needed?
-        id: need
-        run: |
-          if [ "${{ inputs.count || '0' }}" != "0" ] || python generator/generate.py --check; then
-            echo "go=yes" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Install renderer
-        if: steps.need.outputs.go == 'yes'
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-color-emoji
           pip install requests playwright
           python -m playwright install --with-deps chromium
 
       - name: Generate
-        if: steps.need.outputs.go == 'yes'
         continue-on-error: true   # a Gemini hiccup must not stop the loop
-        run: |
-          if [ "${{ inputs.count || '0' }}" != "0" ]; then
-            python -u generator/generate.py --count "${{ inputs.count }}"
-          else
-            python -u generator/generate.py
-          fi
+        run: python -u generator/generate.py --count "${{ inputs.count || '1' }}"
 
       - name: Save
-        if: always() && steps.need.outputs.go == 'yes'
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -72,10 +57,10 @@ jobs:
           for i in 1 2 3 4 5; do git pull --rebase && git push && exit 0; sleep 10; done
           exit 1
 
-      - name: Wait before the next check (run lasts ~5h 20m in total)
+      - name: Wait for the next post (run lasts ~4.5 hours in total)
         if: ${{ !cancelled() }}
         run: |
-          left=$(( 19200 - ($(date +%s) - LOOP_START) ))
+          left=$(( 16200 - ($(date +%s) - LOOP_START) ))
           echo "Sleeping $(( left / 60 )) min"
           [ "$left" -gt 0 ] && sleep "$left" || true
 
