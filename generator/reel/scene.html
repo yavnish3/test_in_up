@@ -1,0 +1,165 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Inter:wght@500;600;800&family=Space+Grotesk:wght@500;700&display=block" rel="stylesheet">
+<link rel="stylesheet" href="reel_base.css">
+<style>
+/* ---- Gen Z look on top of the original reel style ---- */
+:root{--bg:#0B0716;--blue:#8B7CFF;--gold:#C6FF3D;--pink:#FF4FD8;--cyan:#3DF5FF;--red:#FF5C7A;--green:#5CFFB0;
+  --head:'Bricolage Grotesque','Space Grotesk',system-ui,sans-serif}
+#dots{background-image:radial-gradient(rgba(198,255,61,.13) 2.2px,transparent 2.6px)}
+#g1{background:radial-gradient(circle,rgba(139,124,255,.38),transparent 65%)}
+#g2{background:radial-gradient(circle,rgba(255,79,216,.22),transparent 65%)}
+.step{color:var(--gold);font-size:30px}
+.step .tag{display:inline-block;background:var(--pink);color:#fff;border-radius:10px;padding:2px 14px;margin-right:12px;transform:rotate(-2deg)}
+.kw.t{font:800 92px/1.02 var(--head);letter-spacing:-.02em}
+.kw.hk{font:800 122px/1 var(--head);letter-spacing:-.03em}
+.mk{color:var(--gold)} .kw.t b{color:var(--gold)}
+.emo{position:absolute;font-size:150px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.5))}
+.topic{position:absolute;left:80px;top:980px;font:800 52px var(--head);color:#0B0716;background:var(--gold);padding:16px 34px;border-radius:24px;transform:rotate(-2deg);white-space:nowrap;box-shadow:8px 8px 0 var(--pink)}
+.topic small{display:block;font:600 26px var(--mono);letter-spacing:.08em;color:#2a1f40}
+.sticker{position:absolute;font:800 38px var(--head);color:#0B0716;background:var(--cyan);padding:10px 22px;border-radius:16px;white-space:nowrap;box-shadow:5px 5px 0 #000}
+/* concept points */
+.pt{position:absolute;left:80px;width:920px;min-height:124px;border-radius:26px;background:rgba(255,255,255,.06);border:3px solid rgba(139,124,255,.55);
+  display:flex;align-items:center;gap:26px;padding:18px 30px;font:600 44px/1.2 var(--text)}
+.pt .n{flex:none;width:62px;height:62px;border-radius:18px;background:var(--gold);color:#0B0716;font:800 34px var(--head);display:flex;align-items:center;justify-content:center}
+.pt b,.note b,.cmp b,.ms b,.rc b{color:var(--gold);font-weight:800}
+.note{position:absolute;left:80px;width:920px;border-radius:26px;background:var(--pink);color:#fff;padding:22px 30px;font:700 40px/1.25 var(--text);transform:rotate(-1deg)}
+.note .who{display:block;font:500 26px var(--mono);letter-spacing:.08em;opacity:.85;margin-bottom:6px}
+.note b{color:#0B0716}
+/* code */
+.cpanel{position:absolute;left:80px;width:920px;border-radius:28px;background:#120C22;border:3px solid rgba(198,255,61,.45);padding:84px 34px 30px;box-shadow:0 24px 70px rgba(0,0,0,.5)}
+.cpanel .bar{position:absolute;left:30px;top:28px;display:flex;gap:12px;align-items:center;font:500 26px var(--mono);color:var(--muted)}
+.cpanel .bar i{width:18px;height:18px;border-radius:50%;display:inline-block}
+.cl{display:block;font:500 38px/58px var(--mono);white-space:pre;color:var(--ink);clip-path:inset(0 100% 0 0)}
+.cl .k{color:var(--pink)} .cl .s{color:var(--gold)} .cl .c{color:var(--muted)} .cl .nm{color:var(--cyan)}
+/* table */
+.tbl{left:80px;width:920px;background:rgba(18,12,34,.9);border-color:rgba(139,124,255,.5)}
+.tbl .tr{height:84px} .tbl .td{font:600 38px var(--text)} .tbl .th{font:500 28px var(--mono);height:64px;color:var(--gold)}
+.tbl .td.hi{background:rgba(198,255,61,.16)}
+/* compare */
+.cmp{position:absolute;left:80px;width:920px;height:300px;border-radius:28px;padding:26px 34px;border:3px solid}
+.cmp .lb{font:800 50px var(--head);margin-bottom:12px}
+.cmp .li{font:600 38px/1.45 var(--text)}
+.cmp.a{background:rgba(61,245,255,.10);border-color:var(--cyan)} .cmp.a .lb{color:var(--cyan)}
+.cmp.b{background:rgba(255,79,216,.12);border-color:var(--pink)} .cmp.b .lb{color:var(--pink)}
+.vs{position:absolute;left:470px;width:140px;height:140px;border-radius:50%;background:var(--gold);color:#0B0716;font:800 54px var(--head);display:flex;align-items:center;justify-content:center;box-shadow:6px 6px 0 #000}
+/* mistake */
+.ms{position:absolute;left:80px;width:920px;border-radius:28px;padding:30px 34px;font:700 44px/1.25 var(--text)}
+.ms .lab{display:block;font:800 30px var(--mono);letter-spacing:.06em;margin-bottom:10px}
+.ms.w{background:rgba(255,92,122,.14);border:3px solid var(--red)} .ms.w .lab{color:var(--red)}
+.ms.r{background:rgba(92,255,176,.12);border:3px solid var(--green)} .ms.r .lab{color:var(--green)}
+.why{position:absolute;left:80px;width:920px;font:600 38px/1.3 var(--text);color:var(--muted)}
+.why b{color:var(--ink)}
+/* recap */
+.rc{background:rgba(198,255,61,.08);border:3px solid rgba(198,255,61,.5);height:112px}
+.rc .n{color:var(--pink);font-weight:800}
+#cta .save{background:var(--gold);color:#0B0716}
+#cta .fol b{color:var(--gold)}
+#capbox{background:rgba(11,7,22,.82);border:3px solid rgba(198,255,61,.35)}
+#handle{position:absolute;left:0;right:0;top:1820px;text-align:center;font:600 30px var(--mono);color:rgba(232,238,248,.55)}
+</style></head>
+<body>
+<div id="bg"><div id="dots"></div><div class="glow" id="g1"></div><div class="glow" id="g2"></div><div id="vig"></div></div>
+<div id="stage"></div>
+<div id="fx"></div>
+<div id="cap"><div id="capbox"></div></div>
+<div id="handle">@coder_sani · SQL daily</div>
+
+<script src="gsap.min.js"></script>
+<script>const TL = __TL__; const CAPS = __CAPS__; const R = __REEL__;</script>
+<script src="reel_lib.js"></script>
+<script>
+/* Build every beat's DOM from the carousel content (R.post) and the beat plan (R.beats). */
+const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[\[(.+?)\]\]/g, '<span class="mk">$1</span>');
+const KW = /\b(SELECT|FROM|WHERE|AND|OR|NOT|IN|IS|NULL|AS|ON|JOIN|LEFT|RIGHT|INNER|OUTER|FULL|GROUP|BY|ORDER|HAVING|LIMIT|DISTINCT|INSERT|INTO|VALUES|UPDATE|SET|DELETE|CREATE|TABLE|VIEW|INDEX|DROP|ALTER|ADD|PRIMARY|KEY|FOREIGN|REFERENCES|UNIQUE|DEFAULT|CASE|WHEN|THEN|ELSE|END|UNION|ALL|EXISTS|BETWEEN|LIKE|ASC|DESC|WITH|RECURSIVE|OVER|PARTITION|EXPLAIN|ANALYZE|ANALYSE|BEGIN|COMMIT|ROLLBACK|COUNT|SUM|AVG|MIN|MAX|COALESCE|ROW_NUMBER|RANK|DENSE_RANK|LAG|LEAD|TRUNCATE|PROCEDURE|TRIGGER|FUNCTION|RETURNS)\b/g;
+function hl(line) {
+  let cm = '', i = line.indexOf('--');
+  if (i >= 0) { cm = line.slice(i); line = line.slice(0, i); }
+  return line.split(/('(?:[^']*)')/).map(p => p.startsWith("'") && p.endsWith("'") && p.length > 1 ? `<span class="s">${esc(p)}</span>`
+    : esc(p).replace(KW, '<span class="k">$1</span>').replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="nm">$1</span>')).join('')
+    + (cm ? `<span class="c">${esc(cm)}</span>` : '');
+}
+const P = R.post, stage = document.getElementById('stage');
+const TOP = 600;           // content starts here (headers above)
+const items = {};          // beat id -> list of element selectors that pop in one by one
+const add = (html) => stage.insertAdjacentHTML('beforeend', html);
+const hdr = (id, step, title, cls = 't') => add(`<div class="hdr" id="h-${id}"><div class="step">${step}</div>` +
+  (title ? `<div class="kw ${cls}"><span class="ln"><span>${md(title)}</span></span></div>` : '') + `</div>`);
+
+R.beats.forEach((b, bi) => {
+  const id = b.id, list = items[id] = [];
+  const s = typeof b.slide === 'number' ? P.slides[b.slide] : null;
+  const kind = b.slide === 'hook' ? 'hook' : b.slide === 'mistake' ? 'mistake' : b.slide === 'recap' ? 'recap' : s.type;
+  const step = n => `<span class="tag">${n}</span>`;
+  if (kind === 'hook') {
+    add(`<div class="hdr" id="h-${id}"><div class="step">${step('POV')}SQL SERIES · PART ${P.part}</div>
+      <div class="kw hk"><span class="ln"><span>${md(P.hook)}</span></span></div></div>`);
+    add(`<div class="emo" id="${id}-e" style="right:80px;top:760px;transform:rotate(12deg);font-size:190px">${esc(P.cover_sticker || '🔥')}</div>`);
+    add(`<div class="topic" id="${id}-t"><small>AAJ KA TOPIC</small>${esc(P.topic)}</div>`);
+    list.push(`#${id}-t`, `#${id}-e`);
+  } else if (kind === 'concept') {
+    hdr(id, `${step(bi)}${esc(P.topic).toUpperCase()}`, s.title);
+    s.points.slice(0, 4).forEach((p, k) => { add(`<div class="pt" id="${id}-p${k}" style="top:${TOP + k * 150}px"><span class="n">${k + 1}</span><span>${md(p)}</span></div>`); list.push(`#${id}-p${k}`); });
+    if (s.note && s.points.length <= 3) { add(`<div class="note" id="${id}-n" style="top:${TOP + s.points.length * 150 + 20}px"><span class="who">${esc(s.who || 'BOLE TOH')}</span>${md(s.note)}</div>`); list.push(`#${id}-n`); }
+  } else if (kind === 'code') {
+    hdr(id, `${step(bi)}CODE TIME`, s.title);
+    const lines = String(s.code).split('\n').slice(0, 10);
+    add(`<div class="cpanel" id="${id}-c" style="top:${TOP}px"><div class="bar"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i>&nbsp;${esc(s.file || 'query.sql')}</div>` +
+      lines.map((l, k) => `<span class="cl" id="${id}-l${k}">${hl(l) || ' '}</span>`).join('') + `</div>`);
+    list.push(`#${id}-c`); lines.forEach((l, k) => list.push(`#${id}-l${k}`));
+  } else if (kind === 'table') {
+    hdr(id, `${step(bi)}DEKHO`, s.title);
+    add(`<div class="tbl" id="${id}-tb" style="top:${TOP + 20}px"></div>`);
+    const w = Math.floor(920 / s.columns.length);
+    Reel.table(`#${id}-tb`, s.columns.map(h => ({ h, w })), s.rows.slice(0, 5), `${id}-r`);
+    (s.highlight || []).forEach(i => { const r = document.getElementById(`${id}-r${i}`); if (r) r.classList.add('hi'); });
+    list.push(`#${id}-tb`); s.rows.slice(0, 5).forEach((r, k) => list.push(`#${id}-r${k}`));
+    if (s.note) { add(`<div class="note" id="${id}-n" style="top:${TOP + 120 + 84 * Math.min(5, s.rows.length) + 40}px"><span class="who">${esc(s.who || 'NOTE')}</span>${md(s.note)}</div>`); list.push(`#${id}-n`); }
+  } else if (kind === 'compare') {
+    hdr(id, `${step(bi)}KAUN JEETEGA?`, s.title);
+    const side = (x, c, top) => `<div class="cmp ${c}" id="${id}-${c}" style="top:${top}px"><div class="lb">${esc(x.label)}</div>${x.points.slice(0, 3).map(p => `<div class="li">→ ${md(p)}</div>`).join('')}</div>`;
+    add(side(s.left, 'a', TOP)); add(side(s.right, 'b', TOP + 360));
+    add(`<div class="vs" id="${id}-vs" style="top:${TOP + 290}px">VS</div>`);
+    list.push(`#${id}-a`, `#${id}-vs`, `#${id}-b`);
+  } else if (kind === 'mistake') {
+    const m = P.slides.find(x => x.type === 'mistake');
+    add(`<div class="hdr" id="h-${id}"><div class="step red">${step('RED FLAG 🚩')}GALTI MAT KARNA</div></div>`);
+    add(`<div class="ms w" id="${id}-w" style="top:${TOP - 160}px"><span class="lab">❌ GALAT</span>${md(m.wrong).replace(/\n/g, ' ')}</div>`);
+    add(`<div class="ms r" id="${id}-r" style="top:${TOP + 180}px"><span class="lab">✅ SAHI</span>${md(m.right).replace(/\n/g, ' ')}</div>`);
+    add(`<div class="why" id="${id}-y" style="top:${TOP + 520}px">${md(m.why)}</div>`);
+    list.push(`#${id}-w`, `#${id}-r`, `#${id}-y`);
+  } else if (kind === 'recap') {
+    const rc = P.slides.find(x => x.type === 'recap');
+    add(`<div class="hdr" id="h-${id}"><div class="step">${step('TL;DR')}YAAD RAKHO</div></div>`);
+    rc.points.slice(0, 4).forEach((p, k) => { add(`<div class="rc" id="${id}-p${k}" style="top:${TOP - 160 + k * 132}px"><span class="n">${k + 1}</span><span class="w">${md(p)}</span></div>`); list.push(`#${id}-p${k}`); });
+    add(`<div id="cta" style="top:${TOP + 400}px"><span class="save">Save karo 📌</span><span class="fol">${P.next ? `Next: <b>${esc(P.next)}</b> → follow karo` : 'Follow karo, aur aa raha hai'}</span></div>`);
+    list.push('#cta');
+  }
+});
+
+Reel.build(R2 => {
+  const { master, B, P: lead } = R2;
+  R.beats.forEach((b, bi) => {
+    const bt = B[b.id], start = lead(bt.start), end = lead(bt.end), list = items[b.id];
+    gsap.set(list, { opacity: 0, y: 40, scale: 0.96 });
+    if (bi === 0) R2.hdrIn(b.id, lead(0) - 0.35); else R2.hdrIn(b.id);
+    // spread the items over the spoken words of this beat
+    const words = bt.words, span = Math.max(0.6, (end - start) - 1.0);
+    list.forEach((sel, k) => {
+      const isLine = /-l\d+$/.test(sel);
+      let at = start + 0.35 + (list.length > 1 ? k * span / list.length : 0);
+      const wi = Math.min(words.length - 1, Math.floor(k * words.length / list.length));
+      if (words[wi]) at = Math.max(at, lead(words[wi].t) - 0.15);
+      if (isLine) { master.set(sel, { opacity: 1, y: 0, scale: 1 }, at); master.to(sel, { clipPath: 'inset(0 0% 0 0)', duration: 0.45, ease: 'steps(18)' }, at); }
+      else R2.popIn(sel, at, sel.endsWith('-vs') ? { ease: 'back.out(3)', duration: 0.5 } : {});
+    });
+    if (bi < R.beats.length - 1) { R2.hdrOut(b.id); R2.fadeOut(list, end - 0.3, { y: -30 }); }
+  });
+  // floating hook sticker wiggle
+  R2.everyFrame(t => { const e = document.getElementById(`${R.beats[0].id}-e`); if (e) e.style.rotate = `${Math.sin(t * 3) * 6}deg`; });
+});
+</script>
+</body></html>

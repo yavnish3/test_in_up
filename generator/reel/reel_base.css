@@ -1,0 +1,56 @@
+/* Shared look for all reels (1080x1920). Topic scenes add their own CSS on top. */
+:root{--bg:#0E1525;--blue:#4F8CFF;--ink:#E8EEF8;--gold:#FFC857;--muted:#8A97AE;--green:#7EE0A8;--red:#FF7A7A;
+  --head:'Space Grotesk',system-ui,sans-serif;--text:'Inter',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,Menlo,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--text)}
+#bg,#stage,#fx{position:absolute;inset:0}
+#dots{position:absolute;left:-100px;top:-100px;width:1300px;height:2140px;
+  background-image:radial-gradient(rgba(140,170,230,.16) 2.2px,transparent 2.6px);background-size:40px 40px}
+.glow{position:absolute;border-radius:50%;filter:blur(20px)}
+#g1{width:1100px;height:1100px;left:-380px;top:120px;background:radial-gradient(circle,rgba(79,140,255,.30),transparent 65%)}
+#g2{width:1000px;height:1000px;right:-420px;top:980px;background:radial-gradient(circle,rgba(255,200,87,.13),transparent 65%)}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 50%,rgba(4,7,14,.75) 100%)}
+#stage{transform-origin:50% 45%}
+.abs{position:absolute}
+/* headers: left 80, top 270, width 880 — content below should start ≥ 560 */
+.hdr{position:absolute;left:80px;top:270px;width:880px}
+.step{font:500 30px var(--mono);color:var(--gold);letter-spacing:.08em;margin-bottom:6px}
+.step.red{color:var(--red)}
+.kw{font:700 150px/1 var(--head);letter-spacing:-.035em;color:var(--ink)}
+.kw.m{font-size:118px;line-height:1.02}
+.kw .ln{display:block;overflow:hidden;padding-bottom:10px}
+.kw .ln>span{display:inline-block}
+.kw .g{color:var(--gold)} .kw .b{color:var(--blue)} .kw .r{color:var(--red)}
+.sub{font:600 46px/1.2 var(--text);color:var(--muted);margin-top:6px}
+.sub b{color:var(--ink);font-weight:600}
+/* generic pieces */
+.chip{font:500 36px var(--mono);padding:14px 24px;border-radius:16px;background:rgba(79,140,255,.14);border:2px solid rgba(79,140,255,.55);color:var(--ink)}
+.pill{position:absolute;font:600 44px var(--text);padding:18px 30px;border-radius:20px;background:rgba(255,200,87,.12);border:2px solid rgba(255,200,87,.6);color:var(--ink);white-space:nowrap}
+.pill b{color:var(--gold);font-weight:800}
+.panel{position:absolute;border-radius:24px;background:rgba(10,16,30,.85);border:2px solid rgba(79,140,255,.35);box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.code{font:500 38px/52px var(--mono);white-space:pre;color:var(--ink);display:inline-block}
+.k{color:var(--blue)} .k.on{color:var(--gold)} .s{color:var(--green)} .p{color:var(--muted)} .n{color:#C9A2FF}
+.caret{position:absolute;width:4px;height:42px;background:var(--gold);border-radius:2px}
+.tbl{position:absolute;border-radius:20px;background:rgba(255,255,255,.035);border:2px solid rgba(79,140,255,.28);overflow:hidden}
+.tbl .tr{display:flex;align-items:center;height:68px}
+.tbl .tr>div{padding-left:24px}
+.tbl .th{font:500 26px var(--mono);color:var(--muted);letter-spacing:.06em;height:56px;border-bottom:2px solid rgba(79,140,255,.18)}
+.tbl .td{font:600 38px var(--text)}
+.tnum{font-variant-numeric:tabular-nums}
+.dbi{position:absolute;width:360px;height:480px;transform-origin:50% 50%}
+.dbi svg{width:100%;height:100%;overflow:visible}
+.dbi .gl{position:absolute;left:-60px;top:-40px;width:480px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(79,140,255,.45),transparent 65%);opacity:0}
+.tbl .td.hi{background:rgba(255,200,87,.12)}
+/* recap */
+.rc{position:absolute;left:80px;width:880px;height:104px;border-radius:22px;background:rgba(79,140,255,.10);border:2px solid rgba(79,140,255,.45);display:flex;align-items:center;padding:0 30px;gap:24px;white-space:nowrap}
+.rc .n{font:500 32px var(--mono);color:var(--gold);width:36px}
+.rc .w{font:600 44px var(--text);color:var(--ink)}
+.rc .w b{color:var(--gold);font-weight:800}
+#cta{position:absolute;left:80px;top:1100px;width:880px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;white-space:nowrap}
+#cta .save{font:800 50px var(--text);color:#1a1300;background:var(--gold);padding:22px 36px;border-radius:22px}
+#cta .fol{font:600 42px var(--text);color:var(--ink)}
+#cta .fol b{color:var(--gold)}
+/* captions */
+#cap{position:absolute;left:80px;top:1390px;width:880px;display:flex;justify-content:center}
+#capbox{display:inline-block;max-width:880px;text-align:center;font:800 60px/1.18 var(--text);letter-spacing:-.01em;padding:14px 30px;border-radius:22px;background:rgba(6,10,20,.78)}
+#capbox span{display:inline-block;margin:0 9px;transform-origin:50% 70%}
