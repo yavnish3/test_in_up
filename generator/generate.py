@@ -39,6 +39,7 @@ POSTED = os.path.join(SCHED, "posted_posts.csv")
 STOCK = int(os.environ.get("STOCK", "5"))
 MODELS = [os.environ.get("GEMINI_MODEL", "gemini-flash-latest"), "gemini-flash-lite-latest"]  # 2nd = fallback when busy
 EXAMPLES = ["SQL045", "SQL068"]
+MAX_PART = 4  # a topic can go up to Part 4 when it needs more detail
 SLIDE_TYPES = {"concept", "code", "table", "compare", "mistake", "recap"}
 
 sys.path.insert(0, HERE)
@@ -107,10 +108,12 @@ Rules:
   blank line, exactly 30 hashtags (Instagram max) starting with #sql: topic-specific ones first,
   then broad ones (#sqlinhindi #learnsql #dataanalyst #datascience #coding ...). No duplicates.
 - Prefer a NEW topic. Each covered topic below shows what that post explained.
-  You MAY revisit a covered topic only when its description shows something important
-  was missing or explained too shallowly. Then set "revisit_of": "<old id>", name the
-  topic as a part 2 (e.g. "INDEX Part 2"), explain ONLY what the old post missed, and
-  never repeat its points. For a new topic set "revisit_of": null. Go deeper: advanced
+  You MAY continue a covered topic with another part when it needs more detail
+  (something important missing or explained too shallowly in ALL its earlier parts).
+  Then set "revisit_of": "<id of the FIRST post of that topic>", name the topic
+  "<topic> Part N" (N = next part number, shown below), explain ONLY new material and
+  never repeat points from any earlier part. Max Part 4 per topic.
+  For a new topic set "revisit_of": null. Go deeper: advanced
   SQL, real interview questions, query optimization, real-world case studies,
   database design, PostgreSQL/MySQL features.
 """
@@ -142,10 +145,14 @@ def ask_gemini(prompt):
 
 
 def build_prompt(pid, part, topic, feedback=None, previous=None):
+    rows = topics()
+    n_parts = {t["id"]: sum(r.get("revisit_of") == t["id"] for r in rows) for t in rows}
     covered = "\n".join(
         f"{t['id']}: {t['topic']} ({t['module']}) - covered: {t.get('description') or '-'}"
-        + (f" [revisit of {t['revisit_of']}]" if t.get("revisit_of") else "")
-        for t in topics())
+        + (f" [part of {t['revisit_of']}]" if t.get("revisit_of") else "")
+        + (f" [next part would be Part {2 + n_parts[t['id']]}]"
+           if not t.get("revisit_of") and 0 < n_parts[t["id"]] + 1 < MAX_PART else "")
+        for t in rows)
     examples = "\n\n".join(open(os.path.join(CONTENT, f"{e}.json"), encoding="utf-8").read()
                            for e in EXAMPLES)
     want = (f'Topic for this post: "{topic}".' if topic
@@ -207,18 +214,24 @@ def validate(c, pid, part):
         raise ValueError(f"unknown slide types {bad}")
     rows = topics()
     rv = c.get("revisit_of") or None
-    c["revisit_of"] = rv
     if rv:
-        if not any(t["id"] == rv for t in rows):
+        first = next((t for t in rows if t["id"] == rv), None)
+        if not first:
             raise ValueError(f"revisit_of {rv} is not a covered id")
-        if any(t.get("revisit_of") == rv for t in rows):
-            raise ValueError(f"{rv} was already revisited once; pick another topic")
+        rv = first.get("revisit_of") or rv  # always point at the first part
+        n = 2 + sum(t.get("revisit_of") == rv for t in rows)
+        if n > MAX_PART:
+            raise ValueError(f"{rv} already has {n - 1} parts (max {MAX_PART}); pick another topic")
+        base = re.sub(r"\s*part\s*\d+\s*$", "", c["topic"], flags=re.I).strip()
+        c["topic"] = f"{base} Part {n}"
     else:
         old = similar_topic(c["topic"])
         if old:
+            first = old.get("revisit_of") or old["id"]
             raise ValueError(f'topic "{c["topic"]}" is too close to {old["id"]} "{old["topic"]}". '
-                             f"Pick a different topic, or if that post missed something important, "
-                             f'set "revisit_of": "{old["id"]}" and cover only what it missed')
+                             f"Pick a different topic, or if it needs more detail, "
+                             f'set "revisit_of": "{first}" and cover only new material')
+    c["revisit_of"] = rv
     return c
 
 
