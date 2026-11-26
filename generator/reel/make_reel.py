@@ -54,10 +54,10 @@ TTS_STYLE = ("Read this as a fast-talking, energetic young Indian Gen Z girl mak
              "Natural Hinglish, quick pace, no long pauses, upbeat: ")
 MAX_TEMPO = 1.35  # Gemini TTS speaks slowly; speed it up (pitch kept) by at most this much
 GAP, HOOK_GAP, TAIL = 0.18, 0.1, 0.25
-MIN_SECONDS, MAX_SECONDS = 40, 59  # every reel lands between 40 and 59 seconds
+MIN_SECONDS, MAX_SECONDS = 20, 90  # Instagram accepts 3 s - 15 min; keep reels 20-90 s
 
 STYLE = """
-You write the voiceover for a 45-58 second Instagram Reel of "The 30 sec developers" (@the30secdev, SQL in Hinglish).
+You write the voiceover for a 45-75 second Instagram Reel of "The 30 sec developers" (@the30secdev, SQL in Hinglish).
 Style: GEN Z Hinglish, the voice is a young FEMALE creator (feminine verbs: "batati hoon",
 "samjhati hoon"). Fast, punchy, meme-y but the SQL must be 100% correct.
 Use Gen Z words naturally: "bro", "no cap", "lowkey", "fr", "literally", "vibe",
@@ -84,12 +84,12 @@ SAYCAP = {
          (e.g. "EXPLAIN लगाओ और plan देखो, no cap!"). SQL keywords stay English.
   "cap": the SAME sentence in Roman Hinglish with EXACTLY the same number of words as "say"
          (word by word, same order). Count carefully.
-Total words of all "say" must be 135-155 (that is 50-58 seconds of speech).""",
+Total words of all "say" must be 135-155 (about 50-70 seconds of speech).""",
     "roman": """Each beat has:
   "cap": the sentence in natural Roman Hinglish (it is spoken by the voice AND shown as captions),
          e.g. "EXPLAIN lagao aur plan dekho, no cap!". SQL keywords stay English.
   "say": same text as "cap".
-Total words of all beats must be __TOTAL__ (that is about 55 seconds of speech).""",
+Total words of all beats must be __TOTAL__ (about 55-70 seconds of speech).""",
 }
 # per-beat word counts (hook, teaching beat, galti, recap) + total, by engine
 WORDS = {"edge": ("10-14", "24-30", "18-24", "14-20", "135-155"),
@@ -216,7 +216,7 @@ def build_timeline(sc, wd, rate=RATE):
         for i, b in enumerate(sc["beats"]):
             lens.append(gemini_tts(b["say"], os.path.join(wd, "voice", f"beat_{i}.wav")))
         gaps = HOOK_GAP + GAP * (len(lens) - 1)
-        tempo = min(MAX_TEMPO, max(1.0, sum(lens) / (55 - gaps)))
+        tempo = min(MAX_TEMPO, max(1.0, sum(lens) / (80 - gaps)))  # only speed up very long ones
         beats, t = [], 0.0
         for i, b in enumerate(sc["beats"]):
             wav, mp3 = os.path.join(wd, "voice", f"beat_{i}.wav"), os.path.join(wd, "voice", f"beat_{i}.mp3")
@@ -312,12 +312,12 @@ def make_reel(post, out_root):
         if d < MAX_SECONDS and (best is None or d > best[1]["duration"]):
             best = (sc, tl)
         need = round(words * 54 / d)
-        feedback = (f"the reel is {d:.0f}s with {words} words; it must be 40-58s. "
+        feedback = (f"the reel is {d:.0f}s with {words} words; it must be 20-90s. "
                     f"Write about {need} words in total"
                     + (" (add a concrete example / one more detail per beat)." if d < MIN_SECONDS else " (cut words)."))
     else:
         if best is None:
-            raise RuntimeError(f"{pid}: could not make a reel script of 40-59 seconds")
+            raise RuntimeError(f"{pid}: could not make a reel script of 20-90 seconds")
         sc, tl = best
         # a little short: speak the same script slower to stretch it into the window
         for rate in (("+22%", "+15%", "+8%") if ENGINE == "edge" else ()):
@@ -326,7 +326,7 @@ def make_reel(post, out_root):
             if tl["duration"] >= MIN_SECONDS:
                 break
         if not MIN_SECONDS <= tl["duration"] <= MAX_SECONDS:
-            raise RuntimeError(f"{pid}: reel is {tl['duration']:.0f}s, outside 40-59 s")
+            raise RuntimeError(f"{pid}: reel is {tl['duration']:.0f}s, outside 20-90 s")
 
     for f in ("reel_lib.js", "reel_base.css", "gsap.min.js"):
         shutil.copy(os.path.join(HERE, f), wd)
