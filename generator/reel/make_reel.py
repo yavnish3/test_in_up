@@ -28,7 +28,8 @@ GEN = os.path.dirname(HERE)
 sys.path.insert(0, GEN)
 
 FPS = 30
-# Default voice: "gemini" (the Gen Z girl Instagram creator vibe the user picked).
+# Default voice: "neerja_expressive" (user picked it: clear teaching, captions perfectly synced,
+# no daily limit). "gemini" etc. can still be forced with REEL_VOICE=<name>.
 # REEL_VOICE=<name> forces another one, REEL_VOICE=random picks one at random.
 #   name: (engine, voice, rate, script) ; script "deva" = Hindi in Devanagari, "roman" = Roman Hinglish
 VOICES = {
@@ -43,7 +44,7 @@ ENGINE, VOICE, RATE, SCRIPT = VOICES["swara"]
 def pick_voice():
     import random
     global ENGINE, VOICE, RATE, SCRIPT
-    name = os.environ.get("REEL_VOICE") or "gemini"
+    name = os.environ.get("REEL_VOICE") or "neerja_expressive"
     if name == "random":
         name = random.choice(list(VOICES))
     ENGINE, VOICE, RATE, SCRIPT = VOICES[name]
