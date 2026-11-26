@@ -17,7 +17,7 @@ VOICES = {
     "swara": ("edge", "hi-IN-SwaraNeural", "+30%", "deva"),
     "neerja_expressive": ("edge", "en-IN-NeerjaExpressiveNeural", "+20%", "roman"),
     "neerja": ("edge", "en-IN-NeerjaNeural", "+20%", "roman"),
-    "gemini": ("gemini", "Leda", None, "roman"),
+    "gemini": ("gemini", "Laomedeia", None, "roman"),
 }
 ENGINE, VOICE, RATE, SCRIPT = VOICES["swara"]
 
@@ -42,8 +42,8 @@ You write the voiceover for a 45-75 second Instagram Reel of "The 30 sec develop
 GOAL: the viewer must actually UNDERSTAND the topic after watching. Teach it like a
 good teacher talking to a friend: what it is, why it matters, how to use it (walk through
 the example shown on screen), and what the result / output means. Every sentence must
-teach something concrete. No filler, no hype, no "save karo / follow karo" in the voice; the ONLY
-call to action is in the last beat ("comment karo", "answer next reel mein").
+teach something concrete. No filler, no hype, no "save karo / follow karo / comment karo" or
+any question for the viewer in the last beat.
 STORY: tell ONE mini story with named Indian people (e.g. Rahul, Amit, Priya) and ONE small example
 table that you keep using through the whole reel, like a real-world interview trap.
 QUIZ: one beat (b2, b3 or b4) asks the viewer to PREDICT the result ("Toh batao, kitni rows aayengi?"),
@@ -84,9 +84,8 @@ beats = exactly 7, in this order, ids: "hook", "b1", "b2", "b3", "b4", "galti", 
   b1-b4: teach the topic step by step (__W_BEAT__ words each; a "query" walkthrough beat needs 6-8 words
          PER query line, e.g. 5 lines -> 30-40 words); together they explain it fully.
   galti: the common mistake, why it is wrong, and the right way (__W_GALTI__ words)
-  recap: the CLIFFHANGER (__W_RECAP__ words): one short takeaway, then ONE follow-up question that leads
-         into the next topic (the post's "next"), then exactly "Comment karo, answer next reel mein."
-         Its visual must be "cliff".
+  recap: 1-2 punchy takeaways and one strong closing line the viewer will remember (__W_RECAP__ words).
+         No question, no call to action. Visual: "checklist" or "kinetic".
 Each beat (except hook) has:
   "title": short on-screen heading (<= 22 chars, Hinglish, one **bold** word)
   "visual": what the screen shows WHILE this beat is spoken. Every element has "at": one word
@@ -113,8 +112,6 @@ Each beat (except hook) has:
     {"type":"quiz","question":"<= 34 chars, e.g. Kitni rows aayengi?","q_at":"word",
        "wrong":"<= 22 chars common wrong answer","wrong_at":"word","right":"<= 22 chars right answer","right_at":"word"}
        (exactly ONE quiz beat among b2-b4; right_at = the word right after "Galat")
-    {"type":"cliff","question":"<= 60 chars follow-up question","at":"word","cta_at":"word from 'Comment karo...'"}
-       (ONLY for the recap beat)
 __SAYCAP__
   "cues": 2-4 extra effects on exact words, each {"word": "<word from this beat's cap>", "do": "...", "target": ...}
      "kinetic" -> big sticker text <target> (<= 14 chars, e.g. "SLOW 🐢", "FULL SCAN", "0.2 ms ⚡")
@@ -122,9 +119,8 @@ __SAYCAP__
      "flash"   -> quick white flash (big reveal)
      "zoom"    -> punch-in on visual element number <target> (1 = first element)
      "shake"   -> shake element <target> (wrong / slow / error)
-caption: first line a strong hook like "90% freshers SQL interview mein yahi galti karte hain 👇",
-then 3-4 "✅" lines, then "Ab tumhara test (comment karo 👇): <the cliffhanger question>",
-"SQL Series · Part N", "Save karo 📌 · Follow karo @the30secdev, answer next reel mein!", 30 hashtags.
+caption: reel caption like the carousel's (hook line + emoji, 3-4 "✅" lines,
+"SQL Series · Part N", "Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!", 30 hashtags).
 """
 
 
@@ -257,13 +253,13 @@ def check_script(sc, post):
     kinds = [b.get("visual", {}).get("type") for b in beats[1:]]
     if kinds[:4].count("quiz") != 1 or "quiz" in kinds[:1]:
         raise ValueError('exactly ONE of b2, b3, b4 must use the "quiz" visual (predict -> wrong answer -> right answer)')
-    if kinds[-1] != "cliff" or kinds[:-1].count("cliff"):
-        raise ValueError('the recap beat must use the "cliff" visual (follow-up question + "Comment karo, answer next reel mein")')
+    if "cliff" in kinds:
+        raise ValueError('do not use the "cliff" visual; the recap ends with takeaways (checklist / kinetic)')
     q = next(b["visual"] for b in beats if b.get("visual", {}).get("type") == "quiz")
     if not (q.get("wrong") and q.get("right")) or len(str(q["wrong"])) > 26 or len(str(q["right"])) > 26:
         raise ValueError("quiz visual needs short 'wrong' and 'right' answers (<= 22 chars each)")
-    if "comment" not in beats[-1]["cap"].lower():
-        raise ValueError('the recap beat must end with "Comment karo, answer next reel mein."')
+    if re.search(r"\b(comment|next reel|agli reel)\b", beats[-1]["cap"].lower()):
+        raise ValueError("the recap beat must not ask for comments or promise a next reel")
     return sc
 
 
@@ -335,6 +331,16 @@ TRIM = ("silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
         "silenceremove=start_periods=1:start_threshold=-45dB,areverse")
 
 
+TAGS = {"hook": "[excited]", "b1": "[playful]", "b2": "[energetic]", "b3": "[energetic]", "b4": "[playful]",
+        "galti": "[teasing]", "recap": "[confident]"}
+
+
+def tagged(b):
+    """Gemini TTS audio tags for an energetic Gen Z delivery (not spoken, not shown in captions)."""
+    say = re.sub(r"\b(Galat|galat)\b", r"[laughs] \1", b["say"], count=1)
+    return f"{TAGS.get(b.get('id'), '[energetic]')} {say}"
+
+
 def gemini_tts_once(texts, wd):
     """One TTS request for the whole script (one consistent voice), then cut it into beats at the
     pause nearest to where each beat should end (by word count)."""
@@ -346,7 +352,7 @@ def gemini_tts_once(texts, wd):
     ends = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", out)]
     total = duration(full)
     mids = [((st + e) / 2, e - st) for st, e in zip(starts, ends) if st > 0.3 and e < total - 0.3]
-    words = [len(t.split()) for t in texts]
+    words = [len(re.sub(r"\[[^]]*\]", "", t).split()) for t in texts]
     cum, cuts, last = 0, [], 0.0
     for i in range(len(texts) - 1):
         cum += words[i]
@@ -380,10 +386,10 @@ def spread_words(cap, t0, length):
 def build_timeline(sc, wd, rate=RATE):
     os.makedirs(os.path.join(wd, "voice"), exist_ok=True)
     if ENGINE == "gemini":
-        lens = gemini_tts_once([b["say"] for b in sc["beats"]], wd)
+        lens = gemini_tts_once([tagged(b) for b in sc["beats"]], wd)
         if lens is None:
             print("  could not split the voice cleanly, using one request per beat", flush=True)
-            lens = [gemini_tts(b["say"], os.path.join(wd, "voice", f"beat_{i}.wav"))
+            lens = [gemini_tts(tagged(b), os.path.join(wd, "voice", f"beat_{i}.wav"))
                     for i, b in enumerate(sc["beats"])]
         gaps = HOOK_GAP + GAP * (len(lens) - 1)
         tempo = min(MAX_TEMPO, max(1.0, sum(lens) / (80 - gaps)))
