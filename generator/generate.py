@@ -277,6 +277,9 @@ def similar_topic(topic):
 
 
 def validate(c, pid, part, promised=None):
+    if is_interview(part):
+        c["interview"] = True
+        c["module"] = "Interview Prep"
     c["id"], c["part"] = pid, part
     for k in ("module", "topic", "hook", "slides", "caption"):
         if not c.get(k):

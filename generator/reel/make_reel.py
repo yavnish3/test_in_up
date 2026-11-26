@@ -441,6 +441,7 @@ THEMES = {
     "matrix": ["#5CFF8A", "#00C26E", "#C6FF3D", "#03100A"],
     "gold":   ["#FFD23F", "#FF7EB6", "#B79BFF", "#100C04"],
     "candy":  ["#FF7EB6", "#B79BFF", "#7CC4FF", "#120818"],
+    "interview": ["#FFD23F", "#FF3B3B", "#FFFFFF", "#0A0A0A"],
 }
 
 
@@ -460,7 +461,8 @@ def thumb_data(post, theme=None):
         code = code[:150].rsplit(" ", 1)[0] + " ..."
     return {"part": post.get("part"), "hook": re.sub(r"\[\[|\]\]", "", str(post.get("hook", ""))),
             "emoji": post.get("cover_sticker") or "", "topic": post.get("topic", ""), "code": code,
-            "theme": THEMES[theme_of(post, theme)]}
+            "theme": THEMES["interview" if post.get("interview") else theme_of(post, theme)],
+            "interview": bool(post.get("interview"))}
 
 
 async def render_thumb(data, out_jpg):

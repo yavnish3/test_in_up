@@ -87,6 +87,9 @@ b{color:var(--gold);font-weight:800}
 .cf .tg{font:800 32px var(--mono);color:var(--pink);letter-spacing:.06em}
 .cf .q{font:800 64px/1.15 var(--head);color:#fff;margin-top:20px}
 .cta{position:absolute;left:0;right:0;top:1150px;text-align:center}
+.qz .tm{display:inline-block;margin-top:14px;font:800 34px var(--mono);color:#0B0716;background:var(--gold);padding:8px 22px;border-radius:14px;animation:tmp 0.6s ease-in-out infinite alternate}
+@keyframes tmp{from{transform:scale(1)}to{transform:scale(1.08)}}
+.ivs{position:absolute;left:80px;top:1080px;font:800 76px/1 var(--head);color:#fff;background:var(--pink);border:6px solid #fff;padding:22px 34px;border-radius:22px;box-shadow:12px 12px 0 var(--gold);letter-spacing:-.01em}
 .cta span{display:inline-block;max-width:900px;white-space:nowrap;font:800 40px var(--head);color:#0B0716;background:var(--gold);padding:18px 34px;border-radius:24px;transform:rotate(-2deg);box-shadow:8px 8px 0 var(--pink)}
 .chat{position:absolute;left:70px;top:560px;width:940px;border-radius:34px;background:#120C22;border:3px solid rgba(139,124,255,.5);padding:26px 26px 30px}
 .chat .hd{display:flex;align-items:center;gap:16px;font:800 34px var(--head);padding-bottom:18px;border-bottom:2px solid rgba(139,124,255,.25);margin-bottom:18px}
@@ -148,12 +151,18 @@ const THEMES = {
   matrix: ['#5CFF8A', '#00C26E', '#C6FF3D', '#03100A'],
   gold:   ['#FFD23F', '#FF7EB6', '#B79BFF', '#100C04'],
   candy:  ['#FF7EB6', '#B79BFF', '#7CC4FF', '#120818'],
+  interview: ['#FFD23F', '#FF3B3B', '#FFFFFF', '#0A0A0A'],
 };
+const IV = !!(R.post.interview || R.post.module === 'Interview Prep');
 {
-  const names = Object.keys(THEMES), th = THEMES[R.theme] || THEMES[names[(P.part || 0) % names.length]];
+  const names = Object.keys(THEMES), th = IV ? THEMES.interview : THEMES[R.theme] || THEMES[names[(P.part || 0) % names.length]];
   const root = document.documentElement.style;
   root.setProperty('--gold', th[0]); root.setProperty('--pink', th[1]); root.setProperty('--cyan', th[2]); root.setProperty('--bg', th[3]);
   document.body.style.background = th[3];
+  if (IV) {
+    document.getElementById('g1').style.background = 'radial-gradient(circle,rgba(255,59,59,.34),transparent 65%)';
+    document.getElementById('g2').style.background = 'radial-gradient(circle,rgba(255,210,63,.20),transparent 65%)';
+  }
 }
 const ACC = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim();  // theme accent
 const add = (html) => stage.insertAdjacentHTML('beforeend', html);
@@ -163,7 +172,8 @@ R.beats.forEach((b, bi) => {
   const id = b.id, v = b.visual || {}, t = v.type || 'kinetic';
   const els = []; V[id] = { root: `#v-${id}`, els, type: t, v };
   const tag = bi === 0 ? 'POV' : id === 'galti' ? 'RED FLAG 🚩' : id === 'recap' ? 'TL;DR' : String(bi);
-  const step = bi === 0 ? `SQL SERIES · PART ${P.part}` : id === 'galti' ? 'GALTI MAT KARNA' : id === 'recap' ? 'YAAD RAKHO' : esc(P.topic).toUpperCase();
+  const step = bi === 0 ? (IV ? `🚨 INTERVIEW QUESTION · PART ${P.part}` : `SQL SERIES · PART ${P.part}`)
+    : id === 'galti' ? 'GALTI MAT KARNA' : id === 'recap' ? 'YAAD RAKHO' : (IV ? '🎯 INTERVIEW Q · ' : '') + esc(P.topic).toUpperCase();
   add(`<div class="hdr" id="h-${id}"><div class="step"><span class="tag">${tag}</span>${step}</div>` +
       (b.title && bi > 0 ? `<div class="kw t"><span class="ln"><span>${md(b.title)}</span></span></div>` : '') + `</div>`);
   let h = `<div class="vz" id="v-${id}">`;
@@ -173,6 +183,7 @@ R.beats.forEach((b, bi) => {
     h += `<div class="hk">${words.map((w, k) => `<span class="w" id="${id}-w${k}"${hot.includes(w) ? ' style="color:var(--gold)"' : ''}>${esc(w)}</span>`).join('')}</div>`;
     words.forEach((w, k) => els.push({ sel: `#${id}-w${k}`, at: w, kind: 'word' }));
     h += `<div class="emo" id="${id}-e" style="right:70px;top:820px">${esc(P.cover_sticker || '🔥')}</div>`;
+    if (IV) { h += `<div class="ivs" id="${id}-iv">INTERVIEW<br>QUESTION 🎯</div>`; els.unshift({ sel: `#${id}-iv`, at: words[0], kind: 'stamp' }); }
     h += `<div class="topic" id="${id}-t"><small>AAJ KA TOPIC</small>${esc(P.topic)}</div>`;
     els.push({ sel: `#${id}-t` }, { sel: `#${id}-e` });
   } else if (t === 'kinetic') {
@@ -250,7 +261,7 @@ R.beats.forEach((b, bi) => {
     h += `<div class="st" id="${id}-s"><div class="num" id="${id}-n">0</div><div class="lab">${md(v.label || '')}</div><div class="barw"><div class="bar" id="${id}-b"></div></div></div>`;
     els.push({ sel: `#${id}-s`, at: v.at, kind: 'stat' });
   } else if (t === 'quiz') {
-    h += `<div class="qz" id="${id}-qz"><div class="q">${md(v.question || '')}</div><div class="qm" id="${id}-qm">?</div></div>` +
+    h += `<div class="qz" id="${id}-qz"><div class="q">${md(v.question || '')}</div><div class="qm" id="${id}-qm">?</div><div class="tm" id="${id}-tm">⏱ Socho… 3 · 2 · 1</div></div>` +
       `<div class="qa w" id="${id}-qw"><span class="tg">ZYADATAR LOG BOLENGE</span>${md(v.wrong || '')}<i class="x" id="${id}-qx"></i></div>` +
       `<div class="qa r" id="${id}-qr"><span class="tg">✅ SAHI JAWAB</span>${md(v.right || '')}</div>`;
     els.push({ sel: `#${id}-qz`, at: v.q_at }, { sel: `#${id}-qw`, at: v.wrong_at, kind: 'qwrong' }, { sel: `#${id}-qr`, at: v.right_at, kind: 'qright' });
@@ -366,7 +377,13 @@ Reel.build(R2 => {
         master.to(`#${b.id}-x${e.k} span`, { opacity: 1, scale: 1.3, duration: 0.2, yoyo: true, repeat: 1 }, at + 0.25);
       }
       else if (e.kind === 'vs') { gsap.set(e.sel, { opacity: 0, scale: 0, rotate: -90 }); master.to(e.sel, { opacity: 1, scale: 1, rotate: 0, duration: 0.5, ease: 'back.out(3)' }, at); }
+      else if (e.kind === 'stamp') {
+        gsap.set(e.sel, { opacity: 0, scale: 2.6, rotate: -14 });
+        master.to(e.sel, { opacity: 1, scale: 1, rotate: -5, duration: 0.32, ease: 'power4.in' }, at + 0.15);
+        master.to('#stage', { x: 14, duration: 0.05, yoyo: true, repeat: 5 }, at + 0.47);
+      }
       else if (e.kind === 'qwrong') {
+        master.to(`#${b.id}-tm`, { opacity: 0, duration: 0.2 }, at - 0.1);
         gsap.set(e.sel, { opacity: 0, x: -80 }); master.to(e.sel, { opacity: 1, x: 0, duration: 0.35, ease: 'expo.out' }, at);
         master.to(`#${b.id}-qm`, { scale: 1.25, duration: 0.25, yoyo: true, repeat: 3, ease: 'sine.inOut' }, at);
       }
