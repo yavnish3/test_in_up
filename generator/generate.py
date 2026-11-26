@@ -82,7 +82,7 @@ Language: friendly desi Hinglish (Roman script), like a dost explaining. Words l
 UPI, Aadhaar...). Technical terms stay in English. Accurate SQL only.
 
 Return ONE JSON object with exactly these keys:
-  id, part, module, topic, next, hook, cover_sticker, slides, caption
+  id, part, module, topic, next, hook, cover_sticker, slides, caption, revisit_of
 Rules:
 - "slides" = EXACTLY 8 slides. Slide 7 has type "mistake", slide 8 has type "recap".
   Slides 1-6 use types: concept, code, table, compare (use at least one code and
@@ -106,9 +106,11 @@ Rules:
   blank line, "SQL Series · Part {part}", "Save karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!",
   blank line, exactly 30 hashtags (Instagram max) starting with #sql: topic-specific ones first,
   then broad ones (#sqlinhindi #learnsql #dataanalyst #datascience #coding ...). No duplicates.
-- Never repeat a topic that was already covered (list below). If a related basic
-  topic exists (e.g. INDEX was covered), do NOT re-explain its basics: write only
-  NEW, deeper material and say "Part N mein basics dekhe the" once if useful. Go deeper: advanced
+- Prefer a NEW topic. Each covered topic below shows what that post explained.
+  You MAY revisit a covered topic only when its description shows something important
+  was missing or explained too shallowly. Then set "revisit_of": "<old id>", name the
+  topic as a part 2 (e.g. "INDEX Part 2"), explain ONLY what the old post missed, and
+  never repeat its points. For a new topic set "revisit_of": null. Go deeper: advanced
   SQL, real interview questions, query optimization, real-world case studies,
   database design, PostgreSQL/MySQL features.
 """
@@ -140,7 +142,10 @@ def ask_gemini(prompt):
 
 
 def build_prompt(pid, part, topic, feedback=None, previous=None):
-    covered = "\n".join(f"{t['id']}: {t['topic']} ({t['module']})" for t in topics())
+    covered = "\n".join(
+        f"{t['id']}: {t['topic']} ({t['module']}) - covered: {t.get('description') or '-'}"
+        + (f" [revisit of {t['revisit_of']}]" if t.get("revisit_of") else "")
+        for t in topics())
     examples = "\n\n".join(open(os.path.join(CONTENT, f"{e}.json"), encoding="utf-8").read()
                            for e in EXAMPLES)
     want = (f'Topic for this post: "{topic}".' if topic
@@ -200,10 +205,20 @@ def validate(c, pid, part):
     bad = [x.get("type") for x in s if x.get("type") not in SLIDE_TYPES]
     if bad:
         raise ValueError(f"unknown slide types {bad}")
-    old = similar_topic(c["topic"])
-    if old:
-        raise ValueError(f'topic "{c["topic"]}" is too close to {old["id"]} "{old["topic"]}" '
-                         f"(already covered). Pick a DIFFERENT topic area")
+    rows = topics()
+    rv = c.get("revisit_of") or None
+    c["revisit_of"] = rv
+    if rv:
+        if not any(t["id"] == rv for t in rows):
+            raise ValueError(f"revisit_of {rv} is not a covered id")
+        if any(t.get("revisit_of") == rv for t in rows):
+            raise ValueError(f"{rv} was already revisited once; pick another topic")
+    else:
+        old = similar_topic(c["topic"])
+        if old:
+            raise ValueError(f'topic "{c["topic"]}" is too close to {old["id"]} "{old["topic"]}". '
+                             f"Pick a different topic, or if that post missed something important, "
+                             f'set "revisit_of": "{old["id"]}" and cover only what it missed')
     return c
 
 
@@ -297,7 +312,9 @@ def main():
         with open(os.path.join(CONTENT, f"{pid}.json"), "w", encoding="utf-8") as f:
             json.dump(c, f, ensure_ascii=False, indent=1)
         with open(TOPICS, "a", newline="", encoding="utf-8") as f:
-            csv.writer(f).writerow([pid, c["module"], c["topic"]])
+            recap = next((x.get("points", []) for x in c["slides"] if x.get("type") == "recap"), [])
+            desc = ", ".join(re.sub(r"\*\*|\[\[|\]\]", "", p) for p in recap)
+            csv.writer(f).writerow([pid, c["module"], c["topic"], desc, c.get("revisit_of") or ""])
         data[pid] = {"caption": c["caption"].strip(), "slides": [s[:-4] + ".jpg" for s in slides]}
         with open(CAROUSELS, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=1)

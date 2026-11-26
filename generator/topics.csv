@@ -1,82 +1,82 @@
-id,module,topic
-SQL001,Introduction,Database kya hota hai?
-SQL002,Introduction,SQL kya hai?
-SQL003,Introduction,"Table, Row aur Column"
-SQL004,Introduction,Data Types
-SQL005,Introduction,Primary Key
-SQL006,Create & Insert,CREATE TABLE
-SQL007,Create & Insert,INSERT INTO
-SQL008,Select Basics,SELECT * FROM
-SQL009,Select Basics,Specific Columns Select karna
-SQL010,Select Basics,Alias (AS)
-SQL011,Select Basics,DISTINCT
-SQL012,Filtering,WHERE Clause
-SQL013,Filtering,Comparison Operators
-SQL014,Filtering,"AND, OR, NOT"
-SQL015,Filtering,IN Operator
-SQL016,Filtering,BETWEEN
-SQL017,Filtering,LIKE aur Wildcards
-SQL018,Filtering,IS NULL
-SQL019,Sorting & Limit,ORDER BY
-SQL020,Sorting & Limit,LIMIT / TOP
-SQL021,Aggregate Functions,COUNT()
-SQL022,Aggregate Functions,SUM() aur AVG()
-SQL023,Aggregate Functions,MIN() aur MAX()
-SQL024,Aggregate Functions,GROUP BY
-SQL025,Aggregate Functions,HAVING
-SQL026,Aggregate Functions,WHERE vs HAVING
-SQL027,Modify Data,UPDATE
-SQL028,Modify Data,DELETE
-SQL029,Modify Data,DELETE vs TRUNCATE vs DROP
-SQL030,Modify Data,ALTER TABLE
-SQL031,Constraints,"NOT NULL, UNIQUE, DEFAULT"
-SQL032,Constraints,Foreign Key
-SQL033,Joins,Joins kyun chahiye?
-SQL034,Joins,INNER JOIN
-SQL035,Joins,LEFT JOIN
-SQL036,Joins,RIGHT JOIN
-SQL037,Joins,FULL OUTER JOIN
-SQL038,Joins,SELF JOIN
-SQL039,Joins,UNION vs UNION ALL
-SQL040,Advanced Basics,Subquery
-SQL041,Advanced Basics,CASE WHEN
-SQL042,Advanced Basics,String Functions
-SQL043,Advanced Basics,Date Functions
-SQL044,Advanced Basics,Query Execution Order
-SQL045,Advanced Basics,VIEW
-SQL046,Advanced Basics,INDEX
-SQL047,Interview Prep,Second Highest Salary
-SQL048,Interview Prep,SQL Basics Recap
-SQL049,Aggregate Advanced,GROUP BY Multiple Columns
-SQL050,Aggregate Advanced,Conditional Aggregation
-SQL051,Aggregate Advanced,ROLLUP (Subtotal + Grand Total)
-SQL052,Aggregate Advanced,Pivot with CASE
-SQL053,Window Functions,Window Functions kya hain?
-SQL054,Window Functions,Aggregate vs Window (PARTITION BY)
-SQL055,Window Functions,ROW_NUMBER()
-SQL056,Window Functions,RANK vs DENSE_RANK
-SQL057,Window Functions,PARTITION BY
-SQL058,Window Functions,Top N per Group
-SQL059,Window Functions,Running Total
-SQL060,Window Functions,Moving Average (ROWS BETWEEN)
-SQL061,Window Functions,LAG()
-SQL062,Window Functions,LEAD()
-SQL063,Window Functions,NTILE()
-SQL064,Window Functions,FIRST_VALUE & LAST_VALUE
-SQL065,Window Functions,Percent of Total
-SQL066,Window Functions,Nth Highest Salary (DENSE_RANK)
-SQL067,CTE & Subqueries,CTE (WITH clause)
-SQL068,CTE & Subqueries,Recursive CTE
-SQL069,CTE & Subqueries,Correlated Subquery
-SQL070,CTE & Subqueries,EXISTS vs IN
-SQL071,Functions,COALESCE & NULLIF
-SQL072,Functions,CAST (Type Conversion)
-SQL073,Joins Advanced,CROSS JOIN
-SQL074,Data Quality,Duplicates dhundo aur hatao
-SQL075,Transactions,Transactions (COMMIT / ROLLBACK)
-SQL076,Transactions,ACID Properties
-SQL077,Database Design,"Normalization (1NF, 2NF, 3NF)"
-SQL078,Database Programming,Stored Procedure
-SQL079,Interview Prep,Manager se zyada salary
-SQL080,Interview Prep,Month-wise Report
-SQL081,Interview Prep,Advanced SQL Recap
+id,module,topic,description,revisit_of
+SQL001,Introduction,Database kya hota hai?,"Database = organized data ka ghar, Apps data yahin store karte hain, Excel jaisa, par bahut bada aur fast, Baat karne ki language: SQL.",
+SQL002,Introduction,SQL kya hai?,"SQL = Structured Query Language, Database se sawaal poochho, Answer table ki form mein, MySQL, PostgreSQL, SQL Server sab SQL bolte hain.",
+SQL003,Introduction,"Table, Row aur Column","Table = data ka grid, Column = field (name, salary), Row = record (ek employee), Cell = ek value.",
+SQL004,Introduction,Data Types,"INT = whole numbers, VARCHAR(n) = text, DECIMAL(10,2) = paisa, DATE = taareekh, BOOLEAN = true/false.",
+SQL005,Introduction,Primary Key,"PRIMARY KEY = unique + NOT NULL, Har row ki pehchaan, Ek table, ek primary key, Usually id column.",
+SQL006,Create & Insert,CREATE TABLE,"CREATE TABLE naam (...), Har column: naam + type, Comma se alag karo, Semicolon se khatam.",
+SQL007,Create & Insert,INSERT INTO,"INSERT INTO table (cols), VALUES (...), Text 'single quotes' mein, Multiple rows: comma se.",
+SQL008,Select Basics,SELECT * FROM,"SELECT = kya chahiye, * = saare columns, FROM = kis table se, ; = query khatam.",
+SQL009,Select Basics,Specific Columns Select karna,"SELECT col1, col2, Comma se alag, Order aap decide karo, Fast + clean result.",
+SQL010,Select Basics,Alias (AS),"AS = temporary naam, Sirf result mein, Space ho toh quotes mein, Calculation ke saath useful.",
+SQL011,Select Basics,DISTINCT,"DISTINCT = unique values, Duplicates hatao, Multiple columns par combination unique, COUNT(DISTINCT) bhi hota hai.",
+SQL012,Filtering,WHERE Clause,"WHERE = filter, Condition true → row rahegi, Text 'quotes' mein, FROM ke baad aata hai.",
+SQL013,Filtering,Comparison Operators,"= barabar, <> ya != not equal, > < bada/chhota, >= <= barabar bhi.",
+SQL014,Filtering,"AND, OR, NOT","AND = dono true, OR = koi ek true, NOT = ulta, Mix karo toh ( ) lagao.",
+SQL015,Filtering,IN Operator,"IN (list) = koi bhi value match, Multiple OR ka shortcut, NOT IN = list ke bahar, Subquery ke saath bhi chalta hai.",
+SQL016,Filtering,BETWEEN,"BETWEEN a AND b, Dono ends include, Numbers + dates, NOT BETWEEN bhi hai.",
+SQL017,Filtering,LIKE aur Wildcards,"LIKE = pattern search, % = kuch bhi, _ = ek character, 'A%' = A se shuru.",
+SQL018,Filtering,IS NULL,"NULL = missing value, NULL ≠ 0 ≠ '', = NULL kaam nahi karta, IS NULL / IS NOT NULL.",
+SQL019,Sorting & Limit,ORDER BY,"ORDER BY col, ASC = chhote se bada (default), DESC = bade se chhota, Multiple: ORDER BY dept, salary DESC.",
+SQL020,Sorting & Limit,LIMIT / TOP,"LIMIT n = pehli n rows, ORDER BY ke saath use karo, SQL Server: SELECT TOP 3, OFFSET = rows skip.",
+SQL021,Aggregate Functions,COUNT(),"COUNT(*) = saari rows, COUNT(col) = non-NULL, COUNT(DISTINCT col) = unique, Result = ek number.",
+SQL022,Aggregate Functions,SUM() aur AVG(),"SUM(col) = total, AVG(col) = average, Sirf numbers, NULL ignore.",
+SQL023,Aggregate Functions,MIN() aur MAX(),"MAX(col) = sabse bada, MIN(col) = sabse chhota, Numbers, dates, text, NULL ignore.",
+SQL024,Aggregate Functions,GROUP BY,"GROUP BY = same value ka group, Har group par aggregate, SELECT mein group col + aggregate, Ek group = ek result row.",
+SQL025,Aggregate Functions,HAVING,"HAVING = groups ka filter, GROUP BY ke baad, Aggregates ke saath, WHERE rows, HAVING groups.",
+SQL026,Aggregate Functions,WHERE vs HAVING,"WHERE → rows, pehle, HAVING → groups, baad mein, WHERE mein aggregate nahi, Dono saath: WHERE → GROUP BY → HAVING.",
+SQL027,Modify Data,UPDATE,"UPDATE table, SET col = value, WHERE zaroori!, Bina WHERE = saari rows.",
+SQL028,Modify Data,DELETE,"DELETE FROM table, WHERE se chuno, Bina WHERE = saari rows gone, Table structure rehta hai.",
+SQL029,Modify Data,DELETE vs TRUNCATE vs DROP,"DELETE = kuch rows (WHERE), TRUNCATE = saari rows, fast, DROP = table hi khatam, DELETE DML, TRUNCATE/DROP DDL.",
+SQL030,Modify Data,ALTER TABLE,"ALTER TABLE ... ADD col type, DROP COLUMN col, RENAME COLUMN, Structure badlo, data safe.",
+SQL031,Constraints,"NOT NULL, UNIQUE, DEFAULT","NOT NULL = khaali nahi, UNIQUE = repeat nahi, DEFAULT = automatic value, CHECK = condition (salary > 0).",
+SQL032,Constraints,Foreign Key,"FOREIGN KEY = doosri table ka reference, Child → Parent, Galat value block, Relationships banata hai.",
+SQL033,Joins,Joins kyun chahiye?,"Data alag tables mein, Common column = key, JOIN = tables jodo, 4 types: INNER, LEFT, RIGHT, FULL.",
+SQL034,Joins,INNER JOIN,"INNER JOIN = sirf match, Unmatched dono taraf gayab, Venn diagram ka beech, JOIN = INNER JOIN.",
+SQL035,Joins,LEFT JOIN,"LEFT JOIN = left ki saari rows, No match → NULL, Pura left circle, WHERE right.col IS NULL = jinka match nahi.",
+SQL036,Joins,RIGHT JOIN,"RIGHT JOIN = right ki saari rows, No match → NULL, Tables swap = LEFT JOIN, SQLite purane versions mein nahi.",
+SQL037,Joins,FULL OUTER JOIN,"FULL JOIN = dono ki saari rows, Unmatched → NULL, Dono circles poore, MySQL: LEFT UNION RIGHT.",
+SQL038,Joins,SELF JOIN,"SELF JOIN = table khud se, Do aliases zaroori, Hierarchy ke liye, Employee → Manager.",
+SQL039,Joins,UNION vs UNION ALL,"UNION = rows upar-neeche, UNION duplicates hatata hai, UNION ALL sab rakhta hai, fast, Columns same count + type.",
+SQL040,Advanced Basics,Subquery,"Subquery = query ke andar query, ( ) mein, Andar wali pehle chalti hai, WHERE, FROM, SELECT mein.",
+SQL041,Advanced Basics,CASE WHEN,"CASE WHEN cond THEN val, ELSE default, END se band, New column bana sakte ho.",
+SQL042,Advanced Basics,String Functions,"UPPER / LOWER, LENGTH (SQL Server: LEN), CONCAT(a, b), TRIM = extra spaces hatao.",
+SQL043,Advanced Basics,Date Functions,"CURRENT_DATE = aaj, YEAR(date) / EXTRACT(YEAR FROM date), DATEDIFF = farq, Syntax DB ke hisaab se.",
+SQL044,Advanced Basics,Query Execution Order,"1 FROM / JOIN, 2 WHERE, 3 GROUP BY, 4 HAVING, 5 SELECT, 6 ORDER BY, 7 LIMIT.",
+SQL045,Advanced Basics,VIEW,"VIEW = saved query, Virtual table, Data store nahi karta, Security + simplicity.",
+SQL046,Advanced Basics,INDEX,"INDEX = book ka index, Search fast, WHERE/JOIN columns par, Zyada index = slow writes.",
+SQL047,Interview Prep,Second Highest Salary,"Method 1: MAX < MAX subquery, Method 2: ORDER BY DESC LIMIT 1 OFFSET 1, DISTINCT zaroor, Nth: OFFSET N-1.",
+SQL048,Interview Prep,SQL Basics Recap,"SELECT · FROM, WHERE · ORDER BY · LIMIT, COUNT · SUM · AVG · GROUP BY · HAVING, JOINs, INSERT · UPDATE · DELETE.",
+SQL049,Aggregate Advanced,GROUP BY Multiple Columns,"GROUP BY col1, col2, Har unique combination = ek group, SELECT mein dono columns, Order matter nahi karta (result same).",
+SQL050,Aggregate Advanced,Conditional Aggregation,"SUM(CASE WHEN ... THEN 1 ELSE 0 END), Ek query, kai metrics, Reports ka favourite, COUNT(CASE WHEN ...) bhi chalta hai.",
+SQL051,Aggregate Advanced,ROLLUP (Subtotal + Grand Total),"ROLLUP = subtotals + grand total, Extra row mein NULL, MySQL: WITH ROLLUP, PostgreSQL/SQL Server: ROLLUP(col).",
+SQL052,Aggregate Advanced,Pivot with CASE,"Pivot = rows → columns, Har naya column = ek SUM(CASE), GROUP BY se rows, Excel pivot table jaisa.",
+SQL053,Window Functions,Window Functions kya hain?,"Window function = har row + calculation, Keyword: OVER(), Rows merge nahi hoti, Ranking, totals, LAG/LEAD.",
+SQL054,Window Functions,Aggregate vs Window (PARTITION BY),"AVG() OVER (PARTITION BY dept), Rows rehti hain, Har row ko apne group ka average, Compare karna easy.",
+SQL055,Window Functions,ROW_NUMBER(),"ROW_NUMBER() = 1,2,3..., OVER (ORDER BY ...) zaroori, Tie mein bhi unique number, Duplicates hatane mein kaam aata hai.",
+SQL056,Window Functions,RANK vs DENSE_RANK,"ROW_NUMBER: 1,2,3,4, RANK: 1,2,2,4 (gap), DENSE_RANK: 1,2,2,3 (no gap), Interview favourite.",
+SQL057,Window Functions,PARTITION BY,"PARTITION BY = groups mein todo, Har partition mein numbering 1 se, ORDER BY partition ke andar, GROUP BY jaisa, par rows rehti hain.",
+SQL058,Window Functions,Top N per Group,"Step 1: ROW_NUMBER PARTITION BY dept, Step 2: CTE/subquery, Step 3: WHERE rn = 1, Top N: rn <= N.",
+SQL059,Window Functions,Running Total,"SUM() OVER (ORDER BY ...), Har row = ab tak ka total, Cumulative sum, Finance aur sales reports.",
+SQL060,Window Functions,Moving Average (ROWS BETWEEN),"ROWS BETWEEN n PRECEDING AND CURRENT ROW, Sliding window, Trend smooth karo, 7-day average jaise metrics.",
+SQL061,Window Functions,LAG(),"LAG(col) = pichli row, LAG(col, 2) = do row peeche, Pehli row → NULL, Growth: amount - LAG(amount).",
+SQL062,Window Functions,LEAD(),"LEAD(col) = agli row, Aakhri row → NULL, Next event, next date, LAG ka jodidaar.",
+SQL063,Window Functions,NTILE(),"NTILE(n) = n barabar buckets, Quartile: NTILE(4), Top 25% nikalna, Customer segmentation.",
+SQL064,Window Functions,FIRST_VALUE & LAST_VALUE,"FIRST_VALUE = window ki pehli value, LAST_VALUE = aakhri, Trap: default frame, ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING.",
+SQL065,Window Functions,Percent of Total,"SUM() OVER () = grand total, salary * 100.0 / total, ROUND(..., 1), Share/contribution report.",
+SQL066,Window Functions,Nth Highest Salary (DENSE_RANK),"DENSE_RANK() OVER (ORDER BY salary DESC), CTE mein daalo, WHERE rnk = N, Ties handle.",
+SQL067,CTE & Subqueries,CTE (WITH clause),"WITH naam AS (query), Temporary result, Table ki tarah use, Multiple CTEs: comma se.",
+SQL068,CTE & Subqueries,Recursive CTE,"WITH RECURSIVE, Anchor + recursive part, UNION ALL, Stop condition zaroori.",
+SQL069,CTE & Subqueries,Correlated Subquery,"Inner query outer column use karti hai, Har row ke liye chalti hai, Powerful par slow, Window function se replace ho sakti hai.",
+SQL070,CTE & Subqueries,EXISTS vs IN,"EXISTS = hai ya nahi, Pehla match milte hi stop, IN = list se match, NOT IN + NULL = trap, NOT EXISTS safe.",
+SQL071,Functions,COALESCE & NULLIF,"COALESCE(a, b, c) = pehli non-NULL, NULL ki jagah default, NULLIF(a, b) = barabar toh NULL, x / NULLIF(y, 0) = no divide error.",
+SQL072,Functions,CAST (Type Conversion),"CAST(x AS type), '123' → 123, 123 → '123', Text sorting: '10' < '9'.",
+SQL073,Joins Advanced,CROSS JOIN,"CROSS JOIN = har row x har row, Rows = A x B, ON nahi lagta, Combinations / calendars.",
+SQL074,Data Quality,Duplicates dhundo aur hatao,"Find: GROUP BY + HAVING COUNT(*) > 1, Number: ROW_NUMBER PARTITION BY email, Keep rn = 1, Delete rn > 1.",
+SQL075,Transactions,Transactions (COMMIT / ROLLBACK),"BEGIN = shuru, COMMIT = pakka save, ROLLBACK = sab wapas, All or nothing.",
+SQL076,Transactions,ACID Properties,"A = Atomicity (all or nothing), C = Consistency (rules safe), I = Isolation (no clash), D = Durability (saved forever).",
+SQL077,Database Design,"Normalization (1NF, 2NF, 3NF)","1NF = ek cell, ek value, 2NF = partial dependency hatao, 3NF = transitive dependency hatao, Kam duplicate, kam bugs.",
+SQL078,Database Programming,Stored Procedure,"CREATE PROCEDURE, Parameters (IN), CALL proc('IT'), Reusable logic.",
+SQL079,Interview Prep,Manager se zyada salary,"Self JOIN: e.manager_id = m.id, WHERE e.salary > m.salary, Aliases zaroori, Classic interview question.",
+SQL080,Interview Prep,Month-wise Report,"Date → month, GROUP BY month, SUM(amount), ORDER BY month.",
+SQL081,Interview Prep,Advanced SQL Recap,"Window: ROW_NUMBER · RANK · DENSE_RANK, LAG · LEAD · Running total, CTE · Recursive CTE, EXISTS · Transactions · ACID.",
