@@ -75,6 +75,19 @@ b{color:var(--gold);font-weight:800}
 .cp.a{left:50px;background:rgba(61,245,255,.08);border-color:var(--cyan)} .cp.a .lb{color:var(--cyan)}
 .cp.b{left:570px;background:rgba(255,79,216,.10);border-color:var(--pink)} .cp.b .lb{color:var(--pink)}
 .vs{position:absolute;left:470px;top:820px;width:140px;height:140px;border-radius:50%;background:var(--gold);color:#0B0716;font:800 54px var(--head);display:flex;align-items:center;justify-content:center;box-shadow:6px 6px 0 #000;z-index:2}
+.qz{position:absolute;left:60px;top:540px;width:960px;border-radius:30px;background:var(--card);border:3px solid var(--cyan);padding:38px 40px 30px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.qz .q{font:800 60px/1.12 var(--head);color:#fff}
+.qz .qm{font:800 120px/1 var(--head);color:var(--gold);margin-top:10px}
+.qa{position:absolute;left:90px;width:900px;border-radius:26px;padding:22px 34px;font:800 58px/1.1 var(--head);border:3px solid;text-align:left}
+.qa .tg{display:block;font:700 28px var(--mono);opacity:.85;margin-bottom:8px;letter-spacing:.04em}
+.qa.w{top:960px;color:var(--red);border-color:var(--red);background:rgba(255,92,122,.08)}
+.qa.r{top:1160px;color:var(--green);border-color:var(--green);background:rgba(92,255,176,.10)}
+.qa .x{position:absolute;left:24px;right:24px;top:50%;height:8px;background:var(--red);transform:scaleX(0);transform-origin:0 50%;border-radius:4px}
+.cf{position:absolute;left:60px;top:560px;width:960px;border-radius:34px;padding:44px 40px;background:linear-gradient(160deg,rgba(255,79,216,.16),rgba(61,245,255,.08));border:4px solid var(--pink);text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.cf .tg{font:800 32px var(--mono);color:var(--pink);letter-spacing:.06em}
+.cf .q{font:800 64px/1.15 var(--head);color:#fff;margin-top:20px}
+.cta{position:absolute;left:0;right:0;top:1150px;text-align:center}
+.cta span{display:inline-block;max-width:900px;white-space:nowrap;font:800 40px var(--head);color:#0B0716;background:var(--gold);padding:18px 34px;border-radius:24px;transform:rotate(-2deg);box-shadow:8px 8px 0 var(--pink)}
 .chat{position:absolute;left:70px;top:560px;width:940px;border-radius:34px;background:#120C22;border:3px solid rgba(139,124,255,.5);padding:26px 26px 30px}
 .chat .hd{display:flex;align-items:center;gap:16px;font:800 34px var(--head);padding-bottom:18px;border-bottom:2px solid rgba(139,124,255,.25);margin-bottom:18px}
 .chat .hd i{font-style:normal;font:500 24px var(--mono);color:var(--green)}
@@ -236,6 +249,15 @@ R.beats.forEach((b, bi) => {
   } else if (t === 'stat') {
     h += `<div class="st" id="${id}-s"><div class="num" id="${id}-n">0</div><div class="lab">${md(v.label || '')}</div><div class="barw"><div class="bar" id="${id}-b"></div></div></div>`;
     els.push({ sel: `#${id}-s`, at: v.at, kind: 'stat' });
+  } else if (t === 'quiz') {
+    h += `<div class="qz" id="${id}-qz"><div class="q">${md(v.question || '')}</div><div class="qm" id="${id}-qm">?</div></div>` +
+      `<div class="qa w" id="${id}-qw"><span class="tg">ZYADATAR LOG BOLENGE</span>${md(v.wrong || '')}<i class="x" id="${id}-qx"></i></div>` +
+      `<div class="qa r" id="${id}-qr"><span class="tg">✅ SAHI JAWAB</span>${md(v.right || '')}</div>`;
+    els.push({ sel: `#${id}-qz`, at: v.q_at }, { sel: `#${id}-qw`, at: v.wrong_at, kind: 'qwrong' }, { sel: `#${id}-qr`, at: v.right_at, kind: 'qright' });
+  } else if (t === 'cliff') {
+    h += `<div class="cf" id="${id}-cf"><div class="tg">🤔 AGLA SAWAAL</div><div class="q">${md(v.question || '')}</div></div>` +
+      `<div class="cta" id="${id}-cta"><span>Comment karo 👇 · Answer next reel mein</span></div>`;
+    els.push({ sel: `#${id}-cf`, at: v.at }, { sel: `#${id}-cta`, at: v.cta_at, kind: 'cta' });
   } else if (t === 'compare') {
     const side = (x, c) => `<div class="cp ${c}" id="${id}-${c}"><div class="lb">${esc(x.label)}</div>` +
       (x.points || []).slice(0, 4).map((p, k) => `<div class="li" id="${id}-${c}${k}">→ ${md(p.text ?? p)}</div>`).join('') + `</div>`;
@@ -344,6 +366,21 @@ Reel.build(R2 => {
         master.to(`#${b.id}-x${e.k} span`, { opacity: 1, scale: 1.3, duration: 0.2, yoyo: true, repeat: 1 }, at + 0.25);
       }
       else if (e.kind === 'vs') { gsap.set(e.sel, { opacity: 0, scale: 0, rotate: -90 }); master.to(e.sel, { opacity: 1, scale: 1, rotate: 0, duration: 0.5, ease: 'back.out(3)' }, at); }
+      else if (e.kind === 'qwrong') {
+        gsap.set(e.sel, { opacity: 0, x: -80 }); master.to(e.sel, { opacity: 1, x: 0, duration: 0.35, ease: 'expo.out' }, at);
+        master.to(`#${b.id}-qm`, { scale: 1.25, duration: 0.25, yoyo: true, repeat: 3, ease: 'sine.inOut' }, at);
+      }
+      else if (e.kind === 'qright') {
+        master.to(`#${b.id}-qx`, { scaleX: 1, duration: 0.25, ease: 'power2.out' }, at - 0.15);
+        master.to(`#${b.id}-qw`, { opacity: 0.45, x: -12, duration: 0.08, yoyo: true, repeat: 3 }, at - 0.15);
+        master.to(`#${b.id}-qm`, { opacity: 0, duration: 0.2 }, at);
+        gsap.set(e.sel, { opacity: 0, scale: 0.7 }); master.to(e.sel, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2.4)' }, at);
+        master.to(e.sel, { boxShadow: '0 0 70px rgba(92,255,176,.55)', duration: 0.3 }, at + 0.2);
+      }
+      else if (e.kind === 'cta') {
+        gsap.set(e.sel, { opacity: 0, y: 40 }); master.to(e.sel, { opacity: 1, y: 0, duration: 0.4, ease: 'back.out(2)' }, at);
+        master.to(`${e.sel} span`, { scale: 1.08, duration: 0.35, yoyo: true, repeat: 5, ease: 'sine.inOut' }, at + 0.4);
+      }
       else { gsap.set(e.sel, { opacity: 0, y: 40, scale: 0.95 }); R2.popIn(e.sel, at); }
     });
     from = 0;

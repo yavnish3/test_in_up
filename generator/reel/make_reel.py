@@ -42,7 +42,13 @@ You write the voiceover for a 45-75 second Instagram Reel of "The 30 sec develop
 GOAL: the viewer must actually UNDERSTAND the topic after watching. Teach it like a
 good teacher talking to a friend: what it is, why it matters, how to use it (walk through
 the example shown on screen), and what the result / output means. Every sentence must
-teach something concrete. No filler, no hype, no "save karo / follow karo" in the voice.
+teach something concrete. No filler, no hype, no "save karo / follow karo" in the voice; the ONLY
+call to action is in the last beat ("comment karo", "answer next reel mein").
+STORY: tell ONE mini story with named Indian people (e.g. Rahul, Amit, Priya) and ONE small example
+table that you keep using through the whole reel, like a real-world interview trap.
+QUIZ: one beat (b2, b3 or b4) asks the viewer to PREDICT the result ("Toh batao, kitni rows aayengi?"),
+then says the common wrong answer ("Zyadatar log bolenge 2 rows...") and then "Galat!" and the right
+answer with the reason. That beat uses the "quiz" visual.
 The SQL must be 100% correct. Accuracy rules:
 - A code "output" must be what that query really returns (rows / values, e.g. "Kabir" or
   "name: Kabir | Riya"), or for EXPLAIN the real plan line. Never a made-up timing as the output
@@ -60,7 +66,7 @@ the FULL, runnable query (SELECT ... FROM ... ;, or the full CREATE/ALTER/INSERT
 clause in order in Hinglish (what it does and why) - do NOT just read the code aloud, e.g.
 "Pehle users table lo, phir LEFT JOIN se har user ke orders jodo; jinka order nahi mila unka order id
 NULL aata hai, aur WHERE wahi users rakhta hai" - so b2 may use 35-55 words; b3 = how the query runs on the
-sample data / the result rows ("table" or "flow"); b4 = an alternative query ("query", also full) or the
+sample data / the result rows, as the QUIZ beat (predict the output -> common wrong answer -> right answer); b4 = an alternative query ("query", also full) or the
 trade-off. Most words go to explaining the query.
 
 Do NOT copy the carousel post. The post below is only the topic reference: make the reel
@@ -78,7 +84,9 @@ beats = exactly 7, in this order, ids: "hook", "b1", "b2", "b3", "b4", "galti", 
   b1-b4: teach the topic step by step (__W_BEAT__ words each; a "query" walkthrough beat needs 6-8 words
          PER query line, e.g. 5 lines -> 30-40 words); together they explain it fully.
   galti: the common mistake, why it is wrong, and the right way (__W_GALTI__ words)
-  recap: 2-3 key takeaways, nothing else (__W_RECAP__ words)
+  recap: the CLIFFHANGER (__W_RECAP__ words): one short takeaway, then ONE follow-up question that leads
+         into the next topic (the post's "next"), then exactly "Comment karo, answer next reel mein."
+         Its visual must be "cliff".
 Each beat (except hook) has:
   "title": short on-screen heading (<= 22 chars, Hinglish, one **bold** word)
   "visual": what the screen shows WHILE this beat is spoken. Every element has "at": one word
@@ -102,6 +110,11 @@ Each beat (except hook) has:
     {"type":"bars","unit":"k","bars":[{"label":"<= 8 chars","value":90,"at":"word"}, ... 2-5]}   (GROUP BY / SUM / COUNT / AVG)
     {"type":"timeline","events":[{"text":"<= 14 chars","note":"<= 26 chars","at":"word"}, ... 3-5]}   (transactions, execution order, steps in time)
     {"type":"kinetic","lines":[{"text":"<= 12 chars","at":"word"}, ... max 3]}  (big words, use sparingly)
+    {"type":"quiz","question":"<= 34 chars, e.g. Kitni rows aayengi?","q_at":"word",
+       "wrong":"<= 22 chars common wrong answer","wrong_at":"word","right":"<= 22 chars right answer","right_at":"word"}
+       (exactly ONE quiz beat among b2-b4; right_at = the word right after "Galat")
+    {"type":"cliff","question":"<= 60 chars follow-up question","at":"word","cta_at":"word from 'Comment karo...'"}
+       (ONLY for the recap beat)
 __SAYCAP__
   "cues": 2-4 extra effects on exact words, each {"word": "<word from this beat's cap>", "do": "...", "target": ...}
      "kinetic" -> big sticker text <target> (<= 14 chars, e.g. "SLOW 🐢", "FULL SCAN", "0.2 ms ⚡")
@@ -109,8 +122,9 @@ __SAYCAP__
      "flash"   -> quick white flash (big reveal)
      "zoom"    -> punch-in on visual element number <target> (1 = first element)
      "shake"   -> shake element <target> (wrong / slow / error)
-caption: reel caption like the carousel's (hook line + emoji, 3-4 "✅" lines,
-"SQL Series · Part N", "Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!", 30 hashtags).
+caption: first line a strong hook like "90% freshers SQL interview mein yahi galti karte hain 👇",
+then 3-4 "✅" lines, then "Ab tumhara test (comment karo 👇): <the cliffhanger question>",
+"SQL Series · Part N", "Save karo 📌 · Follow karo @the30secdev, answer next reel mein!", 30 hashtags.
 """
 
 
@@ -176,7 +190,7 @@ def ask_script(post, feedback=None, previous=None, attempt=1):
 
 
 VISUALS = {"venn": "left", "bars": "bars", "timeline": "events", "query": "lines", "code": "lines", "table": "columns", "flow": "steps", "stat": "value", "compare": "left",
-           "chat": "messages", "checklist": "items", "kinetic": "lines"}
+           "chat": "messages", "checklist": "items", "kinetic": "lines", "quiz": "question", "cliff": "question"}
 
 
 def check_script(sc, post):
@@ -212,6 +226,9 @@ def check_script(sc, post):
                     for k, l in enumerate(v["lines"]):
                         intro = "Aakhir mein," if k == len(v["lines"]) - 1 and k > 0 else lead[min(k, len(lead) - 1)]
                         ex = str(l["explain"]).strip().rstrip(".")
+                        first = re.sub(r"[^a-z ]", "", ex.lower()).split()[:2]
+                        if first and (first[0] in ("pehle", "phir", "aakhir", "aur") or first == ["uske", "baad"]):
+                            ex = re.sub(r"^\W*(pehle|phir|aakhir mein|aur|uske baad)\W*", "", ex, flags=re.I)
                         if len(ex) > 1 and ex[0].isupper() and ex[1].islower():
                             ex = ex[0].lower() + ex[1:]
                         sentence = f"{intro} {ex}."
@@ -237,6 +254,16 @@ def check_script(sc, post):
                      and c.get("do") in ("pop", "highlight", "zoom", "shake", "kinetic", "emoji", "flash")]
         if SCRIPT == "deva" and not re.search(r"[\u0900-\u097F]", b["say"]):
             raise ValueError(f'beat {i + 1}: "say" must have Hindi words in Devanagari')
+    kinds = [b.get("visual", {}).get("type") for b in beats[1:]]
+    if kinds[:4].count("quiz") != 1 or "quiz" in kinds[:1]:
+        raise ValueError('exactly ONE of b2, b3, b4 must use the "quiz" visual (predict -> wrong answer -> right answer)')
+    if kinds[-1] != "cliff" or kinds[:-1].count("cliff"):
+        raise ValueError('the recap beat must use the "cliff" visual (follow-up question + "Comment karo, answer next reel mein")')
+    q = next(b["visual"] for b in beats if b.get("visual", {}).get("type") == "quiz")
+    if not (q.get("wrong") and q.get("right")) or len(str(q["wrong"])) > 26 or len(str(q["right"])) > 26:
+        raise ValueError("quiz visual needs short 'wrong' and 'right' answers (<= 22 chars each)")
+    if "comment" not in beats[-1]["cap"].lower():
+        raise ValueError('the recap beat must end with "Comment karo, answer next reel mein."')
     return sc
 
 
@@ -453,6 +480,35 @@ async def capture(scene, out_mp4, cover_jpg, dur):
         await b.close()
 
 
+def sfx_times(sc, tl):
+    """Whoosh on every beat change, a 'ding' when the quiz answer and the cliffhanger CTA appear."""
+    norm = lambda w: re.sub(r"[^a-z0-9]", "", str(w).lower())
+    out = [{"t": round(b["start"], 3), "s": "whoosh"} for b in tl["beats"][1:]]
+    for b, tb in zip(sc["beats"], tl["beats"]):
+        v = b.get("visual") or {}
+        key = v.get("right_at") if v.get("type") == "quiz" else v.get("cta_at") if v.get("type") == "cliff" else None
+        hit = next((w["t"] for w in tb["words"] if key and norm(w["w"]) == norm(key)), None)
+        if hit is not None:
+            out.append({"t": round(hit, 3), "s": "ding"})
+    return out
+
+
+CHORDS = [(220, 261.63, 329.63), (174.61, 220, 261.63), (261.63, 329.63, 392), (196, 246.94, 293.66)]
+
+
+def music_expr(dur):
+    """Original synth loop (Am-F-C-G, 100 bpm): soft pad, bass, kick, offbeat hat. No samples, no copyright."""
+    c = "floor(mod(t,9.6)/2.4)"
+    pick = lambda k: "if(lt(%s,1),%s,if(lt(%s,2),%s,if(lt(%s,3),%s,%s)))" % (
+        c, CHORDS[0][k], c, CHORDS[1][k], c, CHORDS[2][k], CHORDS[3][k])
+    r, th, fi = pick(0), pick(1), pick(2)
+    e = (f"0.045*(sin(2*PI*({r})*t)+sin(2*PI*({th})*t)+sin(2*PI*({fi})*t))*(0.65+0.35*sin(2*PI*0.25*t))"
+         f"+0.07*sin(PI*({r})*t)*exp(-3*mod(t,0.6))"
+         f"+0.22*sin(2*PI*52*t)*exp(-14*mod(t,0.6))"
+         f"+0.025*(2*random(0)-1)*exp(-45*mod(t+0.3,0.6))")
+    return f"aevalsrc=exprs='{e}':s=44100:d={dur:.2f}"
+
+
 def mix(wd, tl, silent, final):
     inputs, filters, labels = ["-i", silent], [], []
     for i, b in enumerate(tl["beats"]):
@@ -461,6 +517,20 @@ def mix(wd, tl, silent, final):
         filters.append(f"[{i + 1}:a]adelay={ms}|{ms},volume=1.6[v{i}]")
         labels.append(f"[v{i}]")
     filters.append(f"{''.join(labels)}amix=inputs={len(labels)}:normalize=0:duration=longest,"
+                   f"aresample=44100,aformat=channel_layouts=mono,asplit=2[vo][key]")
+    filters.append(f"{music_expr(tl['duration'] + 0.5)},volume=0.55,afade=t=in:d=0.8,"
+                   f"afade=t=out:st={max(0, tl['duration'] - 1.2):.2f}:d=1.2[mraw]")
+    filters.append("[mraw][key]sidechaincompress=threshold=0.03:ratio=6:attack=15:release=350[mu]")
+    fx = []
+    for k, e in enumerate(tl.get("sfx", [])):
+        ms = int(round(max(0, e["t"] - (0.12 if e["s"] == "whoosh" else 0)) * 1000))
+        if e["s"] == "whoosh":
+            src = "aevalsrc=exprs='0.35*(2*random(0)-1)*sin(PI*t/0.32)':s=44100:d=0.32,highpass=f=900,lowpass=f=6000"
+        else:
+            src = "aevalsrc=exprs='0.30*sin(2*PI*1320*t)*exp(-9*t)+0.18*sin(2*PI*1980*t)*exp(-12*t)':s=44100:d=0.5"
+        filters.append(f"{src},adelay={ms}|{ms}[fx{k}]")
+        fx.append(f"[fx{k}]")
+    filters.append(f"[vo][mu]{''.join(fx)}amix=inputs={2 + len(fx)}:normalize=0:duration=first,"
                    f"alimiter=limit=0.89:level=disabled[a]")
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", *inputs, "-filter_complex", ";".join(filters),
                     "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "44100", "-ac", "2",
@@ -518,6 +588,7 @@ def make_reel(post, out_root):
         if not MIN_SECONDS <= tl["duration"] <= MAX_SECONDS:
             raise RuntimeError(f"{pid}: reel is {tl['duration']:.0f}s, outside 20-90 s")
 
+    tl["sfx"] = sfx_times(sc, tl)
     for f in ("reel_lib.js", "reel_base.css", "gsap.min.js"):
         shutil.copy(os.path.join(HERE, f), wd)
     html = open(os.path.join(HERE, "scene.html"), encoding="utf-8").read()
