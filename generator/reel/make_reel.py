@@ -144,7 +144,12 @@ WORDS = {"edge": ("10-14", "24-30", "18-24", "14-20", "135-155"),
 def style():
     w = WORDS[ENGINE]
     tone = os.environ.get("REEL_TONE", "").strip()
-    return (STYLE.replace("__SAYCAP__", SAYCAP[SCRIPT].replace("__TOTAL__", w[4]))
+    base = STYLE
+    if tone:
+        base = re.sub(r'Friendly and modern, but at most ONE light word like\n"yaar" or "bhai" in the whole beat; no slang like "no cap", "fr", "bestie", "it\'s giving"\.',
+                      "Gen Z desi creator energy: use Gen Z phrases (bro, scene kya hai, literally, no cap, full on, "
+                      "lowkey, sach mein, ekdum, chill) - at least ONE in every beat and 5+ in the whole reel.", base)
+    return (base.replace("__SAYCAP__", SAYCAP[SCRIPT].replace("__TOTAL__", w[4]))
             .replace("__W_HOOK__", w[0]).replace("__W_BEAT__", w[1])
             .replace("__W_GALTI__", w[2]).replace("__W_RECAP__", w[3])
             + (f"\nTONE (overrides the tone rules above, the teaching rules still apply): {tone}\n" if tone else ""))
@@ -258,6 +263,12 @@ def check_script(sc, post):
     q = next(b["visual"] for b in beats if b.get("visual", {}).get("type") == "quiz")
     if not (q.get("wrong") and q.get("right")) or len(str(q["wrong"])) > 26 or len(str(q["right"])) > 26:
         raise ValueError("quiz visual needs short 'wrong' and 'right' answers (<= 22 chars each)")
+    if os.environ.get("REEL_TONE", "").strip():
+        slang = r"\b(bro|scene|literally|no cap|full on|lowkey|sach mein|ekdum|chill|bhai|yaar)\b"
+        n = len(re.findall(slang, " ".join(b["cap"] for b in beats).lower()))
+        if n < 5:
+            raise ValueError(f"Gen Z tone: only {n} Gen Z phrases; use at least one per beat (bro, scene kya hai, "
+                             f"literally, no cap, full on, lowkey, ekdum...) and 5+ in total")
     if re.search(r"\b(comment|next reel|agli reel)\b", beats[-1]["cap"].lower()):
         raise ValueError("the recap beat must not ask for comments or promise a next reel")
     return sc
