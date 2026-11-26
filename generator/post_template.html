@@ -60,6 +60,9 @@ tr.hl td{background:var(--acc,var(--yellow))}
 .cv .hk{position:absolute;left:64px;right:150px;top:240px;bottom:300px;font:800 116px/0.98 var(--head);letter-spacing:-2px;overflow:hidden}
 .cv .hk .mk:after{background:#fff;height:46%}
 .cv .tp{position:absolute;left:64px;bottom:170px;display:flex;align-items:center;gap:18px;font:700 28px var(--text)}
+#s.ivx b{background:linear-gradient(transparent 58%,#FFD23F 58%)}
+#s.ivx .bub b{background:none;color:#FFD23F}
+#s.ivx .tag b{background:none}
 #s.iv .cv .hk,#s.iv .cv .tp{color:#fff}
 #s.iv .cv .hk{top:262px}
 #s.iv .cv .stk{bottom:300px!important}
@@ -153,6 +156,7 @@ window.renderSlide = (P, i) => {
   s.style.setProperty('--acc', T[0]);
   const BG = { cover: IV ? '#111111' : T[0], mistake: '#FFE3E3', recap: '#E6FBC4', about: T[2] };
   if (IV && sl.type === 'cover') s.className = 'iv';
+  if (IV) s.classList.add('ivx');
   s.style.background = BG[sl.type] || T[1];
   const pn = String(P.part).padStart(2, '0');
   const top = `<div class="tag">SQL <b>${pn}</b>${P.part <= 81 ? '/81' : ''}${IV ? ' · 🎯 INTERVIEW' : ''}</div><div class="pgn">${i + 1}/${n}</div>`;

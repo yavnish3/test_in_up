@@ -280,6 +280,8 @@ def validate(c, pid, part, promised=None):
     if is_interview(part):
         c["interview"] = True
         c["module"] = "Interview Prep"
+    if part > 81 and c.get("caption"):
+        c["caption"] = re.sub(r"(Part\s*\d+)\s*/\s*81\b", r"\1", c["caption"])
     c["id"], c["part"] = pid, part
     for k in ("module", "topic", "hook", "slides", "caption"):
         if not c.get(k):
