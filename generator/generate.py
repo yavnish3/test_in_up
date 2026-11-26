@@ -208,6 +208,13 @@ def ask_gemini(prompt):
     raise RuntimeError("Gemini did not answer")
 
 
+INTERVIEW_SLOTS = {1, 3}  # part % 5: 2 of every 5 topics (about 2 a day) are interview query questions
+
+
+def is_interview(part):
+    return part % 5 in INTERVIEW_SLOTS
+
+
 def build_prompt(pid, part, topic, feedback=None, previous=None):
     rows = topics()
     n_parts = {t["id"]: sum(r.get("revisit_of") == t["id"] for r in rows) for t in rows}
@@ -222,6 +229,15 @@ def build_prompt(pid, part, topic, feedback=None, previous=None):
     want = (f'Topic for this post: "{topic}" (it was promised as "Next" in the previous post, '
             f'so keep EXACTLY this topic name).' if topic
             else "Choose the best next topic yourself (not in the covered list).")
+    if is_interview(part):
+        want += (" This is an INTERVIEW QUERY QUESTION post (module \"Interview Prep\"): one real SQL interview"
+                 " problem - the sample table(s), what we must find, the FULL query, a clause-by-clause breakdown"
+                 " and the exact result rows.")
+    if is_interview(part + 1):
+        want += (' "next" MUST be the title of a real SQL INTERVIEW QUERY question (<= 18 chars, e.g. "Duplicate'
+                 ' Emails", "Consecutive Logins", "Dept Top Earner"), not covered yet.')
+    else:
+        want += ' "next" must be a concept topic (not an interview query question).'
     prompt = (f"{RULES}\nAlready covered topics:\n{covered}\n\nTwo example posts:\n{examples}\n\n"
               f'Now write post id "{pid}", part {part}. {want}')
     if feedback:
