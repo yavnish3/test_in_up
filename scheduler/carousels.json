@@ -1213,5 +1213,20 @@
    "09.jpg",
    "10.jpg"
   ]
+ },
+ "SQL082": {
+  "caption": "Query slow? EXPLAIN se banao turbo 🔎\n\nIs post mein:\n✅ EXPLAIN ANALYZE ka purpose\n✅ Simple query ka plan dekho\n✅ Result table ko samjho\n✅ Index se optimization ka demo\n\nSQL Series · Part 82/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #explainanalyze #sqlperformance #queryplan #sqloptimization #sqltips #learnsql #sqlinhindi #datascience #dataanalyst #coding #programming #mysql #postgresql #database #sqlinterview #techhindi #databases #sqlquery #sqltutorial #sqlforbeginners #sqlpractice #sqlengine #sqlserver #sqlexpert #sqldeveloper #sqlcommunity #sqllearning #sqlcode #sqlworld #sqllife #sqlfun #sqlguru",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
  }
 }

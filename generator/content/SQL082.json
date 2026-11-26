@@ -1,0 +1,117 @@
+{
+ "id": "SQL082",
+ "part": 82,
+ "module": "Advanced Basics",
+ "topic": "EXPLAIN ANALYZE",
+ "next": "Partitioning",
+ "hook": "Query slow? [[EXPLAIN]] se banao turbo",
+ "cover_sticker": "🔎",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "EXPLAIN ANALYZE = [[query plan]]",
+   "sticker": "🔍",
+   "points": [
+    "Query ko kaise execute hota hai, step‑by‑step dekho",
+    "Rows ka estimate, join type, cost sab milta hai",
+    "**Index** ya full scan dikhata hai 🚀"
+   ],
+   "note": "Bole toh: Doctor ki report jaisi, problem locate karo",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Simple query ka [[EXPLAIN]]",
+   "sticker": "💻",
+   "file": "explain.sql",
+   "code": "SELECT * FROM orders WHERE customer_id = 5;\nEXPLAIN ANALYZE SELECT * FROM orders WHERE customer_id = 5;",
+   "note": "MySQL 8+ ya Postgres mein use hota hai",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "EXPLAIN ka [[result]]",
+   "sticker": "📊",
+   "columns": [
+    "id",
+    "select_type",
+    "table",
+    "type",
+    "rows",
+    "Extra"
+   ],
+   "rows": [
+    [
+     "1",
+     "SIMPLE",
+     "orders",
+     "ref",
+     "15",
+     "index;where"
+    ]
+   ],
+   "note": "Rows estimate 15, actual may differ",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Plan ko kaise [[padhe]]?",
+   "sticker": "🤓",
+   "points": [
+    "**type**: ref = index use, ALL = full scan",
+    "**rows**: estimate, high → consider index",
+    "**Extra**: filter, using where, using temporary"
+   ],
+   "note": "Jab rows > 1000, query ko tweak karo",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "compare",
+   "title": "Slow query vs [[Optimized]]",
+   "left": {
+    "label": "Slow 🐢",
+    "points": [
+     "SELECT *",
+     "No index",
+     "Full scan"
+    ]
+   },
+   "right": {
+    "label": "Fast 🚀",
+    "points": [
+     "SELECT col",
+     "Use index",
+     "Ref scan"
+    ]
+   },
+   "note": "Index banane se plan badal jaata hai",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "code",
+   "title": "Index add karke [[speed]] badhao",
+   "sticker": "⚡",
+   "file": "add_index.sql",
+   "code": "CREATE INDEX idx_orders_customer ON orders(customer_id);\nEXPLAIN ANALYZE SELECT * FROM orders WHERE customer_id = 5;",
+   "note": "MySQL mein ALTER TABLE bhi chal sakta hai",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "mistake",
+   "wrong": "EXPLAIN ANALYZE SELECT * FROM orders; -- WHERE missing, plan full table dikhata",
+   "right": "EXPLAIN ANALYZE SELECT * FROM orders WHERE customer_id = 5; -- specific filter se index usage dikhai",
+   "why": "WHERE bina index ka fayda nahi dikhata, galat plan se optimization galat hota hai"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "EXPLAIN ANALYZE se **execution plan** milta hai",
+    "type, rows, Extra se bottleneck pehchano",
+    "Index ya column selection se plan improve karo",
+    "Har query ke liye plan check karna best practice"
+   ]
+  }
+ ],
+ "caption": "Query slow? EXPLAIN se banao turbo 🔎\n\nIs post mein:\n✅ EXPLAIN ANALYZE ka purpose\n✅ Simple query ka plan dekho\n✅ Result table ko samjho\n✅ Index se optimization ka demo\n\nSQL Series · Part 82/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #explainanalyze #sqlperformance #queryplan #sqloptimization #sqltips #learnsql #sqlinhindi #datascience #dataanalyst #coding #programming #mysql #postgresql #database #sqlinterview #techhindi #databases #sqlquery #sqltutorial #sqlforbeginners #sqlpractice #sqlengine #sqlserver #sqlexpert #sqldeveloper #sqlcommunity #sqllearning #sqlcode #sqlworld #sqllife #sqlfun #sqlguru",
+ "revisit_of": null
+}
