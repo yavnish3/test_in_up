@@ -123,6 +123,19 @@ BACKUPS = [
 ]
 
 
+def backup_options(name, model):
+    """Groq's reasoning models spend the whole default budget thinking and return nothing:
+    give them room, keep thinking short, and ask for a JSON object."""
+    if name != "groq":
+        return {"max_tokens": 12000}
+    opts = {"max_completion_tokens": 12000, "response_format": {"type": "json_object"}}
+    if "gpt-oss" in model:
+        opts["reasoning_effort"] = "low"
+    elif "qwen3" in model:
+        opts["reasoning_effort"] = "none"
+    return opts
+
+
 def ask_backup(prompt, only=None):
     import requests
     for name, url, key_vars, models in BACKUPS:
@@ -134,7 +147,7 @@ def ask_backup(prompt, only=None):
         for model in [m.strip() for m in models.split(",") if m.strip()]:
             try:
                 r = requests.post(url, headers={"Authorization": f"Bearer {key}"},
-                                  json={"model": model, "temperature": 0.9, "messages": [
+                                  json={"model": model, "temperature": 0.9, **backup_options(name, model), "messages": [
                                       {"role": "user", "content": prompt + "\n\nAnswer with ONLY the JSON object."}]},
                                   timeout=300)
                 if not r.ok:
