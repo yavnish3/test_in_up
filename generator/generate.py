@@ -122,9 +122,11 @@ BACKUPS = [
 ]
 
 
-def ask_backup(prompt):
+def ask_backup(prompt, only=None):
     import requests
     for name, url, key_vars, models in BACKUPS:
+        if only and name != only:
+            continue
         key = next((os.environ.get(v, "").strip() for v in key_vars if os.environ.get(v, "").strip()), "")
         if not key:
             continue
@@ -144,6 +146,21 @@ def ask_backup(prompt):
             except (requests.RequestException, ValueError, KeyError, IndexError) as e:
                 print(f"{name} {model}: failed ({type(e).__name__})", flush=True)
     return None
+
+
+WRITERS = {1: "gemini", 2: "gemini", 3: "groq", 4: "github", 5: "gemini", 6: "backup"}
+
+
+def ask_writer(prompt, attempt):
+    """Rotate writers across attempts so one model's repeated mistake gets a second opinion."""
+    w = WRITERS.get(attempt, "gemini")
+    if w != "gemini":
+        print(f"  writer for attempt {attempt}: {w}", flush=True)
+        answer = ask_backup(prompt, None if w == "backup" else w)
+        if answer is not None:
+            return answer
+        print(f"  {w} unavailable, using Gemini", flush=True)
+    return ask_gemini(prompt)
 
 
 def ask_gemini(prompt):
@@ -302,10 +319,10 @@ def make_post(pid, part, topic):
     from render import render
     feedback = previous = best = None
     for attempt in range(1, 5):
-        print(f"{pid}: asking Gemini (attempt {attempt}) topic={topic or 'auto'}", flush=True)
+        print(f"{pid}: asking AI (attempt {attempt}) topic={topic or 'auto'}", flush=True)
         raw = None
         try:
-            raw = ask_gemini(build_prompt(pid, part, topic, feedback, previous))
+            raw = ask_writer(build_prompt(pid, part, topic, feedback, previous), attempt)
             c = validate(raw, pid, part, topic)
         except (ValueError, KeyError, TypeError, json.JSONDecodeError) as e:
             print(f"  bad answer: {e}", flush=True)

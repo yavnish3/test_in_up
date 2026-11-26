@@ -155,8 +155,8 @@ def targets(s):
     return []
 
 
-def ask_script(post, feedback=None, previous=None):
-    from generate import ask_gemini
+def ask_script(post, feedback=None, previous=None, attempt=1):
+    from generate import ask_writer
     slides = [{"index": i, **s, "targets": targets(s)} for i, s in enumerate(post["slides"][:6])]
     prompt = (style() + "\nThe post (carousel content) this reel is about:\n"
               + json.dumps({"part": post["part"], "topic": post["topic"], "hook": post["hook"],
@@ -169,7 +169,7 @@ def ask_script(post, feedback=None, previous=None):
     if previous:
         prompt += ("\nYour last attempt (keep everything that was fine, change only what the problem needs):\n"
                    + json.dumps(previous, ensure_ascii=False))
-    return ask_gemini(prompt)
+    return ask_writer(prompt, attempt)
 
 
 VISUALS = {"venn": "left", "bars": "bars", "timeline": "events", "query": "lines", "code": "lines", "table": "columns", "flow": "steps", "stat": "value", "compare": "left",
@@ -473,10 +473,10 @@ def make_reel(post, out_root):
     best = None
     previous = None
     for attempt in range(1, 7):
-        print(f"{pid} reel: asking Gemini for the script (attempt {attempt})", flush=True)
+        print(f"{pid} reel: asking AI for the script (attempt {attempt})", flush=True)
         raw = None
         try:
-            raw = ask_script(post, feedback, previous)
+            raw = ask_script(post, feedback, previous, attempt)
             sc = check_script(raw, post)
         except (ValueError, KeyError, TypeError, json.JSONDecodeError) as e:
             print(f"  bad script: {e}", flush=True)
