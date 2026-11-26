@@ -67,27 +67,40 @@ Language: simple, clear Hinglish, the voice is a young FEMALE creator (feminine 
 "batati hoon", "samjhati hoon"). Friendly and modern, but at most ONE light word like
 "yaar" or "bhai" in the whole beat; no slang like "no cap", "fr", "bestie", "it's giving".
 
+Do NOT copy the carousel post. The post below is only the topic reference: make the reel
+feel like a real Instagram reel with its OWN fresh examples, mini story, numbers, and
+visuals (new example tables, a flow of how it works, a Gen Z chat, a big stat...).
+
 Return JSON: {"beats": [...], "caption": "..."}
-beats = exactly 7, in this order:
-  1. {"id":"hook","slide":"hook", ...}  a question that states the real problem this topic solves (__W_HOOK__ words)
-  2-5. four teaching beats, each {"id":"b1".."b4","slide":<index 0-5 of the post's slides>}
-       pick 4 DIFFERENT slides that teach best (prefer code/table/compare), in a logical order.
-       Explain exactly what that slide shows: the idea, then the example on screen step by step. __W_BEAT__ words each.
-       Each beat builds on the previous one, so the 4 beats together explain the topic fully.
-  6. {"id":"galti","slide":"mistake", ...}  the common mistake, why it is wrong, and the right way (__W_GALTI__ words)
-  7. {"id":"recap","slide":"recap", ...}  2-3 key takeaways of the topic, nothing else (__W_RECAP__ words)
+beats = exactly 7, in this order, ids: "hook", "b1", "b2", "b3", "b4", "galti", "recap"
+  hook:  a question that states the real problem this topic solves (__W_HOOK__ words). No visual needed.
+  b1-b4: teach the topic step by step (__W_BEAT__ words each); together they explain it fully.
+  galti: the common mistake, why it is wrong, and the right way (__W_GALTI__ words)
+  recap: 2-3 key takeaways, nothing else (__W_RECAP__ words)
+Each beat (except hook) has:
+  "title": short on-screen heading (<= 22 chars, Hinglish, one **bold** word)
+  "visual": what the screen shows WHILE this beat is spoken. Every element has "at": one word
+      copied exactly from this beat's cap; the element appears when that word is spoken,
+      so pick the word where you talk about it. Types (use at least 4 different types overall,
+      never the same type twice in a row):
+    {"type":"code","file":"x.sql","lines":[{"code":"<= 30 chars","at":"word"}, ... max 7],
+       "output":"<= 60 chars result shown after RUN (optional)","output_at":"word"}
+    {"type":"table","columns":["<= 10 chars", ... max 4],"rows":[[...], ... max 4],
+       "row_at":["word for row 1", ...],"highlight":[row indexes]}
+    {"type":"flow","steps":[{"text":"<= 16 chars","at":"word"}, ... 3-5]}   (how it works, step by step)
+    {"type":"stat","value":100000,"prefix":"","suffix":" rows","label":"<= 26 chars","at":"word"}
+    {"type":"compare","left":{"label":"<= 12 chars","at":"word","points":[{"text":"<= 20 chars","at":"word"}, ... max 3]},
+                      "right":{ same }}
+    {"type":"chat","name":"<= 16 chars","messages":[{"side":"l|r","text":"<= 40 chars Gen Z style","at":"word"}, ... max 4]}
+    {"type":"checklist","items":[{"text":"<= 30 chars","at":"word"}, ... max 4]}   (best for recap)
+    {"type":"kinetic","lines":[{"text":"<= 12 chars","at":"word"}, ... max 3]}  (big words, use sparingly)
 __SAYCAP__
-  "cues": 3-5 animation cues that MATCH what is being said, each
-     {"word": "<one word copied exactly from this beat's cap>", "do": "<action>", "target": ...}
-     actions:
-       "pop"       -> show on-screen item number <target> exactly when that word is spoken
-       "highlight" -> make item <target> glow when you talk about it
-       "zoom"      -> punch-in on item <target> (code line / row) for emphasis
-       "shake"     -> shake item <target> (use for wrong / slow / error)
-       "kinetic"   -> big Gen Z sticker text <target> (<= 14 chars, e.g. "SLOW 🐢", "FULL SCAN", "0.2 ms ⚡")
-       "emoji"     -> emoji burst <target> (one emoji) on a fun / dramatic word
-     Item numbers come from "targets" of that beat's slide (1 = first). Mix actions; every
-     teaching beat should pop its items in the order they are explained. Hook: 1-2 kinetic/emoji.
+  "cues": 2-4 extra effects on exact words, each {"word": "<word from this beat's cap>", "do": "...", "target": ...}
+     "kinetic" -> big sticker text <target> (<= 14 chars, e.g. "SLOW 🐢", "FULL SCAN", "0.2 ms ⚡")
+     "emoji"   -> emoji burst <target>
+     "flash"   -> quick white flash (big reveal)
+     "zoom"    -> punch-in on visual element number <target> (1 = first element)
+     "shake"   -> shake element <target> (wrong / slow / error)
 caption: reel caption like the carousel's (hook line + emoji, 3-4 "✅" lines,
 "SQL Series · Part N", "Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!", 30 hashtags).
 """
@@ -151,21 +164,31 @@ def ask_script(post, feedback=None):
     return ask_gemini(prompt)
 
 
+VISUALS = {"code": "lines", "table": "columns", "flow": "steps", "stat": "value", "compare": "left",
+           "chat": "messages", "checklist": "items", "kinetic": "lines"}
+
+
 def check_script(sc, post):
     beats = sc.get("beats") or []
     if len(beats) != 7:
         raise ValueError(f"need 7 beats, got {len(beats)}")
-    want = ["hook", None, None, None, None, "mistake", "recap"]
-    seen = set()
     for i, b in enumerate(beats):
         b["id"] = ["hook", "b1", "b2", "b3", "b4", "galti", "recap"][i]
-        if want[i]:
-            b["slide"] = want[i]
-        else:
-            s = b.get("slide")
-            if not isinstance(s, int) or not 0 <= s <= 5 or s in seen:
-                raise ValueError(f"beat {i + 1}: slide must be a new index 0-5, got {s}")
-            seen.add(s)
+        if i > 0:
+            v = b.get("visual")
+            if not isinstance(v, dict) or v.get("type") not in VISUALS:
+                raise ValueError(f"beat {b['id']}: visual.type must be one of {sorted(VISUALS)}")
+            need = VISUALS[v["type"]]
+            if not v.get(need):
+                raise ValueError(f"beat {b['id']}: {v['type']} visual needs '{need}'")
+            if v["type"] == "code" and any(len(str(l.get("code", ""))) > 34 for l in v["lines"]):
+                raise ValueError(f"beat {b['id']}: code lines must be <= 30 chars")
+            if v["type"] == "table" and (len(v["columns"]) > 4 or len(v.get("rows", [])) > 5):
+                raise ValueError(f"beat {b['id']}: table max 4 columns, 4 rows")
+            if len(str(b.get("title", ""))) > 30:
+                raise ValueError(f"beat {b['id']}: title must be <= 22 chars")
+            if i > 1 and v["type"] == beats[i - 1].get("visual", {}).get("type"):
+                raise ValueError(f"beat {b['id']}: don't use the same visual type twice in a row")
         if SCRIPT == "roman":
             b["say"] = b.get("cap") or b.get("say")
         if not b.get("say") or not b.get("cap"):
@@ -173,7 +196,7 @@ def check_script(sc, post):
         capw = {re.sub(r"[^a-z0-9]", "", w.lower()) for w in b["cap"].split()}
         b["cues"] = [c for c in (b.get("cues") or []) if isinstance(c, dict)
                      and re.sub(r"[^a-z0-9]", "", str(c.get("word", "")).lower()) in capw
-                     and c.get("do") in ("pop", "highlight", "zoom", "shake", "kinetic", "emoji")]
+                     and c.get("do") in ("pop", "highlight", "zoom", "shake", "kinetic", "emoji", "flash")]
         if SCRIPT == "deva" and not re.search(r"[\u0900-\u097F]", b["say"]):
             raise ValueError(f'beat {i + 1}: "say" must have Hindi words in Devanagari')
     return sc

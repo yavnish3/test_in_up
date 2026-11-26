@@ -5,8 +5,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Inter:wght@500;600;800&family=Space+Grotesk:wght@500;700&display=block" rel="stylesheet">
 <link rel="stylesheet" href="reel_base.css">
 <style>
-/* ---- Gen Z look on top of the original reel style ---- */
-:root{--bg:#0B0716;--blue:#8B7CFF;--gold:#C6FF3D;--pink:#FF4FD8;--cyan:#3DF5FF;--red:#FF5C7A;--green:#5CFFB0;
+/* =========  Gen Z reel look (1080x1920)  ========= */
+:root{--bg:#0B0716;--blue:#8B7CFF;--gold:#C6FF3D;--pink:#FF4FD8;--cyan:#3DF5FF;--red:#FF5C7A;--green:#5CFFB0;--card:#150E27;
   --head:'Bricolage Grotesque','Space Grotesk',system-ui,sans-serif}
 #dots{background-image:radial-gradient(rgba(198,255,61,.13) 2.2px,transparent 2.6px)}
 #g1{background:radial-gradient(circle,rgba(139,124,255,.38),transparent 65%)}
@@ -14,66 +14,83 @@
 .step{color:var(--gold);font-size:30px}
 .step .tag{display:inline-block;background:var(--pink);color:#fff;border-radius:10px;padding:2px 14px;margin-right:12px;transform:rotate(-2deg)}
 .kw.t{font:800 92px/1.02 var(--head);letter-spacing:-.02em}
-.kw.hk{font:800 122px/1 var(--head);letter-spacing:-.03em}
-.mk{color:var(--gold)} .kw.t b{color:var(--gold)}
-.emo{position:absolute;font-size:150px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.5))}
-.topic{position:absolute;left:80px;top:980px;font:800 52px var(--head);color:#0B0716;background:var(--gold);padding:16px 34px;border-radius:24px;transform:rotate(-2deg);white-space:nowrap;box-shadow:8px 8px 0 var(--pink)}
+.mk,.kw b{color:var(--gold)}
+.vz{position:absolute;inset:0}                         /* one visual per beat */
+b{color:var(--gold);font-weight:800}
+/* hook */
+.hk{position:absolute;left:80px;top:300px;width:900px;font:800 124px/1 var(--head);letter-spacing:-.03em}
+.hk .w{display:inline-block;margin-right:22px}
+.emo{position:absolute;font-size:170px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.5))}
+.topic{position:absolute;left:80px;top:1060px;font:800 54px var(--head);color:#0B0716;background:var(--gold);padding:16px 34px;border-radius:24px;transform:rotate(-2deg);white-space:nowrap;box-shadow:8px 8px 0 var(--pink)}
 .topic small{display:block;font:600 26px var(--mono);letter-spacing:.08em;color:#2a1f40}
-.sticker{position:absolute;font:800 38px var(--head);color:#0B0716;background:var(--cyan);padding:10px 22px;border-radius:16px;white-space:nowrap;box-shadow:5px 5px 0 #000}
-/* concept points */
-.pt{position:absolute;left:80px;width:920px;min-height:124px;border-radius:26px;background:rgba(255,255,255,.06);border:3px solid rgba(139,124,255,.55);
-  display:flex;align-items:center;gap:26px;padding:18px 30px;font:600 44px/1.2 var(--text)}
-.pt .n{flex:none;width:62px;height:62px;border-radius:18px;background:var(--gold);color:#0B0716;font:800 34px var(--head);display:flex;align-items:center;justify-content:center}
-.pt b,.note b,.cmp b,.ms b,.rc b{color:var(--gold);font-weight:800}
-.note{position:absolute;left:80px;width:920px;border-radius:26px;background:var(--pink);color:#fff;padding:22px 30px;font:700 40px/1.25 var(--text);transform:rotate(-1deg)}
-.note .who{display:block;font:500 26px var(--mono);letter-spacing:.08em;opacity:.85;margin-bottom:6px}
-.note b{color:#0B0716}
+/* kinetic lines */
+.kl{position:absolute;left:80px;width:920px;font:800 112px/1.02 var(--head);letter-spacing:-.03em;white-space:nowrap}
+.kl.s2{color:var(--cyan)} .kl.s3{color:var(--pink)}
 /* code */
-.cpanel{position:absolute;left:80px;width:920px;border-radius:28px;background:#120C22;border:3px solid rgba(198,255,61,.45);padding:84px 34px 30px;box-shadow:0 24px 70px rgba(0,0,0,.5)}
-.cpanel .bar{position:absolute;left:30px;top:28px;display:flex;gap:12px;align-items:center;font:500 26px var(--mono);color:var(--muted)}
+.cpanel{position:absolute;left:60px;top:560px;width:960px;border-radius:30px;background:#120C22;border:3px solid rgba(198,255,61,.45);padding:88px 34px 34px;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.cpanel .bar{position:absolute;left:30px;top:30px;display:flex;gap:12px;align-items:center;font:500 26px var(--mono);color:var(--muted)}
 .cpanel .bar i{width:18px;height:18px;border-radius:50%;display:inline-block}
-.cl{display:block;font:500 38px/58px var(--mono);white-space:pre;color:var(--ink);clip-path:inset(0 100% 0 0)}
+.cpanel .run{position:absolute;right:28px;top:20px;font:800 26px var(--mono);color:#0B0716;background:var(--gold);padding:8px 18px;border-radius:12px}
+.cl{position:relative;display:block;font:500 40px/62px var(--mono);white-space:pre;color:var(--ink);clip-path:inset(0 100% 0 0)}
 .cl .k{color:var(--pink)} .cl .s{color:var(--gold)} .cl .c{color:var(--muted)} .cl .nm{color:var(--cyan)}
+.lhl{position:absolute;left:14px;right:14px;height:62px;border-radius:12px;background:rgba(198,255,61,.10);border-left:6px solid var(--gold);opacity:0}
+.out{margin-top:20px;border-top:2px dashed rgba(198,255,61,.35);padding-top:18px;font:500 34px/48px var(--mono);color:var(--green);white-space:pre-wrap;opacity:0}
 /* table */
-.tbl{left:80px;width:920px;background:rgba(18,12,34,.9);border-color:rgba(139,124,255,.5)}
-.tbl .tr{height:84px} .tbl .td{font:600 38px var(--text)} .tbl .th{font:500 28px var(--mono);height:64px;color:var(--gold)}
-.tbl .td.hi{background:rgba(198,255,61,.16)}
+.tb{position:absolute;left:60px;top:580px;width:960px;border-radius:26px;background:rgba(18,12,34,.92);border:3px solid rgba(139,124,255,.5);overflow:hidden}
+.tb .tr{display:flex;align-items:center;height:92px;position:relative}
+.tb .tr>div{padding-left:26px;font:600 40px var(--text);white-space:nowrap;overflow:hidden}
+.tb .th>div{font:500 28px var(--mono);color:var(--gold);letter-spacing:.06em}
+.tb .th{height:70px;border-bottom:2px solid rgba(139,124,255,.3)}
+.tb .td.hi>div{color:var(--gold)}
+.scan{position:absolute;left:0;right:0;height:92px;background:linear-gradient(90deg,rgba(61,245,255,0),rgba(61,245,255,.28),rgba(61,245,255,0));border-top:3px solid var(--cyan);border-bottom:3px solid var(--cyan);opacity:0}
+/* flow */
+.fs{position:absolute;left:190px;width:700px;height:118px;border-radius:28px;background:var(--card);border:3px solid rgba(139,124,255,.6);display:flex;align-items:center;justify-content:center;gap:18px;font:800 50px var(--head)}
+.fs.on{border-color:var(--gold);box-shadow:0 0 50px rgba(198,255,61,.35)}
+.fa{position:absolute;left:532px;width:16px;height:64px;border-radius:8px;background:rgba(139,124,255,.35)}
+.dot{position:absolute;left:520px;width:40px;height:40px;border-radius:50%;background:var(--gold);box-shadow:0 0 30px var(--gold);opacity:0}
+/* stat */
+.st{position:absolute;left:0;right:0;top:600px;text-align:center}
+.st .num{font:800 230px/1 var(--head);color:var(--gold);letter-spacing:-.04em;text-shadow:0 0 60px rgba(198,255,61,.35)}
+.st .lab{font:700 56px var(--head);color:var(--ink);margin-top:20px}
+.st .barw{width:760px;height:30px;border-radius:15px;margin:44px auto 0;background:rgba(255,255,255,.08);overflow:hidden}
+.st .bar{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--pink))}
 /* compare */
-.cmp{position:absolute;left:80px;width:920px;height:300px;border-radius:28px;padding:26px 34px;border:3px solid}
-.cmp .lb{font:800 50px var(--head);margin-bottom:12px}
-.cmp .li{font:600 38px/1.45 var(--text)}
-.cmp.a{background:rgba(61,245,255,.10);border-color:var(--cyan)} .cmp.a .lb{color:var(--cyan)}
-.cmp.b{background:rgba(255,79,216,.12);border-color:var(--pink)} .cmp.b .lb{color:var(--pink)}
-.vs{position:absolute;left:470px;width:140px;height:140px;border-radius:50%;background:var(--gold);color:#0B0716;font:800 54px var(--head);display:flex;align-items:center;justify-content:center;box-shadow:6px 6px 0 #000}
-/* mistake */
-.ms{position:absolute;left:80px;width:920px;border-radius:28px;padding:30px 34px;font:700 44px/1.25 var(--text)}
-.ms .lab{display:block;font:800 30px var(--mono);letter-spacing:.06em;margin-bottom:10px}
-.ms.w{background:rgba(255,92,122,.14);border:3px solid var(--red)} .ms.w .lab{color:var(--red)}
-.ms.r{background:rgba(92,255,176,.12);border:3px solid var(--green)} .ms.r .lab{color:var(--green)}
-.why{position:absolute;left:80px;width:920px;font:600 38px/1.3 var(--text);color:var(--muted)}
-.why b{color:var(--ink)}
-/* recap */
-.rc{background:rgba(198,255,61,.08);border:3px solid rgba(198,255,61,.5);height:112px}
-.rc .n{color:var(--pink);font-weight:800}
-#cta .save{background:var(--gold);color:#0B0716}
-#cta .fol b{color:var(--gold)}
-#capbox{background:rgba(11,7,22,.82);border:3px solid rgba(198,255,61,.35)}
-
-/* ---- Gen Z motion library (cues) ---- */
-.kin{position:absolute;left:50%;top:1150px;transform:translate(-50%,0) rotate(-4deg);font:800 96px/1 var(--head);color:#0B0716;
+.cp{position:absolute;top:580px;width:460px;min-height:420px;border-radius:30px;padding:30px;border:3px solid}
+.cp .lb{font:800 54px/1.05 var(--head);margin-bottom:24px}
+.cp .li{font:600 38px/1.3 var(--text);margin-bottom:20px}
+.cp.a{left:50px;background:rgba(61,245,255,.08);border-color:var(--cyan)} .cp.a .lb{color:var(--cyan)}
+.cp.b{left:570px;background:rgba(255,79,216,.10);border-color:var(--pink)} .cp.b .lb{color:var(--pink)}
+.vs{position:absolute;left:470px;top:820px;width:140px;height:140px;border-radius:50%;background:var(--gold);color:#0B0716;font:800 54px var(--head);display:flex;align-items:center;justify-content:center;box-shadow:6px 6px 0 #000;z-index:2}
+/* chat */
+.chat{position:absolute;left:70px;top:560px;width:940px;border-radius:34px;background:#120C22;border:3px solid rgba(139,124,255,.5);padding:26px 26px 30px}
+.chat .hd{display:flex;align-items:center;gap:16px;font:800 34px var(--head);padding-bottom:18px;border-bottom:2px solid rgba(139,124,255,.25);margin-bottom:18px}
+.chat .hd i{font-style:normal;font:500 24px var(--mono);color:var(--green)}
+.msg{display:block;width:fit-content;max-width:740px;font:600 38px/1.3 var(--text);padding:18px 26px;border-radius:30px;margin:14px 0}
+.msg.l{background:rgba(255,255,255,.09);border-bottom-left-radius:8px}
+.msg.r{background:var(--pink);color:#fff;margin-left:auto;border-bottom-right-radius:8px}
+.typing{display:inline-flex;gap:8px;padding:16px 22px;border-radius:24px;background:rgba(255,255,255,.09);opacity:0;position:absolute}
+.typing i{width:14px;height:14px;border-radius:50%;background:var(--muted)}
+/* checklist */
+.ck{position:absolute;left:80px;width:920px;height:118px;border-radius:26px;background:rgba(198,255,61,.07);border:3px solid rgba(198,255,61,.45);display:flex;align-items:center;gap:26px;padding:0 30px;font:700 42px var(--text);white-space:nowrap}
+.ck .box{flex:none;width:62px;height:62px;border-radius:16px;border:4px solid var(--gold);display:flex;align-items:center;justify-content:center;font:800 40px var(--head);color:#0B0716}
+.ck .box span{opacity:0}
+/* cue library */
+.kin{position:absolute;left:50%;top:1170px;transform:translate(-50%,0) rotate(-4deg);font:800 96px/1 var(--head);color:#0B0716;
   background:var(--gold);padding:18px 40px;border-radius:28px;box-shadow:10px 10px 0 var(--pink),0 0 60px rgba(198,255,61,.45);white-space:nowrap;opacity:0;z-index:20}
 .kin.p{background:var(--pink);color:#fff;box-shadow:10px 10px 0 var(--cyan),0 0 60px rgba(255,79,216,.5)}
 .kin.c{background:var(--cyan);box-shadow:10px 10px 0 var(--gold),0 0 60px rgba(61,245,255,.45)}
 .burst{position:absolute;font-size:120px;opacity:0;z-index:21;filter:drop-shadow(0 10px 24px rgba(0,0,0,.5))}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:25;pointer-events:none}
 #wipe{position:absolute;left:0;top:0;width:1080px;height:1920px;background:var(--pink);z-index:30}
 #wipe2{position:absolute;left:0;top:0;width:1080px;height:1920px;background:var(--gold);z-index:29}
 #prog{position:absolute;left:0;top:0;height:12px;width:0;background:linear-gradient(90deg,var(--gold),var(--pink),var(--cyan));z-index:40}
+#capbox{background:rgba(11,7,22,.82);border:3px solid rgba(198,255,61,.35)}
 #handle{position:absolute;left:0;right:0;top:1820px;text-align:center;font:600 30px var(--mono);color:rgba(232,238,248,.55)}
 </style></head>
 <body>
 <div id="bg"><div id="dots"></div><div class="glow" id="g1"></div><div class="glow" id="g2"></div><div id="vig"></div></div>
 <div id="stage"></div>
-<div id="fx"><div id="wipe2"></div><div id="wipe"></div></div>
+<div id="fx"><div id="flash"></div><div id="wipe2"></div><div id="wipe"></div></div>
 <div id="prog"></div>
 <div id="cap"><div id="capbox"></div></div>
 <div id="handle">@the30secdev · SQL in 30 sec</div>
@@ -82,7 +99,8 @@
 <script>const TL = __TL__; const CAPS = __CAPS__; const R = __REEL__;</script>
 <script src="reel_lib.js"></script>
 <script>
-/* Build every beat's DOM from the carousel content (R.post) and the beat plan (R.beats). */
+/* Every beat has its own reel-native visual (R.beats[i].visual), animated on the spoken words.
+   Elements name the word they belong to ("at"); unmatched ones are spread over the beat. */
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[\[(.+?)\]\]/g, '<span class="mk">$1</span>');
 const KW = /\b(SELECT|FROM|WHERE|AND|OR|NOT|IN|IS|NULL|AS|ON|JOIN|LEFT|RIGHT|INNER|OUTER|FULL|GROUP|BY|ORDER|HAVING|LIMIT|DISTINCT|INSERT|INTO|VALUES|UPDATE|SET|DELETE|CREATE|TABLE|VIEW|INDEX|DROP|ALTER|ADD|PRIMARY|KEY|FOREIGN|REFERENCES|UNIQUE|DEFAULT|CASE|WHEN|THEN|ELSE|END|UNION|ALL|EXISTS|BETWEEN|LIKE|ASC|DESC|WITH|RECURSIVE|OVER|PARTITION|EXPLAIN|ANALYZE|ANALYSE|BEGIN|COMMIT|ROLLBACK|COUNT|SUM|AVG|MIN|MAX|COALESCE|ROW_NUMBER|RANK|DENSE_RANK|LAG|LEAD|TRUNCATE|PROCEDURE|TRIGGER|FUNCTION|RETURNS)\b/g;
@@ -93,163 +111,182 @@ function hl(line) {
     : esc(p).replace(KW, '<span class="k">$1</span>').replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="nm">$1</span>')).join('')
     + (cm ? `<span class="c">${esc(cm)}</span>` : '');
 }
+const norm = w => String(w).toLowerCase().normalize('NFKD').replace(/[^a-z0-9_]/g, '');
 const P = R.post, stage = document.getElementById('stage');
-const TOP = 600;           // content starts here (headers above)
-const items = {};          // beat id -> list of element selectors that pop in one by one
 const add = (html) => stage.insertAdjacentHTML('beforeend', html);
-const hdr = (id, step, title, cls = 't') => add(`<div class="hdr" id="h-${id}"><div class="step">${step}</div>` +
-  (title ? `<div class="kw ${cls}"><span class="ln"><span>${md(title)}</span></span></div>` : '') + `</div>`);
+const V = {};   // beat id -> { root, els: [{sel, at, kind}], fx: [] }
 
 R.beats.forEach((b, bi) => {
-  const id = b.id, list = items[id] = [];
-  const s = typeof b.slide === 'number' ? P.slides[b.slide] : null;
-  const kind = b.slide === 'hook' ? 'hook' : b.slide === 'mistake' ? 'mistake' : b.slide === 'recap' ? 'recap' : s.type;
-  const step = n => `<span class="tag">${n}</span>`;
-  if (kind === 'hook') {
-    add(`<div class="hdr" id="h-${id}"><div class="step">${step('POV')}SQL SERIES · PART ${P.part}</div>
-      <div class="kw hk"><span class="ln"><span>${md(P.hook)}</span></span></div></div>`);
-    add(`<div class="emo" id="${id}-e" style="right:80px;top:760px;transform:rotate(12deg);font-size:190px">${esc(P.cover_sticker || '🔥')}</div>`);
-    add(`<div class="topic" id="${id}-t"><small>AAJ KA TOPIC</small>${esc(P.topic)}</div>`);
-    list.push(`#${id}-t`, `#${id}-e`);
-  } else if (kind === 'concept') {
-    hdr(id, `${step(bi)}${esc(P.topic).toUpperCase()}`, s.title);
-    s.points.slice(0, 4).forEach((p, k) => { add(`<div class="pt" id="${id}-p${k}" style="top:${TOP + k * 150}px"><span class="n">${k + 1}</span><span>${md(p)}</span></div>`); list.push(`#${id}-p${k}`); });
-    if (s.note && s.points.length <= 3) { add(`<div class="note" id="${id}-n" style="top:${TOP + s.points.length * 150 + 20}px"><span class="who">${esc(s.who || 'BOLE TOH')}</span>${md(s.note)}</div>`); list.push(`#${id}-n`); }
-  } else if (kind === 'code') {
-    hdr(id, `${step(bi)}CODE TIME`, s.title);
-    const lines = String(s.code).split('\n').slice(0, 10);
-    add(`<div class="cpanel" id="${id}-c" style="top:${TOP}px"><div class="bar"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i>&nbsp;${esc(s.file || 'query.sql')}</div>` +
-      lines.map((l, k) => `<span class="cl" id="${id}-l${k}">${hl(l) || ' '}</span>`).join('') + `</div>`);
-    list.push(`#${id}-c`); lines.forEach((l, k) => list.push(`#${id}-l${k}`));
-  } else if (kind === 'table') {
-    hdr(id, `${step(bi)}DEKHO`, s.title);
-    add(`<div class="tbl" id="${id}-tb" style="top:${TOP + 20}px"></div>`);
-    const w = Math.floor(920 / s.columns.length);
-    Reel.table(`#${id}-tb`, s.columns.map(h => ({ h, w })), s.rows.slice(0, 5), `${id}-r`);
-    (s.highlight || []).forEach(i => { const r = document.getElementById(`${id}-r${i}`); if (r) r.classList.add('hi'); });
-    list.push(`#${id}-tb`); s.rows.slice(0, 5).forEach((r, k) => list.push(`#${id}-r${k}`));
-    if (s.note) { add(`<div class="note" id="${id}-n" style="top:${TOP + 120 + 84 * Math.min(5, s.rows.length) + 40}px"><span class="who">${esc(s.who || 'NOTE')}</span>${md(s.note)}</div>`); list.push(`#${id}-n`); }
-  } else if (kind === 'compare') {
-    hdr(id, `${step(bi)}KAUN JEETEGA?`, s.title);
-    const side = (x, c, top) => `<div class="cmp ${c}" id="${id}-${c}" style="top:${top}px"><div class="lb">${esc(x.label)}</div>${x.points.slice(0, 3).map(p => `<div class="li">→ ${md(p)}</div>`).join('')}</div>`;
-    add(side(s.left, 'a', TOP)); add(side(s.right, 'b', TOP + 360));
-    add(`<div class="vs" id="${id}-vs" style="top:${TOP + 290}px">VS</div>`);
-    list.push(`#${id}-a`, `#${id}-vs`, `#${id}-b`);
-  } else if (kind === 'mistake') {
-    const m = P.slides.find(x => x.type === 'mistake');
-    add(`<div class="hdr" id="h-${id}"><div class="step red">${step('RED FLAG 🚩')}GALTI MAT KARNA</div></div>`);
-    add(`<div class="ms w" id="${id}-w" style="top:${TOP - 160}px"><span class="lab">❌ GALAT</span>${md(m.wrong).replace(/\n/g, ' ')}</div>`);
-    add(`<div class="ms r" id="${id}-r" style="top:${TOP + 180}px"><span class="lab">✅ SAHI</span>${md(m.right).replace(/\n/g, ' ')}</div>`);
-    add(`<div class="why" id="${id}-y" style="top:${TOP + 520}px">${md(m.why)}</div>`);
-    list.push(`#${id}-w`, `#${id}-r`, `#${id}-y`);
-  } else if (kind === 'recap') {
-    const rc = P.slides.find(x => x.type === 'recap');
-    add(`<div class="hdr" id="h-${id}"><div class="step">${step('TL;DR')}YAAD RAKHO</div></div>`);
-    rc.points.slice(0, 4).forEach((p, k) => { add(`<div class="rc" id="${id}-p${k}" style="top:${TOP - 160 + k * 132}px"><span class="n">${k + 1}</span><span class="w">${md(p)}</span></div>`); list.push(`#${id}-p${k}`); });
-    add(`<div id="cta" style="top:${TOP + 400}px"><span class="save">Save karo 📌</span><span class="fol">${P.next ? `Next: <b>${esc(P.next)}</b> → follow karo` : 'Follow karo, aur aa raha hai'}</span></div>`);
-    list.push('#cta');
+  const id = b.id, v = b.visual || {}, t = v.type || 'kinetic';
+  const els = []; V[id] = { root: `#v-${id}`, els, type: t, v };
+  const tag = bi === 0 ? 'POV' : id === 'galti' ? 'RED FLAG 🚩' : id === 'recap' ? 'TL;DR' : String(bi);
+  const step = bi === 0 ? `SQL SERIES · PART ${P.part}` : id === 'galti' ? 'GALTI MAT KARNA' : id === 'recap' ? 'YAAD RAKHO' : esc(P.topic).toUpperCase();
+  add(`<div class="hdr" id="h-${id}"><div class="step"><span class="tag">${tag}</span>${step}</div>` +
+      (b.title && bi > 0 ? `<div class="kw t"><span class="ln"><span>${md(b.title)}</span></span></div>` : '') + `</div>`);
+  let h = `<div class="vz" id="v-${id}">`;
+  if (bi === 0) {
+    const words = String(P.hook).replace(/\[\[|\]\]/g, '').split(/\s+/);
+    const hot = (String(P.hook).match(/\[\[(.+?)\]\]/) || [])[1] || '';
+    h += `<div class="hk">${words.map((w, k) => `<span class="w" id="${id}-w${k}"${hot.includes(w) ? ' style="color:var(--gold)"' : ''}>${esc(w)}</span>`).join('')}</div>`;
+    words.forEach((w, k) => els.push({ sel: `#${id}-w${k}`, at: w, kind: 'word' }));
+    h += `<div class="emo" id="${id}-e" style="right:70px;top:820px">${esc(P.cover_sticker || '🔥')}</div>`;
+    h += `<div class="topic" id="${id}-t"><small>AAJ KA TOPIC</small>${esc(P.topic)}</div>`;
+    els.push({ sel: `#${id}-t` }, { sel: `#${id}-e` });
+  } else if (t === 'kinetic') {
+    (v.lines || []).slice(0, 4).forEach((l, k) => { h += `<div class="kl s${k % 3 + 1}" id="${id}-k${k}" style="top:${600 + k * 140}px">${md(l.text)}</div>`; els.push({ sel: `#${id}-k${k}`, at: l.at }); });
+  } else if (t === 'code') {
+    const lines = (v.lines || []).slice(0, 8);
+    h += `<div class="cpanel" id="${id}-c"><div class="bar"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i>&nbsp;${esc(v.file || 'query.sql')}</div>` +
+      `<div class="run" id="${id}-run">▶ RUN</div><div class="lhl" id="${id}-hl"></div>` +
+      lines.map((l, k) => `<span class="cl" id="${id}-l${k}">${hl(l.code) || ' '}</span>`).join('') +
+      (v.output ? `<div class="out" id="${id}-o">${esc(v.output)}</div>` : '') + `</div>`;
+    els.push({ sel: `#${id}-c`, kind: 'box' });
+    lines.forEach((l, k) => els.push({ sel: `#${id}-l${k}`, at: l.at, kind: 'line', n: String(l.code).length, k }));
+    if (v.output) els.push({ sel: `#${id}-o`, at: v.output_at, kind: 'out' });
+  } else if (t === 'table') {
+    const cols = (v.columns || []).slice(0, 4), rows = (v.rows || []).slice(0, 5), w = Math.floor(960 / Math.max(1, cols.length));
+    h += `<div class="tb" id="${id}-tb"><div class="tr th">${cols.map(c => `<div style="width:${w}px">${esc(c)}</div>`).join('')}</div>` +
+      rows.map((r, k) => `<div class="tr td${(v.highlight || []).includes(k) ? ' hi' : ''}" id="${id}-r${k}">${r.slice(0, cols.length).map(c => `<div style="width:${w}px">${esc(c)}</div>`).join('')}</div>`).join('') +
+      `<div class="scan" id="${id}-sc"></div></div>`;
+    els.push({ sel: `#${id}-tb`, kind: 'box' });
+    rows.forEach((r, k) => els.push({ sel: `#${id}-r${k}`, at: (v.row_at || [])[k] || r[0], kind: 'row', k }));
+  } else if (t === 'flow') {
+    const steps = (v.steps || []).slice(0, 5), top0 = 590, gap = 182;
+    steps.forEach((s, k) => {
+      h += `<div class="fs" id="${id}-f${k}" style="top:${top0 + k * gap}px">${md(s.text)}</div>`;
+      if (k < steps.length - 1) h += `<div class="fa" id="${id}-a${k}" style="top:${top0 + k * gap + 118}px"></div>`;
+      els.push({ sel: `#${id}-f${k}`, at: s.at, kind: 'step', k });
+      if (k < steps.length - 1) els.push({ sel: `#${id}-a${k}`, kind: 'arrow' });
+    });
+    h += `<div class="dot" id="${id}-d"></div>`;
+  } else if (t === 'stat') {
+    h += `<div class="st" id="${id}-s"><div class="num" id="${id}-n">0</div><div class="lab">${md(v.label || '')}</div><div class="barw"><div class="bar" id="${id}-b"></div></div></div>`;
+    els.push({ sel: `#${id}-s`, at: v.at, kind: 'stat' });
+  } else if (t === 'compare') {
+    const side = (x, c) => `<div class="cp ${c}" id="${id}-${c}"><div class="lb">${esc(x.label)}</div>` +
+      (x.points || []).slice(0, 4).map((p, k) => `<div class="li" id="${id}-${c}${k}">→ ${md(p.text ?? p)}</div>`).join('') + `</div>`;
+    h += side(v.left || {}, 'a') + `<div class="vs" id="${id}-vs">VS</div>` + side(v.right || {}, 'b');
+    els.push({ sel: `#${id}-a`, at: (v.left || {}).at });
+    ((v.left || {}).points || []).slice(0, 4).forEach((p, k) => els.push({ sel: `#${id}-a${k}`, at: p.at }));
+    els.push({ sel: `#${id}-vs`, kind: 'vs' }, { sel: `#${id}-b`, at: (v.right || {}).at });
+    ((v.right || {}).points || []).slice(0, 4).forEach((p, k) => els.push({ sel: `#${id}-b${k}`, at: p.at }));
+  } else if (t === 'chat') {
+    h += `<div class="chat" id="${id}-ch"><div class="hd">👩‍💻 ${esc(v.name || 'SQL doubts')} <i>● online</i></div>` +
+      (v.messages || []).slice(0, 5).map((m, k) => `<span class="msg ${m.side === 'r' ? 'r' : 'l'}" id="${id}-m${k}">${md(m.text)}</span>`).join('') + `</div>`;
+    els.push({ sel: `#${id}-ch`, kind: 'box' });
+    (v.messages || []).slice(0, 5).forEach((m, k) => els.push({ sel: `#${id}-m${k}`, at: m.at, kind: 'msg' }));
+  } else if (t === 'checklist') {
+    (v.items || []).slice(0, 5).forEach((it, k) => {
+      h += `<div class="ck" id="${id}-c${k}" style="top:${560 + k * 140}px"><span class="box" id="${id}-x${k}"><span>✓</span></span><span>${md(it.text)}</span></div>`;
+      els.push({ sel: `#${id}-c${k}`, at: it.at, kind: 'check', k });
+    });
   }
+  add(h + `</div>`);
 });
-
-
-/* ---- word matching for syncing screen items with the voice ---- */
-const STOPW = new Set('the and aur hai hain ka ki ke ko se mein me par pe ye yeh wo woh jo kya kaise matlab bas toh to ek do tum hum isse iska iski uska uski hota hoti hote karo karna karte kar liye lekin agar sirf bhi nahi with for from you this that are was not all ham'.split(' '));
-const norm = w => String(w).toLowerCase().normalize('NFKD').replace(/[^a-z0-9_]/g, '');
-function keyWords(text) {
-  return [...new Set(text.split(/[^A-Za-z0-9_]+/).map(norm).filter(w => w.length >= 3 && !STOPW.has(w) && !/^\d+$/.test(w)))];
-}
-function sameWord(spoken, key) {
-  const a = norm(spoken); if (a.length < 3) return false;
-  if (a === key) return true;
-  const n = Math.min(a.length, key.length);
-  return n >= 4 && a.slice(0, Math.max(4, n - 2)) === key.slice(0, Math.max(4, n - 2)); // index/indexes, scan/scanning
-}
 
 Reel.build(R2 => {
   const { master, B, P: lead } = R2;
-  gsap.set(['#wipe', '#wipe2'], { xPercent: -120, skewX: -12 });  // parked off-screen (left)
+  gsap.set(['#wipe', '#wipe2'], { xPercent: -120, skewX: -12 });
   R.beats.forEach((b, bi) => {
-    const bt = B[b.id], start = lead(bt.start), end = lead(bt.end), list = items[b.id];
-    gsap.set(list, { opacity: 0, y: 40, scale: 0.96 });
-    if (bi === 0) R2.hdrIn(b.id, lead(0) - 0.35); else R2.hdrIn(b.id);
-    // Sync: each item appears when the voice says one of its words (captions = spoken words).
-    // Cues from the script ("pop" item N at word X) win; containers (code panel, table frame)
-    // come in first; unmatched items are placed between their matched neighbours.
-    const words = bt.words;
-    const isBox = sel => /-(c|tb|vs)$/.test(sel);
-    const content = list.filter(sel => !isBox(sel));       // cue targets 1..n
-    const times = list.map(() => null);
-    const cueAt = (word, from = 0) => {                      // time of a spoken word (>= from index)
-      const key = norm(word);
-      for (let w = from; w < words.length; w++) if (norm(words[w].w) === key || sameWord(words[w].w, key)) return w;
-      for (let w = 0; w < words.length; w++) if (norm(words[w].w) === key || sameWord(words[w].w, key)) return w;
-      return -1;
-    };
-    const cues = (b.cues || []).map(c => ({ ...c, wi: cueAt(String(c.word || '')) })).filter(c => c.wi >= 0);
-    cues.forEach(c => {
-      const sel = content[(parseInt(c.target) || 0) - 1];
-      if (c.do === 'pop' && sel) times[list.indexOf(sel)] = lead(words[c.wi].t) - 0.12;
-    });
+    const bt = B[b.id], start = lead(bt.start), end = lead(bt.end), words = bt.words, info = V[b.id];
+    const first = start + 0.25, last = Math.max(first + 0.4, end - 0.55);
+    // spoken-word time for an element ("at" word, searched forward so order is kept)
     let from = 0;
-    list.forEach((sel, k) => {
-      if (isBox(sel) || times[k] !== null) return;
-      const keys = keyWords(document.querySelector(sel)?.textContent || '');
-      for (let w = from; w < words.length; w++) {
-        if (keys.some(key => sameWord(words[w].w, key))) { times[k] = lead(words[w].t) - 0.12; from = w + 1; break; }
-      }
-    });
-    // fill gaps: boxes at beat start, unmatched items evenly between known times
-    const first = start + 0.25, last = Math.max(first + 0.3, end - 0.6);
-    list.forEach((sel, k) => { if (isBox(sel)) times[k] = sel.endsWith('-vs') ? null : first; });
-    for (let k = 0; k < list.length; k++) {
-      if (times[k] !== null) continue;
-      let a = k - 1; while (a >= 0 && times[a] === null) a--;
-      let z = k + 1; while (z < list.length && times[z] === null) z++;
-      const ta = a >= 0 ? times[a] : first, tz = z < list.length ? times[z] : last;
-      times[k] = ta + (tz - ta) * (k - a) / (z - a);
+    const find = at => {
+      const k = norm(at || ''); if (k.length < 2) return null;
+      for (let w = from; w < words.length; w++) { const x = norm(words[w].w); if (x === k || (k.length >= 4 && (x.startsWith(k.slice(0, 4)) && k.startsWith(x.slice(0, 4))))) { from = w + 1; return lead(words[w].t) - 0.1; } }
+      return null;
+    };
+    const els = info.els;
+    els.forEach(e => { e.t = e.kind === 'box' ? first - 0.1 : find(e.at); });
+    for (let k = 0; k < els.length; k++) {          // unmatched -> evenly between neighbours
+      if (els[k].t != null) continue;
+      let a = k - 1; while (a >= 0 && els[a].t == null) a--;
+      let z = k + 1; while (z < els.length && els[z].t == null) z++;
+      const ta = a >= 0 ? els[a].t : first, tz = z < els.length ? els[z].t : last;
+      els[k].t = ta + (tz - ta) * (k - a) / (z - a);
     }
-    // ---- effects from cues, on the exact spoken word ----
-    cues.forEach((c, ci) => {
-      const at = Math.min(lead(words[c.wi].t) - 0.05, end - 0.5);
-      const sel = content[(parseInt(c.target) || 0) - 1];
+    for (let k = 1; k < els.length; k++) els[k].t = Math.max(els[k].t, els[k - 1].t + 0.06);
+    els.forEach(e => e.t = Math.min(Math.max(e.t, first - 0.1), end - 0.45));
+
+    if (bi === 0) R2.hdrIn(b.id, lead(0) - 0.35); else R2.hdrIn(b.id);
+    const sels = els.map(e => e.sel);
+    els.forEach(e => {
+      const at = e.t;
+      if (e.kind === 'word') { gsap.set(e.sel, { opacity: 0, y: 60, rotate: 6 }); master.to(e.sel, { opacity: 1, y: 0, rotate: 0, duration: 0.3, ease: 'back.out(2.2)' }, at); }
+      else if (e.kind === 'line') {
+        master.set(e.sel, { opacity: 1 }, at);
+        master.to(e.sel, { clipPath: 'inset(0 0% 0 0)', duration: Math.min(1.1, Math.max(0.35, e.n * 0.045)), ease: `steps(${Math.max(4, e.n)})` }, at);
+        master.to(`#${b.id}-hl`, { opacity: 1, top: 88 + e.k * 62, duration: 0.25, ease: 'power2.out' }, at);
+      }
+      else if (e.kind === 'out') { master.to(`#${b.id}-run`, { scale: 1.25, backgroundColor: '#5CFFB0', duration: 0.15, yoyo: true, repeat: 1 }, at - 0.2); gsap.set(e.sel, { opacity: 0, y: 20 }); master.to(e.sel, { opacity: 1, y: 0, duration: 0.4 }, at); }
+      else if (e.kind === 'row') {
+        gsap.set(e.sel, { opacity: 0, x: -80 }); master.to(e.sel, { opacity: 1, x: 0, duration: 0.35, ease: 'expo.out' }, at);
+        master.to(`#${b.id}-sc`, { opacity: 1, top: 70 + e.k * 92, duration: 0.3, ease: 'power2.out' }, at);
+      }
+      else if (e.kind === 'step') {
+        gsap.set(e.sel, { opacity: 0, scale: 0.7 }); master.to(e.sel, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }, at);
+        master.to(e.sel, { borderColor: '#C6FF3D', boxShadow: '0 0 50px rgba(198,255,61,.35)', duration: 0.2 }, at + 0.1);
+        master.set(`#${b.id}-d`, { opacity: 1 }, at);
+        master.to(`#${b.id}-d`, { top: 590 + e.k * 182 + 39, duration: 0.35, ease: 'power2.inOut' }, at);
+      }
+      else if (e.kind === 'arrow') { gsap.set(e.sel, { scaleY: 0, transformOrigin: '50% 0' }); master.to(e.sel, { scaleY: 1, duration: 0.3 }, at); }
+      else if (e.kind === 'stat') {
+        const v = info.v, to = Number(String(v.value).replace(/[^\d.]/g, '')) || 0, d = Math.max(1.2, last - at - 0.3);
+        gsap.set(e.sel, { opacity: 0, scale: 0.8 }); master.to(e.sel, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }, at);
+        R2.counter(`#${b.id}-n`, 0, to, at, d, n => (v.prefix || '') + Math.round(n).toLocaleString('en-IN') + (v.suffix || ''));
+        master.to(`#${b.id}-b`, { width: '100%', duration: d, ease: 'power2.out' }, at);
+      }
+      else if (e.kind === 'msg') {
+        gsap.set(e.sel, { opacity: 0, y: 30, scale: 0.9 }); master.to(e.sel, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'back.out(2)' }, at);
+      }
+      else if (e.kind === 'check') {
+        gsap.set(e.sel, { opacity: 0, x: 60 }); master.to(e.sel, { opacity: 1, x: 0, duration: 0.35, ease: 'expo.out' }, at - 0.15);
+        master.to(`#${b.id}-x${e.k}`, { backgroundColor: '#C6FF3D', duration: 0.15 }, at + 0.25);
+        master.to(`#${b.id}-x${e.k} span`, { opacity: 1, scale: 1.3, duration: 0.2, yoyo: true, repeat: 1 }, at + 0.25);
+      }
+      else if (e.kind === 'vs') { gsap.set(e.sel, { opacity: 0, scale: 0, rotate: -90 }); master.to(e.sel, { opacity: 1, scale: 1, rotate: 0, duration: 0.5, ease: 'back.out(3)' }, at); }
+      else { gsap.set(e.sel, { opacity: 0, y: 40, scale: 0.95 }); R2.popIn(e.sel, at); }
+    });
+    // ---- cues on exact words: kinetic sticker / emoji / shake / zoom / flash ----
+    from = 0;
+    (b.cues || []).forEach((c, ci) => {
+      let at = find(c.word); if (at == null) return;
+      at = Math.min(at + 0.05, end - 0.6);
+      const target = els.filter(e => !['box', 'arrow', 'vs'].includes(e.kind))[(parseInt(c.target) || 0) - 1];
       if (c.do === 'kinetic') {
-        const id = `${b.id}-k${ci}`, cls = ['', 'p', 'c'][ci % 3];
-        stage.insertAdjacentHTML('beforeend', `<div class="kin ${cls}" id="${id}">${esc(String(c.target || c.word).slice(0, 16))}</div>`);
-        master.fromTo(`#${id}`, { opacity: 0, scale: 0.4, rotate: -14 }, { opacity: 1, scale: 1, rotate: -4, duration: 0.35, ease: 'back.out(2.5)' }, at);
-        master.to(`#${id}`, { opacity: 0, scale: 1.25, duration: 0.25, ease: 'power2.in' }, at + 1.05);
+        const kid = `${b.id}-q${ci}`;
+        add(`<div class="kin ${['', 'p', 'c'][ci % 3]}" id="${kid}">${esc(String(c.target || c.word).slice(0, 16))}</div>`);
+        master.fromTo(`#${kid}`, { opacity: 0, scale: 0.4, rotate: -14 }, { opacity: 1, scale: 1, rotate: -4, duration: 0.35, ease: 'back.out(2.5)', immediateRender: false }, at);
+        master.to(`#${kid}`, { opacity: 0, scale: 1.25, duration: 0.25, ease: 'power2.in' }, at + 1.0);
       } else if (c.do === 'emoji') {
-        const id = `${b.id}-e${ci}`;
-        stage.insertAdjacentHTML('beforeend', `<div class="burst" id="${id}" style="left:${800 - (ci % 2) * 120}px;top:${1180 + (ci % 2) * 40}px">${esc(String(c.target || '🔥').slice(0, 4))}</div>`);
-        master.fromTo(`#${id}`, { opacity: 0, scale: 0.2, y: 40 }, { opacity: 1, scale: 1.2, y: 0, duration: 0.3, ease: 'back.out(3)' }, at);
-        master.to(`#${id}`, { opacity: 0, y: -160, rotate: 25, duration: 0.8, ease: 'power1.in' }, at + 0.5);
-      } else if (sel && c.do === 'highlight') {
-        const el = document.querySelector(sel), base = getComputedStyle(el).boxShadow;
-        const glow = '0 0 0 6px #C6FF3D, 0 0 70px rgba(198,255,61,.65)';
-        master.to(sel, { scale: 1.05, boxShadow: glow, duration: 0.2, ease: 'power2.out' }, at);
-        master.to(sel, { scale: 1, boxShadow: base === 'none' ? '0 0 0 0 rgba(0,0,0,0)' : base, duration: 0.35 }, at + 1.0);
-      } else if (sel && c.do === 'zoom') {
-        master.to(sel, { scale: 1.12, duration: 0.25, ease: 'power3.out' }, at);
-        master.to(sel, { scale: 1, duration: 0.35, ease: 'power2.inOut' }, at + 0.8);
-      } else if (sel && c.do === 'shake') {
-        master.to(sel, { keyframes: [{ x: -16 }, { x: 14 }, { x: -10 }, { x: 8 }, { x: 0 }], duration: 0.45 }, at);
+        const kid = `${b.id}-q${ci}`;
+        add(`<div class="burst" id="${kid}" style="left:${800 - (ci % 2) * 120}px;top:${1180 + (ci % 2) * 40}px">${esc(String(c.target || '🔥').slice(0, 4))}</div>`);
+        master.fromTo(`#${kid}`, { opacity: 0, scale: 0.2, y: 40 }, { opacity: 1, scale: 1.2, y: 0, duration: 0.3, ease: 'back.out(3)', immediateRender: false }, at);
+        master.to(`#${kid}`, { opacity: 0, y: -160, rotate: 25, duration: 0.8, ease: 'power1.in' }, at + 0.5);
+      } else if (c.do === 'flash') {
+        master.fromTo('#flash', { opacity: 0.55 }, { opacity: 0, duration: 0.35, immediateRender: false }, at);
+      } else if (target && c.do === 'shake') {
+        master.to(target.sel, { keyframes: [{ x: -16 }, { x: 14 }, { x: -10 }, { x: 8 }, { x: 0 }], duration: 0.45 }, at);
+      } else if (target && (c.do === 'zoom' || c.do === 'highlight' || c.do === 'pop')) {
+        master.to(target.sel, { scale: 1.1, duration: 0.22, ease: 'power3.out' }, at);
+        master.to(target.sel, { scale: 1, duration: 0.35, ease: 'power2.inOut' }, at + 0.7);
       }
     });
-    // Gen Z cut between beats: two coloured panels swipe across
+    // ---- exit + Gen Z cut ----
+    if (bi < R.beats.length - 1) { R2.hdrOut(b.id); master.to(info.root, { opacity: 0, y: -40, duration: 0.3, ease: 'power2.in' }, end - 0.3); }
     if (bi > 0) {
+      gsap.set(info.root, { opacity: 1 });
       master.fromTo('#wipe2', { xPercent: -120 }, { xPercent: 120, duration: 0.42, ease: 'power3.inOut', immediateRender: false }, start - 0.3);
       master.fromTo('#wipe', { xPercent: -120 }, { xPercent: 120, duration: 0.42, ease: 'power3.inOut', immediateRender: false }, start - 0.24);
     }
-    for (let k = 1; k < list.length; k++) times[k] = Math.max(times[k], times[k - 1] + 0.08); // keep order
-    list.forEach((sel, k) => {
-      const at = Math.min(Math.max(times[k], first), end - 0.4);
-      if (/-l\d+$/.test(sel)) { master.set(sel, { opacity: 1, y: 0, scale: 1 }, at); master.to(sel, { clipPath: 'inset(0 0% 0 0)', duration: 0.45, ease: 'steps(18)' }, at); }
-      else R2.popIn(sel, at, sel.endsWith('-vs') ? { ease: 'back.out(3)', duration: 0.5 } : {});
-    });
-    if (bi < R.beats.length - 1) { R2.hdrOut(b.id); R2.fadeOut(list, end - 0.3, { y: -30 }); }
   });
-  // floating hook sticker wiggle + progress bar
+  // continuous life: every visual floats a little, hook sticker wiggles, flow dot pulses, progress bar
   R2.everyFrame(t => {
-    const e = document.getElementById(`${R.beats[0].id}-e`); if (e) e.style.rotate = `${Math.sin(t * 3) * 6}deg`;
+    R.beats.forEach((b, bi) => { const el = document.getElementById(`v-${b.id}`); if (el) el.style.translate = `0 ${Math.sin(t * 1.6 + bi) * 8}px`; });
+    const e = document.getElementById(`${R.beats[0].id}-e`); if (e) e.style.rotate = `${Math.sin(t * 3) * 8}deg`;
+    document.querySelectorAll('.dot').forEach(d => d.style.scale = 1 + 0.18 * Math.sin(t * 8));
+    document.querySelectorAll('.vs').forEach(d => d.style.rotate = `${Math.sin(t * 2) * 6}deg`);
     document.getElementById('prog').style.width = `${Math.min(100, 100 * t / TL.duration)}%`;
   });
 });
