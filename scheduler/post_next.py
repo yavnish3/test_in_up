@@ -206,11 +206,12 @@ def delete_from_cloudinary(kind, post_id, item, media):
         return
     cloud = media.rstrip("/").rsplit("/", 1)[-1]
     if kind == "reel":
-        # insta/reel/<id>.mp4 is shared with the YouTube loop (yavnish3/test_y_30sec):
-        # delete a video only once it is posted on BOTH Instagram and YouTube.
-        groups = {"video": [f"insta/reel/{i}" for i in posted_on_both()], "image": [f"insta/thumbnails/{post_id}"]}
-        if not groups["video"]:
-            del groups["video"]
+        # insta/reel/<id>.mp4 and insta/thumbnails/<id>.jpg are shared with the YouTube loop
+        # (yavnish3/test_y_30sec, which uses the cover as the YouTube thumbnail):
+        # delete them only once the reel is posted on BOTH Instagram and YouTube.
+        both = posted_on_both()
+        groups = {"video": [f"insta/reel/{i}" for i in both], "image": [f"insta/thumbnails/{i}" for i in both]}
+        groups = {k: v for k, v in groups.items() if v}
     else:
         stems = [os.path.splitext(s)[0] for s in item["slides"]]
         groups = {"image": [f"insta/post/{post_id}/{s}" for s in stems],
