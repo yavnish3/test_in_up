@@ -77,7 +77,7 @@ def topics():
 # ---------- Gemini ----------
 
 RULES = """
-You write Instagram carousel posts for "@coder_sani", an Indian SQL-teaching page.
+You write Instagram carousel posts for "The 30 sec developers" (@the30secdev), an Indian SQL-teaching page.
 Language: friendly desi Hinglish (Roman script), like a dost explaining. Words like
 "bole toh", "yaar", "bhai", "simple funda", desi analogies (chai, Swiggy, cricket,
 UPI, Aadhaar...). Technical terms stay in English. Accurate SQL only.
@@ -104,7 +104,7 @@ Rules:
   cell <= 12 chars, compare points <= 22 chars, mistake wrong/right <= 70 chars.
 - "next": the topic of the following post (short, <= 18 chars), a natural next step.
 - "caption": hook line + emoji, blank line, "Is post mein:" + 4-5 "✅ ..." lines,
-  blank line, "SQL Series · Part {part}", "Save karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!",
+  blank line, "SQL Series · Part {part}", "Save karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!",
   blank line, exactly 30 hashtags (Instagram max) starting with #sql: topic-specific ones first,
   then broad ones (#sqlinhindi #learnsql #dataanalyst #datascience #coding ...). No duplicates.
 - Prefer a NEW topic. Each covered topic below shows what that post explained.

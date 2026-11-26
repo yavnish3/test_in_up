@@ -33,7 +33,7 @@ GAP, HOOK_GAP, TAIL = 0.18, 0.1, 0.25
 MAX_SECONDS = 59
 
 STYLE = """
-You write the voiceover for a 45-55 second Instagram Reel of "@coder_sani" (SQL in Hinglish).
+You write the voiceover for a 45-55 second Instagram Reel of "The 30 sec developers" (@the30secdev, SQL in Hinglish).
 Style: GEN Z Hinglish, the voice is a young FEMALE creator (feminine verbs: "batati hoon",
 "samjhati hoon"). Fast, punchy, meme-y but the SQL must be 100% correct.
 Use Gen Z words naturally: "bro", "no cap", "lowkey", "fr", "literally", "vibe",
@@ -55,7 +55,7 @@ Each beat has:
          (word by word, same order). Count carefully.
 Total words of all "say" <= 140.
 caption: reel caption like the carousel's (hook line + emoji, 3-4 "✅" lines,
-"SQL Series · Part N", "Save karo 📌 · Follow karo daily SQL ke liye!", 30 hashtags).
+"SQL Series · Part N", "Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!", 30 hashtags).
 """
 
 
