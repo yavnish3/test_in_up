@@ -1,0 +1,158 @@
+{
+ "id": "SQL066",
+ "part": 66,
+ "module": "Window Functions",
+ "topic": "Nth Highest Salary (DENSE_RANK)",
+ "next": "CTE (WITH clause)",
+ "hook": "3rd highest salary ab [[1 line]] ka kaam",
+ "cover_sticker": "🥉",
+ "slides": [
+  {
+   "type": "table",
+   "title": "Pehle [[data]] dekho",
+   "sticker": "👀",
+   "columns": [
+    "NAME",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "90,000"
+    ],
+    [
+     "Meera",
+     "90,000"
+    ],
+    [
+     "Kabir",
+     "70,000"
+    ],
+    [
+     "Dev",
+     "60,000"
+    ],
+    [
+     "Riya",
+     "50,000"
+    ]
+   ],
+   "highlight": [
+    3
+   ],
+   "note": "90,000 tie hai. 3rd **distinct** highest = **60,000** 🎯",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "Plan [[3 step]] ka",
+   "sticker": "🗺️",
+   "points": [
+    "**DENSE_RANK()** se har salary ko rank do",
+    "Result ko **CTE** mein rakho",
+    "Bahar **WHERE rnk = N** lagao"
+   ],
+   "note": "Window function WHERE mein direct nahi chalta, isliye **CTE** 🧠",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "code",
+   "title": "Nth highest [[query]]",
+   "sticker": "💻",
+   "file": "nth_salary.sql",
+   "code": "WITH r AS (\n  SELECT name, salary,\n    DENSE_RANK() OVER (\n      ORDER BY salary DESC\n    ) AS rnk\n  FROM employees\n)\nSELECT * FROM r WHERE rnk = 3;"
+  },
+  {
+   "type": "table",
+   "title": "3 functions, [[3 ranks]]",
+   "sticker": "📊",
+   "columns": [
+    "SALARY",
+    "ROW_NUM",
+    "RANK",
+    "DENSE"
+   ],
+   "rows": [
+    [
+     "90,000",
+     "1",
+     "1",
+     "1"
+    ],
+    [
+     "90,000",
+     "2",
+     "1",
+     "1"
+    ],
+    [
+     "70,000",
+     "3",
+     "3",
+     "2"
+    ],
+    [
+     "60,000",
+     "4",
+     "4",
+     "3"
+    ]
+   ],
+   "highlight": [
+    3
+   ],
+   "note": "Sirf **DENSE_RANK** mein 60,000 = 3 ✓",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "concept",
+   "title": "Bonus: [[dept-wise]] Nth",
+   "sticker": "🔥",
+   "points": [
+    "OVER mein **PARTITION BY dept** daalo",
+    "Har dept ki ranking **alag** shuru",
+    "rnk = 2 → har dept ka **2nd highest**"
+   ],
+   "note": "Interviewer ka next sawaal yahi hota hai, ready raho 😎",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "compare",
+   "title": "OFFSET vs [[DENSE_RANK]]",
+   "left": {
+    "label": "LIMIT OFFSET",
+    "points": [
+     "DISTINCT zaroori",
+     "Ek hi value milti",
+     "Group-wise mushkil"
+    ]
+   },
+   "right": {
+    "label": "DENSE_RANK ✅",
+    "points": [
+     "Ties khud handle",
+     "Tie wale sab naam",
+     "PARTITION se easy"
+    ]
+   }
+  },
+  {
+   "type": "mistake",
+   "wrong": "ROW_NUMBER() OVER (\n  ORDER BY salary DESC)\n... WHERE rn = 3",
+   "right": "DENSE_RANK() OVER (\n  ORDER BY salary DESC)\n... WHERE rnk = 3",
+   "why": "ROW_NUMBER tie ko alag number deta → rn 3 = **70,000** (galat!) 💀",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**DENSE_RANK** = no gaps, ties same",
+    "CTE mein rank, bahar **WHERE rnk = N**",
+    "ROW_NUMBER = ties pe **galat**",
+    "Dept-wise? **PARTITION BY**"
+   ]
+  }
+ ],
+ "caption": "3rd highest salary ab 1 line ka kaam 🥉\n\nNth highest ka sabse pakka tareeka: DENSE_RANK!\nIs post mein:\n✅ Ties wala tricky data\n✅ CTE + DENSE_RANK query\n✅ ROW_NUMBER vs RANK vs DENSE_RANK\n✅ Dept-wise Nth highest bonus\n\nSQL Series · Part 66/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #sqlinhindi #learnsql #dataanalytics #sqlinterview #dataanalyst #coding #techhindi #datascience"
+}

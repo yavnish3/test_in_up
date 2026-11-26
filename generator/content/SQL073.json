@@ -1,0 +1,128 @@
+{
+ "id": "SQL073",
+ "part": 73,
+ "module": "Joins Advanced",
+ "topic": "CROSS JOIN",
+ "next": "Duplicates dhundo aur hatao",
+ "hook": "3 shirts x 2 colours = 6 outfits, SQL ne [[pehna diye]]",
+ "cover_sticker": "👕",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "CROSS JOIN = [[har x har]]",
+   "sticker": "✖️",
+   "points": [
+    "Table A ki **har row** × B ki **har row**",
+    "Rows = **A ki ginti × B ki ginti**",
+    "**ON** ki zaroorat hi nahi"
+   ],
+   "note": "Jaise thali: 3 sabzi × 2 roti = **6 combos** 🍛",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Outfit [[generator]]",
+   "sticker": "💻",
+   "file": "outfits.sql",
+   "code": "SELECT s.size, c.color\nFROM sizes s\nCROSS JOIN colors c;"
+  },
+  {
+   "type": "table",
+   "title": "3 × 2 = [[6 rows]]",
+   "sticker": "👕",
+   "columns": [
+    "SIZE",
+    "COLOR"
+   ],
+   "rows": [
+    [
+     "S",
+     "Black"
+    ],
+    [
+     "S",
+     "White"
+    ],
+    [
+     "M",
+     "Black"
+    ],
+    [
+     "M",
+     "White"
+    ],
+    [
+     "L",
+     "… +2 aur"
+    ]
+   ],
+   "highlight": [
+    0,
+    1
+   ],
+   "note": "S, M, L × Black, White = **6 combos**, ek bhi miss nahi ✅",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "concept",
+   "title": "Kahan [[kaam]] aata hai?",
+   "sticker": "🎯",
+   "points": [
+    "**Product variants**: size × colour",
+    "**Calendar**: har store × har date",
+    "**Report grid**: zero sales wale din bhi dikhe",
+    "Test data jaldi **generate** karna"
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "INNER vs [[CROSS]]",
+   "left": {
+    "label": "INNER JOIN 🤝",
+    "points": [
+     "ON se match",
+     "Sirf matching rows",
+     "Rows ≤ A × B"
+    ]
+   },
+   "right": {
+    "label": "CROSS JOIN ✖️",
+    "points": [
+     "Koi condition nahi",
+     "Saare combinations",
+     "Rows = A × B"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "Size ka [[dhyaan]] rakho",
+   "sticker": "💣",
+   "points": [
+    "10 × 10 = **100** rows, chill",
+    "1,000 × 1,000 = **10 lakh** rows 😬",
+    "1 lakh × 1 lakh = **1000 crore** 💀"
+   ],
+   "note": "CROSS JOIN sirf **chhoti** lookup tables ke saath karo",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT *\nFROM customers, orders;",
+   "right": "SELECT *\nFROM customers c\nJOIN orders o\n  ON o.customer_id = c.id;",
+   "why": "ON / WHERE bhoole to **accidental cross join** → rows ka dhamaka 💥 (MySQL JOIN bina ON bhi chala deta)",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "CROSS JOIN = **har row × har row**",
+    "Rows = **A × B**",
+    "**ON nahi** lagta",
+    "Galti se bina ON = **rows ka dhamaka**"
+   ]
+  }
+ ],
+ "caption": "3 shirts x 2 colours = 6 outfits, SQL ne pehna diye 👕\n\nCROSS JOIN = saare combinations ek query mein!\nIs post mein:\n✅ CROSS JOIN kya hai\n✅ Size × colour outfit generator\n✅ INNER vs CROSS JOIN\n✅ Accidental cross join ka khatra\n\nSQL Series · Part 73/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqljoins #crossjoin #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience"
+}

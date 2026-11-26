@@ -1,0 +1,121 @@
+{
+ "id": "SQL007",
+ "part": 7,
+ "module": "Create & Insert",
+ "topic": "INSERT INTO",
+ "next": "SELECT * FROM",
+ "hook": "Khaali table [[udaas]] hai, chalo data khilaate hain",
+ "cover_sticker": "🍽️",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "INSERT ka [[formula]]",
+   "sticker": "📥",
+   "points": [
+    "**INSERT INTO** table (columns)",
+    "**VALUES** (same order mein values)",
+    "Columns aur values ka **count** same"
+   ],
+   "note": "Jaise form bharna: **label** upar, **jawab** neeche ✍️",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Ek saath [[do rows]]",
+   "sticker": "✌️",
+   "file": "data_khilao.sql",
+   "code": "INSERT INTO employees\n(id, name, dept, salary, city)\nVALUES\n(1,'Aarav','IT',60000,'Delhi'),\n(2,'Meera','HR',45000,'Mumbai');",
+   "note": "Har row **( )** mein, rows ke beech **comma**. Ek query, kai rows 🚀",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "table",
+   "title": "Table ab [[bhari]] hai",
+   "sticker": "😋",
+   "columns": [
+    "ID",
+    "NAME",
+    "DEPT",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "1",
+     "Aarav",
+     "IT",
+     "60000"
+    ],
+    [
+     "2",
+     "Meera",
+     "HR",
+     "45000"
+    ]
+   ],
+   "highlight": [
+    0,
+    1
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "Text vs [[Number]]",
+   "left": {
+    "label": "Text 🔤",
+    "points": [
+     "'Aarav', 'Delhi'",
+     "Single quotes zaroori"
+    ]
+   },
+   "right": {
+    "label": "Number 🔢",
+    "points": [
+     "60000, 45000",
+     "Quotes nahi chahiye"
+    ]
+   },
+   "note": "Date bhi quotes mein: **'2024-01-15'** 📅",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "concept",
+   "title": "Columns [[likhna]] zaroori?",
+   "sticker": "🤔",
+   "points": [
+    "Bina column list: **saari** values, **exact order**",
+    "Table badli toh query **toot** jayegi",
+    "Column list likho = **safe + clear**"
+   ],
+   "note": "Production mein hamesha **column naam** likho 😎",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "Apostrophe ka [[jugaad]]",
+   "sticker": "🧷",
+   "points": [
+    "Naam: **D'Souza**? Quote beech mein!",
+    "Do baar likho: **'D''Souza'**",
+    "'' = ek single quote, bas"
+   ]
+  },
+  {
+   "type": "mistake",
+   "wrong": "VALUES (3, \"Kabir\", \"Sales\")",
+   "wrong_is_code": true,
+   "right": "VALUES (3, 'Kabir', 'Sales')",
+   "right_is_code": true,
+   "why": "Standard SQL mein \"double\" = column naam. **PostgreSQL error** dega, text hamesha **'single'** ✅"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**INSERT INTO** table (cols) **VALUES** (...)",
+    "Text aur date **'single quotes'** mein",
+    "Kai rows: **( ),( )** comma se",
+    "Column list likho, **safe** raho"
+   ]
+  }
+ ],
+ "caption": "Khaali table udaas hai, chalo data khilaate hain 🍽️\n\nIs post mein:\n✅ INSERT INTO ka formula\n✅ Ek query mein multiple rows\n✅ Text vs number: quotes ka scene\n✅ D'Souza jaise naam kaise daalein\n\nSQL Series · Part 7/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

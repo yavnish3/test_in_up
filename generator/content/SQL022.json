@@ -1,0 +1,129 @@
+{
+ "id": "SQL022",
+ "part": 22,
+ "module": "Aggregate Functions",
+ "topic": "SUM() aur AVG()",
+ "next": "MIN() aur MAX()",
+ "hook": "Company kitni salary [[baant]] rahi hai? SUM aur AVG se poochho",
+ "cover_sticker": "💸",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "SUM = [[total]], AVG = [[average]]",
+   "sticker": "🧮",
+   "points": [
+    "**SUM(col)**: saari values jod do",
+    "**AVG(col)**: total ÷ kitni values",
+    "Poori column → **ek single answer**"
+   ],
+   "note": "Jaise party ka bill: SUM = **total**, AVG = **per head** 🍕",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "table",
+   "title": "Aaj ka [[data]]",
+   "sticker": "📋",
+   "columns": [
+    "NAME",
+    "DEPT",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "IT",
+     "90,000"
+    ],
+    [
+     "Meera",
+     "HR",
+     "60,000"
+    ],
+    [
+     "Kabir",
+     "IT",
+     "75,000"
+    ],
+    [
+     "Riya",
+     "Sales",
+     "55,000"
+    ],
+    [
+     "Dev",
+     "Sales",
+     "NULL"
+    ]
+   ],
+   "highlight": [
+    4
+   ],
+   "note": "Dev ki salary abhi **decide nahi** hui, isliye NULL 👀",
+   "who": "DHYAAN DO"
+  },
+  {
+   "type": "code",
+   "title": "Ek query, [[do answer]]",
+   "sticker": "💻",
+   "file": "salary_ka_hisaab.sql",
+   "code": "SELECT\n  SUM(salary) AS total,\n  AVG(salary) AS average\nFROM employees;"
+  },
+  {
+   "type": "table",
+   "title": "Result [[dekho]]",
+   "sticker": "🎯",
+   "columns": [
+    "TOTAL",
+    "AVERAGE"
+   ],
+   "rows": [
+    [
+     "2,80,000",
+     "70,000"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "AVG = 2,80,000 ÷ **4**, 5 nahi! NULL wali row **gini hi nahi** gayi",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "Sirf [[numbers]] pe chalte",
+   "sticker": "🔢",
+   "points": [
+    "salary, amount, marks: **perfect**",
+    "NULL ko dono **ignore** karte hain",
+    "Sab NULL ho → answer bhi **NULL**"
+   ],
+   "note": "SQL Server: INT ka AVG **integer** aata. Fix: **AVG(salary * 1.0)**",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "code",
+   "title": "NULL = 0 [[chahiye]]?",
+   "sticker": "🛠️",
+   "file": "null_ko_zero.sql",
+   "code": "SELECT\n  AVG(COALESCE(salary, 0))\n    AS avg_with_zero\nFROM employees;",
+   "note": "COALESCE NULL ko **0** bana deta. Ab 2,80,000 ÷ 5 = **56,000**",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "mistake",
+   "wrong": "AVG mein NULL ko **0** maan lena (÷5)",
+   "right": "AVG NULL ko **skip** karta hai (÷4)",
+   "why": "0 chahiye to khud bolo: **COALESCE(salary, 0)**"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**SUM** = total, **AVG** = average",
+    "Sirf **numeric** columns pe",
+    "NULL ko dono **ignore** karte",
+    "NULL = 0 chahiye? **COALESCE**"
+   ]
+  }
+ ],
+ "caption": "Company kitni salary baant rahi hai? 💸\n\nSUM aur AVG se ek line mein pata karo!\nIs post mein:\n✅ SUM() vs AVG() simple bhasha mein\n✅ Worked example with result\n✅ NULL ka twist (÷4 ya ÷5?)\n✅ COALESCE se NULL ko 0 banao\n\nSQL Series · Part 22/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #aggregatefunctions #dataanalytics #dataanalyst #coding #techhindi #sqlforbeginners #programming"
+}

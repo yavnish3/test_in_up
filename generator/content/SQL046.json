@@ -1,0 +1,121 @@
+{
+ "id": "SQL046",
+ "part": 46,
+ "module": "Advanced Basics",
+ "topic": "INDEX",
+ "next": "Second Highest Salary",
+ "hook": "Query 100x fast karni hai? [[INDEX]] ka shortcut",
+ "cover_sticker": "⚡",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "INDEX = [[book ka index]]",
+   "sticker": "📚",
+   "points": [
+    "Bina index: **har page** palto 😩",
+    "Index se: seedha **page 247** pe jump",
+    "DB mein bhi same: **full scan** vs jump"
+   ],
+   "note": "Lakhon rows mein se ek dhoondhna = bina index **bhoosa mein sui** 🪡",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Index [[banao]]",
+   "sticker": "🛠️",
+   "file": "fast_karo.sql",
+   "code": "CREATE INDEX idx_city\nON employees(city);\n\nSELECT name FROM employees\nWHERE city = 'Pune';",
+   "note": "Ab WHERE city wali query **seedha** Pune rows pe jaayegi 🎯",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Andar se [[sorted list]]",
+   "sticker": "🗂️",
+   "columns": [
+    "CITY",
+    "ROW POINTER"
+   ],
+   "rows": [
+    [
+     "Delhi",
+     "row 1, row 5"
+    ],
+    [
+     "Mumbai",
+     "row 2, row 4"
+    ],
+    [
+     "Pune",
+     "row 3"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "Index = column ki **sorted copy** + row ka pata (mostly B-tree)",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Kahan [[lagana]] hai?",
+   "sticker": "📍",
+   "points": [
+    "**WHERE** mein baar baar aane wale column",
+    "**JOIN** wale columns (customer_id)",
+    "**ORDER BY** wale bade columns",
+    "PRIMARY KEY pe index **auto** milta ✓"
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "Index ka [[price]]",
+   "left": {
+    "label": "Fayda 🚀",
+    "points": [
+     "SELECT fast",
+     "WHERE/JOIN fast",
+     "Sorting fast"
+    ]
+   },
+   "right": {
+    "label": "Nuksaan 🐢",
+    "points": [
+     "INSERT/UPDATE slow",
+     "Extra disk space",
+     "Har index maintain"
+    ]
+   },
+   "note": "Har INSERT pe **har index** bhi update hota hai. Free nahi hai bhai",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "Index [[kaam nahi]] karega",
+   "sticker": "🚫",
+   "points": [
+    "LIKE **'%pur'** → aage wildcard ❌",
+    "LIKE 'Pu%' → chalega ✓",
+    "Column pe function: **UPPER(city)** ❌"
+   ],
+   "note": "Query slow? **EXPLAIN** lagao, dekho index use hua ya nahi 🔍",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "mistake",
+   "wrong": "**Har column** pe index bana diya, sab fast ho jayega",
+   "right": "Sirf **WHERE / JOIN / ORDER BY** wale columns pe index",
+   "why": "Zyada index = **slow writes** + zyada space. Soch samajh ke lagao ⚖️"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "INDEX = **book ka index**",
+    "**CREATE INDEX** idx ON t(col)",
+    "WHERE/JOIN columns pe lagao",
+    "Zyada index = **slow writes**"
+   ]
+  }
+ ],
+ "caption": "Query 100x fast karni hai? INDEX ka shortcut ⚡\n\nIs post mein:\n✅ INDEX kya hai (book wala example)\n✅ CREATE INDEX syntax\n✅ Kahan lagana, kahan nahi\n✅ Index ka hidden price\n\nSQL Series · Part 46/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlindex #learnsql #sqlinhindi #dataanalytics #performance #coding #datascience #sqlforbeginners #programming"
+}

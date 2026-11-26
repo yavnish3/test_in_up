@@ -1,0 +1,130 @@
+{
+ "id": "SQL069",
+ "part": 69,
+ "module": "CTE & Subqueries",
+ "topic": "Correlated Subquery",
+ "next": "EXISTS vs IN",
+ "hook": "Apne hi [[department]] se zyada kaun kamata hai?",
+ "cover_sticker": "🕵️",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Normal vs [[correlated]]",
+   "sticker": "🔗",
+   "points": [
+    "Normal subquery: **ek baar** chalti hai",
+    "Correlated: **outer row ka column** use karti",
+    "Isliye **har row ke liye** dobara chalti hai"
+   ],
+   "note": "Har employee ke liye alag sawaal: \"**tere** dept ka average kya?\"",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Dept avg se [[zyada]]",
+   "sticker": "💻",
+   "file": "dept_topper.sql",
+   "code": "SELECT name, dept, salary\nFROM employees e\nWHERE salary > (\n  SELECT AVG(salary)\n  FROM employees\n  WHERE dept = e.dept\n);",
+   "note": "**e.dept** = bahar wali row ka dept. Yahi \"correlation\" hai 🔗",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "Har row, [[alag avg]]",
+   "sticker": "📊",
+   "columns": [
+    "NAME",
+    "DEPT",
+    "SALARY",
+    "DEPT AVG"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "IT",
+     "90,000",
+     "80,000 ✅"
+    ],
+    [
+     "Kabir",
+     "IT",
+     "70,000",
+     "80,000 ❌"
+    ],
+    [
+     "Dev",
+     "Sales",
+     "80,000",
+     "65,000 ✅"
+    ],
+    [
+     "Riya",
+     "Sales",
+     "50,000",
+     "65,000 ❌"
+    ]
+   ],
+   "highlight": [
+    0,
+    2
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "Andar kya [[chalta]] hai",
+   "sticker": "⚙️",
+   "points": [
+    "Row 1: Aarav, IT → IT ka avg nikalo",
+    "Row 2: Kabir, IT → **phir se** IT avg",
+    "1 lakh rows = **1 lakh** inner queries 🐢"
+   ],
+   "note": "Modern optimizer kai baar khud rewrite kar deta hai, par bharosa mat karo",
+   "who": "TWIST"
+  },
+  {
+   "type": "code",
+   "title": "Window se [[fast]] version",
+   "sticker": "⚡",
+   "file": "window_wala.sql",
+   "code": "WITH x AS (\n  SELECT name, salary,\n    AVG(salary) OVER (\n      PARTITION BY dept) AS a\n  FROM employees\n)\nSELECT * FROM x\nWHERE salary > a;",
+   "note": "Table **ek hi baar** scan, result same 🚀",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "compare",
+   "title": "Correlated vs [[Window]]",
+   "left": {
+    "label": "Correlated 🐢",
+    "points": [
+     "Padhne mein easy",
+     "Har row pe query",
+     "Bada data = slow"
+    ]
+   },
+   "right": {
+    "label": "Window ⚡",
+    "points": [
+     "Ek scan mein kaam",
+     "Bade data pe fast",
+     "Thoda naya syntax"
+    ]
+   }
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT AVG(salary)\nFROM employees\nWHERE dept = dept",
+   "right": "SELECT AVG(salary)\nFROM employees\nWHERE dept = **e.dept**",
+   "why": "dept = dept hamesha **true** → poori company ka avg aa gaya, dept wala nahi 💀"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Inner query **outer column** use kare",
+    "**Har row** ke liye chalti hai",
+    "Alias sahi: **e.dept**",
+    "Fast chahiye? **Window function**"
+   ]
+  }
+ ],
+ "caption": "Apne hi department se zyada kaun kamata hai? 🕵️\n\nCorrelated subquery = har row ka apna sawaal!\nIs post mein:\n✅ Normal vs correlated subquery\n✅ Dept average se zyada salary\n✅ Kyun slow hoti hai\n✅ Window function wala fast version\n\nSQL Series · Part 69/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #cte #subquery #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience"
+}

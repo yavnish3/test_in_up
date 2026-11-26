@@ -1,0 +1,121 @@
+{
+ "id": "SQL043",
+ "part": 43,
+ "module": "Advanced Basics",
+ "topic": "Date Functions",
+ "next": "Query Execution Order",
+ "hook": "Aaj ki date se bachpan tak: [[Date functions]]",
+ "cover_sticker": "📅",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Date = [[time machine]]",
+   "sticker": "⏳",
+   "points": [
+    "Orders kab aaye, joining kab hui",
+    "**Saal / mahina** nikalna, **farq** naapna",
+    "Har report mein date ka khel 📊"
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "[[Aaj]] ki date",
+   "left": {
+    "label": "MySQL / Postgres",
+    "points": [
+     "CURRENT_DATE",
+     "NOW() = date+time"
+    ]
+   },
+   "right": {
+    "label": "SQL Server",
+    "points": [
+     "CAST(GETDATE() AS DATE)",
+     "GETDATE() = date+time"
+    ]
+   }
+  },
+  {
+   "type": "code",
+   "title": "Saal [[nikalo]]",
+   "sticker": "🔍",
+   "file": "saal_nikalo.sql",
+   "code": "SELECT order_id, order_date,\n  YEAR(order_date) AS yr\nFROM orders\nWHERE order_date\n  >= '2025-01-01';",
+   "note": "PostgreSQL mein YEAR() nahi: **EXTRACT(YEAR FROM order_date)**",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "[[Result]] aisa",
+   "sticker": "📋",
+   "columns": [
+    "ORDER_ID",
+    "ORDER_DATE",
+    "YR"
+   ],
+   "rows": [
+    [
+     "101",
+     "2025-01-15",
+     "2025"
+    ],
+    [
+     "102",
+     "2025-03-02",
+     "2025"
+    ],
+    [
+     "103",
+     "2025-07-20",
+     "2025"
+    ]
+   ],
+   "highlight": [
+    1
+   ],
+   "note": "2024 wale orders WHERE ne **pehle hi** bahar kar diye ✂️"
+  },
+  {
+   "type": "concept",
+   "title": "Farq naapo: [[DATEDIFF]]",
+   "sticker": "📏",
+   "points": [
+    "MySQL: **DATEDIFF(end, start)** → din",
+    "SQL Server: **DATEDIFF(day, start, end)**",
+    "Postgres: **end - start** (dono DATE)"
+   ],
+   "note": "Delivery mein kitne din lage? Bas yahi formula 🚚",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "concept",
+   "title": "Format ka [[golden rule]]",
+   "sticker": "🏆",
+   "points": [
+    "Hamesha likho **'YYYY-MM-DD'**",
+    "'2025-01-15' → sab DB samjhenge ✓",
+    "'15/01/2025' → confusion pakka 😵"
+   ],
+   "note": "ISO format = date ka **universal language**",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "mistake",
+   "wrong": "WHERE order_date > '01-02-2025'",
+   "right": "WHERE order_date > '2025-02-01'",
+   "why": "Text jaisa format = galat comparison. **YYYY-MM-DD** hi safe hai 📅",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Aaj: **CURRENT_DATE** / GETDATE()",
+    "Saal: **YEAR()** ya EXTRACT",
+    "Farq: **DATEDIFF** (syntax DB-wise)",
+    "Format hamesha **YYYY-MM-DD**"
+   ]
+  }
+ ],
+ "caption": "Aaj ki date se bachpan tak: Date functions 📅\n\nIs post mein:\n✅ CURRENT_DATE vs GETDATE()\n✅ YEAR() aur EXTRACT\n✅ DATEDIFF har DB mein\n✅ Date format ka golden rule\n\nSQL Series · Part 43/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #datefunctions #learnsql #sqlinhindi #dataanalytics #dataanalyst #coding #datascience #sqlforbeginners #programming"
+}

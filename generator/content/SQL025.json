@@ -1,0 +1,30 @@
+{
+  "id": "SQL025", "part": 25, "module": "Aggregate Functions", "topic": "HAVING", "next": "WHERE vs HAVING",
+  "hook": "WHERE groups pe nahi chalta, [[HAVING]] ko bulao",
+  "cover_sticker": "🚪",
+  "slides": [
+    {"type": "concept", "title": "HAVING = [[group ka filter]]", "sticker": "🧹",
+     "points": ["**GROUP BY** ke baad chalta hai", "Poore **group** ko rakhta ya hatata", "Condition mein **COUNT, SUM, AVG** allowed"],
+     "note": "Club ka bouncer: **sirf 2+ logon ka group andar** 🕺", "who": "DESI LOGIC"},
+    {"type": "table", "title": "Pehle [[groups]] bane", "sticker": "👥",
+     "columns": ["DEPT", "PEOPLE"], "rows": [["IT", "2"], ["HR", "1"], ["Sales", "2"]], "highlight": [1],
+     "note": "Ab sirf woh dept chahiye jahan **1 se zyada** log hain", "who": "SCENE"},
+    {"type": "code", "title": "HAVING [[laga do]]", "sticker": "💻", "file": "bade_dept.sql",
+     "code": "SELECT dept,\n  COUNT(*) AS people\nFROM employees\nGROUP BY dept\nHAVING COUNT(*) > 1;"},
+    {"type": "table", "title": "HR [[bahar]]! 👋", "sticker": "🎯",
+     "columns": ["DEPT", "PEOPLE"], "rows": [["IT", "2"], ["Sales", "2"]], "highlight": [0, 1]},
+    {"type": "compare", "title": "WHERE vs [[HAVING]]",
+     "left": {"label": "WHERE 🔍", "points": ["Rows filter karta", "Grouping se pehle", "Aggregate allowed nahi"]},
+     "right": {"label": "HAVING 🧹", "points": ["Groups filter karta", "Grouping ke baad", "Aggregate allowed ✅"]},
+     "note": "Alias in HAVING (people > 1): MySQL chalata, **PostgreSQL nahi**", "who": "INTERVIEW TIP"},
+    {"type": "code", "title": "Paisa wala [[filter]]", "sticker": "💰", "file": "ameer_dept.sql",
+     "code": "SELECT dept,\n  AVG(salary) AS avg_sal\nFROM employees\nGROUP BY dept\nHAVING AVG(salary) > 60000;",
+     "note": "Sirf woh dept jinka **average 60k se upar** 🔥", "who": "BONUS"},
+    {"type": "mistake", "wrong": "SELECT dept, COUNT(*)\nFROM employees\nWHERE COUNT(*) > 1\nGROUP BY dept;", "wrong_is_code": true,
+     "right": "SELECT dept, COUNT(*)\nFROM employees\nGROUP BY dept\nHAVING COUNT(*) > 1;", "right_is_code": true,
+     "why": "WHERE ke time groups **bane hi nahi**, COUNT kiska? → **error**"},
+    {"type": "recap",
+     "points": ["HAVING = **groups** ka filter", "Hamesha **GROUP BY ke baad**", "Aggregates ke saath **chalta**", "WHERE rows, HAVING **groups**"]}
+  ],
+  "caption": "WHERE groups pe nahi chalta, HAVING ko bulao! 🚪\n\nIs post mein:\n✅ HAVING kya hai aur kab lagta hai\n✅ COUNT(*) > 1 worked example\n✅ WHERE vs HAVING quick compare\n✅ AVG wala filter bonus\n\nSQL Series · Part 25/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #having #groupby #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #programming"
+}

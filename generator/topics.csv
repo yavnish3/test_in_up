@@ -1,0 +1,82 @@
+id,module,topic
+SQL001,Introduction,Database kya hota hai?
+SQL002,Introduction,SQL kya hai?
+SQL003,Introduction,"Table, Row aur Column"
+SQL004,Introduction,Data Types
+SQL005,Introduction,Primary Key
+SQL006,Create & Insert,CREATE TABLE
+SQL007,Create & Insert,INSERT INTO
+SQL008,Select Basics,SELECT * FROM
+SQL009,Select Basics,Specific Columns Select karna
+SQL010,Select Basics,Alias (AS)
+SQL011,Select Basics,DISTINCT
+SQL012,Filtering,WHERE Clause
+SQL013,Filtering,Comparison Operators
+SQL014,Filtering,"AND, OR, NOT"
+SQL015,Filtering,IN Operator
+SQL016,Filtering,BETWEEN
+SQL017,Filtering,LIKE aur Wildcards
+SQL018,Filtering,IS NULL
+SQL019,Sorting & Limit,ORDER BY
+SQL020,Sorting & Limit,LIMIT / TOP
+SQL021,Aggregate Functions,COUNT()
+SQL022,Aggregate Functions,SUM() aur AVG()
+SQL023,Aggregate Functions,MIN() aur MAX()
+SQL024,Aggregate Functions,GROUP BY
+SQL025,Aggregate Functions,HAVING
+SQL026,Aggregate Functions,WHERE vs HAVING
+SQL027,Modify Data,UPDATE
+SQL028,Modify Data,DELETE
+SQL029,Modify Data,DELETE vs TRUNCATE vs DROP
+SQL030,Modify Data,ALTER TABLE
+SQL031,Constraints,"NOT NULL, UNIQUE, DEFAULT"
+SQL032,Constraints,Foreign Key
+SQL033,Joins,Joins kyun chahiye?
+SQL034,Joins,INNER JOIN
+SQL035,Joins,LEFT JOIN
+SQL036,Joins,RIGHT JOIN
+SQL037,Joins,FULL OUTER JOIN
+SQL038,Joins,SELF JOIN
+SQL039,Joins,UNION vs UNION ALL
+SQL040,Advanced Basics,Subquery
+SQL041,Advanced Basics,CASE WHEN
+SQL042,Advanced Basics,String Functions
+SQL043,Advanced Basics,Date Functions
+SQL044,Advanced Basics,Query Execution Order
+SQL045,Advanced Basics,VIEW
+SQL046,Advanced Basics,INDEX
+SQL047,Interview Prep,Second Highest Salary
+SQL048,Interview Prep,SQL Basics Recap
+SQL049,Aggregate Advanced,GROUP BY Multiple Columns
+SQL050,Aggregate Advanced,Conditional Aggregation
+SQL051,Aggregate Advanced,ROLLUP (Subtotal + Grand Total)
+SQL052,Aggregate Advanced,Pivot with CASE
+SQL053,Window Functions,Window Functions kya hain?
+SQL054,Window Functions,Aggregate vs Window (PARTITION BY)
+SQL055,Window Functions,ROW_NUMBER()
+SQL056,Window Functions,RANK vs DENSE_RANK
+SQL057,Window Functions,PARTITION BY
+SQL058,Window Functions,Top N per Group
+SQL059,Window Functions,Running Total
+SQL060,Window Functions,Moving Average (ROWS BETWEEN)
+SQL061,Window Functions,LAG()
+SQL062,Window Functions,LEAD()
+SQL063,Window Functions,NTILE()
+SQL064,Window Functions,FIRST_VALUE & LAST_VALUE
+SQL065,Window Functions,Percent of Total
+SQL066,Window Functions,Nth Highest Salary (DENSE_RANK)
+SQL067,CTE & Subqueries,CTE (WITH clause)
+SQL068,CTE & Subqueries,Recursive CTE
+SQL069,CTE & Subqueries,Correlated Subquery
+SQL070,CTE & Subqueries,EXISTS vs IN
+SQL071,Functions,COALESCE & NULLIF
+SQL072,Functions,CAST (Type Conversion)
+SQL073,Joins Advanced,CROSS JOIN
+SQL074,Data Quality,Duplicates dhundo aur hatao
+SQL075,Transactions,Transactions (COMMIT / ROLLBACK)
+SQL076,Transactions,ACID Properties
+SQL077,Database Design,"Normalization (1NF, 2NF, 3NF)"
+SQL078,Database Programming,Stored Procedure
+SQL079,Interview Prep,Manager se zyada salary
+SQL080,Interview Prep,Month-wise Report
+SQL081,Interview Prep,Advanced SQL Recap

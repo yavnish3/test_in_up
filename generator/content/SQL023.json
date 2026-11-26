@@ -1,0 +1,30 @@
+{
+  "id": "SQL023", "part": 23, "module": "Aggregate Functions", "topic": "MIN() aur MAX()", "next": "GROUP BY",
+  "hook": "Sabse ameer aur sabse gareeb, MAX aur MIN ne [[expose]] kar diya",
+  "cover_sticker": "🕵️",
+  "slides": [
+    {"type": "concept", "title": "MAX ⬆️ aur MIN [[⬇️]]", "sticker": "🎢",
+     "points": ["**MAX(col)**: sabse badi value", "**MIN(col)**: sabse chhoti value", "Poori table scan → **ek answer**"],
+     "note": "Jaise class ka **topper** aur **backbencher** dhoondhna 😅", "who": "SIMPLE BHASHA MEIN"},
+    {"type": "code", "title": "Ek shot mein [[dono]]", "sticker": "💻", "file": "ameer_gareeb.sql",
+     "code": "SELECT\n  MAX(salary) AS highest,\n  MIN(salary) AS lowest\nFROM employees;"},
+    {"type": "table", "title": "Result [[aa gaya]]", "sticker": "📊",
+     "columns": ["HIGHEST", "LOWEST"], "rows": [["90,000", "50,000"]], "highlight": [0],
+     "note": "Data: Aarav 90k, Kabir 75k, Meera 60k, Riya 50k, Dev **NULL** → ignore", "who": "FUN FACT"},
+    {"type": "concept", "title": "Sirf numbers [[nahi]]!", "sticker": "📅",
+     "points": ["**Dates**: MAX = latest, MIN = sabse purani", "**Text**: alphabetical, MIN('Aarav')", "**NULL** ko dono ignore karte", "SUM/AVG ke ulat, yahan text bhi chalega ✅"],
+     "note": "Sabse naya joiner? **MAX(join_date)**. Bas itna hi 😎", "who": "PRO MOVE"},
+    {"type": "compare", "title": "MAX vs [[ORDER BY]]",
+     "left": {"label": "MAX() 🔝", "points": ["Sirf value deta hai", "Super short query", "Aggregate function"]},
+     "right": {"label": "ORDER BY + LIMIT", "points": ["Poori row deta hai", "Naam bhi mil jata", "Ties pe dhyaan do"]}},
+    {"type": "code", "title": "Topper ka [[naam]] bhi?", "sticker": "🏆", "file": "topper_kaun.sql",
+     "code": "SELECT name, salary\nFROM employees\nWHERE salary = (\n  SELECT MAX(salary)\n  FROM employees\n);",
+     "note": "Pehle MAX nikalo, phir **usi salary wali row** pakdo. Ties bhi aa jayenge", "who": "BHAI TIP 💡"},
+    {"type": "mistake", "wrong": "SELECT name, MAX(salary)\nFROM employees;", "wrong_is_code": true,
+     "right": "SELECT name, salary FROM employees\nWHERE salary = (SELECT MAX(salary)\n  FROM employees);", "right_is_code": true,
+     "why": "PostgreSQL/SQL Server: **error**. Purana MySQL: koi bhi **random naam** 💀"},
+    {"type": "recap",
+     "points": ["**MAX** = sabse bada, **MIN** = sabse chhota", "Numbers, **dates**, text sab chalega", "NULL ko **ignore** karte hain", "Naam chahiye? **subquery** lagao"]}
+  ],
+  "caption": "Sabse ameer aur sabse gareeb kaun? 🕵️\n\nMAX aur MIN ne sab expose kar diya!\nIs post mein:\n✅ MAX() aur MIN() basics\n✅ Dates aur text pe bhi chalte hain\n✅ MAX vs ORDER BY + LIMIT\n✅ Topper ka naam sahi tareeke se\n\nSQL Series · Part 23/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #aggregatefunctions #dataanalytics #sqlinterview #coding #techhindi #sqlforbeginners #programming"
+}

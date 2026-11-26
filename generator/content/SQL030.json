@@ -1,0 +1,29 @@
+{
+  "id": "SQL030", "part": 30, "module": "Modify Data", "topic": "ALTER TABLE", "next": "NOT NULL, UNIQUE, DEFAULT",
+  "hook": "Table ban gayi, ab email column bhool gaye? [[ALTER]] hai na",
+  "cover_sticker": "🔧",
+  "slides": [
+    {"type": "concept", "title": "ALTER = [[renovation]]", "sticker": "🏗️",
+     "points": ["Table ka **structure** badlo", "Column **add, drop, rename**, type change", "Andar ka **data safe** rehta hai"],
+     "note": "Ghar mein naya kamra banwaya, **saamaan wahi** ka wahi 🛋️", "who": "DESI LOGIC"},
+    {"type": "code", "title": "Email [[add karo]]", "sticker": "📧", "file": "email_jodo.sql",
+     "code": "ALTER TABLE employees\nADD email VARCHAR(100);"},
+    {"type": "table", "title": "Naya column [[aa gaya]]", "sticker": "✨",
+     "columns": ["NAME", "CITY", "EMAIL"], "rows": [["Aarav", "Delhi", "NULL"], ["Meera", "Mumbai", "NULL"], ["Kabir", "Pune", "NULL"]],
+     "note": "Purani rows mein naya column **NULL** se bhara. Baad mein UPDATE karo", "who": "DHYAAN DO"},
+    {"type": "code", "title": "Baaki [[tools]]", "sticker": "🧰", "file": "aur_bhi.sql",
+     "code": "ALTER TABLE employees\nDROP COLUMN email;\n\nALTER TABLE employees\nRENAME COLUMN city\nTO location;"},
+    {"type": "concept", "title": "Har DB ka [[style]]", "sticker": "🌍",
+     "points": ["Type change MySQL: **MODIFY** col INT", "PostgreSQL: **ALTER COLUMN** col TYPE INT", "SQL Server: **ALTER COLUMN** col INT", "Rename SQL Server mein: **sp_rename**"],
+     "note": "DROP COLUMN = us column ka data **hamesha ke liye** gaya ⚠️", "who": "TWIST"},
+    {"type": "compare", "title": "ALTER vs [[UPDATE]]",
+     "left": {"label": "ALTER 🏗️", "points": ["Structure badalta", "Columns ka khel", "DDL command"]},
+     "right": {"label": "UPDATE ✏️", "points": ["Data badalta", "Rows ki values", "DML command"]}},
+    {"type": "mistake", "wrong": "ALTER TABLE employees\nADD phone VARCHAR(15) NOT NULL;", "wrong_is_code": true,
+     "right": "ALTER TABLE employees\nADD phone VARCHAR(15) NOT NULL\nDEFAULT 'NA';", "right_is_code": true,
+     "why": "Purani rows mein value kya ho? Postgres/SQL Server **error**. **DEFAULT** do"},
+    {"type": "recap",
+     "points": ["**ALTER TABLE** = structure badlo", "**ADD**, **DROP COLUMN**, **RENAME**", "Data **safe**, naya column NULL", "NOT NULL add? **DEFAULT** do"]}
+  ],
+  "caption": "Table ban gayi, ab email column bhool gaye? 🔧\n\nTension nahi, ALTER TABLE hai na!\nIs post mein:\n✅ Column ADD, DROP, RENAME\n✅ MySQL vs PostgreSQL vs SQL Server syntax\n✅ ALTER vs UPDATE\n✅ NOT NULL column ka jaal\n\nSQL Series · Part 30/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #altertable #sqlinhindi #learnsql #database #ddl #coding #techhindi #sqlforbeginners #programming"
+}

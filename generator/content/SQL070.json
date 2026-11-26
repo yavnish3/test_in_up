@@ -1,0 +1,118 @@
+{
+ "id": "SQL070",
+ "part": 70,
+ "module": "CTE & Subqueries",
+ "topic": "EXISTS vs IN",
+ "next": "COALESCE & NULLIF",
+ "hook": "[[NOT IN]] aur NULL ka khatarnaak combo",
+ "cover_sticker": "☠️",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "EXISTS = [[hai ya nahi?]]",
+   "sticker": "🙋",
+   "points": [
+    "Subquery **koi bhi row** de → TRUE",
+    "**Pehla match** milte hi ruk jaata",
+    "SELECT mein kya likha, **farak nahi** (1 chalega)"
+   ],
+   "note": "Jaise attendance: \"present\" bola, bas. Poori kahani nahi chahiye ✋",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Order wale [[customers]]",
+   "sticker": "💻",
+   "file": "order_wale.sql",
+   "code": "SELECT name\nFROM customers c\nWHERE EXISTS (\n  SELECT 1 FROM orders o\n  WHERE o.customer_id = c.id\n);"
+  },
+  {
+   "type": "compare",
+   "title": "IN vs [[EXISTS]]",
+   "left": {
+    "label": "IN 📋",
+    "points": [
+     "Value ko list se match",
+     "Chhoti list mein mast",
+     "NOT IN + NULL = trap"
+    ]
+   },
+   "right": {
+    "label": "EXISTS ✅",
+    "points": [
+     "Row hai ya nahi check",
+     "Pehla match → stop",
+     "NOT EXISTS NULL-safe"
+    ]
+   }
+  },
+  {
+   "type": "table",
+   "title": "Ab [[trap]] wala data",
+   "sticker": "🪤",
+   "columns": [
+    "CUSTOMERS (ID)",
+    "ORDERS (CUSTOMER_ID)"
+   ],
+   "rows": [
+    [
+     "1 · Aarav",
+     "1"
+    ],
+    [
+     "2 · Meera",
+     "NULL"
+    ],
+    [
+     "3 · Kabir",
+     "—"
+    ]
+   ],
+   "highlight": [
+    1
+   ],
+   "note": "Ek order ka customer_id **NULL** hai. Ab dekho kya hota hai 👇",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "NOT IN ne [[sab gayab]] kiya",
+   "sticker": "😱",
+   "points": [
+    "Sawaal: kin customers ka **order nahi**?",
+    "NOT IN (1, NULL) → 2 <> NULL = **UNKNOWN**",
+    "UNKNOWN = filter fail → **0 rows** 💀",
+    "NOT EXISTS → **Meera, Kabir** ✅"
+   ],
+   "note": "NULL se koi bhi comparison **UNKNOWN** deta hai, TRUE kabhi nahi",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "code",
+   "title": "Safe [[tareeka]]",
+   "sticker": "🛡️",
+   "file": "no_order.sql",
+   "code": "SELECT name\nFROM customers c\nWHERE NOT EXISTS (\n  SELECT 1 FROM orders o\n  WHERE o.customer_id = c.id\n);",
+   "note": "\"Jinka nahi hai\" wale sawaal mein hamesha **NOT EXISTS** 😎",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "mistake",
+   "wrong": "WHERE id NOT IN (\n  SELECT customer_id\n  FROM orders)",
+   "right": "WHERE NOT EXISTS (\n  SELECT 1 FROM orders o\n  WHERE o.customer_id = c.id)",
+   "why": "List mein ek bhi **NULL** → NOT IN **zero rows** deta hai, bina error ke",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**EXISTS** = hai ya nahi, pehla match stop",
+    "**IN** = value list se match",
+    "NOT IN + NULL = **0 rows**",
+    "Hamesha **NOT EXISTS** use karo"
+   ]
+  }
+ ],
+ "caption": "NOT IN aur NULL ka khatarnaak combo ☠️\n\nYe bug error bhi nahi deta, chupchaap 0 rows!\nIs post mein:\n✅ EXISTS kaise kaam karta hai\n✅ IN vs EXISTS\n✅ NOT IN + NULL ka trap, step by step\n✅ NOT EXISTS: safe tareeka\n\nSQL Series · Part 70/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #cte #subquery #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience"
+}

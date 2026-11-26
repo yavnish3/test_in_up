@@ -1,0 +1,124 @@
+{
+ "id": "SQL072",
+ "part": 72,
+ "module": "Functions",
+ "topic": "CAST (Type Conversion)",
+ "next": "CROSS JOIN",
+ "hook": "'10' chhota hai '9' se? [[Text ki duniya]] alag hai",
+ "cover_sticker": "🔤",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "CAST = [[type badlo]]",
+   "sticker": "🔄",
+   "points": [
+    "**CAST(x AS type)** = value ka roop badlo",
+    "'123' (text) → **123** (number)",
+    "123 (number) → **'123'** (text)"
+   ],
+   "note": "Jaise rupaye ko dollar mein convert karna: value wahi, **format** naya 💱",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Text se [[number]]",
+   "sticker": "💻",
+   "file": "cast_karo.sql",
+   "code": "SELECT\n  CAST('123' AS INT) + 7\n  AS result;\n-- result: 130",
+   "note": "MySQL mein INT nahi chalta → **CAST('123' AS SIGNED)**",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "Text sort ka [[kaand]]",
+   "sticker": "🤯",
+   "columns": [
+    "TEXT SORT",
+    "NUMBER SORT"
+   ],
+   "rows": [
+    [
+     "'1'",
+     "1"
+    ],
+    [
+     "'10'",
+     "2"
+    ],
+    [
+     "'2'",
+     "9"
+    ],
+    [
+     "'9'",
+     "10"
+    ]
+   ],
+   "highlight": [
+    1
+   ],
+   "note": "Text **akshar-akshar** compare: '1' < '9', isliye '10' < '9'",
+   "who": "TWIST"
+  },
+  {
+   "type": "compare",
+   "title": "Text vs [[Number]]",
+   "left": {
+    "label": "Text 🔤",
+    "points": [
+     "Dictionary order",
+     "'10' < '9'",
+     "Maths nahi hota"
+    ]
+   },
+   "right": {
+    "label": "Number 🔢",
+    "points": [
+     "Value order",
+     "9 < 10",
+     "SUM, AVG sab chalega"
+    ]
+   }
+  },
+  {
+   "type": "code",
+   "title": "Sort ko [[fix]] karo",
+   "sticker": "🛠️",
+   "file": "sahi_sort.sql",
+   "code": "SELECT roll_no, name\nFROM students\nORDER BY\n  CAST(roll_no AS INT);",
+   "note": "Aur best: column ka type hi **INT** rakho, roz CAST ka jhanjhat khatam 😎",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "DB-wise [[shortcuts]]",
+   "sticker": "🗂️",
+   "points": [
+    "PostgreSQL: **'123'::int** bhi chalta",
+    "SQL Server: **TRY_CAST** → fail pe NULL",
+    "MySQL: CAST('abc' AS SIGNED) → **0** + warning",
+    "PG / SQL Server: 'abc' → INT = **error**"
+   ],
+   "note": "Ganda data ho to SQL Server ka TRY_CAST jaan bachata hai 🙌",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "mistake",
+   "wrong": "roll_no TEXT column:\nORDER BY roll_no\n→ 1, 10, 2, 9",
+   "right": "ORDER BY\nCAST(roll_no AS INT)\n→ 1, 2, 9, 10",
+   "why": "Number ko text mein rakha to sort **dictionary** jaisa hoga, ginti jaisa nahi 💀",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**CAST(x AS type)** = type badlo",
+    "Text sort: **'10' < '9'**",
+    "MySQL: **SIGNED / CHAR**",
+    "Number ko **number type** mein rakho"
+   ]
+  }
+ ],
+ "caption": "'10' chhota hai '9' se? Text ki duniya alag hai 🔤\n\nCAST = SQL ka type converter!\nIs post mein:\n✅ CAST(x AS type) basics\n✅ Text sorting ka kaand: '10' < '9'\n✅ ORDER BY CAST se fix\n✅ MySQL / PostgreSQL / SQL Server differences\n\nSQL Series · Part 72/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlfunctions #cast #sqlinhindi #learnsql #dataanalytics #sqltips #coding #techhindi #datascience"
+}

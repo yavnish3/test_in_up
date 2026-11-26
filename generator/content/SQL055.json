@@ -1,0 +1,127 @@
+{
+ "id": "SQL055",
+ "part": 55,
+ "module": "Window Functions",
+ "topic": "ROW_NUMBER()",
+ "next": "RANK vs DENSE_RANK",
+ "hook": "Har row ko [[roll number]] do, class monitor style",
+ "cover_sticker": "🔢",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "ROW_NUMBER = [[roll no.]]",
+   "sticker": "🎒",
+   "points": [
+    "Har row ko number: **1, 2, 3...**",
+    "Kis order mein? → **OVER (ORDER BY ...)**",
+    "Tie ho tab bhi number **unique** ✓"
+   ],
+   "note": "Class monitor line lagwata hai, **har bachche** ko alag number 📋",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Salary wise [[number]]",
+   "sticker": "💻",
+   "file": "roll_number.sql",
+   "code": "SELECT name, salary,\n  ROW_NUMBER() OVER (\n    ORDER BY salary DESC\n  ) AS rn\nFROM employees;"
+  },
+  {
+   "type": "table",
+   "title": "[[Line]] lag gayi",
+   "sticker": "📋",
+   "columns": [
+    "NAME",
+    "SALARY",
+    "RN"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "90,000",
+     "1"
+    ],
+    [
+     "Meera",
+     "90,000",
+     "2"
+    ],
+    [
+     "Kabir",
+     "70,000",
+     "3"
+    ],
+    [
+     "Riya",
+     "50,000",
+     "4"
+    ]
+   ],
+   "highlight": [
+    0,
+    1
+   ],
+   "note": "Aarav-Meera **same salary**, phir bhi 1 aur 2. Kaun pehle? DB ki marzi 🎲",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "Tie ka [[fix]]",
+   "sticker": "🔧",
+   "points": [
+    "Ek aur column se sort: **salary DESC, name**",
+    "Ab order **pakka**, har baar same",
+    "Rerun pe numbers nahi badlenge ✓"
+   ],
+   "note": "Report mein order hilna nahi chahiye, **tie-breaker** daalo",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "code",
+   "title": "[[Duplicates]] hatao",
+   "sticker": "🧹",
+   "file": "dupe_hatao.sql",
+   "code": "SELECT * FROM (\n  SELECT *, ROW_NUMBER() OVER\n   (PARTITION BY email\n    ORDER BY id) AS rn\n  FROM customers) t\nWHERE rn = 1;",
+   "note": "Har email ki **pehli** row rakho, baaki duplicates out 🚮",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "compare",
+   "title": "Kab [[kaam]] aata?",
+   "left": {
+    "label": "Use cases ✅",
+    "points": [
+     "Top N nikalna",
+     "Duplicates hatana",
+     "Pagination"
+    ]
+   },
+   "right": {
+    "label": "Dhyan do ⚠️",
+    "points": [
+     "Tie = random order",
+     "ORDER BY zaroori",
+     "MySQL 8.0+ hi"
+    ]
+   }
+  },
+  {
+   "type": "mistake",
+   "wrong": "ROW_NUMBER() OVER ()",
+   "right": "ROW_NUMBER() OVER\n  (ORDER BY salary DESC)",
+   "why": "SQL Server error dega; MySQL/Postgres mein numbering **random** 🎲",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "ROW_NUMBER = **1, 2, 3...**",
+    "**OVER (ORDER BY ...)** zaroori",
+    "Tie mein bhi **unique** number",
+    "Duplicates hatao: **rn = 1**"
+   ]
+  }
+ ],
+ "caption": "Har row ko roll number do, class monitor style 🔢\n\nIs post mein:\n✅ ROW_NUMBER() kaise kaam karta\n✅ Tie pe kya hota hai\n✅ Duplicates hatane ki trick\n✅ ORDER BY kyun zaroori\n\nSQL Series · Part 55/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #rownumber #windowfunctions #learnsql #sqlinhindi #dataanalyst #sqlinterview #datascience #coding #programming"
+}

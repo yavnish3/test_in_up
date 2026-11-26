@@ -1,0 +1,124 @@
+{
+ "id": "SQL058",
+ "part": 58,
+ "module": "Window Functions",
+ "topic": "Top N per Group",
+ "next": "Running Total",
+ "hook": "Har department ka [[boss]] nikalo ek query mein",
+ "cover_sticker": "👑",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Interview ka [[classic]]",
+   "sticker": "🎯",
+   "points": [
+    "\"Har dept ki **highest salary** wala\"",
+    "\"Har category ke **top 3** products\"",
+    "Sab ek hi pattern: **Top N per group**"
+   ],
+   "note": "Ye sawaal **har data interview** mein aata hai, pakka 💯",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "concept",
+   "title": "[[3 step]] recipe",
+   "sticker": "📝",
+   "points": [
+    "**1.** ROW_NUMBER PARTITION BY dept",
+    "**2.** Use **CTE / subquery** mein daalo",
+    "**3.** Bahar **WHERE rn = 1** lagao"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Full [[query]]",
+   "sticker": "💻",
+   "file": "dept_boss.sql",
+   "code": "WITH r AS (\n SELECT name, dept, salary,\n  ROW_NUMBER() OVER (\n   PARTITION BY dept\n   ORDER BY salary DESC) AS rn\n FROM employees)\nSELECT name, dept, salary\nFROM r WHERE rn = 1;",
+   "note": "**WITH r AS (...)** = CTE, ek temporary naam wali table 📦",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Har dept ka [[boss]]",
+   "sticker": "👑",
+   "columns": [
+    "NAME",
+    "DEPT",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "IT",
+     "90,000"
+    ],
+    [
+     "Meera",
+     "HR",
+     "60,000"
+    ],
+    [
+     "Riya",
+     "Sales",
+     "50,000"
+    ]
+   ],
+   "highlight": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "Top [[N]] chahiye?",
+   "sticker": "🔝",
+   "points": [
+    "Top 1 → **rn = 1**",
+    "Top 2 → **rn <= 2**",
+    "Top 3 → **rn <= 3** ✓"
+   ],
+   "note": "Bas filter badlo, baaki query **same** 😎",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "compare",
+   "title": "Tie [[aaye]] to?",
+   "left": {
+    "label": "ROW_NUMBER",
+    "points": [
+     "Sirf 1 aayega",
+     "Tie wala chhoot gaya"
+    ]
+   },
+   "right": {
+    "label": "DENSE_RANK",
+    "points": [
+     "Dono toppers aayenge",
+     "Tie = same rank"
+    ]
+   },
+   "note": "Same salary wale dono chahiye? **ROW_NUMBER → DENSE_RANK** swap karo",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT name FROM employees\nWHERE ROW_NUMBER() OVER\n (PARTITION BY dept\n  ORDER BY salary DESC) = 1;",
+   "right": "-- CTE/subquery mein rn banao\n-- bahar: WHERE rn = 1",
+   "why": "Window WHERE ke **baad** chalta hai → error. Pehle CTE, phir filter ✓",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "ROW_NUMBER + **PARTITION BY**",
+    "**CTE / subquery** mein lapeto",
+    "**WHERE rn = 1** = har group ka top",
+    "Top N → **rn <= N**"
+   ]
+  }
+ ],
+ "caption": "Har department ka boss nikalo ek query mein 👑\n\nIs post mein:\n✅ Top N per group ka 3-step pattern\n✅ CTE + ROW_NUMBER full query\n✅ Top 1 vs Top N\n✅ Tie ke liye DENSE_RANK\n\nSQL Series · Part 58/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinterview #windowfunctions #cte #learnsql #sqlinhindi #dataanalyst #datascience #coding #programming"
+}

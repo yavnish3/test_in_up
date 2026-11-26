@@ -1,0 +1,124 @@
+{
+ "id": "SQL059",
+ "part": 59,
+ "module": "Window Functions",
+ "topic": "Running Total",
+ "next": "Moving Average (ROWS BETWEEN)",
+ "hook": "Paisa jodte jao, [[SQL hisaab]] rakhega",
+ "cover_sticker": "💰",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Running total = [[gullak]]",
+   "sticker": "🐷",
+   "points": [
+    "Har mahine paisa gullak mein daalo",
+    "Gullak mein ab tak kitna? → **running total**",
+    "Har row = **ab tak ka jod** ✓"
+   ],
+   "note": "Cumulative sum bhi kehte hain. Finance walon ka **fav** 💸",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "code",
+   "title": "[[SUM() OVER]]",
+   "sticker": "💻",
+   "file": "gullak.sql",
+   "code": "SELECT month, amount,\n  SUM(amount) OVER (\n    ORDER BY month_no\n  ) AS running_total\nFROM sales;",
+   "note": "**ORDER BY** = jodne ka order. Bina iske poora total har row pe",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "Jod [[badhta]] gaya",
+   "sticker": "📈",
+   "columns": [
+    "MONTH",
+    "AMOUNT",
+    "RUNNING"
+   ],
+   "rows": [
+    [
+     "Jan",
+     "100",
+     "100"
+    ],
+    [
+     "Feb",
+     "150",
+     "250"
+    ],
+    [
+     "Mar",
+     "120",
+     "370"
+    ],
+    [
+     "Apr",
+     "200",
+     "570"
+    ]
+   ],
+   "highlight": [
+    3
+   ],
+   "note": "Mar: 100 + 150 + 120 = **370**. Simple jod 🧮",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "compare",
+   "title": "[[ORDER BY]] ka jaadu",
+   "left": {
+    "label": "OVER ()",
+    "points": [
+     "Har row = 570",
+     "Poora grand total"
+    ]
+   },
+   "right": {
+    "label": "OVER (ORDER BY ..)",
+    "points": [
+     "100, 250, 370, 570",
+     "Ab tak ka total"
+    ]
+   }
+  },
+  {
+   "type": "code",
+   "title": "Har saal [[reset]]",
+   "sticker": "🔄",
+   "file": "saal_wise.sql",
+   "code": "SUM(amount) OVER (\n  PARTITION BY year\n  ORDER BY month_no\n  ROWS UNBOUNDED PRECEDING\n) AS ytd",
+   "note": "Same date wali rows? **ROWS** likho, warna tie wale same total paayenge",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "[[Kahan]] kaam aata?",
+   "sticker": "📊",
+   "points": [
+    "Sales ka **YTD** (year to date)",
+    "Bank balance after har transaction",
+    "Followers growth graph 📈"
+   ]
+  },
+  {
+   "type": "mistake",
+   "wrong": "ORDER BY month\n-- Apr, Feb, Jan, Mar 💀",
+   "right": "ORDER BY month_no\n-- 1, 2, 3, 4 ✓",
+   "why": "Month **text** hai to alphabet order sort hoga → running total galat",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**SUM() OVER (ORDER BY ...)**",
+    "Har row = **ab tak ka total**",
+    "**PARTITION BY** = reset per group",
+    "Month ko **number** se sort karo"
+   ]
+  }
+ ],
+ "caption": "Paisa jodte jao, SQL hisaab rakhega 💰\n\nIs post mein:\n✅ Running total kya hai\n✅ SUM() OVER (ORDER BY ...)\n✅ Saal wise reset with PARTITION BY\n✅ Month sorting wali galti\n\nSQL Series · Part 59/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #runningtotal #windowfunctions #learnsql #sqlinhindi #dataanalyst #finance #datascience #coding #programming"
+}

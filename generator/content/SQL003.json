@@ -1,0 +1,125 @@
+{
+ "id": "SQL003",
+ "part": 3,
+ "module": "Introduction",
+ "topic": "Table, Row aur Column",
+ "next": "Data Types",
+ "hook": "Excel ka [[bada bhai]]: Table, Row aur Column",
+ "cover_sticker": "📊",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Table = data ka [[grid]]",
+   "sticker": "🧱",
+   "points": [
+    "Ek table = **ek cheez** ka data",
+    "employees, orders, customers: **alag tables**",
+    "Grid jaisa: **upar se neeche, left se right**"
+   ],
+   "note": "Jaise school ka **attendance register** 📒",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "table",
+   "title": "Ek [[row]] = ek insaan",
+   "sticker": "🙋",
+   "columns": [
+    "ID",
+    "NAME",
+    "DEPT",
+    "CITY"
+   ],
+   "rows": [
+    [
+     "1",
+     "Aarav",
+     "IT",
+     "Delhi"
+    ],
+    [
+     "2",
+     "Meera",
+     "HR",
+     "Mumbai"
+    ],
+    [
+     "3",
+     "Kabir",
+     "Sales",
+     "Delhi"
+    ]
+   ],
+   "highlight": [
+    1
+   ],
+   "note": "Meera ki poori line = **ek row** (record) 👆"
+  },
+  {
+   "type": "concept",
+   "title": "Column = ek [[sawaal]]",
+   "sticker": "📐",
+   "points": [
+    "Column = **field**: name, dept, salary",
+    "Har row mein us sawaal ka **jawab**",
+    "Ek column = **ek hi type** ka data"
+   ],
+   "note": "Column **khada** (vertical), row **leti** hui (horizontal) 😴",
+   "who": "YAAD RAKHO"
+  },
+  {
+   "type": "concept",
+   "title": "Cell = ek [[value]]",
+   "sticker": "🎯",
+   "points": [
+    "Row aur column ka **milan** = cell",
+    "Meera ki row + CITY column = **Mumbai**",
+    "Ek cell mein **ek hi value** rakho"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Poori table [[dekho]]",
+   "sticker": "👀",
+   "file": "table_dikhao.sql",
+   "code": "SELECT *\nFROM employees;",
+   "note": "Star (*) = **saare columns**, saari rows. Table ka **full darshan** 🙏",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "compare",
+   "title": "Excel vs [[SQL table]]",
+   "left": {
+    "label": "Excel 📄",
+    "points": [
+     "Kuch bhi kahin bhi",
+     "Column mein mix data",
+     "Row number = A1, B2"
+    ]
+   },
+   "right": {
+    "label": "SQL Table 🗄️",
+    "points": [
+     "Fixed columns pehle",
+     "Har column ka ek type",
+     "Row ki pehchaan = ID"
+    ]
+   }
+  },
+  {
+   "type": "mistake",
+   "wrong": "Row ko column samajhna, column ko row",
+   "right": "**Row** = ek record (Meera), **Column** = ek field (city)",
+   "why": "Ulta samjhe toh queries **ulti** padengi 🙃"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Table = data ka **grid**",
+    "Row = ek **record** (horizontal)",
+    "Column = ek **field** (vertical)",
+    "Cell = row × column = **ek value**"
+   ]
+  }
+ ],
+ "caption": "Excel ka bada bhai: Table, Row aur Column 📊\n\nIs post mein:\n✅ Table kya hota hai\n✅ Row vs Column, ekdum clear\n✅ Cell = ek value\n✅ Excel vs SQL table\n\nSQL Series · Part 3/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

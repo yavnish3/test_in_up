@@ -1,0 +1,122 @@
+{
+ "id": "SQL050",
+ "part": 50,
+ "module": "Aggregate Advanced",
+ "topic": "Conditional Aggregation",
+ "next": "ROLLUP (Subtotal + Grand Total)",
+ "hook": "Ek query, das counts: SQL ki [[multitasking]]",
+ "cover_sticker": "🎛️",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Problem [[kya]] hai?",
+   "sticker": "😩",
+   "points": [
+    "Delhi wale kitne? **Alag query**",
+    "Mumbai wale kitne? **Phir alag query**",
+    "Total kitne? **Teesri query** 🙄"
+   ],
+   "note": "Ek hi query mein sab nikal sakte ho, chill karo",
+   "who": "SPOILER"
+  },
+  {
+   "type": "concept",
+   "title": "Trick: [[CASE]] andar",
+   "sticker": "🧠",
+   "points": [
+    "Har row pe CASE: match → **1**, warna **0**",
+    "Phir **SUM** = matches ka count",
+    "Har metric = ek **SUM(CASE ...)** ✓"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Ek query, [[kai metrics]]",
+   "sticker": "💻",
+   "file": "multi_count.sql",
+   "code": "SELECT dept,\n  SUM(CASE WHEN city = 'Delhi'\n      THEN 1 ELSE 0 END)\n    AS delhi_people,\n  COUNT(*) AS total\nFROM employees\nGROUP BY dept;",
+   "note": "Ye pattern har **dashboard / report** ka favourite hai 📊",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "table",
+   "title": "[[Result]] dekho",
+   "sticker": "📊",
+   "columns": [
+    "DEPT",
+    "DELHI_PEOPLE",
+    "TOTAL"
+   ],
+   "rows": [
+    [
+     "IT",
+     "2",
+     "3"
+    ],
+    [
+     "HR",
+     "0",
+     "2"
+    ],
+    [
+     "Sales",
+     "0",
+     "1"
+    ]
+   ],
+   "highlight": [
+    1
+   ],
+   "note": "HR mein Delhi wala koi nahi → **0** aaya, NULL nahi ✓",
+   "who": "TWIST"
+  },
+  {
+   "type": "compare",
+   "title": "SUM vs [[COUNT]] style",
+   "left": {
+    "label": "SUM(CASE..1 ELSE 0)",
+    "points": [
+     "Match = 1, baaki 0",
+     "Kuch nahi → 0"
+    ]
+   },
+   "right": {
+    "label": "COUNT(CASE..1 END)",
+    "points": [
+     "Baaki NULL",
+     "COUNT NULL skip karta"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "Aur [[metrics]] jodo",
+   "sticker": "➕",
+   "points": [
+    "Salary > 50k wale: **SUM(CASE ... 1 ...)**",
+    "Sirf IT ki salary: **SUM(CASE ... salary)**",
+    "Postgres: **COUNT(*) FILTER (WHERE ...)**"
+   ],
+   "note": "THEN mein 1 ki jagah **column** do → conditional total 💰",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "mistake",
+   "wrong": "SUM(CASE WHEN city = 'Delhi'\n    THEN 1 END)",
+   "right": "SUM(CASE WHEN city = 'Delhi'\n    THEN 1 ELSE 0 END)",
+   "why": "Group mein ek bhi match nahi → SUM = **NULL**, 0 nahi 😵",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**SUM(CASE WHEN ... 1 ELSE 0)**",
+    "Ek query = **kai metrics**",
+    "**COUNT(CASE ...)** bhi chalta",
+    "SUM ke saath **ELSE 0** mat bhoolo"
+   ]
+  }
+ ],
+ "caption": "Ek query, das counts: SQL ki multitasking 🎛️\n\nIs post mein:\n✅ SUM(CASE WHEN ...) trick\n✅ Ek query mein kai metrics\n✅ SUM vs COUNT style\n✅ ELSE 0 kyun zaroori\n\nSQL Series · Part 50/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #casewhen #learnsql #sqlinhindi #dataanalytics #dataanalyst #reporting #datascience #sqlforbeginners #programming"
+}

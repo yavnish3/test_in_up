@@ -1,0 +1,116 @@
+{
+ "id": "SQL010",
+ "part": 10,
+ "module": "Select Basics",
+ "topic": "Alias (AS)",
+ "next": "DISTINCT",
+ "hook": "Column ka naam pasand nahi? [[AS]] se naamkaran",
+ "cover_sticker": "🏷️",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "AS = [[nickname]]",
+   "sticker": "😎",
+   "points": [
+    "Column ko **temporary** naya naam",
+    "Sirf **result** mein dikhta hai",
+    "Table mein asli naam **wahi** rehta hai"
+   ],
+   "note": "Jaise ghar mein \"Bunty\", Aadhaar pe \"**Rahul**\" 😄",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Naamkaran [[sanskaar]]",
+   "sticker": "🎉",
+   "file": "naamkaran.sql",
+   "code": "SELECT\n  name AS employee_name,\n  salary * 12 AS yearly_salary\nFROM employees;"
+  },
+  {
+   "type": "table",
+   "title": "Result mein [[naye naam]]",
+   "sticker": "🪄",
+   "columns": [
+    "EMPLOYEE_NAME",
+    "YEARLY_SALARY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "720000"
+    ],
+    [
+     "Meera",
+     "540000"
+    ],
+    [
+     "Kabir",
+     "600000"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "salary × 12 ka naam bina AS: kuch **ajeeb sa** aata 🤢",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Space wala [[naam]]?",
+   "sticker": "🔤",
+   "points": [
+    "**\"Yearly Salary\"**: double quotes (standard)",
+    "MySQL: **`Yearly Salary`** backticks",
+    "SQL Server: **[Yearly Salary]**"
+   ],
+   "note": "Best: space hi mat daalo, **yearly_salary** likho 👌",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "compare",
+   "title": "AS ke saath vs [[bina]]",
+   "left": {
+    "label": "salary AS pay",
+    "points": [
+     "Saaf, padhne layak",
+     "Recommended ✅"
+    ]
+   },
+   "right": {
+    "label": "salary pay",
+    "points": [
+     "Bhi chalta hai",
+     "Comma bhoole toh 💀"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "Table ka bhi [[alias]]",
+   "sticker": "📛",
+   "points": [
+    "FROM employees **e**",
+    "Phir likho **e.name**, e.salary",
+    "JOINs mein ye **bahut** kaam aayega"
+   ]
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT salary*12 AS yearly\nFROM employees\nWHERE yearly > 600000;",
+   "wrong_is_code": true,
+   "right": "SELECT salary*12 AS yearly\nFROM employees\nWHERE salary*12 > 600000;",
+   "right_is_code": true,
+   "why": "WHERE, SELECT se **pehle** chalta hai. Alias tab tak **bana hi nahi** 🤷 (ORDER BY mein chalega)"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**AS** = column ka temporary naam",
+    "Sirf result mein, table **same**",
+    "Calculation ke saath **must**",
+    "Alias **WHERE** mein nahi chalta"
+   ]
+  }
+ ],
+ "caption": "Column ka naam pasand nahi? AS laga ke naamkaran karo 🏷️\n\nIs post mein:\n✅ AS se column ka naya naam\n✅ salary * 12 AS yearly_salary\n✅ Space wale naam ka scene\n✅ WHERE mein alias kyun fail hota hai\n\nSQL Series · Part 10/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

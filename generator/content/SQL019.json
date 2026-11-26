@@ -1,0 +1,154 @@
+{
+ "id": "SQL019",
+ "part": 19,
+ "module": "Sorting & Limit",
+ "topic": "ORDER BY",
+ "next": "LIMIT / TOP",
+ "hook": "Salary ke hisaab se [[line mein]] lag jao sab",
+ "cover_sticker": "🧍",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "ORDER BY = [[line]] lagao",
+   "sticker": "📶",
+   "points": [
+    "Result ko **sort** karta hai",
+    "**ASC** = chhote se bada (default)",
+    "**DESC** = bade se chhota"
+   ],
+   "note": "Bina ORDER BY ke row order ki **koi guarantee nahi** 🎲",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "code",
+   "title": "Moti salary [[pehle]]",
+   "sticker": "💰",
+   "file": "salary_rank.sql",
+   "code": "SELECT name, salary\nFROM employees\nORDER BY salary DESC;"
+  },
+  {
+   "type": "table",
+   "title": "Result: [[top]] se neeche",
+   "sticker": "🏆",
+   "columns": [
+    "NAME",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "Riya",
+     "75000"
+    ],
+    [
+     "Aarav",
+     "60000"
+    ],
+    [
+     "Kabir",
+     "50000"
+    ],
+    [
+     "Meera",
+     "45000"
+    ],
+    [
+     "Dev",
+     "40000"
+    ]
+   ],
+   "highlight": [
+    0
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "ASC vs [[DESC]]",
+   "left": {
+    "label": "ASC ⬆️",
+    "points": [
+     "10 → 100",
+     "A → Z",
+     "Purani date pehle"
+    ]
+   },
+   "right": {
+    "label": "DESC ⬇️",
+    "points": [
+     "100 → 10",
+     "Z → A",
+     "Nayi date pehle"
+    ]
+   }
+  },
+  {
+   "type": "code",
+   "title": "Do [[columns]] pe sort",
+   "sticker": "🗃️",
+   "file": "dept_phir_salary.sql",
+   "code": "SELECT name, dept, salary\nFROM employees\nORDER BY dept,\n  salary DESC;",
+   "note": "Pehle dept A→Z, **same dept** mein salary bade se chhota",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "table",
+   "title": "Multi sort ka [[result]]",
+   "sticker": "🧾",
+   "columns": [
+    "DEPT",
+    "NAME",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "HR",
+     "Meera",
+     "45000"
+    ],
+    [
+     "IT",
+     "Riya",
+     "75000"
+    ],
+    [
+     "IT",
+     "Aarav",
+     "60000"
+    ],
+    [
+     "Sales",
+     "Kabir",
+     "50000"
+    ],
+    [
+     "Sales",
+     "Dev",
+     "40000"
+    ]
+   ],
+   "highlight": [
+    1,
+    2
+   ],
+   "note": "NULLs: MySQL/SQL Server mein ASC pe **pehle**, PostgreSQL mein **last** 🤓",
+   "who": "TWIST"
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT name FROM employees\nORDER BY salary\nWHERE city = 'Delhi';",
+   "wrong_is_code": true,
+   "right": "SELECT name FROM employees\nWHERE city = 'Delhi'\nORDER BY salary;",
+   "right_is_code": true,
+   "why": "Pehle **filter** (WHERE), phir **sort** (ORDER BY). Ulta = syntax error ❌"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**ORDER BY** col = sort",
+    "**ASC** default, **DESC** ulta",
+    "Multi: **dept, salary DESC**",
+    "WHERE ke **baad** aata hai"
+   ]
+  }
+ ],
+ "caption": "Salary ke hisaab se line mein lag jao sab 🧍\n\nIs post mein:\n✅ ORDER BY ASC vs DESC\n✅ Salary ranking ka result\n✅ Do columns pe sort\n✅ NULLs kahan aate hain, DB ke hisaab se\n\nSQL Series · Part 19/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

@@ -1,0 +1,29 @@
+{
+  "id": "SQL024", "part": 24, "module": "Aggregate Functions", "topic": "GROUP BY", "next": "HAVING",
+  "hook": "Department wise [[gossip]]: GROUP BY",
+  "cover_sticker": "🗣️",
+  "slides": [
+    {"type": "concept", "title": "GROUP BY = [[gang banao]]", "sticker": "👯",
+     "points": ["Same value wali rows → **ek group**", "Har group pe **COUNT, SUM, AVG** chalao", "Ek group = **ek result row**"],
+     "note": "Jaise shaadi mein: ladki wale ek side, ladke wale ek side 💃", "who": "DESI LOGIC"},
+    {"type": "table", "title": "Pehle [[raw data]]", "sticker": "📋",
+     "columns": ["NAME", "DEPT", "SALARY"], "rows": [["Aarav", "IT", "90,000"], ["Meera", "HR", "60,000"], ["Kabir", "IT", "70,000"], ["Riya", "Sales", "50,000"], ["Dev", "Sales", "60,000"]]},
+    {"type": "code", "title": "Dept wise [[hisaab]]", "sticker": "💻", "file": "dept_gossip.sql",
+     "code": "SELECT dept,\n  COUNT(*) AS people,\n  AVG(salary) AS avg_salary\nFROM employees\nGROUP BY dept;"},
+    {"type": "table", "title": "5 rows → [[3 groups]]", "sticker": "🎯",
+     "columns": ["DEPT", "PEOPLE", "AVG_SALARY"], "rows": [["IT", "2", "80,000"], ["HR", "1", "60,000"], ["Sales", "2", "55,000"]], "highlight": [0],
+     "note": "Order guaranteed nahi. Sorted chahiye? **ORDER BY** lagao", "who": "BHAI TIP 💡"},
+    {"type": "concept", "title": "SELECT ka [[golden rule]]", "sticker": "📏",
+     "points": ["SELECT mein sirf **group wala column**", "Ya phir **aggregate** (COUNT, AVG...)", "name likha? IT ke **2 naam**, kaunsa dikhaye? 🤷"],
+     "note": "Ek group ki ek row hai, **ek naam** fit hi nahi hota", "who": "SIMPLE BHASHA MEIN"},
+    {"type": "code", "title": "Multiple [[columns]] bhi", "sticker": "🧩", "file": "dept_city.sql",
+     "code": "SELECT dept, city,\n  COUNT(*) AS people\nFROM employees\nGROUP BY dept, city;",
+     "note": "Har **(dept, city)** combo ka alag group banta hai 🔥", "who": "PRO MOVE"},
+    {"type": "mistake", "wrong": "SELECT dept, name, COUNT(*)\nFROM employees\nGROUP BY dept;", "wrong_is_code": true,
+     "right": "SELECT dept, COUNT(*)\nFROM employees\nGROUP BY dept;", "right_is_code": true,
+     "why": "name GROUP BY mein nahi → PostgreSQL/SQL Server **error**, MySQL (strict mode) bhi"},
+    {"type": "recap",
+     "points": ["Same value → **ek group**", "Har group pe **aggregate**", "SELECT = group col + **aggregates**", "Ek group = **ek row**"]}
+  ],
+  "caption": "Department wise gossip chahiye? 🗣️\n\nGROUP BY se har dept ka hisaab ek query mein!\nIs post mein:\n✅ GROUP BY kya karta hai\n✅ 5 rows → 3 groups worked example\n✅ SELECT ka golden rule\n✅ Multiple columns pe grouping\n\nSQL Series · Part 24/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #groupby #sqlinhindi #learnsql #dataanalytics #dataanalyst #sqlinterview #coding #techhindi #programming"
+}

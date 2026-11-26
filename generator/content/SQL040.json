@@ -1,0 +1,30 @@
+{
+  "id": "SQL040", "part": 40, "module": "Advanced Basics", "topic": "Subquery", "next": "CASE WHEN",
+  "hook": "Query ke andar query: SQL ka [[Inception]]",
+  "cover_sticker": "🌀",
+  "slides": [
+    {"type": "concept", "title": "Subquery = [[nested query]]", "sticker": "🪆",
+     "points": ["Ek query ke **andar** doosri query", "Hamesha **( )** brackets mein", "Andar wali **pehle** chalti hai"],
+     "note": "Matryoshka doll jaisa: **gudiya ke andar gudiya** 🪆", "who": "DESI LOGIC"},
+    {"type": "code", "title": "Average se [[upar]] kaun?", "sticker": "💻", "file": "avg_se_upar.sql",
+     "code": "SELECT name, salary\nFROM employees\nWHERE salary > (\n  SELECT AVG(salary)\n  FROM employees\n);"},
+    {"type": "table", "title": "Step by [[step]]", "sticker": "🪜",
+     "columns": ["NAME", "SALARY", "> 66,000?"], "rows": [["Aarav", "90,000", "✅"], ["Kabir", "70,000", "✅"], ["Meera", "60,000", "❌"], ["Riya", "50,000", "❌"], ["Dev", "60,000", "❌"]], "highlight": [0, 1],
+     "note": "Step 1: AVG = **66,000**. Step 2: usse upar = **Aarav, Kabir**", "who": "SIMPLE BHASHA MEIN"},
+    {"type": "concept", "title": "Kahan [[laga]] sakte?", "sticker": "📍",
+     "points": ["**WHERE** mein: filter ke liye", "**FROM** mein: temporary table jaisa", "**SELECT** mein: extra column ke liye"],
+     "note": "FROM wali subquery ko **alias** do, warna MySQL/SQL Server error dete", "who": "PRO MOVE"},
+    {"type": "code", "title": "Kai rows? [[IN]] lagao", "sticker": "🧺", "file": "order_wale.sql",
+     "code": "SELECT name\nFROM customers\nWHERE id IN (\n  SELECT customer_id\n  FROM orders\n);",
+     "note": "Subquery ne **1, 2, 1** diya. IN bolta: inmein se **koi bhi** chalega", "who": "SHORTCUT"},
+    {"type": "compare", "title": "= vs [[IN]]",
+     "left": {"label": "= (equals)", "points": ["Sirf ek value", "1 row wali subquery", "MAX, AVG ke saath"]},
+     "right": {"label": "IN", "points": ["List of values", "Kai rows chalegi", "IDs ki list ke saath"]}},
+    {"type": "mistake", "wrong": "WHERE id = (\n  SELECT customer_id\n  FROM orders\n);", "wrong_is_code": true,
+     "right": "WHERE id IN (\n  SELECT customer_id\n  FROM orders\n);", "right_is_code": true,
+     "why": "Subquery ne **kai rows** di aur = laga → \"more than one row\" **error**"},
+    {"type": "recap",
+     "points": ["Subquery = **query ke andar query**", "**( )** mein, andar wali **pehle**", "WHERE, FROM, SELECT mein **chalti**", "Kai rows? **=** nahi, **IN**"]}
+  ],
+  "caption": "Query ke andar query: SQL ka Inception 🌀\n\nIs post mein:\n✅ Subquery kya hai aur kaise chalti hai\n✅ Average se upar salary wala example\n✅ WHERE, FROM, SELECT mein subquery\n✅ = vs IN ka jaal\n\nSQL Series · Part 40/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #subquery #sqlinhindi #learnsql #sqlinterview #dataanalyst #dataanalytics #coding #techhindi #programming"
+}

@@ -1,0 +1,129 @@
+{
+ "id": "SQL065",
+ "part": 65,
+ "module": "Window Functions",
+ "topic": "Percent of Total",
+ "next": "Nth Highest Salary (DENSE_RANK)",
+ "hook": "Kiska kitna [[hissa]]? Pizza ki tarah baanto",
+ "cover_sticker": "🍕",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Hissa = [[part / total]]",
+   "sticker": "🍕",
+   "points": [
+    "Pizza ke 8 slice, tumne 2 khaaye → **25%**",
+    "SQL mein: **salary / total salary × 100**",
+    "Problem: har row pe **total** kaise laayein?"
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "Jawab: [[SUM() OVER ()]]",
+   "sticker": "🪄",
+   "points": [
+    "Khaali **OVER ()** = poori table ek window",
+    "Har row ke saath **grand total** chipak jaata",
+    "GROUP BY nahi, rows **collapse nahi** hoti"
+   ],
+   "note": "OVER () ke andar kuch nahi = **sab ka sum, har row pe** 🙌",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Percent [[query]]",
+   "sticker": "💻",
+   "file": "pizza_share.sql",
+   "code": "SELECT name, salary,\n  ROUND(salary * 100.0\n    / SUM(salary) OVER (), 1)\n  AS pct\nFROM employees;"
+  },
+  {
+   "type": "table",
+   "title": "Total = [[3,50,000]]",
+   "sticker": "📊",
+   "columns": [
+    "NAME",
+    "SALARY",
+    "PCT"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "90,000",
+     "25.7"
+    ],
+    [
+     "Dev",
+     "80,000",
+     "22.9"
+    ],
+    [
+     "Kabir",
+     "70,000",
+     "20.0"
+    ],
+    [
+     "Meera",
+     "60,000",
+     "17.1"
+    ],
+    [
+     "Riya",
+     "50,000",
+     "14.3"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "Sab jodo → **100%** (rounding se ±0.1 ho sakta hai)",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "code",
+   "title": "Dept ke [[andar]] share",
+   "sticker": "🏢",
+   "file": "dept_share.sql",
+   "code": "SELECT name, dept,\n  ROUND(salary * 100.0 /\n    SUM(salary) OVER (\n      PARTITION BY dept\n    ), 1) AS dept_pct\nFROM employees;",
+   "note": "PARTITION BY dept → har dept ka apna **100%**",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "compare",
+   "title": "100 vs [[100.0]]",
+   "left": {
+    "label": "salary * 100 ❌",
+    "points": [
+     "Integer ÷ integer",
+     "PG / SQL Server: 25",
+     "Decimal gayab"
+    ]
+   },
+   "right": {
+    "label": "salary * 100.0 ✅",
+    "points": [
+     "Decimal math",
+     "25.7 jaisa sahi",
+     "Har DB mein safe"
+    ]
+   }
+  },
+  {
+   "type": "mistake",
+   "wrong": "salary * 100\n/ SUM(salary) OVER ()",
+   "right": "salary * 100.0\n/ SUM(salary) OVER ()",
+   "why": "PostgreSQL / SQL Server mein int ÷ int = **int** → 25.7 ban jaata **25** 💀 (MySQL bach jaata)",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Total har row pe: **SUM() OVER ()**",
+    "pct = part × **100.0** / total",
+    "**ROUND(…, 1)** se saaf number",
+    "Group-wise? **PARTITION BY**"
+   ]
+  }
+ ],
+ "caption": "Kiska kitna hissa? Pizza ki tarah baanto 🍕\n\nPercent of total = har report ka favourite column!\nIs post mein:\n✅ SUM() OVER () se grand total\n✅ Percent query + result\n✅ Dept ke andar share\n✅ 100 vs 100.0 ka integer trap\n\nSQL Series · Part 65/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #sqlinhindi #learnsql #dataanalytics #sqlinterview #dataanalyst #coding #techhindi #datascience"
+}

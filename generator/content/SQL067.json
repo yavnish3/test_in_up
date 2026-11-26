@@ -1,0 +1,120 @@
+{
+ "id": "SQL067",
+ "part": 67,
+ "module": "CTE & Subqueries",
+ "topic": "CTE (WITH clause)",
+ "next": "Recursive CTE",
+ "hook": "Spaghetti query ko [[saaf thaali]] mein parosna",
+ "cover_sticker": "🍝",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "CTE = query ka [[nickname]]",
+   "sticker": "🏷️",
+   "points": [
+    "**WITH naam AS (query)** likho",
+    "Ab us result ko **table ki tarah** use karo",
+    "Sirf **isi query** tak zinda, phir gayab"
+   ],
+   "note": "Bole toh: badi query ko **chhote steps** mein todna 🍱",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "compare",
+   "title": "Subquery vs [[CTE]]",
+   "left": {
+    "label": "Nested subquery 🍝",
+    "points": [
+     "Andar ke andar query",
+     "Andar se padhna padta",
+     "Reuse = copy-paste"
+    ]
+   },
+   "right": {
+    "label": "CTE 🍱",
+    "points": [
+     "Upar naam, neeche use",
+     "Top to bottom padho",
+     "Ek baar likho, reuse"
+    ]
+   }
+  },
+  {
+   "type": "code",
+   "title": "Pehla [[CTE]]",
+   "sticker": "💻",
+   "file": "saaf_thaali.sql",
+   "code": "WITH dept_avg AS (\n  SELECT dept,\n    AVG(salary) AS avg_sal\n  FROM employees\n  GROUP BY dept\n)\nSELECT * FROM dept_avg\nWHERE avg_sal > 50000;"
+  },
+  {
+   "type": "table",
+   "title": "Pehle CTE, phir [[filter]]",
+   "sticker": "📊",
+   "columns": [
+    "DEPT",
+    "AVG_SAL",
+    "> 50K?"
+   ],
+   "rows": [
+    [
+     "IT",
+     "80,000",
+     "✅"
+    ],
+    [
+     "Sales",
+     "65,000",
+     "✅"
+    ],
+    [
+     "HR",
+     "40,000",
+     "❌"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "CTE ne 3 rows banayi, bahar ke WHERE ne **HR** hata diya",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Multiple CTEs: [[comma]]",
+   "sticker": "🔗",
+   "file": "do_ctes.sql",
+   "code": "WITH it AS (\n  SELECT * FROM employees\n  WHERE dept = 'IT'\n), rich AS (\n  SELECT * FROM it\n  WHERE salary > 75000\n)\nSELECT name FROM rich;",
+   "note": "Doosra CTE **pehle wale** ko use kar sakta hai. WITH sirf ek baar!",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "CTE [[kab]] use karein?",
+   "sticker": "🎯",
+   "points": [
+    "Query mein **2-3 level** nesting ho",
+    "Same result **2 baar** chahiye",
+    "Window function pe **filter** lagana ho",
+    "MySQL **8.0+** chahiye, purane mein nahi"
+   ],
+   "note": "Interview mein CTE likho to code **clean** lagta hai, points milte hain 😎",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "mistake",
+   "wrong": "CTE banaya, ab kal bhi\n**SELECT * FROM dept_avg**",
+   "right": "Har baar query ke saath\n**WITH dept_avg AS (...)** likho",
+   "why": "CTE **temporary** hai, query khatam to gayab. Permanent chahiye? **VIEW / table** banao"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**WITH naam AS (query)**",
+    "Table ki tarah use, **temporary**",
+    "Multiple CTEs: **comma** se",
+    "Permanent chahiye? **VIEW**"
+   ]
+  }
+ ],
+ "caption": "Spaghetti query ko saaf thaali mein parosna 🍝\n\nCTE = WITH clause = clean SQL ka secret!\nIs post mein:\n✅ CTE kya hai, kyun use karein\n✅ Subquery vs CTE\n✅ Multiple CTEs comma se\n✅ CTE temporary hai, table nahi\n\nSQL Series · Part 67/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #cte #subquery #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience"
+}

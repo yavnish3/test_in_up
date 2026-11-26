@@ -1,0 +1,153 @@
+{
+ "id": "SQL076",
+ "part": 76,
+ "module": "Transactions",
+ "topic": "ACID Properties",
+ "next": "Normalization (1NF, 2NF, 3NF)",
+ "hook": "Bank ka database kabhi [[galti]] kyun nahi karta?",
+ "cover_sticker": "🏦",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Jawab: [[ACID]] 🧪",
+   "sticker": "🧪",
+   "points": [
+    "Transaction ke **4 promises**",
+    "**A**tomicity · **C**onsistency",
+    "**I**solation · **D**urability",
+    "Bank, UPI, tickets: sab isi pe chalte"
+   ],
+   "note": "Interview ka **favourite** DBMS sawaal. Ratna nahi, samajhna hai!",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "table",
+   "title": "ACID ek [[nazar]] mein",
+   "sticker": "🗂️",
+   "columns": [
+    "LETTER",
+    "MATLAB",
+    "EXAMPLE"
+   ],
+   "rows": [
+    [
+     "A",
+     "All or nothing",
+     "Aadha transfer nahi"
+    ],
+    [
+     "C",
+     "Rules safe rahein",
+     "Balance kabhi -ve nahi"
+    ],
+    [
+     "I",
+     "No clash",
+     "2 log, 1 seat"
+    ],
+    [
+     "D",
+     "Saved forever",
+     "Crash ke baad bhi"
+    ]
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "A = [[Atomicity]]",
+   "sticker": "⚛️",
+   "points": [
+    "Transaction = **ek atom**, toot nahi sakta",
+    "Debit hua, credit fail → **dono cancel**",
+    "Mechanism: **ROLLBACK**"
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "C = [[Consistency]]",
+   "sticker": "📏",
+   "points": [
+    "Har transaction ke baad **rules** pakke",
+    "CHECK, FOREIGN KEY, UNIQUE **todne nahi**",
+    "Total paisa before = **total after**"
+   ],
+   "note": "Rule toota? Poora transaction **reject** 🙅",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "compare",
+   "title": "I vs [[D]]",
+   "left": {
+    "label": "Isolation 🚧",
+    "points": [
+     "Parallel txns no clash",
+     "Ek seat, ek hi booking",
+     "Dirty read nahi"
+    ]
+   },
+   "right": {
+    "label": "Durability 💾",
+    "points": [
+     "COMMIT = pakka",
+     "Power cut ke baad bhi",
+     "Log disk pe likha"
+    ]
+   },
+   "note": "Durability ka raaz: COMMIT se pehle **log disk pe** likh diya jaata hai",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "table",
+   "title": "Isolation [[real life]]",
+   "sticker": "🎟️",
+   "columns": [
+    "TIME",
+    "RIYA",
+    "DEV"
+   ],
+   "rows": [
+    [
+     "10:00",
+     "Seat 7A check: free",
+     "—"
+    ],
+    [
+     "10:00",
+     "—",
+     "Seat 7A check: free"
+    ],
+    [
+     "10:01",
+     "Book 7A ✅",
+     "Wait… ⏳"
+    ],
+    [
+     "10:02",
+     "—",
+     "7A gone ❌"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "Isolation ne dono ko **ek hi seat** bechne se bachaya 🙌",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Isolation = data ke rules sahi rakhna",
+   "right": "**Consistency** = rules safe,\n**Isolation** = parallel txns no clash",
+   "why": "C = **kya** sahi hai (rules). I = **ek saath** chalne pe takraav nahi"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**A**: all or nothing",
+    "**C**: rules kabhi na tootein",
+    "**I**: parallel mein no clash",
+    "**D**: COMMIT = forever saved"
+   ]
+  }
+ ],
+ "caption": "Bank ka database kabhi galti kyun nahi karta? 🏦\n\nJawab: ACID properties! 🧪\nIs post mein:\n✅ Atomicity: all or nothing\n✅ Consistency: rules safe\n✅ Isolation: no clash (seat booking example)\n✅ Durability: crash ke baad bhi saved\n\nSQL Series · Part 76/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #acid #dbms #database #sqlinhindi #learnsql #sqlinterview #placement #techhindi #backend"
+}

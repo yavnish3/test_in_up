@@ -1,0 +1,144 @@
+{
+ "id": "SQL074",
+ "part": 74,
+ "module": "Data Quality",
+ "topic": "Duplicates dhundo aur hatao",
+ "next": "Transactions (COMMIT / ROLLBACK)",
+ "hook": "Ek email, do baar? [[Doppelganger]] pakdo",
+ "cover_sticker": "👯",
+ "slides": [
+  {
+   "type": "table",
+   "title": "Dekho [[jodwa]] kaun",
+   "sticker": "👀",
+   "columns": [
+    "ID",
+    "NAME",
+    "EMAIL"
+   ],
+   "rows": [
+    [
+     "1",
+     "Aarav",
+     "aarav@x.in"
+    ],
+    [
+     "2",
+     "Meera",
+     "meera@x.in"
+    ],
+    [
+     "3",
+     "Aarav",
+     "aarav@x.in"
+    ],
+    [
+     "4",
+     "Kabir",
+     "kabir@x.in"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "Same email, alag ID. Signup **do baar** ho gaya 🤦",
+   "who": "TWIST"
+  },
+  {
+   "type": "code",
+   "title": "Step 1: [[dhundo]]",
+   "sticker": "🔍",
+   "file": "dup_dhundo.sql",
+   "code": "SELECT email, COUNT(*)\nFROM users\nGROUP BY email\nHAVING COUNT(*) > 1;",
+   "note": "GROUP BY se email ke dabbe, **HAVING** se sirf bhare hue dabbe",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Step 2: [[number]] do",
+   "sticker": "🔢",
+   "file": "dup_number.sql",
+   "code": "SELECT id, email,\n  ROW_NUMBER() OVER (\n    PARTITION BY email\n    ORDER BY id\n  ) AS rn\nFROM users;"
+  },
+  {
+   "type": "table",
+   "title": "rn = 1 [[rakho]]",
+   "sticker": "🏷️",
+   "columns": [
+    "ID",
+    "EMAIL",
+    "RN",
+    "ACTION"
+   ],
+   "rows": [
+    [
+     "1",
+     "aarav@x.in",
+     "1",
+     "Keep ✅"
+    ],
+    [
+     "3",
+     "aarav@x.in",
+     "2",
+     "Delete ❌"
+    ],
+    [
+     "2",
+     "meera@x.in",
+     "1",
+     "Keep ✅"
+    ],
+    [
+     "4",
+     "kabir@x.in",
+     "1",
+     "Keep ✅"
+    ]
+   ],
+   "highlight": [
+    1
+   ],
+   "note": "ORDER BY id → **sabse purana** record bachega",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "code",
+   "title": "Step 3: [[hatao]]",
+   "sticker": "🧹",
+   "file": "dup_hatao.sql",
+   "code": "DELETE FROM users\nWHERE id IN (\n SELECT id FROM (\n  SELECT id, ROW_NUMBER() OVER\n   (PARTITION BY email\n    ORDER BY id) AS rn\n  FROM users) t\n WHERE rn > 1);",
+   "note": "Extra wrapper **t** = MySQL ka \"same table\" error se bachao",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "Pehle [[safety]], phir delete",
+   "sticker": "🦺",
+   "points": [
+    "Backup: **CREATE TABLE bkp AS SELECT …**",
+    "SQL Server: **SELECT * INTO bkp FROM …**",
+    "Pehle **SELECT** chala ke count check",
+    "Baad mein **UNIQUE(email)** laga do"
+   ],
+   "note": "UNIQUE constraint = duplicate ka **permanent ilaaj** 💊",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Seedha:\nDELETE FROM users WHERE ...",
+   "right": "Pehle backup + SELECT check,\nphir DELETE (transaction mein)",
+   "why": "DELETE ka **undo button nahi**. Galat WHERE = asli data bhi gaya 💀"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Find: **GROUP BY + HAVING > 1**",
+    "Number: **ROW_NUMBER PARTITION BY**",
+    "Keep **rn = 1**, delete **rn > 1**",
+    "DELETE se pehle **backup**"
+   ]
+  }
+ ],
+ "caption": "Ek email, do baar? Doppelganger pakdo 👯\n\nDuplicates dhundo aur hatao, 3 steps mein!\nIs post mein:\n✅ GROUP BY + HAVING se duplicates dhundo\n✅ ROW_NUMBER se numbering\n✅ rn > 1 wale delete\n✅ Backup + UNIQUE constraint safety\n\nSQL Series · Part 74/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #dataquality #datacleaning #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience"
+}

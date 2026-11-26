@@ -1,0 +1,30 @@
+{
+  "id": "SQL027", "part": 27, "module": "Modify Data", "topic": "UPDATE", "next": "DELETE",
+  "hook": "Ek WHERE bhoola aur [[sabki salary]] same ho gayi",
+  "cover_sticker": "😱",
+  "slides": [
+    {"type": "concept", "title": "UPDATE = [[data badlo]]", "sticker": "✏️",
+     "points": ["Existing rows ki **value change** karo", "**SET** batata hai kya badalna hai", "**WHERE** batata hai kiska badalna hai"],
+     "note": "Naya data daalna = INSERT. **Purana badalna** = UPDATE", "who": "SIMPLE BHASHA MEIN"},
+    {"type": "code", "title": "Aarav ka [[hike]] 🎉", "sticker": "💻", "file": "hike_time.sql",
+     "code": "UPDATE employees\nSET salary = 65000\nWHERE id = 1;"},
+    {"type": "table", "title": "Sirf [[ek row]] badli", "sticker": "🎯",
+     "columns": ["ID", "NAME", "SALARY"], "rows": [["1", "Aarav", "65,000"], ["2", "Meera", "60,000"], ["3", "Kabir", "70,000"]], "highlight": [0],
+     "note": "WHERE id = 1 ne **sirf Aarav** ko pakda. Baaki safe ✅", "who": "DEKHO"},
+    {"type": "code", "title": "Ek saath [[multiple]]", "sticker": "🧩", "file": "it_ka_hike.sql",
+     "code": "UPDATE employees\nSET salary = salary * 1.10,\n    city = 'Pune'\nWHERE dept = 'IT';",
+     "note": "Comma se **kai columns**, aur purani value pe **maths** bhi 🔥", "who": "PRO MOVE"},
+    {"type": "compare", "title": "WHERE [[hai ya nahi]]",
+     "left": {"label": "WHERE ke saath ✅", "points": ["Sirf chuni hui rows", "Baaki data safe", "Boss khush"]},
+     "right": {"label": "Bina WHERE 💀", "points": ["SAARI rows badal gayi", "Sabki salary 65,000", "Boss ka call aayega"]}},
+    {"type": "concept", "title": "Safe [[UPDATE]] habit", "sticker": "🛡️",
+     "points": ["Pehle **SELECT** chalao, same WHERE ke saath", "Rows sahi dikhe? Tab **UPDATE**", "Transaction: **BEGIN** → check → COMMIT"],
+     "note": "MySQL Workbench ka **safe update mode** bina key-WHERE ke UPDATE rok deta hai", "who": "FUN FACT"},
+    {"type": "mistake", "wrong": "UPDATE employees\nSET salary = 65000;", "wrong_is_code": true,
+     "right": "UPDATE employees\nSET salary = 65000\nWHERE id = 1;", "right_is_code": true,
+     "why": "WHERE bhoola = **poori company** ki salary 65,000 😭"},
+    {"type": "recap",
+     "points": ["**UPDATE** table **SET** col = value", "**WHERE** = kis row ko badalna", "Bina WHERE = **saari rows**", "Pehle **SELECT** se check karo"]}
+  ],
+  "caption": "Ek WHERE bhoola aur sabki salary same ho gayi 😱\n\nUPDATE seekho, par dhyaan se!\nIs post mein:\n✅ UPDATE ... SET ... WHERE syntax\n✅ Ek row vs multiple columns update\n✅ WHERE ke saath vs bina WHERE\n✅ Safe UPDATE habits\n\nSQL Series · Part 27/81\nSave karo 📌 · Us dost ko bhejo jo WHERE bhoolta hai 🔁 · Follow karo daily SQL ke liye!\n\n#sql #update #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #sqlforbeginners #programming"
+}

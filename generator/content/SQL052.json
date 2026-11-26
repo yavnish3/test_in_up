@@ -1,0 +1,144 @@
+{
+ "id": "SQL052",
+ "part": 52,
+ "module": "Aggregate Advanced",
+ "topic": "Pivot with CASE",
+ "next": "Window Functions kya hain?",
+ "hook": "Rows ko [[90 degree]] ghuma do, Excel bhi sharma jaaye",
+ "cover_sticker": "🔄",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Pivot = [[ghumao]]",
+   "sticker": "🌀",
+   "points": [
+    "Values jo **rows** mein thi...",
+    "...ab ban jaati hain **columns** ✓",
+    "Excel ka **pivot table**, SQL mein"
+   ],
+   "note": "Report padhne mein **10x easy**: ek nazar mein poori picture 👀",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "[[Pehle]]: lambi list",
+   "sticker": "📜",
+   "columns": [
+    "DEPT",
+    "CITY",
+    "PEOPLE"
+   ],
+   "rows": [
+    [
+     "IT",
+     "Delhi",
+     "2"
+    ],
+    [
+     "IT",
+     "Mumbai",
+     "1"
+    ],
+    [
+     "HR",
+     "Pune",
+     "2"
+    ],
+    [
+     "Sales",
+     "Mumbai",
+     "1"
+    ]
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Har city = [[ek SUM]]",
+   "sticker": "💻",
+   "file": "pivot_karo.sql",
+   "code": "SELECT dept,\n SUM(CASE WHEN city='Delhi'\n   THEN 1 ELSE 0 END) AS delhi,\n SUM(CASE WHEN city='Mumbai'\n   THEN 1 ELSE 0 END) AS mumbai,\n SUM(CASE WHEN city='Pune'\n   THEN 1 ELSE 0 END) AS pune\nFROM employees GROUP BY dept;"
+  },
+  {
+   "type": "table",
+   "title": "[[Baad]] mein: grid",
+   "sticker": "🔲",
+   "columns": [
+    "DEPT",
+    "DELHI",
+    "MUMBAI",
+    "PUNE"
+   ],
+   "rows": [
+    [
+     "IT",
+     "2",
+     "1",
+     "0"
+    ],
+    [
+     "HR",
+     "0",
+     "0",
+     "2"
+    ],
+    [
+     "Sales",
+     "0",
+     "1",
+     "0"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "GROUP BY dept = **rows**, har SUM(CASE) = **column** 🎯",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "concept",
+   "title": "Recipe [[yaad]] rakho",
+   "sticker": "📝",
+   "points": [
+    "1. Row mein kya chahiye? → **GROUP BY**",
+    "2. Column mein kya? → har value ka **CASE**",
+    "3. Andar kya? → **SUM / COUNT / AVG**"
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "CASE vs [[PIVOT]]",
+   "left": {
+    "label": "SUM(CASE) 🧰",
+    "points": [
+     "Har DB mein chale",
+     "Full control"
+    ]
+   },
+   "right": {
+    "label": "PIVOT keyword 🔑",
+    "points": [
+     "Sirf SQL Server",
+     "Postgres: crosstab()"
+    ]
+   },
+   "note": "Nayi city aayi? CASE mein **naya column** khud jodna padega",
+   "who": "TWIST"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Har city ke liye **alag query**: Delhi ki ek, Mumbai ki ek, Pune ki ek",
+   "right": "**Ek query**, har city = ek **SUM(CASE ...)** column",
+   "why": "3 query = 3 baar table scan + jodne ka jhanjhat. Pivot ek baar mein 🔥"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Pivot = **rows → columns**",
+    "Har column = **SUM(CASE ...)**",
+    "**GROUP BY** se rows banti",
+    "Excel pivot jaisa, ek query mein"
+   ]
+  }
+ ],
+ "caption": "Rows ko 90 degree ghuma do, Excel bhi sharma jaaye 🔄\n\nIs post mein:\n✅ Pivot kya hota hai\n✅ SUM(CASE) se pivot\n✅ Before vs after table\n✅ CASE vs PIVOT keyword\n\nSQL Series · Part 52/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #pivot #learnsql #sqlinhindi #dataanalytics #dataanalyst #excel #datascience #sqlforbeginners #programming"
+}

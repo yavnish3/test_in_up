@@ -1,0 +1,119 @@
+{
+ "id": "SQL016",
+ "part": 16,
+ "module": "Filtering",
+ "topic": "BETWEEN",
+ "next": "LIKE aur Wildcards",
+ "hook": "Salary 40k se 60k ke [[beech]]? BETWEEN hai na",
+ "cover_sticker": "↔️",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "BETWEEN = [[range]]",
+   "sticker": "📏",
+   "points": [
+    "**col BETWEEN a AND b**",
+    "a = chhoti value, b = **badi** value",
+    "**Dono ends** include hote hain"
+   ],
+   "note": "Jaise \"18 se 25 saal ke log\": 18 aur 25 **dono** allowed 🎂",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "40k se [[60k]]",
+   "sticker": "💵",
+   "file": "range_salary.sql",
+   "code": "SELECT name, salary\nFROM employees\nWHERE salary\n  BETWEEN 40000 AND 60000;"
+  },
+  {
+   "type": "table",
+   "title": "Result: [[boundary]] bhi andar",
+   "sticker": "🎯",
+   "columns": [
+    "NAME",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "60000"
+    ],
+    [
+     "Meera",
+     "45000"
+    ],
+    [
+     "Kabir",
+     "50000"
+    ],
+    [
+     "Dev",
+     "40000"
+    ]
+   ],
+   "highlight": [
+    0,
+    3
+   ],
+   "note": "Dev (40k) aur Aarav (60k) **edge** pe hain, phir bhi andar ✅",
+   "who": "TWIST"
+  },
+  {
+   "type": "compare",
+   "title": "BETWEEN vs [[>= AND <=]]",
+   "left": {
+    "label": "BETWEEN",
+    "points": [
+     "Chhota, saaf",
+     "Padhne mein easy"
+    ]
+   },
+   "right": {
+    "label": ">= AND <=",
+    "points": [
+     "Lamba likhna",
+     "Result bilkul same"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "Dates pe bhi [[chalta]]",
+   "sticker": "📅",
+   "points": [
+    "order_date BETWEEN **'2024-01-01'**",
+    "AND **'2024-01-31'**: poora January",
+    "**NOT BETWEEN** = range ke bahar"
+   ],
+   "note": "Column DATETIME hai? '01-31' = **raat 12 baje** tak hi. 31 ka din chhoot jaayega ⏰",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "Order [[matter]] karta",
+   "sticker": "⚠️",
+   "points": [
+    "BETWEEN **60000 AND 40000** ❌",
+    "Result: **zero rows**, error bhi nahi",
+    "Hamesha **chhota pehle**, bada baad mein"
+   ]
+  },
+  {
+   "type": "mistake",
+   "wrong": "BETWEEN 40000 AND 60000 mein 40000 aur 60000 **nahi aayenge**",
+   "right": "Dono **boundaries include** hoti hain: 40000 aur 60000 andar",
+   "why": "BETWEEN = **>= AND <=**, isliye edges bhi count 📐"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**BETWEEN a AND b** = range",
+    "Dono **ends include**",
+    "Numbers + **dates** dono pe",
+    "**Chhota pehle**, NOT BETWEEN bhi hai"
+   ]
+  }
+ ],
+ "caption": "Salary 40k se 60k ke beech? BETWEEN hai na ↔️\n\nIs post mein:\n✅ BETWEEN ka formula\n✅ Boundary values andar ya bahar?\n✅ Dates pe BETWEEN aur DATETIME trap\n✅ Galat order = zero rows\n\nSQL Series · Part 16/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

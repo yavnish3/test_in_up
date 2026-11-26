@@ -1,0 +1,109 @@
+{
+ "id": "SQL014",
+ "part": 14,
+ "module": "Filtering",
+ "topic": "AND, OR, NOT",
+ "next": "IN Operator",
+ "hook": "AND, OR, NOT: SQL ka [[relationship status]]",
+ "cover_sticker": "💞",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Teen [[rishte]]",
+   "sticker": "💍",
+   "points": [
+    "**AND** = dono conditions true",
+    "**OR** = koi ek bhi true",
+    "**NOT** = ulta kar do"
+   ],
+   "note": "AND = strict rishta 💍, OR = chill dost 😎, NOT = ex 🙅",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "IT [[aur]] Delhi",
+   "sticker": "🤝",
+   "file": "it_delhi.sql",
+   "code": "SELECT *\nFROM employees\nWHERE dept = 'IT'\n  AND city = 'Delhi';"
+  },
+  {
+   "type": "table",
+   "title": "AND ka [[result]]",
+   "sticker": "✅",
+   "columns": [
+    "NAME",
+    "DEPT",
+    "CITY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "IT",
+     "Delhi"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "Riya bhi IT hai, par **Pune** mein. AND ne bahar kar diya 🚪",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "compare",
+   "title": "AND vs [[OR]]",
+   "left": {
+    "label": "IT AND Delhi",
+    "points": [
+     "Dono chahiye",
+     "Result: Aarav",
+     "Kam rows"
+    ]
+   },
+   "right": {
+    "label": "IT OR Delhi",
+    "points": [
+     "Ek bhi chalega",
+     "Aarav, Kabir, Riya, Dev",
+     "Zyada rows"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "NOT ka [[ulta]] game",
+   "sticker": "🔄",
+   "points": [
+    "WHERE **NOT** city = 'Delhi'",
+    "Result: Meera, Riya",
+    "NOT IN, NOT LIKE, IS NOT NULL bhi"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Mix karo? [[Bracket]] lagao",
+   "sticker": "🧮",
+   "file": "bracket_wala.sql",
+   "code": "SELECT *\nFROM employees\nWHERE (dept = 'IT'\n    OR dept = 'HR')\n  AND city = 'Delhi';",
+   "note": "**AND pehle** chalta hai, OR baad mein. Jaise maths mein × pehle, + baad mein",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "mistake",
+   "wrong": "WHERE dept = 'IT'\n   OR dept = 'HR'\n  AND city = 'Delhi'",
+   "wrong_is_code": true,
+   "right": "WHERE (dept = 'IT'\n   OR dept = 'HR')\n  AND city = 'Delhi'",
+   "right_is_code": true,
+   "why": "Bina bracket: IT **ya** (HR+Delhi). Pune wali **Riya** bhi aa gayi 😵"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**AND** = dono true",
+    "**OR** = koi ek true",
+    "**NOT** = ulta",
+    "Mix kiya? **( ) lagao**, AND pehle chalta"
+   ]
+  }
+ ],
+ "caption": "AND, OR, NOT: SQL ka relationship status 💞\n\nIs post mein:\n✅ AND vs OR, real result ke saath\n✅ NOT se ulta filter\n✅ AND pehle chalta hai, OR baad mein\n✅ Brackets bhoole toh kya hota hai\n\nSQL Series · Part 14/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

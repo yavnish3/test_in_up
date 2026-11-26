@@ -1,0 +1,119 @@
+{
+ "id": "SQL020",
+ "part": 20,
+ "module": "Sorting & Limit",
+ "topic": "LIMIT / TOP",
+ "next": "COUNT()",
+ "hook": "Top 3 kaun? LIMIT bolega [[baaki ghar jao]]",
+ "cover_sticker": "🥉",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "LIMIT = [[bas itne]]",
+   "sticker": "✋",
+   "points": [
+    "**LIMIT n** = sirf pehli n rows",
+    "Query ke **bilkul end** mein likho",
+    "MySQL, PostgreSQL, SQLite mein chalta"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Top 3 [[kamaane wale]]",
+   "sticker": "🏅",
+   "file": "top_3.sql",
+   "code": "SELECT name, salary\nFROM employees\nORDER BY salary DESC\nLIMIT 3;",
+   "note": "Pehle **sort**, phir **kaato**. Order yahi rakhna 🔪",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "Result: [[podium]]",
+   "sticker": "🏆",
+   "columns": [
+    "#",
+    "NAME",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "1",
+     "Riya",
+     "75000"
+    ],
+    [
+     "2",
+     "Aarav",
+     "60000"
+    ],
+    [
+     "3",
+     "Kabir",
+     "50000"
+    ]
+   ],
+   "highlight": [
+    0
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "MySQL vs [[SQL Server]]",
+   "left": {
+    "label": "MySQL / PG",
+    "points": [
+     "... ORDER BY salary",
+     "LIMIT 3",
+     "End mein"
+    ]
+   },
+   "right": {
+    "label": "SQL Server",
+    "points": [
+     "SELECT TOP 3 name",
+     "... ORDER BY salary",
+     "SELECT ke saath"
+    ]
+   },
+   "note": "Standard SQL: **FETCH FIRST 3 ROWS ONLY** (PostgreSQL, Oracle mein chalta)",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "code",
+   "title": "Page 2? [[OFFSET]]",
+   "sticker": "📄",
+   "file": "page_two.sql",
+   "code": "SELECT name, salary\nFROM employees\nORDER BY salary DESC\nLIMIT 3 OFFSET 3;",
+   "note": "OFFSET 3 = pehli 3 **skip**, agli 3 do. Yahi **pagination** hai 📱",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "Kahan [[kaam]] aata?",
+   "sticker": "📱",
+   "points": [
+    "Amazon: **top 10** bestsellers",
+    "Instagram feed: **20-20** posts load",
+    "Nayi table: LIMIT 5 se **jhaank lo**"
+   ]
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT name, salary\nFROM employees\nLIMIT 3;",
+   "wrong_is_code": true,
+   "right": "SELECT name, salary\nFROM employees\nORDER BY salary DESC\nLIMIT 3;",
+   "right_is_code": true,
+   "why": "Bina ORDER BY ke LIMIT = **koi bhi 3** rows. Top 3 ki guarantee **zero** 🎲"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**LIMIT n** = pehli n rows",
+    "Hamesha **ORDER BY** ke saath",
+    "SQL Server: **SELECT TOP n**",
+    "**OFFSET** = rows skip, pagination"
+   ]
+  }
+ ],
+ "caption": "Top 3 kaun? LIMIT bolega baaki ghar jao 🥉\n\nIs post mein:\n✅ LIMIT se top N nikalo\n✅ MySQL LIMIT vs SQL Server TOP\n✅ OFFSET se pagination\n✅ Bina ORDER BY ke LIMIT ka trap\n\nSQL Series · Part 20/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

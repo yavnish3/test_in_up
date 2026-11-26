@@ -1,0 +1,114 @@
+{
+ "id": "SQL075",
+ "part": 75,
+ "module": "Transactions",
+ "topic": "Transactions (COMMIT / ROLLBACK)",
+ "next": "ACID Properties",
+ "hook": "Paise kat gaye par [[pahunche nahi]]? Ye kabhi nahi hoga",
+ "cover_sticker": "💸",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Problem [[samjho]]",
+   "sticker": "😰",
+   "points": [
+    "A ne B ko **₹200** bheje",
+    "Step 1: A se ₹200 **kata** ✅",
+    "Step 2 se pehle **server crash** 💥",
+    "Paise hawa mein? Transaction bachata hai"
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "Transaction = [[package deal]]",
+   "sticker": "📦",
+   "points": [
+    "Kai queries ko **ek unit** banao",
+    "Ya to **sab** hongi, ya **ek bhi nahi**",
+    "Isko kehte hain **all or nothing**"
+   ],
+   "note": "Jaise UPI: ya pura transfer, ya pura refund. Beech ka scene nahi",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Paise [[transfer]] karo",
+   "sticker": "💻",
+   "file": "upi_transfer.sql",
+   "code": "BEGIN;\nUPDATE accounts\n  SET balance = balance - 200\n  WHERE name = 'A';\nUPDATE accounts\n  SET balance = balance + 200\n  WHERE name = 'B';\nCOMMIT;"
+  },
+  {
+   "type": "table",
+   "title": "3 magic [[words]]",
+   "sticker": "🪄",
+   "columns": [
+    "COMMAND",
+    "MATLAB"
+   ],
+   "rows": [
+    [
+     "BEGIN",
+     "Transaction shuru 🚦"
+    ],
+    [
+     "COMMIT",
+     "Sab pakka save ✅"
+    ],
+    [
+     "ROLLBACK",
+     "Sab wapas, jaise kuch hua hi nahi ↩️"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "MySQL: **START TRANSACTION**, SQL Server: **BEGIN TRANSACTION**",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "code",
+   "title": "Gadbad? [[ROLLBACK]]",
+   "sticker": "↩️",
+   "file": "undo.sql",
+   "code": "BEGIN;\nDELETE FROM accounts;\n-- oops! WHERE bhool gaye 😱\nROLLBACK;\n-- data wapas, chill",
+   "note": "Risky UPDATE / DELETE hamesha transaction mein chalao 🛡️",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "compare",
+   "title": "Autocommit vs [[BEGIN]]",
+   "left": {
+    "label": "Autocommit (default)",
+    "points": [
+     "Har query turant save",
+     "Undo ka chance nahi"
+    ]
+   },
+   "right": {
+    "label": "BEGIN ... COMMIT",
+    "points": [
+     "COMMIT tak pending",
+     "ROLLBACK se undo"
+    ]
+   }
+  },
+  {
+   "type": "mistake",
+   "wrong": "BEGIN;\nUPDATE accounts ...;\n-- COMMIT gayab",
+   "right": "BEGIN;\nUPDATE accounts ...;\nCOMMIT;",
+   "why": "COMMIT nahi kiya → session band hote hi **rollback**, aur tab tak rows **lock** 🔒",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**BEGIN** = shuru",
+    "**COMMIT** = pakka save",
+    "**ROLLBACK** = sab wapas",
+    "**All or nothing**, beech ka nahi"
+   ]
+  }
+ ],
+ "caption": "Paise kat gaye par pahunche nahi? Ye kabhi nahi hoga 💸\n\nTransactions: bank ka sabse bada bodyguard!\nIs post mein:\n✅ All or nothing ka matlab\n✅ BEGIN / COMMIT / ROLLBACK\n✅ Money transfer example\n✅ COMMIT bhoolne ka nuksaan\n\nSQL Series · Part 75/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #transactions #database #sqlinhindi #learnsql #backend #sqlinterview #coding #techhindi #dbms"
+}

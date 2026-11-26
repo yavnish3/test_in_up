@@ -1,0 +1,129 @@
+{
+ "id": "SQL061",
+ "part": 61,
+ "module": "Window Functions",
+ "topic": "LAG()",
+ "next": "LEAD()",
+ "hook": "Pichle mahine se kitna badha? [[LAG]] peeche mud ke dekhta hai",
+ "cover_sticker": "⏪",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "LAG = [[rear-view mirror]]",
+   "sticker": "🪞",
+   "points": [
+    "Current row pe baithe baithe",
+    "**Pichli row** ki value dekh lo",
+    "Self-join ki zaroorat **khatam** ✓"
+   ],
+   "note": "Bike chalate waqt mirror: aage chalo, **peeche bhi dekho** 🏍️",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Pichla [[mahina]]",
+   "sticker": "💻",
+   "file": "growth_check.sql",
+   "code": "SELECT month, amount,\n  LAG(amount) OVER\n    (ORDER BY month_no) AS prev,\n  amount - LAG(amount) OVER\n    (ORDER BY month_no) AS growth\nFROM sales;"
+  },
+  {
+   "type": "table",
+   "title": "Growth [[nikli]]",
+   "sticker": "📈",
+   "columns": [
+    "MONTH",
+    "AMOUNT",
+    "PREV",
+    "GROWTH"
+   ],
+   "rows": [
+    [
+     "Jan",
+     "100",
+     "NULL",
+     "NULL"
+    ],
+    [
+     "Feb",
+     "150",
+     "100",
+     "+50"
+    ],
+    [
+     "Mar",
+     "120",
+     "150",
+     "-30"
+    ],
+    [
+     "Apr",
+     "200",
+     "120",
+     "+80"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "Jan ke peeche koi nahi → **NULL**. Mar mein **-30**, dip 📉",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "LAG ke [[3 options]]",
+   "sticker": "🎛️",
+   "points": [
+    "**LAG(amount)** → 1 row peeche",
+    "**LAG(amount, 2)** → 2 rows peeche",
+    "**LAG(amount, 1, 0)** → NULL ki jagah 0"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "[[Growth %]] bhi",
+   "sticker": "💯",
+   "file": "growth_percent.sql",
+   "code": "SELECT month,\n  ROUND(100.0 * (amount -\n    LAG(amount) OVER w)\n    / LAG(amount) OVER w, 1)\n    AS pct\nFROM sales\nWINDOW w AS (ORDER BY month_no);",
+   "note": "**100.0** likho, warna integer division se decimal ud jayega",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "compare",
+   "title": "Pehle vs [[ab]]",
+   "left": {
+    "label": "Self JOIN 😩",
+    "points": [
+     "Table ko khud se jodo",
+     "Lambi condition"
+    ]
+   },
+   "right": {
+    "label": "LAG() 😎",
+    "points": [
+     "Ek function",
+     "Saaf aur fast"
+    ]
+   },
+   "note": "Next post mein **LEAD**: peeche nahi, **aage** dekhega 👀",
+   "who": "SPOILER"
+  },
+  {
+   "type": "mistake",
+   "wrong": "LAG(amount) OVER ()",
+   "right": "LAG(amount) OVER\n  (ORDER BY month_no)",
+   "why": "Bina ORDER BY \"pichla\" kaun? SQL Server error, baaki DB **random** 🎲",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**LAG(col)** = pichli row",
+    "**LAG(col, 2)** = 2 rows peeche",
+    "Pehli row → **NULL**",
+    "Growth = **amount - LAG(amount)**"
+   ]
+  }
+ ],
+ "caption": "Pichle mahine se kitna badha? LAG peeche mud ke dekhta hai ⏪\n\nIs post mein:\n✅ LAG() kya karta hai\n✅ Month-on-month growth\n✅ LAG ke 3 options (offset, default)\n✅ Growth % nikalne ki trick\n\nSQL Series · Part 61/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #lag #windowfunctions #learnsql #sqlinhindi #dataanalyst #analytics #sqlinterview #datascience #coding"
+}

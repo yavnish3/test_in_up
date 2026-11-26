@@ -1,0 +1,120 @@
+{
+ "id": "SQL012",
+ "part": 12,
+ "module": "Filtering",
+ "topic": "WHERE Clause",
+ "next": "Comparison Operators",
+ "hook": "Poori duniya nahi, sirf [[Delhi waale]] chahiye",
+ "cover_sticker": "📍",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "WHERE = [[chhanni]]",
+   "sticker": "🫖",
+   "points": [
+    "Har row pe **condition** check hoti hai",
+    "Condition **true** → row result mein",
+    "False → row **bahar**, bye bye 👋"
+   ],
+   "note": "Jaise chai ki chhanni: **patti** ruk gayi, **chai** nikal gayi",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Sirf [[Delhi]] please",
+   "sticker": "🏙️",
+   "file": "delhi_wale.sql",
+   "code": "SELECT *\nFROM employees\nWHERE city = 'Delhi';"
+  },
+  {
+   "type": "table",
+   "title": "Result: [[3]] log",
+   "sticker": "🎯",
+   "columns": [
+    "NAME",
+    "DEPT",
+    "CITY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "IT",
+     "Delhi"
+    ],
+    [
+     "Kabir",
+     "Sales",
+     "Delhi"
+    ],
+    [
+     "Dev",
+     "Sales",
+     "Delhi"
+    ]
+   ],
+   "note": "Meera (Mumbai) aur Riya (Pune) **filter** ho gaye 🚫",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "concept",
+   "title": "Likhne ka [[order]]",
+   "sticker": "🪜",
+   "points": [
+    "**SELECT** → **FROM** → **WHERE**",
+    "WHERE hamesha FROM ke **baad**",
+    "Text value **'single quotes'** mein",
+    "Number bina quotes: salary = 60000"
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "'Delhi' vs [[\"delhi\"]]",
+   "left": {
+    "label": "MySQL 🐬",
+    "points": [
+     "'delhi' bhi match",
+     "Default case-insensitive"
+    ]
+   },
+   "right": {
+    "label": "PostgreSQL 🐘",
+    "points": [
+     "Sirf 'Delhi' match",
+     "Case-sensitive"
+    ]
+   },
+   "note": "Data mein spelling aur **case** jaisa hai, waisa hi likho. Safe rehta hai 😌",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "concept",
+   "title": "Number pe bhi [[filter]]",
+   "sticker": "💰",
+   "points": [
+    "WHERE salary = **60000**",
+    "WHERE dept = **'IT'**",
+    "WHERE id = **3**: ek hi banda"
+   ],
+   "note": "UPDATE/DELETE mein WHERE bhoole toh **poori table** udd jaati 💀",
+   "who": "TWIST"
+  },
+  {
+   "type": "mistake",
+   "wrong": "WHERE city == 'Delhi'",
+   "wrong_is_code": true,
+   "right": "WHERE city = 'Delhi'",
+   "right_is_code": true,
+   "why": "SQL mein barabar = **ek hi =**. Double == Python/JS wali aadat hai 🐍"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**WHERE** = rows ka filter",
+    "Condition true → row **rahegi**",
+    "Text **'quotes'** mein, number bina",
+    "Barabar = **ek =**, == nahi"
+   ]
+  }
+ ],
+ "caption": "Poori duniya nahi, sirf Delhi waale chahiye 📍\n\nIs post mein:\n✅ WHERE clause kaise filter karta hai\n✅ city = 'Delhi' ka poora result\n✅ MySQL vs PostgreSQL: case ka scene\n✅ = vs == wali galti\n\nSQL Series · Part 12/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

@@ -1,0 +1,127 @@
+{
+ "id": "SQL064",
+ "part": 64,
+ "module": "Window Functions",
+ "topic": "FIRST_VALUE & LAST_VALUE",
+ "next": "Percent of Total",
+ "hook": "[[LAST_VALUE]] ka trap jisme 90% log phaste hain",
+ "cover_sticker": "🪤",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Window ke [[do kinare]]",
+   "sticker": "↔️",
+   "points": [
+    "**FIRST_VALUE(col)** = window ki pehli value",
+    "**LAST_VALUE(col)** = window ki aakhri value",
+    "Jaise queue mein **pehla aur aakhri** banda"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Dept ka [[top earner]]",
+   "sticker": "💻",
+   "file": "top_earner.sql",
+   "code": "SELECT name, dept,\n  FIRST_VALUE(name) OVER (\n    PARTITION BY dept\n    ORDER BY salary DESC\n  ) AS top_earner\nFROM employees;",
+   "note": "Har dept alag window, salary DESC → pehla = **sabse ameer** 💰",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "table",
+   "title": "FIRST_VALUE ka [[result]]",
+   "sticker": "📊",
+   "columns": [
+    "NAME",
+    "DEPT",
+    "TOP_EARNER"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "IT",
+     "Aarav"
+    ],
+    [
+     "Kabir",
+     "IT",
+     "Aarav"
+    ],
+    [
+     "Dev",
+     "Sales",
+     "Dev"
+    ],
+    [
+     "Riya",
+     "Sales",
+     "Dev"
+    ]
+   ],
+   "highlight": [
+    1
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "Ab [[trap]] dekho 🪤",
+   "sticker": "😱",
+   "points": [
+    "ORDER BY lagate hi default frame:",
+    "**UNBOUNDED PRECEDING → CURRENT ROW**",
+    "Window current row pe **khatam**",
+    "LAST_VALUE = **apni hi value** 🤡"
+   ],
+   "note": "Frame = window ka kitna hissa dikhe. Default aadha hi hai!",
+   "who": "TWIST"
+  },
+  {
+   "type": "code",
+   "title": "Fix: [[full frame]]",
+   "sticker": "🛠️",
+   "file": "last_value_fix.sql",
+   "code": "LAST_VALUE(name) OVER (\n  PARTITION BY dept\n  ORDER BY salary DESC\n  ROWS BETWEEN\n    UNBOUNDED PRECEDING\n    AND UNBOUNDED FOLLOWING\n) AS lowest_earner",
+   "note": "Ab poori window dikhti hai → aakhri = **sabse kam salary**",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "compare",
+   "title": "Bina frame vs [[full frame]]",
+   "left": {
+    "label": "Default ❌",
+    "points": [
+     "Window → current row",
+     "LAST = khud ki value",
+     "Report galat"
+    ]
+   },
+   "right": {
+    "label": "Full frame ✅",
+    "points": [
+     "Window → poora dept",
+     "LAST = sach mein aakhri",
+     "Report sahi"
+    ]
+   },
+   "note": "Shortcut: ORDER BY ulta karke **FIRST_VALUE** lo, trap hi khatam 😎",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "mistake",
+   "wrong": "LAST_VALUE(name) OVER (\n  ORDER BY salary DESC)",
+   "right": "LAST_VALUE(name) OVER (\n  ORDER BY salary DESC\n  ROWS BETWEEN UNBOUNDED\n  PRECEDING AND UNBOUNDED\n  FOLLOWING)",
+   "why": "Full frame bhoole to har row ko **apni hi value** milegi 💀",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "FIRST_VALUE = **pehli** value",
+    "LAST_VALUE = **aakhri** value",
+    "Default frame current row pe **rukta hai**",
+    "LAST ke saath **UNBOUNDED FOLLOWING**"
+   ]
+  }
+ ],
+ "caption": "LAST_VALUE ka trap jisme 90% log phaste hain 🪤\n\nFIRST_VALUE easy hai, LAST_VALUE tricky!\nIs post mein:\n✅ FIRST_VALUE se dept ka top earner\n✅ Default window frame ka trap\n✅ ROWS BETWEEN ... UNBOUNDED FOLLOWING fix\n✅ Ulta ORDER BY shortcut\n\nSQL Series · Part 64/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #sqlinhindi #learnsql #dataanalytics #sqlinterview #dataanalyst #coding #techhindi #datascience"
+}

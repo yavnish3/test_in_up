@@ -1,0 +1,111 @@
+{
+ "id": "SQL078",
+ "part": 78,
+ "module": "Database Programming",
+ "topic": "Stored Procedure",
+ "next": "Manager se zyada salary",
+ "hook": "Query ko [[function]] bana do, ek button mein kaam",
+ "cover_sticker": "🔘",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Stored Procedure = [[recipe]]",
+   "sticker": "📜",
+   "points": [
+    "Query ko **naam** dekar DB mein save karo",
+    "Jab chahiye, bas **CALL** karo",
+    "Parameters do → **alag result**"
+   ],
+   "note": "Jaise Maggi recipe: ek baar likhi, roz bana lo 🍜",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "MySQL mein [[banao]]",
+   "sticker": "💻",
+   "file": "get_dept.sql",
+   "code": "DELIMITER //\nCREATE PROCEDURE get_dept(\n  IN d VARCHAR(20))\nBEGIN\n  SELECT name, salary\n  FROM employees WHERE dept = d;\nEND //\nDELIMITER ;"
+  },
+  {
+   "type": "concept",
+   "title": "DELIMITER [[kyun]]?",
+   "sticker": "🤔",
+   "points": [
+    "Andar ki query **;** pe khatam hoti",
+    "MySQL client sochta: **poora command khatam!**",
+    "Isliye ending temporarily **//** kar do",
+    "Baad mein **DELIMITER ;** wapas"
+   ],
+   "note": "Workbench / CLI ka scene hai. PG aur SQL Server mein ye jhanjhat nahi",
+   "who": "TWIST"
+  },
+  {
+   "type": "code",
+   "title": "Ab [[CALL]] karo",
+   "sticker": "📞",
+   "file": "call_karo.sql",
+   "code": "CALL get_dept('IT');\nCALL get_dept('Sales');",
+   "note": "Ek procedure, **har dept** ke liye kaam ✅",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "table",
+   "title": "CALL get_dept('IT') [[result]]",
+   "sticker": "📊",
+   "columns": [
+    "NAME",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "90,000"
+    ],
+    [
+     "Kabir",
+     "70,000"
+    ]
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "MySQL vs [[SQL Server]]",
+   "left": {
+    "label": "MySQL 🐬",
+    "points": [
+     "IN d VARCHAR(20)",
+     "BEGIN ... END",
+     "CALL get_dept('IT')"
+    ]
+   },
+   "right": {
+    "label": "SQL Server 🪟",
+    "points": [
+     "@d VARCHAR(20)",
+     "AS BEGIN ... END",
+     "EXEC get_dept 'IT'"
+    ]
+   },
+   "note": "PostgreSQL mein result set chahiye to aksar **FUNCTION ... RETURNS TABLE**",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "mistake",
+   "wrong": "CREATE PROCEDURE ...\nBEGIN\n  SELECT ...;\nEND;",
+   "right": "DELIMITER //\nCREATE PROCEDURE ...\nBEGIN SELECT ...; END //\nDELIMITER ;",
+   "why": "MySQL client pehle **;** pe hi command kaat deta → syntax error 💀",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**CREATE PROCEDURE** = query save",
+    "**IN** parameter se input",
+    "**CALL proc('IT')** se chalao",
+    "MySQL: **DELIMITER** mat bhoolo"
+   ]
+  }
+ ],
+ "caption": "Query ko function bana do, ek button mein kaam 🔘\n\nStored Procedure = reusable SQL recipe!\nIs post mein:\n✅ Stored procedure kya hai\n✅ IN parameter + CALL\n✅ MySQL ka DELIMITER scene\n✅ MySQL vs SQL Server syntax\n\nSQL Series · Part 78/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #storedprocedure #mysql #sqlinhindi #learnsql #backend #sqlinterview #coding #techhindi #database"
+}

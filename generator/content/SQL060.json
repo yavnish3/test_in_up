@@ -1,0 +1,127 @@
+{
+ "id": "SQL060",
+ "part": 60,
+ "module": "Window Functions",
+ "topic": "Moving Average (ROWS BETWEEN)",
+ "next": "LAG()",
+ "hook": "Share market wala [[moving average]], ab SQL mein",
+ "cover_sticker": "📉",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Moving avg [[kyun]]?",
+   "sticker": "🎢",
+   "points": [
+    "Sales roz upar-neeche: **zig-zag** 📉📈",
+    "Trend samajh hi nahi aata",
+    "Last kuch din ka avg → **smooth line** ✓"
+   ],
+   "note": "Stock charts ki **50-day line** yahi hai 📈",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "[[Sliding]] window",
+   "sticker": "🪟",
+   "points": [
+    "Window = **pichli n rows + current row**",
+    "Agli row pe window **aage khisakti** hai",
+    "Purani row bahar, nayi andar 🔄"
+   ],
+   "note": "Train ki khidki: **naya scene aata, purana jaata** 🚆",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "[[ROWS BETWEEN]]",
+   "sticker": "💻",
+   "file": "smooth_trend.sql",
+   "code": "SELECT month, amount,\n  AVG(amount) OVER (\n    ORDER BY month_no\n    ROWS BETWEEN 1 PRECEDING\n      AND CURRENT ROW\n  ) AS moving_avg\nFROM sales;"
+  },
+  {
+   "type": "table",
+   "title": "2-month [[average]]",
+   "sticker": "🧮",
+   "columns": [
+    "MONTH",
+    "AMOUNT",
+    "MOVING_AVG"
+   ],
+   "rows": [
+    [
+     "Jan",
+     "100",
+     "100"
+    ],
+    [
+     "Feb",
+     "150",
+     "125"
+    ],
+    [
+     "Mar",
+     "120",
+     "135"
+    ],
+    [
+     "Apr",
+     "200",
+     "160"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "Mar = (150 + 120) / 2 = **135**. Jan ko bahar kar diya ✂️",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "compare",
+   "title": "Frame [[farq]]",
+   "left": {
+    "label": "Frame nahi diya",
+    "points": [
+     "Jan se ab tak avg",
+     "100,125,123.3,142.5"
+    ]
+   },
+   "right": {
+    "label": "ROWS 1 PRECEDING",
+    "points": [
+     "Sirf last 2 ka avg",
+     "100,125,135,160"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "[[Size]] badlo",
+   "sticker": "📏",
+   "points": [
+    "3-month → **2 PRECEDING**",
+    "7-day → **6 PRECEDING**",
+    "Shuru ki rows mein **kam** values ka avg"
+   ],
+   "note": "N ka avg = **N-1 PRECEDING** + CURRENT ROW 🎯",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "mistake",
+   "wrong": "AVG(amount) OVER\n  (ORDER BY month_no)",
+   "right": "AVG(amount) OVER\n  (ORDER BY month_no\n   ROWS BETWEEN 1 PRECEDING\n   AND CURRENT ROW)",
+   "why": "Frame nahi = default **shuru se ab tak** → cumulative avg aa jaata 😵",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**ROWS BETWEEN n PRECEDING**",
+    "**AND CURRENT ROW** = sliding window",
+    "Trend **smooth** karo",
+    "Frame bhoole = **cumulative avg**"
+   ]
+  }
+ ],
+ "caption": "Share market wala moving average, ab SQL mein 📉\n\nIs post mein:\n✅ Moving average kyun chahiye\n✅ ROWS BETWEEN ... PRECEDING\n✅ Frame vs no frame ka farq\n✅ 3-month, 7-day window kaise\n\nSQL Series · Part 60/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #movingaverage #windowfunctions #learnsql #sqlinhindi #dataanalyst #analytics #datascience #coding #programming"
+}

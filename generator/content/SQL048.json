@@ -1,0 +1,116 @@
+{
+ "id": "SQL048",
+ "part": 48,
+ "module": "Interview Prep",
+ "topic": "SQL Basics Recap",
+ "next": "GROUP BY Multiple Columns",
+ "hook": "Poori SQL basics [[ek post]] mein, ab koi bahana nahi",
+ "cover_sticker": "🚀",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "[[Padhna]]: SELECT family",
+   "sticker": "📖",
+   "points": [
+    "**SELECT** kya, **FROM** kahan se",
+    "**WHERE** filter, **ORDER BY** sort",
+    "**LIMIT** = top N hi do"
+   ],
+   "note": "80% kaam inhi 5 se ho jaata hai 😎",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "[[Ginna]]: aggregates",
+   "sticker": "🧮",
+   "points": [
+    "**COUNT, SUM, AVG, MIN, MAX**",
+    "**GROUP BY** = har group ka hisaab",
+    "**HAVING** = groups ka filter"
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "[[Jodna]]: JOINs",
+   "left": {
+    "label": "INNER JOIN 🤝",
+    "points": [
+     "Sirf match wale",
+     "Dono taraf hona zaroori"
+    ]
+   },
+   "right": {
+    "label": "LEFT JOIN 👈",
+    "points": [
+     "Left ki saari rows",
+     "No match → NULL"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "[[Badalna]]: DML",
+   "sticker": "✍️",
+   "points": [
+    "**INSERT** → nayi row daalo",
+    "**UPDATE** → row badlo (WHERE ke saath!)",
+    "**DELETE** → row hatao (WHERE ke saath!)"
+   ],
+   "note": "WHERE bhoole = **poori table** update/delete 💀",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "code",
+   "title": "Sab ek [[saath]]",
+   "sticker": "🔥",
+   "file": "boss_query.sql",
+   "code": "SELECT c.name,\n  SUM(o.amount) AS spent\nFROM customers c\nJOIN orders o\n  ON c.id = o.customer_id\nGROUP BY c.name\nHAVING SUM(o.amount) > 400\nORDER BY spent DESC LIMIT 5;",
+   "note": "JOIN + GROUP BY + HAVING + ORDER BY + LIMIT: **full combo** 🎮",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "table",
+   "title": "Top [[spenders]]",
+   "sticker": "🏆",
+   "columns": [
+    "NAME",
+    "SPENT"
+   ],
+   "rows": [
+    [
+     "Meera",
+     "1,200"
+    ],
+    [
+     "Aarav",
+     "850"
+    ],
+    [
+     "Riya",
+     "520"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "Jinhone 400 se kam kharcha kiya, HAVING ne **bahar** kar diya",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Sirf **reels dekh ke** SQL seekh liya 📱",
+   "right": "Har topic ke baad **khud query likho**, galti karo, fix karo",
+   "why": "SQL **haath se** aata hai, aankh se nahi. Roz 15 min practice 💪"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**SELECT FROM WHERE ORDER LIMIT**",
+    "**Aggregates + GROUP BY + HAVING**",
+    "**JOINs**: INNER, LEFT",
+    "**INSERT · UPDATE · DELETE**"
+   ]
+  }
+ ],
+ "caption": "Poori SQL basics ek post mein, ab koi bahana nahi 🚀\n\nIs post mein:\n✅ SELECT, WHERE, ORDER BY, LIMIT\n✅ Aggregates + GROUP BY + HAVING\n✅ INNER vs LEFT JOIN\n✅ INSERT, UPDATE, DELETE\n✅ Ek boss query mein sab\n\nSQL Series · Part 48/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlbasics #sqlinterview #learnsql #sqlinhindi #dataanalyst #coding #datascience #sqlforbeginners #programming"
+}

@@ -1,0 +1,135 @@
+{
+ "id": "SQL044",
+ "part": 44,
+ "module": "Advanced Basics",
+ "topic": "Query Execution Order",
+ "next": "VIEW",
+ "hook": "Tum SELECT pehle likhte ho, SQL usse [[pehle padhta hi nahi]]",
+ "cover_sticker": "🔄",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Likhna ≠ [[chalna]]",
+   "sticker": "🤯",
+   "points": [
+    "Tum likhte ho: **SELECT** sabse upar",
+    "SQL chalata hai: **FROM** sabse pehle",
+    "Order samjho = errors gayab 🪄"
+   ],
+   "note": "Pehle **kitchen** mein samaan, phir **plate** sajana. SELECT = plate",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "table",
+   "title": "Asli [[order]]",
+   "sticker": "🔢",
+   "columns": [
+    "STEP",
+    "CLAUSE",
+    "KAAM"
+   ],
+   "rows": [
+    [
+     "1",
+     "FROM / JOIN",
+     "Table lao"
+    ],
+    [
+     "2",
+     "WHERE",
+     "Rows filter"
+    ],
+    [
+     "3",
+     "GROUP BY",
+     "Groups banao"
+    ],
+    [
+     "4",
+     "HAVING",
+     "Groups filter"
+    ],
+    [
+     "5",
+     "SELECT",
+     "Columns chuno"
+    ]
+   ],
+   "highlight": [
+    4
+   ],
+   "note": "Phir **6 ORDER BY**, aur last mein **7 LIMIT** 🏁",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "code",
+   "title": "Ek query, [[7 steps]]",
+   "sticker": "💻",
+   "file": "order_dekho.sql",
+   "code": "SELECT dept, COUNT(*)\nFROM employees\nWHERE salary > 40000\nGROUP BY dept\nHAVING COUNT(*) > 1\nORDER BY 2 DESC\nLIMIT 2;"
+  },
+  {
+   "type": "concept",
+   "title": "Isko [[aise]] padho",
+   "sticker": "📖",
+   "points": [
+    "**FROM**: employees table uthao",
+    "**WHERE**: 40k se kam wale bahar",
+    "**GROUP BY + HAVING**: 2+ log wale dept",
+    "**SELECT → ORDER → LIMIT**: top 2"
+   ],
+   "note": "ORDER BY 2 = **doosra column** (COUNT) se sort",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "compare",
+   "title": "Alias [[kahan]] chalega?",
+   "left": {
+    "label": "❌ Nahi chalega",
+    "points": [
+     "WHERE mein",
+     "GROUP BY (standard)"
+    ]
+   },
+   "right": {
+    "label": "✅ Chalega",
+    "points": [
+     "ORDER BY mein",
+     "Bahar wali query mein"
+    ]
+   },
+   "note": "MySQL/Postgres GROUP BY mein alias chalta, HAVING mein sirf MySQL",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "[[Interview]] mein kaam",
+   "sticker": "🎯",
+   "points": [
+    "\"WHERE mein COUNT kyun nahi?\" →",
+    "Kyunki WHERE **GROUP BY se pehle** chalta",
+    "Groups bane hi nahi, to count kiska? 🤷"
+   ],
+   "note": "Execution order bata do, interviewer **impress** 😎",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT salary * 12 AS yearly\nFROM employees\nWHERE yearly > 500000;",
+   "right": "SELECT salary * 12 AS yearly\nFROM employees\nWHERE salary * 12 > 500000;",
+   "why": "WHERE (step 2) chala tab **alias bana hi nahi** tha (SELECT step 5) 💀",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**FROM → WHERE → GROUP BY**",
+    "**HAVING → SELECT**",
+    "**ORDER BY → LIMIT**",
+    "WHERE mein **alias nahi** chalega"
+   ]
+  }
+ ],
+ "caption": "Tum SELECT pehle likhte ho, SQL usse pehle padhta hi nahi 🔄\n\nIs post mein:\n✅ SQL ka asli execution order (7 steps)\n✅ Ek query step-by-step\n✅ Alias kahan chalega, kahan nahi\n✅ Interview ka favourite sawaal\n\nSQL Series · Part 44/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinterview #learnsql #sqlinhindi #dataanalytics #dataanalyst #coding #datascience #sqlforbeginners #programming"
+}

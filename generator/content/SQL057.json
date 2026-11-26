@@ -1,0 +1,140 @@
+{
+ "id": "SQL057",
+ "part": 57,
+ "module": "Window Functions",
+ "topic": "PARTITION BY",
+ "next": "Top N per Group",
+ "hook": "Har department ka [[apna topper]], koi jealous nahi",
+ "cover_sticker": "🏆",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "[[Problem]]",
+   "sticker": "😤",
+   "points": [
+    "Poori company mein rank: **IT hi jeetega**",
+    "HR wale ka number aaya **5th** 😢",
+    "Fair kya hai? **Har dept ki alag race**"
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "PARTITION BY = [[alag race]]",
+   "sticker": "🏁",
+   "points": [
+    "Data ko **groups mein todo** (dept)",
+    "Har group mein numbering **1 se** shuru",
+    "ORDER BY **group ke andar** lagta hai"
+   ],
+   "note": "Har section ka **apna** class topper hota hai, poore school ka nahi 🎒",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Dept wise [[rank]]",
+   "sticker": "💻",
+   "file": "dept_topper.sql",
+   "code": "SELECT name, dept, salary,\n  ROW_NUMBER() OVER (\n    PARTITION BY dept\n    ORDER BY salary DESC\n  ) AS rank_in_dept\nFROM employees;"
+  },
+  {
+   "type": "table",
+   "title": "Har dept ka [[1]]",
+   "sticker": "🥇",
+   "columns": [
+    "NAME",
+    "DEPT",
+    "SALARY",
+    "RANK"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "IT",
+     "90,000",
+     "1"
+    ],
+    [
+     "Kabir",
+     "IT",
+     "70,000",
+     "2"
+    ],
+    [
+     "Meera",
+     "HR",
+     "60,000",
+     "1"
+    ],
+    [
+     "Riya",
+     "Sales",
+     "50,000",
+     "1"
+    ],
+    [
+     "Dev",
+     "Sales",
+     "40,000",
+     "2"
+    ]
+   ],
+   "highlight": [
+    0,
+    2,
+    3
+   ],
+   "note": "Dept badla → counter **reset** to 1 🔄",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "compare",
+   "title": "OVER ke [[andar]]",
+   "left": {
+    "label": "PARTITION BY",
+    "points": [
+     "Groups banata",
+     "Kaun saath hai",
+     "Hamesha pehle"
+    ]
+   },
+   "right": {
+    "label": "ORDER BY",
+    "points": [
+     "Group ke andar sort",
+     "Kaun aage hai",
+     "Hamesha baad mein"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "[[Multi]] partition bhi",
+   "sticker": "🧩",
+   "points": [
+    "**PARTITION BY dept, city** bhi chalta",
+    "Har dept+city combo = alag race",
+    "Koi bhi window fn: SUM, AVG, RANK"
+   ],
+   "note": "PARTITION BY = GROUP BY jaisa, par **rows gayab nahi** hoti",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "mistake",
+   "wrong": "OVER (ORDER BY salary DESC\n  PARTITION BY dept)",
+   "right": "OVER (PARTITION BY dept\n  ORDER BY salary DESC)",
+   "why": "Pehle **PARTITION**, phir **ORDER**. Ulta = syntax error ❌",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "PARTITION BY = **groups mein todo**",
+    "Har group mein numbering **1 se**",
+    "Rows **rehti** hain",
+    "Order: **PARTITION → ORDER BY**"
+   ]
+  }
+ ],
+ "caption": "Har department ka apna topper, koi jealous nahi 🏆\n\nIs post mein:\n✅ PARTITION BY kya karta hai\n✅ Dept wise ranking\n✅ PARTITION vs ORDER BY ka role\n✅ Syntax order wali galti\n\nSQL Series · Part 57/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #partitionby #windowfunctions #learnsql #sqlinhindi #dataanalyst #sqlinterview #datascience #coding #programming"
+}

@@ -1,0 +1,143 @@
+{
+ "id": "SQL077",
+ "part": 77,
+ "module": "Database Design",
+ "topic": "Normalization (1NF, 2NF, 3NF)",
+ "next": "Stored Procedure",
+ "hook": "Ek table mein poora ghar bhar diya? [[Normalize]] karo",
+ "cover_sticker": "🧹",
+ "slides": [
+  {
+   "type": "table",
+   "title": "Ye [[bikhra]] table dekho",
+   "sticker": "😵",
+   "columns": [
+    "ORDER",
+    "CUSTOMER",
+    "CITY",
+    "ITEMS"
+   ],
+   "rows": [
+    [
+     "101",
+     "Aarav",
+     "Delhi",
+     "Pen, Book"
+    ],
+    [
+     "102",
+     "Aarav",
+     "Delhi",
+     "Bag"
+    ],
+    [
+     "103",
+     "Meera",
+     "Mumbai",
+     "Pen"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "Ek cell mein **2 items**, Aarav ki city **do baar**. Bug factory 🏭",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "Normalization = [[safai]]",
+   "sticker": "🧽",
+   "points": [
+    "Data ko **sahi tables** mein todna",
+    "Har fact **ek hi jagah** likha ho",
+    "Kam duplicate = **kam bugs**",
+    "Steps: **1NF → 2NF → 3NF**"
+   ],
+   "note": "Jaise kitchen: masale ek dabbe mein, bartan doosri shelf pe 🫙",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "concept",
+   "title": "1NF: [[ek cell, ek value]]",
+   "sticker": "1️⃣",
+   "points": [
+    "'Pen, Book' ek cell mein? **Nahi chalega**",
+    "Har item ki **alag row** banao",
+    "Har row **unique** pehchaan (primary key)"
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "2NF: [[partial]] hatao",
+   "sticker": "2️⃣",
+   "points": [
+    "Key = **(order_id, product_id)**",
+    "product_name sirf **product_id** pe depend",
+    "Aadhi key pe depend = **partial** ❌",
+    "Fix: **products** table alag karo"
+   ],
+   "note": "2NF tabhi matter karta jab primary key **2+ columns** ki ho",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "concept",
+   "title": "3NF: [[transitive]] hatao",
+   "sticker": "3️⃣",
+   "points": [
+    "order → customer_id → **city**",
+    "City order pe nahi, **customer** pe depend",
+    "Fix: city ko **customers** table mein bhejo"
+   ],
+   "note": "Rule: har column **key, poori key, sirf key** pe depend kare 🔑",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "table",
+   "title": "Normalize ke [[baad]]",
+   "sticker": "✨",
+   "columns": [
+    "TABLE",
+    "COLUMNS"
+   ],
+   "rows": [
+    [
+     "customers",
+     "id, name, city"
+    ],
+    [
+     "orders",
+     "id, customer_id, date"
+    ],
+    [
+     "products",
+     "id, name, price"
+    ],
+    [
+     "order_items",
+     "order_id, product_id, qty"
+    ]
+   ],
+   "highlight": [
+    3
+   ],
+   "note": "Aarav ki city badli? Ab **sirf 1 jagah** update ✅",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Har cheez itni todna ki\nhar query mein **10 JOINs**",
+   "right": "**3NF tak** normalize, reporting ke\nliye thoda **denormalize** bhi chalta",
+   "why": "Zyada normalize = query **slow** aur samajhna mushkil. Balance rakho ⚖️"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**1NF**: ek cell, ek value",
+    "**2NF**: partial dependency hatao",
+    "**3NF**: transitive dependency hatao",
+    "Over-normalize mat karo, **balance**"
+   ]
+  }
+ ],
+ "caption": "Ek table mein poora ghar bhar diya? Normalize karo 🧹\n\nNormalization = database ki safai!\nIs post mein:\n✅ Bikhre table ki problems\n✅ 1NF, 2NF, 3NF ek-ek karke\n✅ Normalize ke baad tables\n✅ Over-normalization ka nuksaan\n\nSQL Series · Part 77/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #normalization #dbms #databasedesign #sqlinhindi #learnsql #sqlinterview #placement #techhindi #backend"
+}

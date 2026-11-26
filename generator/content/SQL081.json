@@ -1,0 +1,129 @@
+{
+ "id": "SQL081",
+ "part": 81,
+ "module": "Interview Prep",
+ "topic": "Advanced SQL Recap",
+ "next": null,
+ "hook": "Advanced SQL ek post mein, ab [[interview tumhara]]",
+ "cover_sticker": "🏆",
+ "slides": [
+  {
+   "type": "table",
+   "title": "Ranking [[trio]]",
+   "sticker": "🥇",
+   "columns": [
+    "SALARY",
+    "ROW_NUMBER",
+    "RANK",
+    "DENSE_RANK"
+   ],
+   "rows": [
+    [
+     "90,000",
+     "1",
+     "1",
+     "1"
+    ],
+    [
+     "90,000",
+     "2",
+     "1",
+     "1"
+    ],
+    [
+     "70,000",
+     "3",
+     "3",
+     "2"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "Ties pe **RANK gap** chhodta, **DENSE_RANK** nahi",
+   "who": "YAAD HAI NA?"
+  },
+  {
+   "type": "code",
+   "title": "Dept ke [[top 2]]",
+   "sticker": "💻",
+   "file": "final_boss.sql",
+   "code": "WITH r AS (\n  SELECT dept, name, salary,\n    DENSE_RANK() OVER (\n      PARTITION BY dept\n      ORDER BY salary DESC\n    ) AS rnk\n  FROM employees\n) SELECT * FROM r WHERE rnk <= 2;",
+   "note": "Window + CTE ek saath: **interview ka favourite combo** 🔥",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "concept",
+   "title": "Peeche-aage + [[total]]",
+   "sticker": "↔️",
+   "points": [
+    "**LAG** = pichli row, **LEAD** = agli row",
+    "**SUM() OVER (ORDER BY …)** = running total",
+    "**SUM() OVER ()** = grand total, % nikalo",
+    "**NTILE(n)** = n buckets"
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "CTE vs [[Recursive CTE]]",
+   "left": {
+    "label": "CTE 🍱",
+    "points": [
+     "WITH naam AS (…)",
+     "Badi query saaf",
+     "Temporary result"
+    ]
+   },
+   "right": {
+    "label": "Recursive 🔁",
+    "points": [
+     "Anchor + UNION ALL",
+     "Tree / org chart",
+     "Stop condition zaroori"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "Safety [[squad]]",
+   "sticker": "🛡️",
+   "points": [
+    "**NOT EXISTS** > NOT IN (NULL trap)",
+    "**BEGIN … COMMIT / ROLLBACK**",
+    "**ACID**: Atomic, Consistent, Isolated, Durable",
+    "**COALESCE** se NULL ka ilaaj"
+   ],
+   "note": "Ye 4 cheezein production mein **jaan bachati** hain 🙏",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "concept",
+   "title": "Interview [[game plan]]",
+   "sticker": "🎯",
+   "points": [
+    "Pehle **sample data** pe socho",
+    "Ties / NULL ka sawaal **khud poochho**",
+    "Badi query? **CTE** mein todo",
+    "Bolke samjhao, sirf code mat likho 🗣️"
+   ],
+   "note": "Interviewer ko **soch** chahiye, sirf syntax nahi",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "mistake",
+   "wrong": "ROW_NUMBER, RANK, LAG ke\nsyntax **ratt** liye",
+   "right": "Har function ka **kab aur kyun**\nsample data pe samjho",
+   "why": "Sawaal ghuma ke aaya to ratta fail. **Logic** yaad rahe to syntax khud aa jaata 🧠"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**Ranking**: ROW_NUMBER · RANK · DENSE",
+    "**LAG · LEAD** · running total",
+    "**CTE** · Recursive CTE",
+    "**EXISTS** · Transactions · **ACID**"
+   ]
+  }
+ ],
+ "caption": "Advanced SQL ek post mein, ab interview tumhara 🏆\n\n81 parts ka safar complete! 🎉\nIs post mein:\n✅ ROW_NUMBER vs RANK vs DENSE_RANK\n✅ CTE + DENSE_RANK: dept ke top 2\n✅ LAG, LEAD, running total, NTILE\n✅ CTE vs Recursive CTE\n✅ NOT EXISTS, Transactions, ACID\n\nSQL Series · Part 81/81 · FINALE 🏁\nSave karo 📌 interview se pehle revise karna · Dost ko bhejo 🔁 · Follow karo aur bhi series ke liye!\n\n#sql #advancedsql #sqlinterview #windowfunctions #sqlinhindi #learnsql #dataanalyst #placement #techhindi #datascience"
+}

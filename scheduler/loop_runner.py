@@ -78,7 +78,8 @@ def post(kind):
                             capture_output=True, text=True)
     print(result.stdout, result.stderr, flush=True)
     save(CSV[kind])
-    return "Nothing to post" in result.stdout
+    # Carousels keep coming from the generator, so only the reel series can finish.
+    return kind == "reel" and "Nothing to post" in result.stdout
 
 
 def main():

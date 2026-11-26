@@ -1,0 +1,134 @@
+{
+ "id": "SQL008",
+ "part": 8,
+ "module": "Select Basics",
+ "topic": "SELECT * FROM",
+ "next": "Specific Columns Select karna",
+ "hook": "SELECT *: SQL ka [[sab dikha do]] button",
+ "cover_sticker": "🔘",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Query ke [[4 tukde]]",
+   "sticker": "🧩",
+   "points": [
+    "**SELECT** = kya chahiye",
+    "**Star** ( * ) = saare columns",
+    "**FROM** = kis table se",
+    "**Semicolon** ( ; ) = query khatam"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Sab kuch [[dikhao]]",
+   "sticker": "📺",
+   "file": "sab_dikhao.sql",
+   "code": "SELECT * FROM employees;",
+   "note": "Padho aise: \"employees se **sab kuch** select karo\" 🗣️",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Result: [[poori]] table",
+   "sticker": "🗂️",
+   "columns": [
+    "ID",
+    "NAME",
+    "DEPT",
+    "CITY"
+   ],
+   "rows": [
+    [
+     "1",
+     "Aarav",
+     "IT",
+     "Delhi"
+    ],
+    [
+     "2",
+     "Meera",
+     "HR",
+     "Mumbai"
+    ],
+    [
+     "3",
+     "Kabir",
+     "Sales",
+     "Delhi"
+    ],
+    [
+     "4",
+     "Riya",
+     "IT",
+     "Pune"
+    ],
+    [
+     "5",
+     "Dev",
+     "Sales",
+     "Delhi"
+    ]
+   ],
+   "note": "Har column, har row: **kuch nahi chhoda** 🫡",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Kab [[use]] karein?",
+   "sticker": "✅",
+   "points": [
+    "Nayi table **explore** karni ho",
+    "Chhoti table, jaldi **jhaankna** ho",
+    "Practice aur learning ke time"
+   ],
+   "note": "Explore karte waqt LIMIT ke saath: **SELECT * ... LIMIT 10** 👌",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "compare",
+   "title": "Seekhte waqt vs [[Job pe]]",
+   "left": {
+    "label": "Practice 🎒",
+    "points": [
+     "5 rows, chill",
+     "Sab dekhna hai"
+    ]
+   },
+   "right": {
+    "label": "Production 🏢",
+    "points": [
+     "Crore rows 😰",
+     "Sirf zaroori cols"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "SQL [[shor]] nahi karta",
+   "sticker": "🔡",
+   "points": [
+    "SELECT, select, SeLeCt: **sab chalega**",
+    "Par convention: **keywords CAPS** mein",
+    "Padhne mein **aasaan**, dikhne mein pro"
+   ],
+   "note": "Data (jaise 'Delhi') ka case kuch DBs mein **matter** karta hai",
+   "who": "TWIST"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Bade **production** table pe SELECT * chalana",
+   "right": "Sirf **zaroori columns** maango, LIMIT lagao",
+   "why": "Crore rows × saare columns = **slow query**, network jam, DB bhi pareshaan 🐢"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**SELECT** kya, **FROM** kahan se",
+    "Star ( * ) = **saare columns**",
+    "Explore ke liye perfect",
+    "Production mein **avoid**, columns naam se"
+   ]
+  }
+ ],
+ "caption": "SELECT * : SQL ka 'sab kuch dikha do bhai' button 🔘\n\nIs post mein:\n✅ SELECT, *, FROM aur ; ka matlab\n✅ Poori table ek query mein\n✅ Kab use karein, kab nahi\n✅ Keywords CAPS mein kyun\n\nSQL Series · Part 8/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

@@ -1,0 +1,29 @@
+{
+  "id": "SQL036", "part": 36, "module": "Joins", "topic": "RIGHT JOIN", "next": "FULL OUTER JOIN",
+  "hook": "RIGHT JOIN: LEFT ka ulta, par log fir bhi [[LEFT hi]] likhte hain",
+  "cover_sticker": "🔄",
+  "slides": [
+    {"type": "concept", "title": "RIGHT = [[right ki saari]]", "sticker": "➡️",
+     "points": ["Right table ki **har row** aayegi", "Left mein match nahi? Left columns **NULL**", "Bas LEFT JOIN ka **mirror** 🪞"],
+     "note": "**Right** = JOIN ke **baad** likhi table. Yaad rakhne ka trick 😉", "who": "BHAI TIP 💡"},
+    {"type": "code", "title": "RIGHT JOIN [[likho]]", "sticker": "💻", "file": "har_order.sql",
+     "code": "SELECT c.name,\n  o.order_id, o.amount\nFROM customers c\nRIGHT JOIN orders o\n  ON c.id = o.customer_id;"},
+    {"type": "table", "title": "Har [[order]] aaya", "sticker": "📦",
+     "columns": ["NAME", "ORDER_ID", "AMOUNT"], "rows": [["Aarav", "101", "500"], ["Meera", "102", "800"], ["Aarav", "103", "300"], ["NULL", "104", "200"]], "highlight": [3],
+     "note": "Order 104 ka customer 7 **mila hi nahi** → naam NULL. Ghost order 👻", "who": "TWIST"},
+    {"type": "compare", "title": "Swap karo = [[same]]",
+     "left": {"label": "A RIGHT JOIN B", "points": ["B ki saari rows", "A se match jodo"]},
+     "right": {"label": "B LEFT JOIN A", "points": ["B ki saari rows", "Result bilkul same ✅"]}},
+    {"type": "code", "title": "Wahi query, [[LEFT]] se", "sticker": "🔁", "file": "left_wala_version.sql",
+     "code": "SELECT c.name,\n  o.order_id, o.amount\nFROM orders o\nLEFT JOIN customers c\n  ON c.id = o.customer_id;",
+     "note": "Isliye log LEFT hi likhte: **main table pehle**, padhna easy 📖", "who": "SIMPLE BHASHA MEIN"},
+    {"type": "concept", "title": "Support ka [[scene]]", "sticker": "🧭",
+     "points": ["MySQL, PostgreSQL, SQL Server: **✅**", "SQLite: **3.39** se pehle support **nahi**", "Purane SQLite mein: tables swap + LEFT"],
+     "note": "Ek query mein LEFT aur RIGHT **mix mat karo**. Dimaag ka dahi 🥴", "who": "PRO MOVE"},
+    {"type": "mistake", "wrong": "Socha **customers** ki saari rows aayengi\n(FROM customers RIGHT JOIN orders)", "right": "RIGHT JOIN = **JOIN ke baad** wali table (orders) ki saari rows",
+     "why": "LEFT/RIGHT = **likhne ka order**, table ka naam nahi"},
+    {"type": "recap",
+     "points": ["RIGHT JOIN = **right ki saari rows**", "No match → left side **NULL**", "Tables swap = **LEFT JOIN**", "Purane SQLite mein **support nahi**"]}
+  ],
+  "caption": "RIGHT JOIN: LEFT ka ulta 🔄\n\nPar log fir bhi LEFT hi likhte hain, kyun? Is post mein:\n✅ RIGHT JOIN kaise kaam karta hai\n✅ Ghost order wala example\n✅ Tables swap = LEFT JOIN\n✅ Database support ka scene\n\nSQL Series · Part 36/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #rightjoin #sqljoins #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #programming"
+}

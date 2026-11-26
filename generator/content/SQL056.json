@@ -1,0 +1,155 @@
+{
+ "id": "SQL056",
+ "part": 56,
+ "module": "Window Functions",
+ "topic": "RANK vs DENSE_RANK",
+ "next": "PARTITION BY",
+ "hook": "Do toppers ke same marks, ab [[rank pe jhagda]]",
+ "cover_sticker": "🏅",
+ "slides": [
+  {
+   "type": "table",
+   "title": "Marks [[dekho]]",
+   "sticker": "📝",
+   "columns": [
+    "NAME",
+    "MARKS"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "95"
+    ],
+    [
+     "Meera",
+     "95"
+    ],
+    [
+     "Kabir",
+     "90"
+    ],
+    [
+     "Riya",
+     "85"
+    ]
+   ],
+   "highlight": [
+    0,
+    1
+   ],
+   "note": "Aarav aur Meera **dono 95**. Dono first? Phir Kabir kaunsa? 🤔",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "Teen [[bhai]], teen style",
+   "sticker": "👬",
+   "points": [
+    "**ROW_NUMBER**: tie ho, number alag",
+    "**RANK**: tie = same, phir **gap**",
+    "**DENSE_RANK**: tie = same, **no gap**"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Teeno [[ek saath]]",
+   "sticker": "💻",
+   "file": "rank_ka_jhagda.sql",
+   "code": "SELECT name, marks,\n ROW_NUMBER() OVER w AS rn,\n RANK() OVER w AS rnk,\n DENSE_RANK() OVER w AS drnk\nFROM students\nWINDOW w AS\n  (ORDER BY marks DESC);",
+   "note": "**WINDOW w** = OVER ek baar likho (MySQL 8 / Postgres). SQL Server 2022+",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "table",
+   "title": "[[Result]] ka farq",
+   "sticker": "🎯",
+   "columns": [
+    "NAME",
+    "RN",
+    "RANK",
+    "DENSE"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "1",
+     "1",
+     "1"
+    ],
+    [
+     "Meera",
+     "2",
+     "1",
+     "1"
+    ],
+    [
+     "Kabir",
+     "3",
+     "3",
+     "2"
+    ],
+    [
+     "Riya",
+     "4",
+     "4",
+     "3"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "Kabir: RANK mein **3** (2 skip), DENSE_RANK mein **2** 👀",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "concept",
+   "title": "Olympics [[logic]]",
+   "sticker": "🥇",
+   "points": [
+    "Do gold mile → agla **bronze** (RANK)",
+    "Silver gaya kahan? Wahi **gap** hai",
+    "DENSE_RANK: gold, gold, **silver** ✓"
+   ],
+   "note": "RANK = sports style, DENSE_RANK = **salary levels** style",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "compare",
+   "title": "Kab [[kaunsa]]?",
+   "left": {
+    "label": "RANK",
+    "points": [
+     "Competition rank",
+     "Gap chalega"
+    ]
+   },
+   "right": {
+    "label": "DENSE_RANK",
+    "points": [
+     "Nth highest value",
+     "Levels / slabs"
+    ]
+   },
+   "note": "\"2nd highest salary\" ke liye **DENSE_RANK = 2** filter karo 🎯",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Nth highest ke liye\nWHERE rnk = 2  -- RANK()",
+   "right": "Nth highest ke liye\nWHERE drnk = 2  -- DENSE_RANK()",
+   "why": "Tie ke baad RANK **2 skip** karta → result khaali 💀",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**ROW_NUMBER**: 1, 2, 3, 4",
+    "**RANK**: 1, 1, 3, 4 (gap)",
+    "**DENSE_RANK**: 1, 1, 2, 3",
+    "Nth highest → **DENSE_RANK**"
+   ]
+  }
+ ],
+ "caption": "Do toppers ke same marks, ab rank pe jhagda 🏅\n\nIs post mein:\n✅ ROW_NUMBER vs RANK vs DENSE_RANK\n✅ Tie pe kya hota hai\n✅ Olympics wala logic\n✅ Nth highest ke liye sahi choice\n\nSQL Series · Part 56/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #rank #denserank #windowfunctions #sqlinterview #learnsql #sqlinhindi #dataanalyst #datascience #coding"
+}

@@ -1,0 +1,125 @@
+{
+ "id": "SQL071",
+ "part": 71,
+ "module": "Functions",
+ "topic": "COALESCE & NULLIF",
+ "next": "CAST (Type Conversion)",
+ "hook": "NULL ka ilaaj: [[COALESCE]] ki goli",
+ "cover_sticker": "💊",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "COALESCE = [[pehla non-NULL]]",
+   "sticker": "💊",
+   "points": [
+    "**COALESCE(a, b, c)** left se check karta",
+    "Jo pehla **NULL nahi**, wahi return",
+    "Sab NULL? To result bhi **NULL**"
+   ],
+   "note": "Jaise plan A, plan B, plan C: jo pehle chale wahi 😌",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Default [[value]] do",
+   "sticker": "💻",
+   "file": "no_manager.sql",
+   "code": "SELECT name,\n  COALESCE(\n    CAST(manager_id AS CHAR),\n    'No manager'\n  ) AS manager\nFROM employees;",
+   "note": "Type same chahiye, isliye **CAST**. MySQL: CHAR, PG/SQL Server: VARCHAR(10)",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "Before → [[after]]",
+   "sticker": "📊",
+   "columns": [
+    "NAME",
+    "PHONE",
+    "EMAIL",
+    "CONTACT"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "98xxx",
+     "a@x.in",
+     "98xxx"
+    ],
+    [
+     "Meera",
+     "NULL",
+     "m@x.in",
+     "m@x.in"
+    ],
+    [
+     "Kabir",
+     "NULL",
+     "NULL",
+     "N/A"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "COALESCE(phone, email, 'N/A') → jo pehle mile 📞",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "concept",
+   "title": "NULLIF = [[ulta kaam]]",
+   "sticker": "🔄",
+   "points": [
+    "**NULLIF(a, b)**: a = b ho to **NULL**",
+    "Barabar nahi? To **a** hi wapas",
+    "NULLIF('', '') → khaali string ko **NULL**"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Divide by zero [[bachao]]",
+   "sticker": "🛡️",
+   "file": "safe_divide.sql",
+   "code": "SELECT name,\n  sales / NULLIF(visits, 0)\n    AS conversion\nFROM stores;",
+   "note": "visits = 0 → NULLIF ne NULL kiya → **error nahi**, result NULL 🙌",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "compare",
+   "title": "COALESCE vs [[ISNULL]]",
+   "left": {
+    "label": "COALESCE ✅",
+    "points": [
+     "SQL standard",
+     "Har DB mein same",
+     "2+ arguments"
+    ]
+   },
+   "right": {
+    "label": "ISNULL / IFNULL",
+    "points": [
+     "SQL Server / MySQL",
+     "Sirf 2 arguments",
+     "MySQL ISNULL = 1/0!"
+    ]
+   }
+  },
+  {
+   "type": "mistake",
+   "wrong": "SQL Server: ISNULL(x, 0)\nMySQL: IFNULL(x, 0)",
+   "right": "Har jagah:\nCOALESCE(x, 0)",
+   "why": "DB badla to query tooti. **COALESCE** standard hai, sab jagah same chalega",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**COALESCE** = pehla non-NULL",
+    "NULL ki jagah **default value**",
+    "**NULLIF(a, b)**: barabar → NULL",
+    "x / **NULLIF(y, 0)** = safe divide"
+   ]
+  }
+ ],
+ "caption": "NULL ka ilaaj: COALESCE ki goli 💊\n\nNULL ke do doctor: COALESCE aur NULLIF!\nIs post mein:\n✅ COALESCE se default value\n✅ Phone → email → N/A fallback\n✅ NULLIF se divide-by-zero se bachao\n✅ COALESCE vs ISNULL / IFNULL\n\nSQL Series · Part 71/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlfunctions #nullvalues #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience"
+}

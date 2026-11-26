@@ -1,0 +1,69 @@
+name: Generate posts
+
+# Keeps ~5 ready (unposted) carousels on Cloudinary after SQL081:
+# Gemini writes the next topic's slides, Playwright renders them, Cloudinary stores them.
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "Make this many new posts now (0 = only top up the stock)"
+        required: false
+        default: "0"
+  schedule:
+    - cron: "30 3 * * *"   # daily 09:00 IST (backup; the Carousel loop also triggers this)
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-posts
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      MEDIA_BASE_URL: ${{ secrets.MEDIA_BASE_URL }}
+      CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+      CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Are new posts needed?
+        id: need
+        run: |
+          if [ "${{ inputs.count || '0' }}" != "0" ] || python generator/generate.py --check; then
+            echo "go=yes" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install renderer
+        if: steps.need.outputs.go == 'yes'
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-color-emoji
+          pip install requests playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Generate
+        if: steps.need.outputs.go == 'yes'
+        run: |
+          if [ "${{ inputs.count || '0' }}" != "0" ]; then
+            python -u generator/generate.py --count "${{ inputs.count }}"
+          else
+            python -u generator/generate.py
+          fi
+
+      - name: Save
+        if: always() && steps.need.outputs.go == 'yes'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scheduler/carousels.json generator/content generator/topics.csv
+          git diff --cached --quiet && exit 0
+          git commit -m "Generated new posts"
+          for i in 1 2 3 4 5; do git pull --rebase && git push && exit 0; sleep 10; done
+          exit 1

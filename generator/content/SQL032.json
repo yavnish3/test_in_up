@@ -1,0 +1,29 @@
+{
+  "id": "SQL032", "part": 32, "module": "Constraints", "topic": "Foreign Key", "next": "Joins kyun chahiye?",
+  "hook": "Do tables ki dosti ka [[dhaaga]]: Foreign Key",
+  "cover_sticker": "🧵",
+  "slides": [
+    {"type": "concept", "title": "Foreign Key = [[rishta]]", "sticker": "🤝",
+     "points": ["Ek table ka column, **doosri table** ki key point kare", "**Child** (orders) → **Parent** (customers)", "Galat reference? DB **block** kar dega"],
+     "note": "Order bolta: \"main **customer 1** ka hoon\". FK check karta: woh hai bhi? 🔍", "who": "SIMPLE BHASHA MEIN"},
+    {"type": "table", "title": "Parent: [[customers]]", "sticker": "👨‍👩‍👧",
+     "columns": ["ID", "NAME", "CITY"], "rows": [["1", "Aarav", "Delhi"], ["2", "Meera", "Mumbai"], ["3", "Kabir", "Pune"]]},
+    {"type": "code", "title": "Child pe [[FK lagao]]", "sticker": "💻", "file": "rishta_jodo.sql",
+     "code": "CREATE TABLE orders (\n  order_id INT PRIMARY KEY,\n  customer_id INT,\n  amount INT,\n  FOREIGN KEY (customer_id)\n    REFERENCES customers(id)\n);"},
+    {"type": "table", "title": "FK ka [[pehra]]", "sticker": "👮",
+     "columns": ["ORDER", "CUST_ID", "RESULT"], "rows": [["101", "1", "✅ Aarav hai"], ["102", "2", "✅ Meera hai"], ["103", "9", "❌ Blocked"]], "highlight": [2],
+     "note": "Customer 9 exist hi nahi karta. **Bhoot order** allowed nahi 👻", "who": "TWIST"},
+    {"type": "concept", "title": "Parent delete [[kiya]] to?", "sticker": "⚖️",
+     "points": ["Default: **error**, pehle orders hatao", "**ON DELETE CASCADE**: orders bhi saath gaye", "**ON DELETE SET NULL**: customer_id = NULL"],
+     "note": "CASCADE powerful hai, par **soch samajh ke**. Ek delete, sau rows gayab 💥", "who": "PRO MOVE"},
+    {"type": "compare", "title": "PK vs [[FK]]",
+     "left": {"label": "PRIMARY KEY 🔑", "points": ["Apni table ki pehchaan", "Unique + NOT NULL", "Sirf ek per table"]},
+     "right": {"label": "FOREIGN KEY 🧵", "points": ["Doosri table ka pointer", "Repeat ho sakta", "Kai FK ho sakte"]}},
+    {"type": "mistake", "wrong": "DELETE FROM customers\nWHERE id = 1;", "wrong_is_code": true,
+     "right": "DELETE FROM orders\nWHERE customer_id = 1;\nDELETE FROM customers\nWHERE id = 1;", "right_is_code": true,
+     "why": "Aarav ke orders abhi bache hain → FK **error**. Pehle child, phir parent"},
+    {"type": "recap",
+     "points": ["FK = doosri table ka **reference**", "**Child → Parent** rishta", "Galat value **block**", "Parent delete? **CASCADE** ya pehle child"]}
+  ],
+  "caption": "Do tables ki dosti ka dhaaga: Foreign Key 🧵\n\nIs post mein:\n✅ Foreign Key kya hai\n✅ orders → customers example\n✅ FK kaise galat data block karta hai\n✅ ON DELETE CASCADE / SET NULL\n\nSQL Series · Part 32/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #foreignkey #constraints #sqlinhindi #learnsql #database #sqlinterview #coding #techhindi #programming"
+}

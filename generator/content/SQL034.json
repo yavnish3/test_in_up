@@ -1,0 +1,149 @@
+{
+ "id": "SQL034",
+ "part": 34,
+ "module": "Joins",
+ "topic": "INNER JOIN",
+ "next": "LEFT JOIN",
+ "hook": "INNER JOIN: sirf jo dono taraf [[match]] ho, baaki single",
+ "cover_sticker": "💞",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "INNER = [[sirf match]]",
+   "sticker": "🎯",
+   "points": [
+    "Dono tables mein **match** mila? Row aayegi",
+    "Match nahi? **Dono taraf** se gayab",
+    "Venn diagram ka **beech wala** hissa"
+   ],
+   "note": "Dating app: **dono ne right swipe** kiya tabhi match 💘",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "table",
+   "title": "Orders ka [[match]]",
+   "sticker": "📋",
+   "columns": [
+    "ORDER",
+    "CUST_ID",
+    "AMOUNT",
+    "MATCH?"
+   ],
+   "rows": [
+    [
+     "101",
+     "1",
+     "500",
+     "Aarav ✅"
+    ],
+    [
+     "102",
+     "2",
+     "800",
+     "Meera ✅"
+    ],
+    [
+     "103",
+     "1",
+     "300",
+     "Aarav ✅"
+    ],
+    [
+     "104",
+     "7",
+     "200",
+     "❌ koi nahi"
+    ]
+   ],
+   "highlight": [
+    3
+   ],
+   "note": "Customers: Aarav(1), Meera(2), Kabir(3), Riya(4). **Kabir, Riya** ka koi order nahi",
+   "who": "DHYAAN DO"
+  },
+  {
+   "type": "code",
+   "title": "INNER JOIN [[likho]]",
+   "sticker": "💻",
+   "file": "sirf_match.sql",
+   "code": "SELECT c.name, o.amount\nFROM customers c\nINNER JOIN orders o\n  ON c.id = o.customer_id;",
+   "note": "**c** aur **o** = aliases. Chhota likho, kaam bada 😎",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "table",
+   "title": "Result: [[3 rows]]",
+   "sticker": "✅",
+   "columns": [
+    "NAME",
+    "AMOUNT"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "500"
+    ],
+    [
+     "Meera",
+     "800"
+    ],
+    [
+     "Aarav",
+     "300"
+    ]
+   ],
+   "highlight": [
+    0,
+    2
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "Kaun [[gayab]] hua?",
+   "sticker": "🫥",
+   "points": [
+    "**Kabir, Riya**: koi order nahi → out",
+    "**Order 104**: customer 7 nahi mila → out",
+    "Aarav **2 baar**: 2 orders = 2 rows"
+   ],
+   "note": "Ek customer ke jitne orders, utni **rows**. Ye normal hai!",
+   "who": "TWIST"
+  },
+  {
+   "type": "compare",
+   "title": "JOIN vs [[INNER JOIN]]",
+   "left": {
+    "label": "JOIN",
+    "points": [
+     "Short likhne ka tareeka",
+     "Default = INNER"
+    ]
+   },
+   "right": {
+    "label": "INNER JOIN",
+    "points": [
+     "Poora naam, clear intent",
+     "Result bilkul same"
+    ]
+   },
+   "note": "Team code mein **INNER JOIN** likho, padhne wale ko clarity milti hai",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "mistake",
+   "wrong": "INNER JOIN se **saare customers** aane ki ummeed",
+   "right": "INNER JOIN = sirf **match wale**. Sab chahiye? **LEFT JOIN**",
+   "why": "Kabir, Riya ka order nahi → INNER JOIN mein **dikhenge hi nahi**"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "INNER JOIN = **sirf match**",
+    "Unmatched **dono taraf** gayab",
+    "Venn ka **beech** wala hissa",
+    "**JOIN** = INNER JOIN"
+   ]
+  }
+ ],
+ "caption": "INNER JOIN: sirf jo dono taraf match ho 💞\n\nBaaki sab single reh jaate hain!\nIs post mein:\n✅ INNER JOIN kaise kaam karta hai\n✅ customers + orders worked example\n✅ Kaun result se gayab hua aur kyun\n✅ JOIN = INNER JOIN\n\nSQL Series · Part 34/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #innerjoin #sqljoins #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #programming"
+}

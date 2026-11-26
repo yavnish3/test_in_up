@@ -1,0 +1,30 @@
+{
+  "id": "SQL028", "part": 28, "module": "Modify Data", "topic": "DELETE", "next": "DELETE vs TRUNCATE vs DROP",
+  "hook": "DELETE bina WHERE ke = [[naukri bhi delete]]",
+  "cover_sticker": "🗑️",
+  "slides": [
+    {"type": "concept", "title": "DELETE = [[rows hatao]]", "sticker": "✂️",
+     "points": ["Table se **rows** nikaalta hai", "**WHERE** se chuno kaunsi rows", "Table ka **structure** waisa hi rehta"],
+     "note": "Ghar khaali karna, **ghar todna nahi** 🏠", "who": "SIMPLE BHASHA MEIN"},
+    {"type": "code", "title": "Dev ko [[alvida]] 👋", "sticker": "💻", "file": "farewell.sql",
+     "code": "DELETE FROM employees\nWHERE id = 5;"},
+    {"type": "table", "title": "Before → [[After]]", "sticker": "🔍",
+     "columns": ["ID", "NAME", "STATUS"], "rows": [["3", "Kabir", "bacha ✅"], ["4", "Riya", "bacha ✅"], ["5", "Dev", "gaya ❌"]], "highlight": [2],
+     "note": "Sirf id 5 gayi. Columns, baaki rows: **sab same**", "who": "DEKHO"},
+    {"type": "code", "title": "Pehle [[dekho]], phir maaro", "sticker": "👀", "file": "pehle_check.sql",
+     "code": "-- Step 1: kya udega?\nSELECT * FROM employees\nWHERE city = 'Pune';\n\n-- Step 2: ab udao\nDELETE FROM employees\nWHERE city = 'Pune';",
+     "note": "SELECT mein jo rows dikhi, **wahi** DELETE hongi. Zero surprise 😌", "who": "BHAI TIP 💡"},
+    {"type": "concept", "title": "Undo [[button]] hai?", "sticker": "⏪",
+     "points": ["Auto-commit ON? **Undo nahi** hota", "**BEGIN** ke andar ho to ROLLBACK possible", "Warna sirf **backup** bachayega"],
+     "note": "Production DB pe **pehle backup**, phir DELETE. Hamesha.", "who": "PRO MOVE"},
+    {"type": "compare", "title": "Kitna [[udega]]?",
+     "left": {"label": "WHERE ke saath", "points": ["Sirf chuni rows", "Baaki data safe", "Normal din"]},
+     "right": {"label": "Bina WHERE 💀", "points": ["SAARI rows gayab", "Table khaali dabba", "HR ka call 📞"]}},
+    {"type": "mistake", "wrong": "DELETE FROM employees;", "wrong_is_code": true,
+     "right": "DELETE FROM employees\nWHERE id = 5;", "right_is_code": true,
+     "why": "Production mein bina WHERE = **poori table khaali**. Naukri bhi 💀"},
+    {"type": "recap",
+     "points": ["**DELETE FROM** table **WHERE** ...", "Bina WHERE = **saari rows gone**", "Structure **bacha** rehta hai", "Pehle **SELECT**, phir DELETE"]}
+  ],
+  "caption": "DELETE bina WHERE ke = naukri bhi delete 🗑️\n\nIs post mein:\n✅ DELETE ka sahi syntax\n✅ Before vs after example\n✅ SELECT-pehle wali safe habit\n✅ ROLLBACK kab bachata hai\n\nSQL Series · Part 28/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #delete #sqlinhindi #learnsql #database #dataengineering #coding #techhindi #sqlforbeginners #programming"
+}

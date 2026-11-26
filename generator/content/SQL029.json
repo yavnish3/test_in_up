@@ -1,0 +1,29 @@
+{
+  "id": "SQL029", "part": 29, "module": "Modify Data", "topic": "DELETE vs TRUNCATE vs DROP", "next": "ALTER TABLE",
+  "hook": "DELETE, TRUNCATE, DROP: teeno bhai, [[teeno khatarnaak]]",
+  "cover_sticker": "💣",
+  "slides": [
+    {"type": "concept", "title": "Teeno ka [[kaam]]", "sticker": "🧨",
+     "points": ["**DELETE**: kuch rows hatao (WHERE)", "**TRUNCATE**: saari rows, ek jhatke mein", "**DROP**: table hi khatam, structure bhi"],
+     "note": "Almirah: kuch kapde nikalo / **saare** nikalo / **almirah hi bech do** 😂", "who": "DESI LOGIC"},
+    {"type": "code", "title": "Teeno ka [[syntax]]", "sticker": "💻", "file": "teen_bhai.sql",
+     "code": "DELETE FROM employees\nWHERE id = 5;\n\nTRUNCATE TABLE employees;\n\nDROP TABLE employees;"},
+    {"type": "table", "title": "Kya [[bachta]] hai?", "sticker": "📊",
+     "columns": ["COMMAND", "ROWS", "TABLE", "WHERE?"], "rows": [["DELETE", "Kuch/saari", "Bachi ✅", "Haan"], ["TRUNCATE", "Saari gayi", "Bachi ✅", "Nahi"], ["DROP", "Saari gayi", "Gayab ❌", "Nahi"]], "highlight": [2]},
+    {"type": "compare", "title": "DML vs [[DDL]]",
+     "left": {"label": "DELETE (DML)", "points": ["Row by row hatata", "Slow, par control", "Triggers chalte hain"]},
+     "right": {"label": "TRUNCATE (DDL)", "points": ["Ek jhatke mein saaf", "Bahut fast ⚡", "Row triggers nahi"]}},
+    {"type": "concept", "title": "Rollback ka [[scene]]", "sticker": "⏪",
+     "points": ["DELETE: transaction mein **rollback ✅**", "TRUNCATE: PostgreSQL, SQL Server mein ✅", "MySQL mein TRUNCATE **auto-commit** ❌"],
+     "note": "TRUNCATE auto-increment ID **reset** karta (Postgres mein RESTART IDENTITY)", "who": "INTERVIEW TIP"},
+    {"type": "concept", "title": "Kab [[kaunsa]]?", "sticker": "🤔",
+     "points": ["Kuch rows hatani? → **DELETE**", "Test table poora saaf? → **TRUNCATE**", "Table ki zaroorat hi nahi? → **DROP**"],
+     "note": "DROP ke baad table dobara chahiye? **CREATE TABLE** se zero se shuru 😬", "who": "TWIST"},
+    {"type": "mistake", "wrong": "TRUNCATE TABLE employees\nWHERE id = 5;", "wrong_is_code": true,
+     "right": "DELETE FROM employees\nWHERE id = 5;", "right_is_code": true,
+     "why": "TRUNCATE **WHERE nahi leta**. Chuni rows hatani hain? DELETE"},
+    {"type": "recap",
+     "points": ["**DELETE** = kuch rows, WHERE ke saath", "**TRUNCATE** = saari rows, fast", "**DROP** = table hi khatam", "DELETE DML, TRUNCATE/DROP **DDL**"]}
+  ],
+  "caption": "DELETE, TRUNCATE, DROP: teeno bhai, teeno khatarnaak 💣\n\nIs post mein:\n✅ Teeno kya hatate hain\n✅ Kya bachta hai: table ya kuch nahi\n✅ DML vs DDL aur rollback scene\n✅ Kab kaunsa use karna hai\n\nSQL Series · Part 29/81\nSave karo 📌 interview mein pakka poochte hain · Follow karo daily SQL ke liye!\n\n#sql #deletevstruncate #sqlinterview #sqlinhindi #learnsql #database #dataengineering #coding #techhindi #programming"
+}

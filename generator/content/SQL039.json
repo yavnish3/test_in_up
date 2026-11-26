@@ -1,0 +1,30 @@
+{
+  "id": "SQL039", "part": 39, "module": "Joins", "topic": "UNION vs UNION ALL", "next": "Subquery",
+  "hook": "UNION vs UNION ALL: ek [[duplicate]] se nafrat karta hai",
+  "cover_sticker": "🥞",
+  "slides": [
+    {"type": "concept", "title": "UNION = [[upar-neeche]]", "sticker": "📚",
+     "points": ["Do queries ke results **stack** karo", "JOIN columns **side mein** jodta", "UNION rows **neeche** jodta"],
+     "note": "Do class ki attendance list ko **ek register** mein likhna 📒", "who": "DESI LOGIC"},
+    {"type": "code", "title": "UNION [[likho]]", "sticker": "💻", "file": "cities_list.sql",
+     "code": "SELECT city FROM employees\nWHERE dept = 'IT'\nUNION\nSELECT city FROM employees\nWHERE dept = 'Sales';"},
+    {"type": "table", "title": "Duplicate [[gayab]]", "sticker": "✨",
+     "columns": ["IT CITIES", "SALES CITIES", "UNION"], "rows": [["Delhi", "Delhi", "Delhi"], ["Pune", "Mumbai", "Pune"], ["", "", "Mumbai"]], "highlight": [0],
+     "note": "Delhi dono mein tha, par UNION ne **sirf ek baar** rakha 🧹", "who": "DEKHO"},
+    {"type": "compare", "title": "UNION vs [[UNION ALL]]",
+     "left": {"label": "UNION 🧹", "points": ["Duplicates hatata", "Extra kaam = slow", "Result: 3 rows"]},
+     "right": {"label": "UNION ALL ⚡", "points": ["Sab kuch rakhta", "Seedha jodo = fast", "Result: 4 rows"]}},
+    {"type": "concept", "title": "[[Rules]] yaad rakho", "sticker": "📏",
+     "points": ["Dono queries mein **same number** of columns", "Columns ka **type** match ho", "Column names **pehli query** se aate", "ORDER BY sirf **end mein ek baar**"],
+     "note": "Duplicate aa hi nahi sakte? **UNION ALL** lagao, free speed ⚡", "who": "PRO MOVE"},
+    {"type": "concept", "title": "Kab [[kaunsa]]?", "sticker": "🤔",
+     "points": ["Unique list chahiye → **UNION**", "Count/total chahiye → **UNION ALL**", "Do saal ki sales jodni → **UNION ALL**"],
+     "note": "UNION se SUM kiya? Same amount wali rows **gayab**, total galat 😬", "who": "TWIST"},
+    {"type": "mistake", "wrong": "SELECT name, city FROM customers\nUNION\nSELECT name FROM employees;", "wrong_is_code": true,
+     "right": "SELECT name, city FROM customers\nUNION\nSELECT name, city FROM employees;", "right_is_code": true,
+     "why": "2 columns vs 1 column → **error**. Count aur type same rakho"},
+    {"type": "recap",
+     "points": ["UNION = rows **upar-neeche**", "UNION **duplicates hatata** hai", "UNION ALL **sab rakhta**, fast", "Columns: **same count + type**"]}
+  ],
+  "caption": "UNION vs UNION ALL: ek duplicate se nafrat karta hai 🥞\n\nIs post mein:\n✅ UNION kya karta hai (JOIN se alag kaise)\n✅ Duplicate gayab wala example\n✅ UNION vs UNION ALL: speed aur result\n✅ Columns ke rules\n\nSQL Series · Part 39/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #union #unionall #sqlinhindi #learnsql #sqlinterview #dataanalyst #coding #techhindi #programming"
+}

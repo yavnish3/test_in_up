@@ -1,0 +1,29 @@
+{
+  "id": "SQL031", "part": 31, "module": "Constraints", "topic": "NOT NULL, UNIQUE, DEFAULT", "next": "Foreign Key",
+  "hook": "Data ke [[bouncers]]: NOT NULL, UNIQUE, DEFAULT",
+  "cover_sticker": "🕶️",
+  "slides": [
+    {"type": "concept", "title": "Constraints = [[rules]]", "sticker": "📜",
+     "points": ["Column pe lage **rules**", "Galat data aaya? DB **reject** kar dega", "Bug app mein ho, data phir bhi **clean**"],
+     "note": "Club ke bouncer: rule toda to **entry band** 🚫", "who": "DESI LOGIC"},
+    {"type": "table", "title": "4 [[bouncers]] milo", "sticker": "🛡️",
+     "columns": ["RULE", "KAAM"], "rows": [["NOT NULL", "Khaali nahi chhod sakte"], ["UNIQUE", "Value repeat nahi"], ["DEFAULT", "Na do to auto value"], ["CHECK", "Condition pass karo"]]},
+    {"type": "code", "title": "Table mein [[lagao]]", "sticker": "💻", "file": "bouncer_wali_table.sql",
+     "code": "CREATE TABLE users (\n  id INT PRIMARY KEY,\n  email VARCHAR(100)\n    UNIQUE NOT NULL,\n  country VARCHAR(20)\n    DEFAULT 'India'\n);"},
+    {"type": "code", "title": "Bouncer ne [[roka]]", "sticker": "🚫", "file": "entry_band.sql",
+     "code": "INSERT INTO users (id, email)\nVALUES (1, 'aarav@x.com');\n-- ✅ country = 'India'\n\nINSERT INTO users (id, email)\nVALUES (2, 'aarav@x.com');\n-- ❌ duplicate email!",
+     "note": "Country diya hi nahi? **DEFAULT** ne 'India' bhar diya 🇮🇳", "who": "DEKHO"},
+    {"type": "code", "title": "CHECK [[bhi]] hai", "sticker": "✅", "file": "check_karo.sql",
+     "code": "salary INT CHECK (salary > 0)",
+     "note": "MySQL **8.0.16 se pehle** CHECK parse hota tha par enforce nahi 😅", "who": "FUN FACT"},
+    {"type": "compare", "title": "UNIQUE vs [[PRIMARY KEY]]",
+     "left": {"label": "UNIQUE", "points": ["Table mein kai baar", "NULL allowed", "Alternate pehchaan"]},
+     "right": {"label": "PRIMARY KEY 🔑", "points": ["Table mein sirf 1", "NULL bilkul nahi", "Main pehchaan"]},
+     "note": "UNIQUE mein NULL: Postgres/MySQL **kai NULL** chalne dete, SQL Server **sirf ek**", "who": "INTERVIEW TIP"},
+    {"type": "mistake", "wrong": "UNIQUE aur PRIMARY KEY ko **same** samajhna", "right": "PK = **UNIQUE + NOT NULL**, aur table mein **sirf ek**",
+     "why": "UNIQUE kai columns pe laga sakte ho, aur woh **NULL** le sakta hai"},
+    {"type": "recap",
+     "points": ["**NOT NULL** = khaali nahi", "**UNIQUE** = repeat nahi", "**DEFAULT** = auto value, **CHECK** = condition", "PK = UNIQUE + NOT NULL, **sirf ek**"]}
+  ],
+  "caption": "Data ke bouncers: NOT NULL, UNIQUE, DEFAULT 🕶️\n\nGalat data ki entry band!\nIs post mein:\n✅ 4 constraints ek table mein\n✅ CREATE TABLE mein kaise lagate hain\n✅ INSERT pe bouncer kaise rokta hai\n✅ UNIQUE vs PRIMARY KEY\n\nSQL Series · Part 31/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #constraints #sqlinhindi #learnsql #database #sqlinterview #coding #techhindi #sqlforbeginners #programming"
+}

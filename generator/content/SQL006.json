@@ -1,0 +1,128 @@
+{
+ "id": "SQL006",
+ "part": 6,
+ "module": "Create & Insert",
+ "topic": "CREATE TABLE",
+ "next": "INSERT INTO",
+ "hook": "10 second mein pehli table, [[chai thandi]] hone se pehle",
+ "cover_sticker": "☕",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "CREATE TABLE ka [[formula]]",
+   "sticker": "🧪",
+   "points": [
+    "**CREATE TABLE** naam ( ... );",
+    "Andar har column: **naam + type**",
+    "Columns ke beech **comma**",
+    "End mein **semicolon** ;"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Chalo [[banao]]",
+   "sticker": "🏗️",
+   "file": "pehli_table.sql",
+   "code": "CREATE TABLE employees (\n  id INT PRIMARY KEY,\n  name VARCHAR(50),\n  dept VARCHAR(20),\n  salary INT,\n  city VARCHAR(30)\n);",
+   "note": "Bas itna! Table **ready**, chai abhi bhi **garam** ☕",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "table",
+   "title": "Ab table [[aisi]] dikhti hai",
+   "sticker": "🫙",
+   "columns": [
+    "COLUMN",
+    "TYPE"
+   ],
+   "rows": [
+    [
+     "id",
+     "INT 🔑"
+    ],
+    [
+     "name",
+     "VARCHAR(50)"
+    ],
+    [
+     "dept",
+     "VARCHAR(20)"
+    ],
+    [
+     "salary",
+     "INT"
+    ],
+    [
+     "city",
+     "VARCHAR(30)"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "Abhi **khaali** hai: columns ready, rows **zero** 🫙",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "concept",
+   "title": "Naam rakhne ke [[rules]]",
+   "sticker": "🏷️",
+   "points": [
+    "**snake_case**: first_name, join_date",
+    "Space mat daalo: 'first name' ❌",
+    "Table ka naam **plural**: employees",
+    "SELECT, ORDER jaise **keywords** avoid"
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "Table pehle se [[hai]]?",
+   "left": {
+    "label": "Sirf CREATE",
+    "points": [
+     "Table hai? Error 💥",
+     "Script ruk jaati"
+    ]
+   },
+   "right": {
+    "label": "IF NOT EXISTS",
+    "points": [
+     "Hai toh skip, chill",
+     "MySQL, PostgreSQL ✅"
+    ]
+   },
+   "note": "SQL Server mein IF NOT EXISTS ka syntax **alag** hai, dhyan rakhna",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "concept",
+   "title": "Ghar ka [[naksha]]",
+   "sticker": "🏠",
+   "points": [
+    "CREATE TABLE = ghar ka **blueprint**",
+    "Kamre (columns) **pehle** decide",
+    "Log (rows) **baad mein** aayenge"
+   ],
+   "note": "Isliye design **soch ke** karo, baad mein badalna mehenga 💸",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "mistake",
+   "wrong": "CREATE TABLE t (\n  id INT,\n  name VARCHAR(50),\n);",
+   "wrong_is_code": true,
+   "right": "CREATE TABLE t (\n  id INT,\n  name VARCHAR(50)\n);",
+   "right_is_code": true,
+   "why": "Last column ke baad **comma** = syntax error. Comma sirf **beech** mein ✋"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**CREATE TABLE** naam ( ... );",
+    "Har column: **naam + type**",
+    "Comma **beech** mein, last mein nahi",
+    "snake_case naam, **semicolon** end"
+   ]
+  }
+ ],
+ "caption": "10 second mein apni pehli table, chai thandi hone se pehle ☕\n\nIs post mein:\n✅ CREATE TABLE ka formula\n✅ employees table ka poora code\n✅ Naam rakhne ke rules\n✅ IF NOT EXISTS ka jugaad\n\nSQL Series · Part 6/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

@@ -1,0 +1,122 @@
+{
+ "id": "SQL002",
+ "part": 2,
+ "module": "Introduction",
+ "topic": "SQL kya hai?",
+ "next": "Table, Row aur Column",
+ "hook": "Database se baat? Hindi nahi, [[SQL]] bolo",
+ "cover_sticker": "🗣️",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "SQL = [[Structured Query]] Language",
+   "sticker": "📝",
+   "points": [
+    "Database se **sawaal poochne** ki language",
+    "Tum poochho, DB **table** mein jawab de",
+    "Pronounce: **S-Q-L** ya **\"sequel\"**, dono chalega"
+   ],
+   "note": "1970s mein **IBM** ne banayi thi, aaj bhi data ki **rani** 👑",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Waiter wala [[scene]]",
+   "sticker": "🍽️",
+   "points": [
+    "Tum: \"Ek **paneer tikka** lao\"",
+    "Waiter kitchen jaake **dhoondh** laata hai",
+    "SQL = tumhara **order**, DB = kitchen",
+    "Kaise banega? Kitchen ka **sar-dard** 😌"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Pehla [[sawaal]] likho",
+   "sticker": "💻",
+   "file": "hello_sql.sql",
+   "code": "SELECT name\nFROM employees;",
+   "note": "Seedhi English: \"employees se **name** do\" 🙌",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Jawab [[table]] mein aata hai",
+   "sticker": "📋",
+   "columns": [
+    "NAME"
+   ],
+   "rows": [
+    [
+     "Aarav"
+    ],
+    [
+     "Meera"
+    ],
+    [
+     "Kabir"
+    ],
+    [
+     "Riya"
+    ],
+    [
+     "Dev"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "Query ka result bhi ek **chhoti table** hi hoti hai"
+  },
+  {
+   "type": "compare",
+   "title": "Python vs [[SQL]]",
+   "left": {
+    "label": "Python 🐍",
+    "points": [
+     "Kaise karna hai, batao",
+     "Loop, step-by-step",
+     "Har kaam ke liye"
+    ]
+   },
+   "right": {
+    "label": "SQL 🗄️",
+    "points": [
+     "Kya chahiye, bas bolo",
+     "Poora set ek saath",
+     "Data ke liye boss"
+    ]
+   },
+   "note": "SQL **declarative** hai: tum **kya** bolo, **kaise** DB khud sochta hai",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "Ek [[language]], kai ghar",
+   "sticker": "🏘️",
+   "points": [
+    "**MySQL**, **PostgreSQL**, **SQL Server**",
+    "**Oracle**, **SQLite**: sab SQL bolte hain",
+    "Basics same, thode **accent** alag"
+   ],
+   "note": "Ek DB pe seekha SQL, **80-90%** baaki sab pe bhi chalega 🔥",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "mistake",
+   "wrong": "SQL ko Python jaisa **loop-wala** samajhna",
+   "right": "SQL mein bas bolo **kya chahiye**, poora result ek saath",
+   "why": "Row-by-row loop nahi, SQL **sets** pe kaam karta hai"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "SQL = DB se **sawaal** poochne ki language",
+    "Jawab hamesha **table** mein",
+    "Declarative: **kya** bolo, kaise nahi",
+    "MySQL, PostgreSQL, SQL Server: **sab SQL**"
+   ]
+  }
+ ],
+ "caption": "Database se baat karni hai? Hindi nahi, SQL bolo 🗣️\n\nIs post mein:\n✅ SQL ka full form aur matlab\n✅ Pehli query: SELECT name FROM employees\n✅ Python vs SQL: loop vs set\n✅ MySQL, PostgreSQL, SQL Server: sab SQL\n\nSQL Series · Part 2/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

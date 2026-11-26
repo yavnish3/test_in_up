@@ -1,0 +1,129 @@
+{
+ "id": "SQL063",
+ "part": 63,
+ "module": "Window Functions",
+ "topic": "NTILE()",
+ "next": "FIRST_VALUE & LAST_VALUE",
+ "hook": "Sabko barabar [[baaltiyon]] mein baanto, no favouritism",
+ "cover_sticker": "🪣",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "NTILE(n) = [[n buckets]]",
+   "sticker": "🪣",
+   "points": [
+    "Sorted rows ko **n barabar groups** mein baanto",
+    "Har row ko milta hai **bucket number** 1…n",
+    "Jaise class ko **4 sections** mein baantna"
+   ],
+   "note": "Bole toh: **headcount** ke hisaab se batwara, value se nahi",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Do [[baaltiyan]]",
+   "sticker": "💻",
+   "file": "baalti_baanto.sql",
+   "code": "SELECT name, salary,\n  NTILE(2) OVER (\n    ORDER BY salary DESC\n  ) AS bucket\nFROM employees;"
+  },
+  {
+   "type": "table",
+   "title": "5 log, 2 [[buckets]]",
+   "sticker": "📊",
+   "columns": [
+    "NAME",
+    "SALARY",
+    "BUCKET"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "90,000",
+     "1"
+    ],
+    [
+     "Dev",
+     "80,000",
+     "1"
+    ],
+    [
+     "Kabir",
+     "70,000",
+     "1"
+    ],
+    [
+     "Meera",
+     "60,000",
+     "2"
+    ],
+    [
+     "Riya",
+     "50,000",
+     "2"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "5 ÷ 2 barabar nahi → extra row **pehle bucket** mein jaati hai",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "Quartile = [[NTILE(4)]]",
+   "sticker": "🧮",
+   "points": [
+    "NTILE(4) → **top 25%** = bucket 1",
+    "NTILE(10) → **deciles**, top 10%",
+    "NTILE(100) → **percentile** jaisa"
+   ],
+   "note": "Top 25% customers chahiye? WHERE bucket = 1, khatam 🎯",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "code",
+   "title": "Customer [[segments]]",
+   "sticker": "🏷️",
+   "file": "segments.sql",
+   "code": "SELECT customer_id, total,\n  NTILE(3) OVER (\n    ORDER BY total DESC\n  ) AS seg\nFROM customer_spend;",
+   "note": "seg 1 = **Gold** 🥇, 2 = Silver, 3 = Bronze. Marketing team khush!",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "compare",
+   "title": "NTILE vs [[value range]]",
+   "left": {
+    "label": "NTILE 🪣",
+    "points": [
+     "Count se baantta hai",
+     "Har bucket ~same size",
+     "Range ki parwah nahi"
+    ]
+   },
+   "right": {
+    "label": "CASE range 📏",
+    "points": [
+     "Value se baantta hai",
+     "Bucket size kuch bhi",
+     "0-50k, 50k-1L jaise"
+    ]
+   }
+  },
+  {
+   "type": "mistake",
+   "wrong": "NTILE(2) → 50k se kam ek bucket,\nupar wale doosre",
+   "right": "NTILE(2) → **rows ko gin ke** do barabar hisse",
+   "why": "Buckets **row count** se bante hain, value range se nahi. Range chahiye? **CASE** use karo"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "NTILE(n) = **n barabar buckets**",
+    "Extra rows **pehle buckets** mein",
+    "NTILE(4) = quartile, **top 25%**",
+    "Range chahiye to **CASE WHEN**"
+   ]
+  }
+ ],
+ "caption": "Sabko barabar baaltiyon mein baanto, no favouritism 🪣\n\nNTILE() se segmentation 2 minute mein!\nIs post mein:\n✅ NTILE(n) kya karta hai\n✅ Uneven rows kahan jaati hain\n✅ Quartile / top 25% trick\n✅ NTILE vs value range\n\nSQL Series · Part 63/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #sqlinhindi #learnsql #dataanalytics #sqlinterview #dataanalyst #coding #techhindi #datascience"
+}

@@ -1,0 +1,139 @@
+{
+ "id": "SQL018",
+ "part": 18,
+ "module": "Filtering",
+ "topic": "IS NULL",
+ "next": "ORDER BY",
+ "hook": "[[NULL zero nahi]] hota, dil pe likh lo",
+ "cover_sticker": "👻",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "NULL = [[pata nahi]]",
+   "sticker": "❓",
+   "points": [
+    "NULL = value **missing / unknown**",
+    "Na zero, na khaali text, na space",
+    "Bas **\"abhi pata nahi\"** ✋"
+   ],
+   "note": "Form mein phone **khaali chhoda** = NULL. '0' likha = **zero** 📝",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "NULL vs 0 vs [['']]",
+   "sticker": "🧪",
+   "columns": [
+    "VALUE",
+    "MATLAB"
+   ],
+   "rows": [
+    [
+     "NULL",
+     "Pata hi nahi"
+    ],
+    [
+     "0",
+     "Pata hai: zero"
+    ],
+    [
+     "''",
+     "Text hai, khaali"
+    ]
+   ],
+   "note": "Teeno **alag** hain. Ye confuse kiya toh bug pakka 🐛",
+   "who": "YAAD RAKHO"
+  },
+  {
+   "type": "code",
+   "title": "Boss kaun? [[IS NULL]]",
+   "sticker": "👔",
+   "file": "boss_dhundo.sql",
+   "code": "SELECT name\nFROM employees\nWHERE manager_id IS NULL;"
+  },
+  {
+   "type": "table",
+   "title": "manager_id [[dekho]]",
+   "sticker": "🎯",
+   "columns": [
+    "NAME",
+    "MANAGER_ID"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "NULL"
+    ],
+    [
+     "Meera",
+     "1"
+    ],
+    [
+     "Kabir",
+     "1"
+    ],
+    [
+     "Riya",
+     "1"
+    ],
+    [
+     "Dev",
+     "1"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "Jiska koi manager nahi = **top boss** 😎",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "concept",
+   "title": "= NULL kyun [[fail]]?",
+   "sticker": "🤯",
+   "points": [
+    "NULL se compare = **UNKNOWN**, true nahi",
+    "**NULL = NULL** bhi true nahi!",
+    "WHERE sirf **true** wali rows rakhta hai"
+   ],
+   "note": "Do anjaan log: kya **same** hain? Pata nahi! Bas yahi logic 🤷",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "compare",
+   "title": "IS NULL vs [[IS NOT NULL]]",
+   "left": {
+    "label": "IS NULL",
+    "points": [
+     "Value missing",
+     "Boss: Aarav"
+    ]
+   },
+   "right": {
+    "label": "IS NOT NULL",
+    "points": [
+     "Value maujood",
+     "Baaki chaaron"
+    ]
+   }
+  },
+  {
+   "type": "mistake",
+   "wrong": "WHERE manager_id = NULL",
+   "wrong_is_code": true,
+   "right": "WHERE manager_id IS NULL",
+   "right_is_code": true,
+   "why": "= NULL hamesha **UNKNOWN** deta hai, error nahi. Bas **0 rows**, chupchaap 😶"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "NULL = **missing value**",
+    "NULL ≠ 0 ≠ **''**",
+    "**= NULL** kaam nahi karta",
+    "Use **IS NULL / IS NOT NULL**"
+   ]
+  }
+ ],
+ "caption": "NULL zero nahi hota, ye baat dil pe likh lo 👻\n\nIs post mein:\n✅ NULL ka asli matlab\n✅ NULL vs 0 vs khaali text\n✅ IS NULL se boss dhoondho\n✅ = NULL kyun chupchaap fail hota hai\n\nSQL Series · Part 18/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

@@ -1,0 +1,159 @@
+{
+ "id": "SQL080",
+ "part": 80,
+ "module": "Interview Prep",
+ "topic": "Month-wise Report",
+ "next": "Advanced SQL Recap",
+ "hook": "Boss ne [[monthly report]] maangi? 10 second ka kaam",
+ "cover_sticker": "📅",
+ "slides": [
+  {
+   "type": "table",
+   "title": "Raw [[orders]] data",
+   "sticker": "🧾",
+   "columns": [
+    "ORDER_DATE",
+    "AMOUNT"
+   ],
+   "rows": [
+    [
+     "2024-01-05",
+     "500"
+    ],
+    [
+     "2024-01-20",
+     "700"
+    ],
+    [
+     "2024-02-03",
+     "300"
+    ],
+    [
+     "2024-02-14",
+     "900"
+    ],
+    [
+     "2024-03-09",
+     "400"
+    ]
+   ],
+   "note": "Har order ki **alag date**. Boss ko chahiye **month ka total** 📊",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "concept",
+   "title": "Plan [[4 step]]",
+   "sticker": "🗺️",
+   "points": [
+    "Date ko **month** mein badlo: 2024-01",
+    "**GROUP BY** month",
+    "**SUM(amount)** se total",
+    "**ORDER BY** month se line mein"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "MySQL [[report]]",
+   "sticker": "💻",
+   "file": "monthly_report.sql",
+   "code": "SELECT\n  DATE_FORMAT(order_date,\n    '%Y-%m') AS month,\n  SUM(amount) AS total\nFROM orders\nGROUP BY month\nORDER BY month;"
+  },
+  {
+   "type": "table",
+   "title": "Report [[ready]] ✅",
+   "sticker": "📊",
+   "columns": [
+    "MONTH",
+    "TOTAL"
+   ],
+   "rows": [
+    [
+     "2024-01",
+     "1,200"
+    ],
+    [
+     "2024-02",
+     "1,200"
+    ],
+    [
+     "2024-03",
+     "400"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "5 rows → **3 months**. Boss khush, tum free 😎",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "table",
+   "title": "Har DB ka [[apna tareeka]]",
+   "sticker": "🗂️",
+   "columns": [
+    "DB",
+    "MONTH NIKALO"
+   ],
+   "rows": [
+    [
+     "MySQL",
+     "DATE_FORMAT(d, '%Y-%m')"
+    ],
+    [
+     "PostgreSQL",
+     "TO_CHAR(d, 'YYYY-MM')"
+    ],
+    [
+     "PostgreSQL",
+     "DATE_TRUNC('month', d)"
+    ],
+    [
+     "SQL Server",
+     "FORMAT(d, 'yyyy-MM')"
+    ]
+   ],
+   "note": "SQL Server mein GROUP BY **alias nahi** chalta, poora expression likho",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "compare",
+   "title": "'2024-01' vs [[Jan]]",
+   "left": {
+    "label": "'YYYY-MM' ✅",
+    "points": [
+     "Text sort bhi sahi",
+     "Saal bhi alag",
+     "2023-01 ≠ 2024-01"
+    ]
+   },
+   "right": {
+    "label": "Sirf 'Jan' ❌",
+    "points": [
+     "Apr, Feb, Jan sort",
+     "Saal mix ho jaate",
+     "Report ulti-pulti"
+    ]
+   },
+   "note": "Month ke saath **saal** hamesha rakho, warna Jan 2023 + Jan 2024 jud jaayenge",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "mistake",
+   "wrong": "GROUP BY order_date",
+   "right": "GROUP BY\n  DATE_FORMAT(order_date, '%Y-%m')",
+   "why": "Seedha date pe group = **har din** ki alag row, month nahi 💀",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Date → **month** (YYYY-MM)",
+    "**GROUP BY** month",
+    "**SUM(amount)** + ORDER BY",
+    "Function **DB pe depend** karta"
+   ]
+  }
+ ],
+ "caption": "Boss ne monthly report maangi? 10 second ka kaam 📅\n\nMonth-wise report: interview + job dono mein kaam aayega!\nIs post mein:\n✅ Date ko month mein badlo\n✅ GROUP BY + SUM query\n✅ MySQL / PostgreSQL / SQL Server functions\n✅ Date pe seedha GROUP BY ki galti\n\nSQL Series · Part 80/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinterview #datereport #dataanalyst #sqlinhindi #learnsql #dataanalytics #mysql #techhindi #datascience"
+}

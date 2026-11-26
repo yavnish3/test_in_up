@@ -1,0 +1,122 @@
+{
+ "id": "SQL009",
+ "part": 9,
+ "module": "Select Basics",
+ "topic": "Specific Columns Select karna",
+ "next": "Alias (AS)",
+ "hook": "Poori table nahi, bas [[naam aur salary]]",
+ "cover_sticker": "🎯",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Menu se [[pick]] karo",
+   "sticker": "🍔",
+   "points": [
+    "Poora menu nahi, **jo chahiye** woh order",
+    "SELECT ke baad **column naam** likho",
+    "Beech mein **comma**, last mein nahi"
+   ],
+   "note": "Thali nahi, **a la carte** order 😋",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Sirf [[do]] column",
+   "sticker": "✌️",
+   "file": "bas_itna.sql",
+   "code": "SELECT name, salary\nFROM employees;"
+  },
+  {
+   "type": "table",
+   "title": "Result: [[clean]] aur chhota",
+   "sticker": "✨",
+   "columns": [
+    "NAME",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "60000"
+    ],
+    [
+     "Meera",
+     "45000"
+    ],
+    [
+     "Kabir",
+     "50000"
+    ],
+    [
+     "Riya",
+     "75000"
+    ],
+    [
+     "Dev",
+     "40000"
+    ]
+   ],
+   "note": "Dept, city gaye. Sirf **kaam ki cheez** 💅",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Order [[tum]] decide karo",
+   "sticker": "🔄",
+   "file": "ulta_order.sql",
+   "code": "SELECT salary, name, city\nFROM employees;",
+   "note": "Jo order SELECT mein likhoge, result mein **wahi** aayega",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "compare",
+   "title": "SELECT * vs [[Columns]]",
+   "left": {
+    "label": "SELECT * 🐘",
+    "points": [
+     "Saara data aata",
+     "Slow on big tables",
+     "Table badli, result badla"
+    ]
+   },
+   "right": {
+    "label": "name, salary 🐆",
+    "points": [
+     "Sirf zaroori data",
+     "Fast + halka",
+     "Result predictable"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "Kyun [[fast]] hai?",
+   "sticker": "⚡",
+   "points": [
+    "Kam data **disk se padhna** padta hai",
+    "Network pe kam **bytes** travel",
+    "App ko kam **memory** chahiye"
+   ],
+   "note": "Real jobs mein SELECT * pe **code review** mein daant padti hai 😅",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT nme, salary\nFROM employees;",
+   "wrong_is_code": true,
+   "right": "SELECT name, salary\nFROM employees;",
+   "right_is_code": true,
+   "why": "Spelling galat = **\"Unknown column\"** error. Naam exact likho ✍️"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "SELECT **col1, col2** FROM table",
+    "**Comma** se alag, last pe nahi",
+    "Order **tum** decide karo",
+    "Kam columns = **fast + clean**"
+   ]
+  }
+ ],
+ "caption": "Poori table nahi chahiye, bas naam aur salary 🎯\n\nIs post mein:\n✅ Specific columns kaise select karein\n✅ Column order apni marzi ka\n✅ SELECT * vs specific columns\n✅ Spelling galti ka error\n\nSQL Series · Part 9/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

@@ -1,0 +1,134 @@
+{
+ "id": "SQL053",
+ "part": 53,
+ "module": "Window Functions",
+ "topic": "Window Functions kya hain?",
+ "next": "Aggregate vs Window (PARTITION BY)",
+ "hook": "GROUP BY rows [[kha jaata]] hai, ye nahi khaata",
+ "cover_sticker": "🪟",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "GROUP BY ka [[dard]]",
+   "sticker": "😢",
+   "points": [
+    "AVG(salary) GROUP BY → **sirf 1 row**",
+    "Aarav, Meera ke naam? **Gayab** 👻",
+    "Har row bhi chahiye + calculation bhi?"
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "Window = [[dono]] milega",
+   "sticker": "🪟",
+   "points": [
+    "Har row **apni jagah** rehti hai",
+    "Saath mein ek **calculation** column",
+    "Pehchan: **OVER()** keyword ✓"
+   ],
+   "note": "Khidki se poori class dikhti hai, par tum **apni seat** pe hi baithe ho 🪑",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "Pehla [[OVER()]]",
+   "sticker": "💻",
+   "file": "pehli_window.sql",
+   "code": "SELECT name, salary,\n  AVG(salary) OVER ()\n    AS company_avg\nFROM employees;",
+   "note": "Khaali **OVER ()** = window poori table hai",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Rows [[safe]] hain",
+   "sticker": "✅",
+   "columns": [
+    "NAME",
+    "SALARY",
+    "COMPANY_AVG"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "90,000",
+     "62,000"
+    ],
+    [
+     "Kabir",
+     "70,000",
+     "62,000"
+    ],
+    [
+     "Meera",
+     "60,000",
+     "62,000"
+    ],
+    [
+     "Riya",
+     "50,000",
+     "62,000"
+    ],
+    [
+     "Dev",
+     "40,000",
+     "62,000"
+    ]
+   ],
+   "highlight": [
+    2
+   ],
+   "note": "5 rows andar, **5 rows bahar**. Meera avg se thoda neeche 👀",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "compare",
+   "title": "GROUP BY vs [[Window]]",
+   "left": {
+    "label": "GROUP BY 🍲",
+    "points": [
+     "Rows merge",
+     "1 row per group",
+     "Detail gayab"
+    ]
+   },
+   "right": {
+    "label": "Window 🪟",
+    "points": [
+     "Rows same",
+     "Har row + value",
+     "Detail + summary"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "Window ki [[family]]",
+   "sticker": "👨‍👩‍👧",
+   "points": [
+    "**Ranking**: ROW_NUMBER, RANK, DENSE_RANK",
+    "**Totals**: SUM / AVG OVER (...)",
+    "**Peeche-aage**: LAG, LEAD"
+   ],
+   "note": "MySQL mein window functions **8.0+** se hi chalte hain",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT name FROM employees\nWHERE salary >\n  AVG(salary) OVER ();",
+   "right": "SELECT name FROM (\n  SELECT name, salary,\n    AVG(salary) OVER () AS a\n  FROM employees) t\nWHERE salary > a;",
+   "why": "Window WHERE ke **baad** chalta hai. Subquery/CTE mein lapeto 📦",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Window = **har row + calculation**",
+    "Pehchan: **OVER()**",
+    "Rows **merge nahi** hoti",
+    "WHERE mein nahi → **subquery**"
+   ]
+  }
+ ],
+ "caption": "GROUP BY rows kha jaata hai, window function nahi khaata 🪟\n\nIs post mein:\n✅ Window function kya hai\n✅ OVER() ka pehla example\n✅ GROUP BY vs Window\n✅ WHERE wali galti ka fix\n\nSQL Series · Part 53/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #learnsql #sqlinhindi #dataanalytics #dataanalyst #sqlinterview #datascience #coding #programming"
+}

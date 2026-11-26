@@ -1,0 +1,108 @@
+{
+ "id": "SQL045",
+ "part": 45,
+ "module": "Advanced Basics",
+ "topic": "VIEW",
+ "next": "INDEX",
+ "hook": "Lambi query baar baar? [[VIEW]] banao, aalsi bano",
+ "cover_sticker": "🪟",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "VIEW = [[saved query]]",
+   "sticker": "💾",
+   "points": [
+    "Query ko ek **naam** de do",
+    "Phir use **table ki tarah** call karo",
+    "Data copy nahi, sirf **query save** 📝"
+   ],
+   "note": "Bole toh: Zomato pe **favourite order** save karna. Ek tap, same khana",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Banao aur [[use]] karo",
+   "sticker": "🛠️",
+   "file": "it_team_view.sql",
+   "code": "CREATE VIEW it_team AS\nSELECT name, salary\nFROM employees\nWHERE dept = 'IT';\n\nSELECT * FROM it_team;"
+  },
+  {
+   "type": "table",
+   "title": "it_team ka [[result]]",
+   "sticker": "📋",
+   "columns": [
+    "NAME",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "90,000"
+    ],
+    [
+     "Kabir",
+     "70,000"
+    ]
+   ],
+   "note": "Har baar SELECT karo → query **fresh** chalti hai, latest data ⚡",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Kyun use [[karein]]?",
+   "sticker": "🤔",
+   "points": [
+    "**Simplicity**: 10-line JOIN → 1 naam",
+    "**Security**: salary chhupao, naam dikhao",
+    "**Consistency**: sab same logic use karein"
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "Table vs [[View]]",
+   "left": {
+    "label": "Table 🗄️",
+    "points": [
+     "Data store karta",
+     "Space leta",
+     "Khud update hota"
+    ]
+   },
+   "right": {
+    "label": "View 🪟",
+    "points": [
+     "Sirf query store",
+     "Na ke barabar space",
+     "Table se data leta"
+    ]
+   },
+   "note": "Postgres ka **MATERIALIZED VIEW** data store karta hai, REFRESH chahiye",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "code",
+   "title": "Badlo ya [[hatao]]",
+   "sticker": "🔧",
+   "file": "view_manage.sql",
+   "code": "-- MySQL / Postgres\nCREATE OR REPLACE VIEW it_team AS\nSELECT name FROM employees\nWHERE dept = 'IT';\n\nDROP VIEW it_team;",
+   "note": "SQL Server mein: **CREATE OR ALTER VIEW** (2016 SP1+)",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "mistake",
+   "wrong": "View = data ki **alag copy**, table badla to view purana rahega",
+   "right": "View = **window**. Table badla to view mein **turant** dikhega",
+   "why": "View sirf **saved query** hai, har baar table se fresh data laata hai 🪟"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "VIEW = **saved query**, virtual table",
+    "Data store **nahi** karta",
+    "Simple + secure queries",
+    "Table badla → view **auto updated**"
+   ]
+  }
+ ],
+ "caption": "Lambi query baar baar likhte ho? VIEW bana lo, aalsi bano 🪟\n\nIs post mein:\n✅ VIEW kya hai (saved query)\n✅ CREATE VIEW + use\n✅ Table vs View\n✅ View update aur drop kaise karein\n\nSQL Series · Part 45/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlview #learnsql #sqlinhindi #dataanalytics #dataanalyst #coding #datascience #sqlforbeginners #programming"
+}

@@ -1,0 +1,122 @@
+{
+ "id": "SQL068",
+ "part": 68,
+ "module": "CTE & Subqueries",
+ "topic": "Recursive CTE",
+ "next": "Correlated Subquery",
+ "hook": "SQL mein [[loop]]? Haan bhai, ho sakta hai",
+ "cover_sticker": "🔁",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Recursive = [[khud ko call]]",
+   "sticker": "🪞",
+   "points": [
+    "CTE jo **apne hi naam** ko andar use kare",
+    "Har round mein **nayi rows** banti hain",
+    "Nayi row na bane to **ruk jaata** hai"
+   ],
+   "note": "Jaise do mirror aamne-saamne: image ke andar image 🪞",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Teen [[hisse]] yaad rakho",
+   "sticker": "🧩",
+   "points": [
+    "**Anchor**: shuruaati row (SELECT 1)",
+    "**UNION ALL**: dono ko jodta hai",
+    "**Recursive part**: pichli row se agli",
+    "**Stop condition**: WHERE n < 5"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "1 se 5 [[ginti]]",
+   "sticker": "💻",
+   "file": "ginti.sql",
+   "code": "WITH RECURSIVE nums AS (\n  SELECT 1 AS n\n  UNION ALL\n  SELECT n + 1 FROM nums\n  WHERE n < 5\n)\nSELECT n FROM nums;",
+   "note": "SQL Server mein **RECURSIVE** keyword nahi, sirf **WITH**",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "Round by [[round]]",
+   "sticker": "🔄",
+   "columns": [
+    "ROUND",
+    "N",
+    "N < 5?"
+   ],
+   "rows": [
+    [
+     "Anchor",
+     "1",
+     "✅"
+    ],
+    [
+     "2",
+     "2",
+     "✅"
+    ],
+    [
+     "3",
+     "3",
+     "✅"
+    ],
+    [
+     "4",
+     "4",
+     "✅"
+    ],
+    [
+     "5",
+     "5",
+     "❌ stop"
+    ]
+   ],
+   "highlight": [
+    4
+   ],
+   "note": "n = 5 pe WHERE fail → nayi row nahi → **loop khatam** 🛑",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Asli use: [[org chart]]",
+   "sticker": "🌳",
+   "file": "boss_tree.sql",
+   "code": "WITH RECURSIVE t AS (\n  SELECT id, name, 1 AS lvl\n  FROM emp WHERE boss_id IS NULL\n  UNION ALL\n  SELECT e.id, e.name, lvl+1\n  FROM emp e JOIN t\n    ON e.boss_id = t.id\n) SELECT * FROM t;",
+   "note": "CEO se shuru, har level pe **neeche ke log**. Data khatam = stop",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "Kahan [[kaam]] aata hai?",
+   "sticker": "🎯",
+   "points": [
+    "**Org chart**: boss → team → intern",
+    "**Category tree**: Fashion → Men → Shirts",
+    "**Date series**: 1 se 30 tak saari dates"
+   ]
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT n + 1 FROM nums\n-- WHERE gayab",
+   "right": "SELECT n + 1 FROM nums\nWHERE n < 5",
+   "why": "Stop nahi to **infinite loop** → error (SQL Server: 100, MySQL: 1000 recursion limit) 💀",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**WITH RECURSIVE** = SQL ka loop",
+    "**Anchor + UNION ALL + recursive**",
+    "Stop condition **zaroori**",
+    "Use: **org chart**, tree, dates"
+   ]
+  }
+ ],
+ "caption": "SQL mein loop? Haan bhai, ho sakta hai 🔁\n\nRecursive CTE = SQL ka for-loop!\nIs post mein:\n✅ Anchor + recursive part\n✅ 1 se 5 tak ginti, round by round\n✅ Org chart wala real example\n✅ Stop condition bhoole to kya hoga\n\nSQL Series · Part 68/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #cte #subquery #sqlinhindi #learnsql #dataanalytics #sqlinterview #coding #techhindi #datascience"
+}

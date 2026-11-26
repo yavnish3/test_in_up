@@ -1,0 +1,120 @@
+{
+ "id": "SQL051",
+ "part": 51,
+ "module": "Aggregate Advanced",
+ "topic": "ROLLUP (Subtotal + Grand Total)",
+ "next": "Pivot with CASE",
+ "hook": "Grand total ke liye [[calculator]] mat uthao",
+ "cover_sticker": "🧾",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "ROLLUP = [[auto total]]",
+   "sticker": "➕",
+   "points": [
+    "GROUP BY ka **upgrade**",
+    "Har group ka total + **grand total**",
+    "Ek extra row, bina extra query ✓"
+   ],
+   "note": "Jaise kirane ka bill: items ke neeche **TOTAL** line khud aa jaaye 🧾",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "[[Postgres / SQL Server]]",
+   "sticker": "🐘",
+   "file": "rollup_pg.sql",
+   "code": "SELECT dept,\n  SUM(salary) AS total\nFROM employees\nGROUP BY ROLLUP(dept);"
+  },
+  {
+   "type": "table",
+   "title": "Result + [[grand total]]",
+   "sticker": "📊",
+   "columns": [
+    "DEPT",
+    "TOTAL"
+   ],
+   "rows": [
+    [
+     "HR",
+     "60,000"
+    ],
+    [
+     "IT",
+     "1,60,000"
+    ],
+    [
+     "Sales",
+     "90,000"
+    ],
+    [
+     "NULL",
+     "3,10,000"
+    ]
+   ],
+   "highlight": [
+    3
+   ],
+   "note": "Wo **NULL** wali row = grand total. Dept ka naam nahi, sabka jod 🎯",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "[[MySQL]] ka style",
+   "sticker": "🐬",
+   "file": "rollup_mysql.sql",
+   "code": "SELECT dept,\n  SUM(salary) AS total\nFROM employees\nGROUP BY dept WITH ROLLUP;",
+   "note": "MySQL = **WITH ROLLUP** end mein. SQL Server dono samajhta hai",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "concept",
+   "title": "NULL ko [[naam]] do",
+   "sticker": "🏷️",
+   "points": [
+    "**COALESCE(dept, 'TOTAL')** → sundar label",
+    "Par asli NULL dept bhi ho to confusion",
+    "Safe: **GROUPING(dept) = 1** → total row"
+   ],
+   "note": "GROUPING() teeno mein hai (MySQL 8.0+). Report pro lagegi 😎",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "compare",
+   "title": "Do column [[ROLLUP]]",
+   "left": {
+    "label": "ROLLUP(dept, city)",
+    "points": [
+     "dept+city totals",
+     "Har dept subtotal",
+     "1 grand total"
+    ]
+   },
+   "right": {
+    "label": "Normal GROUP BY",
+    "points": [
+     "Sirf dept+city",
+     "Koi subtotal nahi"
+    ]
+   }
+  },
+  {
+   "type": "mistake",
+   "wrong": "-- MySQL\nGROUP BY ROLLUP(dept);",
+   "right": "-- MySQL\nGROUP BY dept WITH ROLLUP;",
+   "why": "MySQL **ROLLUP(dept)** syntax nahi samajhta → error. WITH ROLLUP likho",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "ROLLUP = **subtotals + grand total**",
+    "Total row mein dept = **NULL**",
+    "PG/SQL Server: **ROLLUP(dept)**",
+    "MySQL: **WITH ROLLUP**"
+   ]
+  }
+ ],
+ "caption": "Grand total ke liye calculator mat uthao 🧾\n\nIs post mein:\n✅ ROLLUP kya karta hai\n✅ PostgreSQL / SQL Server syntax\n✅ MySQL ka WITH ROLLUP\n✅ NULL row ko TOTAL label kaise dein\n\nSQL Series · Part 51/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #rollup #learnsql #sqlinhindi #dataanalytics #dataanalyst #reporting #datascience #sqlforbeginners #programming"
+}

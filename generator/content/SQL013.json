@@ -1,0 +1,123 @@
+{
+ "id": "SQL013",
+ "part": 13,
+ "module": "Filtering",
+ "topic": "Comparison Operators",
+ "next": "AND, OR, NOT",
+ "hook": "[[6 symbols]] jo tumhara data judge karte hain",
+ "cover_sticker": "⚖️",
+ "slides": [
+  {
+   "type": "table",
+   "title": "Operator [[cheat sheet]]",
+   "sticker": "📋",
+   "columns": [
+    "SYMBOL",
+    "MATLAB"
+   ],
+   "rows": [
+    [
+     "=",
+     "Barabar"
+    ],
+    [
+     "<> ya !=",
+     "Barabar nahi"
+    ],
+    [
+     "> / <",
+     "Bada / Chhota"
+    ],
+    [
+     ">= / <=",
+     "Bada/chhota ya barabar"
+    ]
+   ],
+   "note": "<> **standard** hai, != bhi almost har DB mein chalta hai",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "code",
+   "title": "60k se [[upar]] kaun?",
+   "sticker": "📈",
+   "file": "high_salary.sql",
+   "code": "SELECT name, salary\nFROM employees\nWHERE salary > 60000;"
+  },
+  {
+   "type": "table",
+   "title": "Result: sirf [[Riya]]",
+   "sticker": "👑",
+   "columns": [
+    "NAME",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "Riya",
+     "75000"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "Aarav ki salary **exactly 60000** hai, isliye > mein nahi aaya 😬",
+   "who": "TWIST"
+  },
+  {
+   "type": "compare",
+   "title": "> vs [[>=]]",
+   "left": {
+    "label": "salary > 60000",
+    "points": [
+     "60000 bahar ❌",
+     "Result: Riya"
+    ]
+   },
+   "right": {
+    "label": "salary >= 60000",
+    "points": [
+     "60000 andar ✅",
+     "Result: Riya, Aarav"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "Not equal [[wala]]",
+   "sticker": "🙅",
+   "points": [
+    "WHERE dept **<>** 'HR'",
+    "HR ko chhod ke **sab** aayenge",
+    "Text, number, date: **sab** pe chalta"
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "Dates bhi [[compare]]",
+   "sticker": "📅",
+   "points": [
+    "WHERE join_date **>=** '2024-01-01'",
+    "Date chhoti = **pehle**, badi = **baad mein**",
+    "Text pe bhi: 'A' < 'B' (**alphabet** order)"
+   ],
+   "note": "Format **'YYYY-MM-DD'** rakho, har DB samjhega 🤝",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "mistake",
+   "wrong": "\"60k ya usse zyada\" ke liye **salary > 60000**",
+   "right": "\"Zyada ya barabar\" = **salary >= 60000**",
+   "why": "> mein boundary **chhoot** jaati hai. Aarav (60000) gayab 😢"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**=** barabar, **<>** / != not equal",
+    "**> <** bada, chhota",
+    "**>= <=** boundary bhi andar",
+    "Dates aur text pe bhi **kaam** karte"
+   ]
+  }
+ ],
+ "caption": "6 symbols jo tumhara data judge karte hain ⚖️\n\nIs post mein:\n✅ =, <>, !=, >, <, >=, <= ek jagah\n✅ salary > 60000 ka result\n✅ > vs >= ka boundary twist\n✅ Dates compare karna\n\nSQL Series · Part 13/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

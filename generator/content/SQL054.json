@@ -1,0 +1,136 @@
+{
+ "id": "SQL054",
+ "part": 54,
+ "module": "Window Functions",
+ "topic": "Aggregate vs Window (PARTITION BY)",
+ "next": "ROW_NUMBER()",
+ "hook": "Naam bhi chahiye aur average bhi? [[Dono milega]]",
+ "cover_sticker": "🤝",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "[[Sawaal]] ye hai",
+   "sticker": "❓",
+   "points": [
+    "Har employee ka naam + salary",
+    "Saath mein **uske dept** ka average",
+    "Phir dekho: kaun avg se **upar** 📈"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "[[PARTITION BY]] dept",
+   "sticker": "💻",
+   "file": "dept_avg.sql",
+   "code": "SELECT name, dept, salary,\n  AVG(salary) OVER (\n    PARTITION BY dept\n  ) AS dept_avg\nFROM employees;",
+   "note": "PARTITION BY = window ko **dept wise** kaato ✂️",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Har row, [[apna avg]]",
+   "sticker": "🎯",
+   "columns": [
+    "NAME",
+    "DEPT",
+    "SALARY",
+    "DEPT_AVG"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "IT",
+     "90,000",
+     "80,000"
+    ],
+    [
+     "Kabir",
+     "IT",
+     "70,000",
+     "80,000"
+    ],
+    [
+     "Meera",
+     "HR",
+     "60,000",
+     "60,000"
+    ],
+    [
+     "Riya",
+     "Sales",
+     "50,000",
+     "45,000"
+    ],
+    [
+     "Dev",
+     "Sales",
+     "40,000",
+     "45,000"
+    ]
+   ],
+   "highlight": [
+    0,
+    1
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "[[GROUP BY]] vs PARTITION",
+   "left": {
+    "label": "GROUP BY dept",
+    "points": [
+     "3 rows bachi",
+     "Naam gayab",
+     "Summary report"
+    ]
+   },
+   "right": {
+    "label": "PARTITION BY dept",
+    "points": [
+     "5 rows bachi",
+     "Naam + avg",
+     "Row-wise compare"
+    ]
+   },
+   "note": "Dono groups banate hain, par PARTITION **rows nahi khaata** 🍽️",
+   "who": "TWIST"
+  },
+  {
+   "type": "code",
+   "title": "Ab [[compare]] karo",
+   "sticker": "⚖️",
+   "file": "upar_ya_neeche.sql",
+   "code": "SELECT name, salary,\n  salary - AVG(salary) OVER\n    (PARTITION BY dept)\n    AS vs_avg\nFROM employees;",
+   "note": "Aarav: **+10,000**, Kabir: **-10,000**. Ek line mein appraisal 😎",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "Kab [[kya]] use karein?",
+   "sticker": "🧭",
+   "points": [
+    "Sirf dept ka total chahiye → **GROUP BY**",
+    "Row + group value dono → **PARTITION BY**",
+    "Kisi bhi aggregate pe: SUM, COUNT, MAX"
+   ],
+   "note": "\"Har employee ko dept avg se compare karo\" = PARTITION BY 🎯",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "mistake",
+   "wrong": "PARTITION BY aur GROUP BY **same** hain, dono rows merge karte",
+   "right": "GROUP BY rows **merge** karta, PARTITION BY rows **rakhta** hai",
+   "why": "PARTITION BY sirf window ka **group** batata hai, output rows same rehti 🪟"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**AVG() OVER (PARTITION BY dept)**",
+    "Rows **rehti** hain",
+    "Har row ko **apne group** ka avg",
+    "Compare karna **super easy**"
+   ]
+  }
+ ],
+ "caption": "Naam bhi chahiye aur average bhi? Dono milega 🤝\n\nIs post mein:\n✅ AVG() OVER (PARTITION BY dept)\n✅ Har row ko apne dept ka avg\n✅ GROUP BY vs PARTITION BY\n✅ Salary vs avg compare trick\n\nSQL Series · Part 54/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #partitionby #learnsql #sqlinhindi #dataanalyst #sqlinterview #datascience #coding #programming"
+}

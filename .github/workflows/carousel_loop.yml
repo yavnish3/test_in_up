@@ -52,3 +52,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run carousel_loop.yml --ref main
+
+      - name: Top up generated posts
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python generator/generate.py --check && gh workflow run generate_posts.yml --ref main || true

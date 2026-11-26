@@ -1,0 +1,30 @@
+{
+  "id": "SQL033", "part": 33, "module": "Joins", "topic": "Joins kyun chahiye?", "next": "INNER JOIN",
+  "hook": "Data do jagah, answer ek jagah: [[JOIN]] ka jaadu",
+  "cover_sticker": "🪄",
+  "slides": [
+    {"type": "concept", "title": "Data [[alag]] kyun rakha?", "sticker": "🗂️",
+     "points": ["Har order mein customer ka naam-city **repeat**? Nahi!", "Customers ek table, orders **doosri**", "Ek jagah update, **sab jagah** sahi ✅"],
+     "note": "Isko bolte hain **normalization**: duplicate data = kam 🧹", "who": "FUN FACT"},
+    {"type": "table", "title": "Table 1: [[customers]]", "sticker": "👥",
+     "columns": ["ID", "NAME", "CITY"], "rows": [["1", "Aarav", "Delhi"], ["2", "Meera", "Mumbai"], ["3", "Kabir", "Pune"]], "highlight": [0]},
+    {"type": "table", "title": "Table 2: [[orders]]", "sticker": "📦",
+     "columns": ["ORDER_ID", "CUSTOMER_ID", "AMOUNT"], "rows": [["101", "1", "500"], ["102", "2", "800"], ["103", "1", "300"]], "highlight": [0, 2],
+     "note": "Sawaal: \"order 101 **kisne** kiya?\" Naam to customers mein hai! 🤔", "who": "SCENE"},
+    {"type": "code", "title": "JOIN se [[jodo]]", "sticker": "🔗", "file": "dono_jodo.sql",
+     "code": "SELECT *\nFROM customers\nJOIN orders\n  ON customers.id =\n     orders.customer_id;",
+     "note": "**ON** = jodne ka dhaaga. customers.id = orders.customer_id", "who": "SIMPLE BHASHA MEIN"},
+    {"type": "concept", "title": "JOIN ke [[4 bhai]]", "sticker": "👬",
+     "points": ["**INNER**: sirf dono taraf match", "**LEFT**: left ki saari + match", "**RIGHT**: right ki saari + match", "**FULL**: dono ki saari rows"],
+     "note": "Agle 4 parts mein ek-ek bhai se **milenge** 😎", "who": "SPOILER"},
+    {"type": "compare", "title": "Ek table vs [[JOIN]]",
+     "left": {"label": "Sab ek table 😵", "points": ["Naam baar-baar repeat", "City badli? 100 jagah", "Galti ka khatra"]},
+     "right": {"label": "Alag + JOIN ✨", "points": ["Har cheez ek baar", "Ek jagah update", "Zaroorat pe jodo"]}},
+    {"type": "mistake", "wrong": "SELECT *\nFROM customers\nJOIN orders;", "wrong_is_code": true,
+     "right": "SELECT *\nFROM customers\nJOIN orders\n  ON customers.id = orders.customer_id;", "right_is_code": true,
+     "why": "ON bhoole: PostgreSQL **error**, MySQL har row × har row jod deta 💥"},
+    {"type": "recap",
+     "points": ["Data **alag tables** mein rehta hai", "**Common column** = jodne ki key", "JOIN + **ON** = tables jodo", "4 types: **INNER, LEFT, RIGHT, FULL**"]}
+  ],
+  "caption": "Data do jagah, answer ek jagah: JOIN ka jaadu 🪄\n\nJoins module shuru!\nIs post mein:\n✅ Data alag tables mein kyun hota hai\n✅ customers + orders example\n✅ JOIN ... ON kaise likhte hain\n✅ JOIN ke 4 types ka intro\n\nSQL Series · Part 33/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #joins #sqljoins #sqlinhindi #learnsql #dataanalytics #dataanalyst #coding #techhindi #programming"
+}

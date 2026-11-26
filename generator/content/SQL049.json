@@ -1,0 +1,153 @@
+{
+ "id": "SQL049",
+ "part": 49,
+ "module": "Aggregate Advanced",
+ "topic": "GROUP BY Multiple Columns",
+ "next": "Conditional Aggregation",
+ "hook": "Ek group se mann nahi bhara? [[Do columns]] se group karo",
+ "cover_sticker": "🧩",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "[[Combo]] group",
+   "sticker": "🍔",
+   "points": [
+    "GROUP BY dept → sirf **dept** wise",
+    "GROUP BY dept, city → **dept + city** combo",
+    "Har unique combo = **ek group** ✓"
+   ],
+   "note": "Jaise burger + fries ka **combo meal**: alag alag nahi, jodi mein",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "table",
+   "title": "Raw [[data]]",
+   "sticker": "👀",
+   "columns": [
+    "NAME",
+    "DEPT",
+    "CITY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "IT",
+     "Delhi"
+    ],
+    [
+     "Kabir",
+     "IT",
+     "Delhi"
+    ],
+    [
+     "Meera",
+     "IT",
+     "Mumbai"
+    ],
+    [
+     "Riya",
+     "HR",
+     "Pune"
+    ],
+    [
+     "Dev",
+     "HR",
+     "Pune"
+    ]
+   ],
+   "highlight": [
+    0,
+    1
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Do columns, [[ek GROUP BY]]",
+   "sticker": "💻",
+   "file": "combo_group.sql",
+   "code": "SELECT dept, city,\n  COUNT(*) AS people\nFROM employees\nGROUP BY dept, city;"
+  },
+  {
+   "type": "table",
+   "title": "[[Result]]",
+   "sticker": "🎯",
+   "columns": [
+    "DEPT",
+    "CITY",
+    "PEOPLE"
+   ],
+   "rows": [
+    [
+     "IT",
+     "Delhi",
+     "2"
+    ],
+    [
+     "IT",
+     "Mumbai",
+     "1"
+    ],
+    [
+     "HR",
+     "Pune",
+     "2"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "IT ab **do tukdon** mein: Delhi aur Mumbai alag ✂️",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "compare",
+   "title": "[[Order]] matter karta?",
+   "left": {
+    "label": "GROUP BY dept, city",
+    "points": [
+     "Same groups",
+     "Same counts"
+    ]
+   },
+   "right": {
+    "label": "GROUP BY city, dept",
+    "points": [
+     "Same groups",
+     "Same counts"
+    ]
+   },
+   "note": "Groups same banenge. Output ka order chahiye to **ORDER BY** lagao",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "concept",
+   "title": "SELECT ka [[rule]]",
+   "sticker": "📏",
+   "points": [
+    "SELECT mein sirf **grouped columns**",
+    "Ya phir **aggregate**: COUNT, SUM, AVG",
+    "name daala? → **error** (ek group, kai naam)"
+   ],
+   "note": "MySQL 5.7+ mein ONLY_FULL_GROUP_BY default ON, error dega",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT dept, city, name,\n  COUNT(*)\nFROM employees\nGROUP BY dept, city;",
+   "right": "SELECT dept, city, COUNT(*)\nFROM employees\nGROUP BY dept, city;",
+   "why": "IT-Delhi group mein 2 naam hain. SQL **kaunsa** dikhaye? 🤷",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "GROUP BY **col1, col2**",
+    "Har unique combo = **ek group**",
+    "Column order se groups **same**",
+    "SELECT = grouped cols + **aggregates**"
+   ]
+  }
+ ],
+ "caption": "Ek group se mann nahi bhara? Do columns se group karo 🧩\n\nIs post mein:\n✅ GROUP BY dept, city kaise kaam karta\n✅ Worked example with result\n✅ Column order matter karta ya nahi\n✅ SELECT ka golden rule\n\nSQL Series · Part 49/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #groupby #learnsql #sqlinhindi #dataanalytics #dataanalyst #coding #datascience #sqlforbeginners #programming"
+}

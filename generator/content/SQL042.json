@@ -1,0 +1,128 @@
+{
+ "id": "SQL042",
+ "part": 42,
+ "module": "Advanced Basics",
+ "topic": "String Functions",
+ "next": "Date Functions",
+ "hook": "Naam ko CAPITAL karo, naapo, jodo: [[text ka jaadu]]",
+ "cover_sticker": "🔤",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Text pe [[jaadu]] kyun?",
+   "sticker": "🪄",
+   "points": [
+    "Data hamesha **saaf** nahi aata: ' meera '",
+    "Report mein chahiye **sundar** format",
+    "String functions = text ka **makeup kit** 💄"
+   ],
+   "note": "Text ko badlo, **table ka data same** rehta hai. Sirf output change",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "concept",
+   "title": "Chaar [[superstars]]",
+   "sticker": "⭐",
+   "points": [
+    "**UPPER / LOWER** → caps ya small",
+    "**LENGTH** → kitne letters",
+    "**CONCAT(a, b)** → do text jodo",
+    "**TRIM** → aage-peeche ke spaces hatao"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Sab ek [[query]] mein",
+   "sticker": "💻",
+   "file": "text_makeup.sql",
+   "code": "SELECT\n  UPPER(name) AS caps,\n  LENGTH(name) AS letters,\n  CONCAT(name, ' - ', city)\n    AS label\nFROM employees;",
+   "note": "AS se naya column ka **naam** do, warna header ajeeb dikhega",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "[[Output]] dekho",
+   "sticker": "👀",
+   "columns": [
+    "CAPS",
+    "LETTERS",
+    "LABEL"
+   ],
+   "rows": [
+    [
+     "AARAV",
+     "5",
+     "Aarav - Delhi"
+    ],
+    [
+     "MEERA",
+     "5",
+     "Meera - Mumbai"
+    ],
+    [
+     "KABIR",
+     "5",
+     "Kabir - Pune"
+    ],
+    [
+     "DEV",
+     "3",
+     "Dev - Delhi"
+    ]
+   ],
+   "highlight": [
+    3
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "Ek kaam, [[teen naam]]",
+   "left": {
+    "label": "MySQL / Postgres",
+    "points": [
+     "LENGTH(name)",
+     "TRIM(name)",
+     "CONCAT ya || (PG)"
+    ]
+   },
+   "right": {
+    "label": "SQL Server",
+    "points": [
+     "LEN(name)",
+     "TRIM (2017+)",
+     "CONCAT ya +"
+    ]
+   },
+   "note": "MySQL mein **CHAR_LENGTH** letters ginta hai, LENGTH bytes 🤯",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "[[TRIM]] ka asli kaam",
+   "sticker": "🧹",
+   "points": [
+    "Form mein user ne daala: '  Riya  '",
+    "WHERE name = 'Riya' → **match nahi** 😵",
+    "TRIM(name) = 'Riya' → **match** ✓"
+   ],
+   "note": "Search ya JOIN fail ho raha? Pehle **spaces** check karo",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "mistake",
+   "wrong": "SQL Server mein bhi **LENGTH(name)** likh diya",
+   "right": "SQL Server = **LEN(name)**, MySQL/Postgres = **LENGTH(name)**",
+   "why": "Function ke naam **har DB mein same nahi**. Error aaye to docs dekho 📖"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**UPPER / LOWER** = case badlo",
+    "**LENGTH** (SQL Server: LEN)",
+    "**CONCAT** jodta, **TRIM** saaf karta",
+    "Naam DB ke hisaab se check karo"
+   ]
+  }
+ ],
+ "caption": "Naam ko CAPITAL karo, naapo, jodo: text ka jaadu 🔤\n\nIs post mein:\n✅ UPPER, LOWER, LENGTH, CONCAT, TRIM\n✅ Ek query mein sab\n✅ MySQL vs SQL Server naam ka farq\n✅ TRIM se JOIN/search fix\n\nSQL Series · Part 42/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #stringfunctions #learnsql #sqlinhindi #dataanalytics #dataanalyst #coding #datascience #sqlforbeginners #programming"
+}

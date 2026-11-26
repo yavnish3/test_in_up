@@ -1,0 +1,30 @@
+{
+  "id": "SQL038", "part": 38, "module": "Joins", "topic": "SELF JOIN", "next": "UNION vs UNION ALL",
+  "hook": "Table khud se hi join? Haan, [[boss dhundhne]] ke liye",
+  "cover_sticker": "🪞",
+  "slides": [
+    {"type": "concept", "title": "SELF JOIN = [[khud se]]", "sticker": "🔁",
+     "points": ["Ek hi table ko **do baar** use karo", "Ek copy = employee, doosri = **manager**", "Koi naya keyword nahi, bas **aliases** 😉"],
+     "note": "Jaise mirror ke saamne baat karna: **wahi table, do roop** 🪞", "who": "SIMPLE BHASHA MEIN"},
+    {"type": "table", "title": "manager_id ka [[khel]]", "sticker": "📋",
+     "columns": ["ID", "NAME", "MANAGER_ID"], "rows": [["1", "Aarav", "NULL"], ["2", "Meera", "1"], ["3", "Kabir", "1"], ["4", "Riya", "2"], ["5", "Dev", "2"]], "highlight": [0],
+     "note": "manager_id **isi table** ki id ko point karta. Aarav = top boss 👑", "who": "DHYAAN DO"},
+    {"type": "code", "title": "Boss [[dhoondo]]", "sticker": "💻", "file": "boss_kaun.sql",
+     "code": "SELECT e.name AS employee,\n       m.name AS manager\nFROM employees e\nLEFT JOIN employees m\n  ON e.manager_id = m.id;"},
+    {"type": "table", "title": "Sabka [[boss]] mil gaya", "sticker": "🎯",
+     "columns": ["EMPLOYEE", "MANAGER"], "rows": [["Aarav", "NULL"], ["Meera", "Aarav"], ["Kabir", "Aarav"], ["Riya", "Meera"], ["Dev", "Meera"]], "highlight": [3, 4]},
+    {"type": "compare", "title": "INNER vs [[LEFT]] yahan",
+     "left": {"label": "INNER JOIN", "points": ["Sirf jinka boss hai", "Aarav gayab 😢"]},
+     "right": {"label": "LEFT JOIN", "points": ["Sab employees", "Aarav → NULL ✅"]},
+     "note": "Top boss ka koi manager nahi, isliye **LEFT JOIN** safe choice", "who": "BHAI TIP 💡"},
+    {"type": "concept", "title": "Aur [[kahan]] kaam aata?", "sticker": "🌳",
+     "points": ["**Org chart**: employee → manager", "Same city ke **customers ke pairs**", "**Referral**: kisne kisko invite kiya"],
+     "note": "\"Manager se zyada salary wale employees\" = classic **SELF JOIN** sawaal 🔥", "who": "INTERVIEW TIP"},
+    {"type": "mistake", "wrong": "SELECT name, name\nFROM employees\nJOIN employees\n  ON manager_id = id;", "wrong_is_code": true,
+     "right": "SELECT e.name, m.name\nFROM employees e\nJOIN employees m\n  ON e.manager_id = m.id;", "right_is_code": true,
+     "why": "Alias nahi to SQL confuse: **kaunsi copy** ka name? → error"},
+    {"type": "recap",
+     "points": ["SELF JOIN = table **khud se**", "**Do aliases** zaroori (e, m)", "Hierarchy: **employee → manager**", "Top boss chahiye? **LEFT JOIN**"]}
+  ],
+  "caption": "Table khud se hi join? Haan, boss dhundhne ke liye! 🪞\n\nIs post mein:\n✅ SELF JOIN kya hai\n✅ manager_id wala worked example\n✅ INNER vs LEFT, top boss ka scene\n✅ Interview ka classic sawaal\n\nSQL Series · Part 38/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #selfjoin #sqljoins #sqlinhindi #learnsql #sqlinterview #dataanalyst #coding #techhindi #programming"
+}

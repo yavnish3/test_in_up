@@ -1,0 +1,30 @@
+{
+  "id": "SQL041", "part": 41, "module": "Advanced Basics", "topic": "CASE WHEN", "next": "String Functions",
+  "hook": "SQL mein if-else? CASE WHEN bolta hai [['main hoon na']]",
+  "cover_sticker": "🦸",
+  "slides": [
+    {"type": "concept", "title": "CASE = SQL ka [[if-else]]", "sticker": "🔀",
+     "points": ["**WHEN** condition **THEN** value", "Koi match nahi? **ELSE** default", "**END** se band karo, hamesha"],
+     "note": "Mummy ka logic: marks 90+ → treat, 60+ → theek, warna **chappal** 🩴", "who": "DESI LOGIC"},
+    {"type": "code", "title": "Salary ka [[band]]", "sticker": "💻", "file": "salary_band.sql",
+     "code": "SELECT name, salary,\n  CASE\n    WHEN salary > 70000 THEN 'High'\n    WHEN salary >= 50000 THEN 'Mid'\n    ELSE 'Low'\n  END AS band\nFROM employees;"},
+    {"type": "table", "title": "Naya column [[ban gaya]]", "sticker": "✨",
+     "columns": ["NAME", "SALARY", "BAND"], "rows": [["Aarav", "90,000", "High"], ["Kabir", "70,000", "Mid"], ["Meera", "60,000", "Mid"], ["Riya", "45,000", "Low"]], "highlight": [1],
+     "note": "Kabir 70,000 pe **Mid** kyun? Condition **> 70000** thi, >= nahi 😉", "who": "TWIST"},
+    {"type": "concept", "title": "Order [[matter]] karta", "sticker": "🥇",
+     "points": ["Upar se neeche **check** hota hai", "**Pehli** true condition jeet jaati", "Baaki WHEN **skip**, CASE wahi ruk gaya"],
+     "note": "Badi condition **upar** rakho. >= 50000 pehle likha to sab Mid ho jayenge", "who": "BHAI TIP 💡"},
+    {"type": "code", "title": "GROUP BY ke [[saath]]", "sticker": "📊", "file": "band_count.sql",
+     "code": "SELECT\n  CASE WHEN salary > 70000\n    THEN 'High' ELSE 'Other'\n  END AS band,\n  COUNT(*) AS people\nFROM employees\nGROUP BY 1;",
+     "note": "GROUP BY 1 = pehla column. Postgres/MySQL ✅, **SQL Server ❌** (expr repeat karo)", "who": "PRO MOVE"},
+    {"type": "compare", "title": "ELSE [[hai ya nahi]]",
+     "left": {"label": "ELSE ke saath", "points": ["Default value milegi", "Koi blank nahi"]},
+     "right": {"label": "Bina ELSE", "points": ["No match → NULL", "Report mein khaali"]}},
+    {"type": "mistake", "wrong": "CASE WHEN salary > 70000\n  THEN 'High'\n  ELSE 'Low' AS band", "wrong_is_code": true,
+     "right": "CASE WHEN salary > 70000\n  THEN 'High'\n  ELSE 'Low' END AS band", "right_is_code": true,
+     "why": "**END** bhoole = syntax error. CASE khola hai to **band bhi karo**"},
+    {"type": "recap",
+     "points": ["**CASE WHEN** cond **THEN** val", "**ELSE** = default, warna NULL", "**END** se band, hamesha", "Pehli true condition **jeetti** hai"]}
+  ],
+  "caption": "SQL mein if-else? CASE WHEN bolta hai 'main hoon na' 🦸\n\nIs post mein:\n✅ CASE WHEN ... THEN ... ELSE ... END\n✅ Salary band wala worked example\n✅ Conditions ka order kyun matter karta\n✅ GROUP BY ke saath CASE\n\nSQL Series · Part 41/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #casewhen #sqlinhindi #learnsql #sqlinterview #dataanalyst #dataanalytics #coding #techhindi #programming"
+}

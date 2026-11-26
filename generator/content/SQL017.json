@@ -1,0 +1,125 @@
+{
+ "id": "SQL017",
+ "part": 17,
+ "module": "Filtering",
+ "topic": "LIKE aur Wildcards",
+ "next": "IS NULL",
+ "hook": "Naam ka sirf 'A' yaad hai? [[LIKE]] detective bulao",
+ "cover_sticker": "🕵️",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "LIKE = [[pattern]] search",
+   "sticker": "🔍",
+   "points": [
+    "Exact nahi, **pattern** se dhoondho",
+    "**%** = kuch bhi, kitne bhi characters",
+    "**_** = exactly **ek** character"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "A se [[shuru]]",
+   "sticker": "🅰️",
+   "file": "a_wale.sql",
+   "code": "SELECT name\nFROM employees\nWHERE name LIKE 'A%';",
+   "note": "'A%' = A ke baad **kuch bhi**. Aarav, Anjali, Amit: sab pakde jaayenge",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Pattern [[cheat sheet]]",
+   "sticker": "🧩",
+   "columns": [
+    "PATTERN",
+    "MATLAB",
+    "MATCH"
+   ],
+   "rows": [
+    [
+     "'A%'",
+     "A se shuru",
+     "Aarav"
+    ],
+    [
+     "'%a'",
+     "a pe khatam",
+     "Meera, Riya"
+    ],
+    [
+     "'%ab%'",
+     "ab kahin bhi",
+     "Kabir"
+    ],
+    [
+     "'_e%'",
+     "2nd letter e",
+     "Meera, Dev"
+    ]
+   ],
+   "highlight": [
+    0
+   ]
+  },
+  {
+   "type": "concept",
+   "title": "% vs _ [[samjho]]",
+   "sticker": "🎲",
+   "points": [
+    "**%** = 0, 1, ya 100 characters",
+    "**_** = sirf ek, na kam na zyada",
+    "'D_v' → Dev ✅, 'D__v' → Dev ❌"
+   ],
+   "note": "% = **joker card** 🃏, _ = **ek khaali seat** 💺",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "compare",
+   "title": "Case [[sensitive]]?",
+   "left": {
+    "label": "MySQL / SQL Server",
+    "points": [
+     "Default: case ignore",
+     "'a%' bhi Aarav dega"
+    ]
+   },
+   "right": {
+    "label": "PostgreSQL",
+    "points": [
+     "Case-sensitive",
+     "ILIKE se ignore"
+    ]
+   },
+   "note": "SQL Server mein ye **collation** pe depend karta hai, default mostly ignore",
+   "who": "TWIST"
+  },
+  {
+   "type": "concept",
+   "title": "Ulta: [[NOT LIKE]]",
+   "sticker": "🙅",
+   "points": [
+    "WHERE email **NOT LIKE** '%@gmail.com'",
+    "Gmail ke alawa **sab** emails",
+    "Bade tables pe '%abc' **slow** ho sakta"
+   ]
+  },
+  {
+   "type": "mistake",
+   "wrong": "WHERE name LIKE 'A'",
+   "wrong_is_code": true,
+   "right": "WHERE name LIKE 'A%'",
+   "right_is_code": true,
+   "why": "Bina % ke LIKE = **exact match**, bilkul = jaisa. 'A' naam ka koi nahi → **0 rows** 😶"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**LIKE** = pattern search",
+    "**%** = kuch bhi, **_** = ek char",
+    "**'A%'** shuru, **'%a'** khatam",
+    "Bina % → **= jaisa** hi"
+   ]
+  }
+ ],
+ "caption": "Naam ka sirf 'A' yaad hai? LIKE detective bulao 🕵️\n\nIs post mein:\n✅ LIKE aur wildcards % aur _\n✅ Pattern cheat sheet: 'A%', '%a', '_e%'\n✅ Case-sensitivity: MySQL vs PostgreSQL\n✅ Bina % ke LIKE wala trap\n\nSQL Series · Part 17/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

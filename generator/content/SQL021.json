@@ -1,0 +1,145 @@
+{
+ "id": "SQL021",
+ "part": 21,
+ "module": "Aggregate Functions",
+ "topic": "COUNT()",
+ "next": "SUM() aur AVG()",
+ "hook": "Kitne log Delhi mein? [[COUNT]] ginti mein topper",
+ "cover_sticker": "🔢",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "COUNT = [[ginti]] master",
+   "sticker": "🧮",
+   "points": [
+    "Rows **ginta** hai, ek number deta hai",
+    "Aggregate function: **many rows → 1 value**",
+    "WHERE ke saath: **filtered** ginti"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Delhi mein [[kitne]]?",
+   "sticker": "🏙️",
+   "file": "delhi_count.sql",
+   "code": "SELECT COUNT(*)\nFROM employees\nWHERE city = 'Delhi';\n-- Result: 3",
+   "note": "Aarav, Kabir, Dev = **3**. Result sirf **ek number** ☝️",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Ab [[bonus]] column dekho",
+   "sticker": "🎁",
+   "columns": [
+    "NAME",
+    "CITY",
+    "BONUS"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "Delhi",
+     "5000"
+    ],
+    [
+     "Meera",
+     "Mumbai",
+     "NULL"
+    ],
+    [
+     "Kabir",
+     "Delhi",
+     "3000"
+    ],
+    [
+     "Riya",
+     "Pune",
+     "NULL"
+    ],
+    [
+     "Dev",
+     "Delhi",
+     "2000"
+    ]
+   ],
+   "highlight": [
+    1,
+    3
+   ],
+   "note": "Meera aur Riya ka bonus **NULL**. Ab twist aayega 👀",
+   "who": "TWIST"
+  },
+  {
+   "type": "table",
+   "title": "Teen COUNT, [[teen]] jawab",
+   "sticker": "🎲",
+   "columns": [
+    "QUERY",
+    "RESULT"
+   ],
+   "rows": [
+    [
+     "COUNT(*)",
+     "5"
+    ],
+    [
+     "COUNT(bonus)",
+     "3"
+    ],
+    [
+     "COUNT(DISTINCT city)",
+     "3"
+    ]
+   ],
+   "note": "COUNT(col) **NULL skip** karta hai, COUNT(*) sab ginta hai"
+  },
+  {
+   "type": "compare",
+   "title": "COUNT(*) vs [[COUNT(col)]]",
+   "left": {
+    "label": "COUNT(*)",
+    "points": [
+     "Saari rows",
+     "NULL bhi gine",
+     "Total log"
+    ]
+   },
+   "right": {
+    "label": "COUNT(col)",
+    "points": [
+     "Sirf non-NULL",
+     "NULL ignore",
+     "Bonus wale log"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "Alias [[laga do]]",
+   "sticker": "🏷️",
+   "points": [
+    "**COUNT(*) AS delhi_log**",
+    "Result column ka **naam** saaf",
+    "Reports aur dashboards mein **must**"
+   ],
+   "note": "Khaali table pe COUNT = **0**, NULL nahi. SUM/AVG se alag 😉",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "mistake",
+   "wrong": "COUNT(bonus) aur COUNT(*) **same** hain",
+   "right": "COUNT(*) = **saari rows**, COUNT(bonus) = sirf **non-NULL**",
+   "why": "Bonus NULL wale skip → 5 ki jagah **3**. Report galat 📉"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**COUNT(*)** = saari rows",
+    "**COUNT(col)** = non-NULL values",
+    "**COUNT(DISTINCT col)** = unique",
+    "Result hamesha **ek number**"
+   ]
+  }
+ ],
+ "caption": "Kitne log Delhi mein? COUNT ginti mein topper hai 🔢\n\nIs post mein:\n✅ COUNT(*) se rows gino\n✅ COUNT(col) NULL kyun skip karta\n✅ COUNT(DISTINCT) se unique ginti\n✅ Teen COUNT, teen alag jawab\n\nSQL Series · Part 21/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

@@ -1,0 +1,131 @@
+{
+ "id": "SQL004",
+ "part": 4,
+ "module": "Introduction",
+ "topic": "Data Types",
+ "next": "Primary Key",
+ "hook": "Paise ko FLOAT mein rakha? [[Bank waale]] ro denge",
+ "cover_sticker": "💸",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Data type = [[dabba]]",
+   "sticker": "📦",
+   "points": [
+    "Har column bolta hai: **mujhme kya aayega**",
+    "Number ka dabba, text ka dabba, date ka dabba",
+    "Galat cheez daali? DB **mana** kar dega"
+   ],
+   "note": "Tiffin mein daal ka **alag** khaana, roti ka **alag** 🍱",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "table",
+   "title": "Main [[5 types]]",
+   "sticker": "🧰",
+   "columns": [
+    "TYPE",
+    "KYA",
+    "EXAMPLE"
+   ],
+   "rows": [
+    [
+     "INT",
+     "Poore number",
+     "25"
+    ],
+    [
+     "VARCHAR(n)",
+     "Text, max n",
+     "'Aarav'"
+    ],
+    [
+     "DECIMAL(10,2)",
+     "Paisa",
+     "499.99"
+    ],
+    [
+     "DATE",
+     "Taareekh",
+     "'2024-01-15'"
+    ],
+    [
+     "BOOLEAN",
+     "Haan / Na",
+     "TRUE"
+    ]
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Products ki [[table]]",
+   "sticker": "🛒",
+   "file": "products.sql",
+   "code": "CREATE TABLE products (\n  id INT,\n  name VARCHAR(50),\n  price DECIMAL(10,2),\n  added_on DATE\n);",
+   "note": "DECIMAL(10,2) = total **10 digits**, jisme **2** point ke baad",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "compare",
+   "title": "FLOAT vs [[DECIMAL]]",
+   "left": {
+    "label": "FLOAT 🌊",
+    "points": [
+     "Approx value",
+     "0.1 + 0.2 ≠ exact 0.3",
+     "Science, sensors"
+    ]
+   },
+   "right": {
+    "label": "DECIMAL 🎯",
+    "points": [
+     "Exact value",
+     "0.1 + 0.2 = 0.3",
+     "Paisa, bill, GST"
+    ]
+   }
+  },
+  {
+   "type": "concept",
+   "title": "VARCHAR(n) ka [[n]]",
+   "sticker": "✂️",
+   "points": [
+    "n = **maximum** characters",
+    "VARCHAR(50): 'Aarav' sirf **5** jagah leta hai",
+    "Phone, PIN code? **VARCHAR** rakho, INT nahi"
+   ],
+   "note": "Phone '09876...' INT mein gaya toh **leading 0** gayab 😵",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "BOOLEAN ka [[desi]] scene",
+   "sticker": "🔀",
+   "points": [
+    "**PostgreSQL**: asli BOOLEAN (true/false)",
+    "**MySQL**: BOOLEAN = TINYINT(1), 1/0",
+    "**SQL Server**: BIT type use karo"
+   ],
+   "note": "Same kaam, har DB ka **apna andaaz** 😅",
+   "who": "TWIST"
+  },
+  {
+   "type": "mistake",
+   "wrong": "price FLOAT",
+   "wrong_is_code": true,
+   "right": "price DECIMAL(10,2)",
+   "right_is_code": true,
+   "why": "FLOAT **approx** hai, paise mein chhote errors **jud-jud** ke bade ban jaate hain 💀"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "INT = poore number",
+    "VARCHAR(n) = text, **max n**",
+    "Paisa = **DECIMAL**, FLOAT kabhi nahi",
+    "DATE = taareekh, BOOLEAN = haan/na"
+   ]
+  }
+ ],
+ "caption": "Paise ko FLOAT mein rakha? Bank waale ro denge 💸\n\nIs post mein:\n✅ INT, VARCHAR, DECIMAL, DATE, BOOLEAN\n✅ CREATE TABLE mein types kaise lagate hain\n✅ FLOAT vs DECIMAL: paisa kahan rakhein\n✅ BOOLEAN har DB mein alag kaise\n\nSQL Series · Part 4/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

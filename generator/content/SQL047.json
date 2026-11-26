@@ -1,0 +1,30 @@
+{
+  "id": "SQL047", "part": 47, "module": "Interview Prep", "topic": "Second Highest Salary", "next": "SQL Basics Recap",
+  "hook": "Second highest salary: har interview ka [[pakka sawaal]]",
+  "cover_sticker": "💼",
+  "slides": [
+    {"type": "table", "title": "Pehle [[data]] dekho", "sticker": "👀",
+     "columns": ["NAME", "SALARY"], "rows": [["Aarav", "90,000"], ["Meera", "90,000"], ["Kabir", "70,000"], ["Riya", "50,000"]], "highlight": [2],
+     "note": "90,000 **do baar** hai. Sahi answer: **70,000** 🎯", "who": "TWIST"},
+    {"type": "concept", "title": "Tareeka 1: [[MAX < MAX]]", "sticker": "🧠",
+     "points": ["Sabse badi salary nikalo: **90,000**", "Ab usse **chhoti** salaries mein se MAX lo", "Answer: **70,000** ✓ done!"]},
+    {"type": "code", "title": "Tareeka 1 ka [[code]]", "sticker": "💻", "file": "second_highest.sql",
+     "code": "SELECT MAX(salary)\nFROM employees\nWHERE salary < (\n  SELECT MAX(salary)\n  FROM employees\n);",
+     "note": "Andar wali query = **90,000**, bahar wali = usse chhoti ka MAX", "who": "DESI LOGIC"},
+    {"type": "code", "title": "Tareeka 2: [[OFFSET]]", "sticker": "⏭️", "file": "offset_wala.sql",
+     "code": "SELECT DISTINCT salary\nFROM employees\nORDER BY salary DESC\nLIMIT 1 OFFSET 1;",
+     "note": "Pehli value **skip** (OFFSET 1), agli **pakdo** (LIMIT 1)", "who": "SHORTCUT"},
+    {"type": "concept", "title": "Bonus: [[Nth]] highest", "sticker": "🔥",
+     "points": ["OFFSET mein **N - 1** daalo", "3rd highest → **OFFSET 2**", "5th highest → **OFFSET 4**"],
+     "note": "Interviewer bole \"Nth nikalo\"? Ye formula yaad rakho 😎", "who": "INTERVIEW TIP"},
+    {"type": "compare", "title": "Kaunsa tareeka [[kab]]?",
+     "left": {"label": "MAX < MAX", "points": ["Sirf 2nd ke liye perfect", "Har database mein chalega"]},
+     "right": {"label": "OFFSET", "points": ["Nth highest easy", "LIMIT syntax DB pe depend"]}},
+    {"type": "mistake", "wrong": "SELECT salary FROM employees\nORDER BY salary DESC\nLIMIT 1 OFFSET 1;", "wrong_is_code": true,
+     "right": "SELECT DISTINCT salary FROM employees\nORDER BY salary DESC\nLIMIT 1 OFFSET 1;", "right_is_code": true,
+     "why": "DISTINCT bhoole to 90,000 do baar → answer **90,000** (galat!) 💀"},
+    {"type": "recap",
+     "points": ["**MAX < MAX** subquery", "**DISTINCT** + LIMIT 1 OFFSET 1", "Nth highest → **OFFSET N-1**", "DISTINCT bhoole = **galat answer**"]}
+  ],
+  "caption": "Second highest salary: har interview ka pakka sawaal! 💼\n\n2 tareeke, dono pakke:\n1️⃣ MAX < MAX subquery\n2️⃣ DISTINCT + ORDER BY DESC + LIMIT 1 OFFSET 1\n\nBonus: Nth highest ke liye OFFSET N-1 🔥\n⚠️ DISTINCT bhoole to galat answer!\n\nSQL Series · Part 47/81\nSave karo 📌 interview se pehle kaam aayega · Follow karo daily SQL ke liye!\n\n#sql #sqlinterview #interviewprep #learnsql #sqlinhindi #dataanalyst #coding #datascience #placement #programming"
+}

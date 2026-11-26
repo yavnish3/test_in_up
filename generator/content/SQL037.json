@@ -1,0 +1,125 @@
+{
+ "id": "SQL037",
+ "part": 37,
+ "module": "Joins",
+ "topic": "FULL OUTER JOIN",
+ "next": "SELF JOIN",
+ "hook": "FULL OUTER JOIN: sabko bulao, koi [[naraz na ho]]",
+ "cover_sticker": "🎊",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "FULL = [[sabki entry]]",
+   "sticker": "🌐",
+   "points": [
+    "Left ki **saari** rows + right ki **saari**",
+    "Match mila? **Ek row** mein jodo",
+    "Match nahi? Doosri side **NULL**"
+   ],
+   "note": "Shaadi ka card: **dono families ke sab log** invited 💌",
+   "who": "DESI LOGIC"
+  },
+  {
+   "type": "code",
+   "title": "FULL JOIN [[likho]]",
+   "sticker": "💻",
+   "file": "sabko_bulao.sql",
+   "code": "SELECT c.name, o.order_id\nFROM customers c\nFULL OUTER JOIN orders o\n  ON c.id = o.customer_id;"
+  },
+  {
+   "type": "table",
+   "title": "Koi [[nahi chhoota]]",
+   "sticker": "🎉",
+   "columns": [
+    "NAME",
+    "ORDER_ID"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "101"
+    ],
+    [
+     "Meera",
+     "102"
+    ],
+    [
+     "Kabir",
+     "NULL"
+    ],
+    [
+     "Riya",
+     "NULL"
+    ],
+    [
+     "NULL",
+     "104"
+    ]
+   ],
+   "highlight": [
+    2,
+    3,
+    4
+   ],
+   "note": "+ Aarav ka 103 bhi. Bina order wale **aur** ghost order, **dono** aaye 🤝",
+   "who": "DEKHO"
+  },
+  {
+   "type": "compare",
+   "title": "LEFT vs [[FULL]]",
+   "left": {
+    "label": "LEFT JOIN",
+    "points": [
+     "Left ke saare",
+     "Ghost order 104 gayab"
+    ]
+   },
+   "right": {
+    "label": "FULL JOIN",
+    "points": [
+     "Dono ke saare",
+     "Kabir + order 104 ✅"
+    ]
+   }
+  },
+  {
+   "type": "code",
+   "title": "MySQL ka [[jugaad]]",
+   "sticker": "🔧",
+   "file": "mysql_jugaad.sql",
+   "code": "SELECT c.name, o.order_id\nFROM customers c LEFT JOIN\n  orders o ON c.id=o.customer_id\nUNION\nSELECT c.name, o.order_id\nFROM customers c RIGHT JOIN\n  orders o ON c.id=o.customer_id;",
+   "note": "LEFT + RIGHT ko **UNION** se jodo. Duplicate match rows UNION hata deta",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "concept",
+   "title": "Kab [[kaam]] aata?",
+   "sticker": "🧾",
+   "points": [
+    "Do lists ka **mismatch** dhoondhna",
+    "Bank vs app ke records **reconcile**",
+    "Data migration mein **missing** rows"
+   ],
+   "note": "Support: PostgreSQL, SQL Server, Oracle ✅. **MySQL ❌**",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "mistake",
+   "wrong": "MySQL mein\nFULL OUTER JOIN orders o ...",
+   "wrong_is_code": true,
+   "right": "MySQL mein: LEFT JOIN ...\nUNION\nRIGHT JOIN ...",
+   "right_is_code": true,
+   "why": "MySQL **FULL OUTER JOIN support nahi** karta → syntax error"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "FULL JOIN = **dono ki saari rows**",
+    "Unmatched → doosri side **NULL**",
+    "Venn ke **dono circles** poore",
+    "MySQL: **LEFT UNION RIGHT**"
+   ]
+  }
+ ],
+ "caption": "FULL OUTER JOIN: sabko bulao, koi naraz na ho 🎊\n\nIs post mein:\n✅ FULL OUTER JOIN kya karta hai\n✅ Worked example: koi nahi chhoota\n✅ LEFT vs FULL\n✅ MySQL ka LEFT UNION RIGHT jugaad\n\nSQL Series · Part 37/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #fullouterjoin #sqljoins #sqlinhindi #learnsql #mysql #postgresql #dataanalyst #coding #techhindi"
+}

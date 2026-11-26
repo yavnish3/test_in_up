@@ -1,0 +1,30 @@
+{
+  "id": "SQL035", "part": 35, "module": "Joins", "topic": "LEFT JOIN", "next": "RIGHT JOIN",
+  "hook": "LEFT JOIN: koi customer [[peeche nahi]] chhootega",
+  "cover_sticker": "🫂",
+  "slides": [
+    {"type": "concept", "title": "LEFT = [[left ki saari]]", "sticker": "⬅️",
+     "points": ["Left table ki **har row** aayegi", "Right mein match mila? **Data jodo**", "Match nahi? Right columns **NULL**"],
+     "note": "Class photo: **sab bachche** aayenge, trophy ho ya na ho 📸", "who": "DESI LOGIC"},
+    {"type": "code", "title": "LEFT JOIN [[likho]]", "sticker": "💻", "file": "koi_na_chhoote.sql",
+     "code": "SELECT c.name, o.amount\nFROM customers c\nLEFT JOIN orders o\n  ON c.id = o.customer_id;"},
+    {"type": "table", "title": "Sab [[aa gaye]]", "sticker": "🎉",
+     "columns": ["NAME", "AMOUNT"], "rows": [["Aarav", "500"], ["Aarav", "300"], ["Meera", "800"], ["Kabir", "NULL"], ["Riya", "NULL"]], "highlight": [3, 4],
+     "note": "Kabir, Riya ka order nahi, phir bhi **list mein hain**. Amount = NULL", "who": "DEKHO"},
+    {"type": "code", "title": "Kisne [[order nahi]] kiya?", "sticker": "🔎", "file": "sust_customers.sql",
+     "code": "SELECT c.name\nFROM customers c\nLEFT JOIN orders o\n  ON c.id = o.customer_id\nWHERE o.customer_id IS NULL;",
+     "note": "Result: **Kabir, Riya**. Marketing team ko discount bhejo 💌", "who": "INTERVIEW TIP"},
+    {"type": "compare", "title": "INNER vs [[LEFT]]",
+     "left": {"label": "INNER JOIN", "points": ["Sirf match wale", "Result: 3 rows", "Kabir, Riya gayab"]},
+     "right": {"label": "LEFT JOIN", "points": ["Left ke saare", "Result: 5 rows", "No match → NULL"]}},
+    {"type": "concept", "title": "Filter [[kahan]] lagao?", "sticker": "🎛️",
+     "points": ["Right table pe filter → **ON mein** daalo", "**WHERE** mein daala? NULL rows **kat jayengi**", "Left table ka filter → WHERE chalega ✅"],
+     "note": "WHERE o.amount > 400 → NULL wale gaye, LEFT bana **INNER** 😬", "who": "TWIST"},
+    {"type": "mistake", "wrong": "LEFT JOIN orders o\n  ON c.id = o.customer_id\nWHERE o.amount > 400;", "wrong_is_code": true,
+     "right": "LEFT JOIN orders o\n  ON c.id = o.customer_id\n AND o.amount > 400;", "right_is_code": true,
+     "why": "WHERE NULL rows hata deta → LEFT JOIN chupke se **INNER** ban gaya"},
+    {"type": "recap",
+     "points": ["LEFT JOIN = **left ki saari rows**", "No match → right side **NULL**", "**IS NULL** = jinka match nahi", "Right filter? **ON mein** daalo"]}
+  ],
+  "caption": "LEFT JOIN: koi customer peeche nahi chhootega 🫂\n\nIs post mein:\n✅ LEFT JOIN kaise kaam karta hai\n✅ NULL wali rows ka matlab\n✅ \"Kisne order nahi kiya?\" trick\n✅ WHERE vs ON wala jaal\n\nSQL Series · Part 35/81\nSave karo 📌 interview mein pakka aata hai · Follow karo daily SQL ke liye!\n\n#sql #leftjoin #sqljoins #sqlinhindi #learnsql #dataanalyst #sqlinterview #coding #techhindi #programming"
+}

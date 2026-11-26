@@ -1,0 +1,29 @@
+{
+  "id": "SQL026", "part": 26, "module": "Aggregate Functions", "topic": "WHERE vs HAVING", "next": "UPDATE",
+  "hook": "WHERE vs HAVING: interviewer ka [[favourite jaal]]",
+  "cover_sticker": "🪤",
+  "slides": [
+    {"type": "compare", "title": "Ek line mein [[farak]]",
+     "left": {"label": "WHERE 🔍", "points": ["Rows pe filter", "GROUP BY se pehle", "Aggregate nahi chalega"]},
+     "right": {"label": "HAVING 🧹", "points": ["Groups pe filter", "GROUP BY ke baad", "Aggregate chalega ✅"]}},
+    {"type": "concept", "title": "Chhanni [[2 baar]] lagao", "sticker": "🍚",
+     "points": ["Pehli chhanni **WHERE**: kachra rows bahar", "Phir **GROUP BY**: bacha maal dabbo mein", "Doosri chhanni **HAVING**: kamzor dabbe bahar"],
+     "note": "Chawal pehle saaf karo, phir bori mein bharo 😄", "who": "DESI LOGIC"},
+    {"type": "code", "title": "Dono [[ek saath]]", "sticker": "💻", "file": "dono_filter.sql",
+     "code": "SELECT dept, AVG(salary)\nFROM employees\nWHERE city = 'Delhi'\nGROUP BY dept\nHAVING AVG(salary) > 55000;"},
+    {"type": "table", "title": "Step by [[step]]", "sticker": "🪜",
+     "columns": ["STEP", "KYA HUA"], "rows": [["1. FROM", "Saari rows aayi"], ["2. WHERE", "Sirf Delhi wale"], ["3. GROUP BY", "Dept wise dabbe"], ["4. HAVING", "AVG > 55k wale"], ["5. SELECT", "Output banao"]], "highlight": [1, 3],
+     "note": "Isliye SELECT ka **alias** WHERE mein nahi chalta. SELECT **baad** mein chalta hai!", "who": "TWIST"},
+    {"type": "concept", "title": "Kab [[kaunsa]]?", "sticker": "🤔",
+     "points": ["Condition **column** pe? → WHERE", "Condition **COUNT/SUM/AVG** pe? → HAVING", "Normal condition HAVING mein? Chalega, par **slow**"],
+     "note": "Jo WHERE mein ho sakta hai, **WHERE mein hi daalo**. Kam rows group hongi ⚡", "who": "PRO MOVE"},
+    {"type": "concept", "title": "Interview [[answer]]", "sticker": "🎤",
+     "points": ["\"WHERE **individual rows** filter karta hai\"", "\"HAVING **aggregated groups** filter karta\"", "\"Order: **WHERE → GROUP BY → HAVING**\""],
+     "note": "Ye 3 lines bol do, interviewer **khush** 😎", "who": "INTERVIEW TIP"},
+    {"type": "mistake", "wrong": "WHERE aur HAVING ko **interchangeable** samajhna", "right": "WHERE = **rows, pehle**. HAVING = **groups, baad mein**",
+     "why": "WHERE AVG(salary) > 55000 → **error**. Aggregate sirf HAVING mein"},
+    {"type": "recap",
+     "points": ["WHERE → **rows**, pehle", "HAVING → **groups**, baad mein", "WHERE mein **aggregate nahi**", "Order: **WHERE → GROUP BY → HAVING**"]}
+  ],
+  "caption": "WHERE vs HAVING: interviewer ka favourite jaal 🪤\n\nIs post ke baad kabhi nahi phasoge!\n✅ Ek line mein farak\n✅ Dono ek query mein\n✅ Step-by-step execution order\n✅ Interview mein kya bolna hai\n\nSQL Series · Part 26/81\nSave karo 📌 interview se pehle kaam aayega · Follow karo daily SQL ke liye!\n\n#sql #wherevshaving #sqlinterview #sqlinhindi #learnsql #dataanalyst #interviewprep #coding #techhindi #programming"
+}

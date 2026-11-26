@@ -1,0 +1,125 @@
+{
+ "id": "SQL062",
+ "part": 62,
+ "module": "Window Functions",
+ "topic": "LEAD()",
+ "next": "NTILE()",
+ "hook": "Future dekhna hai? [[LEAD]] agli row bata deta hai",
+ "cover_sticker": "🔮",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "LEAD = [[agli row]] ka peek",
+   "sticker": "🔭",
+   "points": [
+    "Har row ke saath **agli row** ki value",
+    "Jaise metro board: **next station** dikhta hai",
+    "Aakhri row ka koi agla nahi → **NULL**"
+   ],
+   "note": "Bole toh: current row ko **future** ka spoiler mil gaya 😎",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Pehla [[LEAD]] likho",
+   "sticker": "💻",
+   "file": "agla_mahina.sql",
+   "code": "SELECT month, amount,\n  LEAD(amount) OVER (\n    ORDER BY month_no\n  ) AS next_month\nFROM sales;",
+   "note": "**ORDER BY** batata hai \"agla\" kaun hai. Bina order ke agla random!",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "Result [[aisa]] dikhega",
+   "sticker": "📊",
+   "columns": [
+    "MONTH",
+    "AMOUNT",
+    "NEXT_MONTH"
+   ],
+   "rows": [
+    [
+     "Jan",
+     "100",
+     "150"
+    ],
+    [
+     "Feb",
+     "150",
+     "120"
+    ],
+    [
+     "Mar",
+     "120",
+     "200"
+    ],
+    [
+     "Apr",
+     "200",
+     "NULL"
+    ]
+   ],
+   "highlight": [
+    3
+   ],
+   "note": "Apr ke baad koi month nahi → **NULL** 🤷",
+   "who": "TWIST"
+  },
+  {
+   "type": "compare",
+   "title": "LAG vs [[LEAD]]",
+   "left": {
+    "label": "LAG ⬅️",
+    "points": [
+     "Pichli row dekhta hai",
+     "Pehli row → NULL",
+     "Last month se growth"
+    ]
+   },
+   "right": {
+    "label": "LEAD ➡️",
+    "points": [
+     "Agli row dekhta hai",
+     "Aakhri row → NULL",
+     "Next event / date"
+    ]
+   }
+  },
+  {
+   "type": "code",
+   "title": "Offset + [[default]]",
+   "sticker": "🎛️",
+   "file": "lead_pro.sql",
+   "code": "SELECT month, amount,\n  LEAD(amount, 2, 0) OVER (\n    ORDER BY month_no\n  ) AS after_2\nFROM sales;",
+   "note": "2nd arg = **kitni row aage**, 3rd = NULL ki jagah **default**",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "Kahan [[kaam]] aata hai?",
+   "sticker": "🎯",
+   "points": [
+    "Agla order kitne **din baad** aaya",
+    "Session ka **next page** kaunsa tha",
+    "Har customer alag? **PARTITION BY** lagao",
+    "Plan ka **end date** = agle ka start"
+   ]
+  },
+  {
+   "type": "mistake",
+   "wrong": "LEAD = **pichli** row,\nLAG = **agli** row",
+   "right": "**LAG** = peeche ⬅️,\n**LEAD** = aage ➡️",
+   "why": "Direction ulti li to poori report ulti 💀 LEAD = **lead karna = aage**"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "LEAD(col) = **agli row** ki value",
+    "Aakhri row → **NULL**",
+    "LEAD(col, n, default) bhi chalta hai",
+    "LAG = peeche, **LEAD = aage**"
+   ]
+  }
+ ],
+ "caption": "Future dekhna hai? LEAD agli row bata deta hai 🔮\n\nWindow functions ka time-traveller!\nIs post mein:\n✅ LEAD() kya karta hai\n✅ Agle month ki sale side-by-side\n✅ LAG vs LEAD direction\n✅ Offset + default ka pro trick\n\nSQL Series · Part 62/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #windowfunctions #sqlinhindi #learnsql #dataanalytics #sqlinterview #dataanalyst #coding #techhindi #datascience"
+}

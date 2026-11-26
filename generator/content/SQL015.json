@@ -1,0 +1,120 @@
+{
+ "id": "SQL015",
+ "part": 15,
+ "module": "Filtering",
+ "topic": "IN Operator",
+ "next": "BETWEEN",
+ "hook": "Itne saare OR? Bhai [[IN]] laga le",
+ "cover_sticker": "🫵",
+ "slides": [
+  {
+   "type": "compare",
+   "title": "OR ki line vs [[IN]]",
+   "left": {
+    "label": "OR wala 😩",
+    "points": [
+     "city='Delhi' OR",
+     "city='Mumbai' OR",
+     "city='Pune'..."
+    ]
+   },
+   "right": {
+    "label": "IN wala 😎",
+    "points": [
+     "city IN (",
+     "'Delhi','Mumbai',",
+     "'Pune')"
+    ]
+   },
+   "note": "Same result, **aadhi typing**. Ungliyan bhi khush 🙌",
+   "who": "SHORTCUT"
+  },
+  {
+   "type": "code",
+   "title": "Delhi [[ya]] Mumbai",
+   "sticker": "🗺️",
+   "file": "in_list.sql",
+   "code": "SELECT name, city\nFROM employees\nWHERE city IN\n  ('Delhi', 'Mumbai');"
+  },
+  {
+   "type": "table",
+   "title": "Result: [[4]] log",
+   "sticker": "🎉",
+   "columns": [
+    "NAME",
+    "CITY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "Delhi"
+    ],
+    [
+     "Meera",
+     "Mumbai"
+    ],
+    [
+     "Kabir",
+     "Delhi"
+    ],
+    [
+     "Dev",
+     "Delhi"
+    ]
+   ],
+   "highlight": [
+    1
+   ],
+   "note": "List mein jo bhi match ho, row **andar**. Pune wali Riya **bahar**"
+  },
+  {
+   "type": "concept",
+   "title": "IN = guest [[list]]",
+   "sticker": "📜",
+   "points": [
+    "Shaadi ka bouncer: naam **list** mein hai?",
+    "Haan → **andar**, nahi → bahar",
+    "Numbers bhi: **id IN (1, 3, 5)**"
+   ],
+   "note": "Order matter nahi karta: ('Mumbai','Delhi') bhi **same** 👍",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "concept",
+   "title": "NOT IN = [[blacklist]]",
+   "sticker": "🚫",
+   "points": [
+    "WHERE city **NOT IN** ('Delhi')",
+    "Result: **Meera, Riya**",
+    "List ke **bahar** wale hi aayenge"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "List [[query]] se bhi",
+   "sticker": "🔗",
+   "file": "subquery_in.sql",
+   "code": "SELECT name\nFROM customers\nWHERE id IN (\n  SELECT customer_id\n  FROM orders\n);",
+   "note": "Jinhone **kam se kam ek order** kiya, woh customers. Subquery aage detail mein 😉",
+   "who": "NEXT LEVEL"
+  },
+  {
+   "type": "mistake",
+   "wrong": "WHERE city NOT IN\n  ('Delhi', NULL)",
+   "wrong_is_code": true,
+   "right": "WHERE city NOT IN ('Delhi')\n-- list se NULL hatao",
+   "right_is_code": true,
+   "why": "NOT IN mein ek bhi **NULL** = result **khaali**. Kyunki x <> NULL kabhi true nahi 👻"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**IN (list)** = koi bhi match",
+    "Bahut saare **OR** ka shortcut",
+    "**NOT IN** = list ke bahar",
+    "NOT IN + **NULL** = khaali result ⚠️"
+   ]
+  }
+ ],
+ "caption": "Itne saare OR? Bhai IN laga le, ungli thak jaayegi 🫵\n\nIs post mein:\n✅ OR ki line vs IN\n✅ city IN ('Delhi','Mumbai') ka result\n✅ NOT IN aur subquery ke saath IN\n✅ NOT IN + NULL wala trap\n\nSQL Series · Part 15/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}

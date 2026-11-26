@@ -1,0 +1,134 @@
+{
+ "id": "SQL011",
+ "part": 11,
+ "module": "Select Basics",
+ "topic": "DISTINCT",
+ "next": "WHERE Clause",
+ "hook": "Delhi 3 baar? DISTINCT bolega [[ek kaafi hai]]",
+ "cover_sticker": "☝️",
+ "slides": [
+  {
+   "type": "table",
+   "title": "Problem: [[repeat]] cities",
+   "sticker": "😩",
+   "columns": [
+    "NAME",
+    "CITY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "Delhi"
+    ],
+    [
+     "Meera",
+     "Mumbai"
+    ],
+    [
+     "Kabir",
+     "Delhi"
+    ],
+    [
+     "Riya",
+     "Pune"
+    ],
+    [
+     "Dev",
+     "Delhi"
+    ]
+   ],
+   "highlight": [
+    0,
+    2,
+    4
+   ],
+   "note": "Kaun kaun si cities hain? Delhi **teen baar** gin liya 🙄",
+   "who": "SCENE"
+  },
+  {
+   "type": "code",
+   "title": "DISTINCT [[lagao]]",
+   "sticker": "🧹",
+   "file": "unique_cities.sql",
+   "code": "SELECT DISTINCT city\nFROM employees;"
+  },
+  {
+   "type": "table",
+   "title": "Result: sab [[unique]]",
+   "sticker": "✨",
+   "columns": [
+    "CITY"
+   ],
+   "rows": [
+    [
+     "Delhi"
+    ],
+    [
+     "Mumbai"
+    ],
+    [
+     "Pune"
+    ]
+   ],
+   "note": "5 rows se **3**. Duplicates **gayab** 🪄",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "concept",
+   "title": "Multiple columns pe [[DISTINCT]]",
+   "sticker": "🧬",
+   "points": [
+    "**SELECT DISTINCT dept, city**",
+    "Unique hoga **combination**, akela col nahi",
+    "IT-Delhi, IT-Pune = **2 alag** rows"
+   ],
+   "note": "DISTINCT poori **row** pe lagta hai, ek column pe nahi",
+   "who": "TWIST"
+  },
+  {
+   "type": "code",
+   "title": "Ginti chahiye? [[COUNT]]",
+   "sticker": "🔢",
+   "file": "kitni_cities.sql",
+   "code": "SELECT COUNT(DISTINCT city)\nFROM employees;\n-- Result: 3",
+   "note": "Interview mein \"kitni unique cities\"? Yahi **one-liner** 😎",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "compare",
+   "title": "DISTINCT vs [[Normal]]",
+   "left": {
+    "label": "SELECT city",
+    "points": [
+     "5 rows",
+     "Delhi x3",
+     "Raw data"
+    ]
+   },
+   "right": {
+    "label": "SELECT DISTINCT",
+    "points": [
+     "3 rows",
+     "Delhi x1",
+     "Unique list"
+    ]
+   }
+  },
+  {
+   "type": "mistake",
+   "wrong": "DISTINCT sirf **pehle column** pe lagta hai",
+   "right": "DISTINCT saare selected columns ke **combination** pe lagta hai",
+   "why": "SELECT DISTINCT dept, city mein dept repeat ho sakta hai, **combo** nahi 🔁"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**DISTINCT** = duplicates hatao",
+    "SELECT ke **turant baad** likho",
+    "Multi columns = **combination** unique",
+    "**COUNT(DISTINCT col)** = unique ginti"
+   ]
+  }
+ ],
+ "caption": "Delhi 3 baar dikh raha hai? DISTINCT bolega 'ek hi kaafi hai' ☝️\n\nIs post mein:\n✅ DISTINCT se duplicates hatao\n✅ Multiple columns pe DISTINCT ka twist\n✅ COUNT(DISTINCT) se unique ginti\n✅ Interview wala one-liner\n\nSQL Series · Part 11/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #learnsql #database #dataanalytics #coding #techhindi #datascience #sqlforbeginners #programming"
+}
