@@ -166,7 +166,8 @@ def build_prompt(pid, part, topic, feedback=None, previous=None):
         for t in rows)
     examples = "\n\n".join(open(os.path.join(CONTENT, f"{e}.json"), encoding="utf-8").read()
                            for e in EXAMPLES)
-    want = (f'Topic for this post: "{topic}".' if topic
+    want = (f'Topic for this post: "{topic}" (it was promised as "Next" in the previous post, '
+            f'so keep EXACTLY this topic name).' if topic
             else "Choose the best next topic yourself (not in the covered list).")
     prompt = (f"{RULES}\nAlready covered topics:\n{covered}\n\nTwo example posts:\n{examples}\n\n"
               f'Now write post id "{pid}", part {part}. {want}')
@@ -206,7 +207,7 @@ def similar_topic(topic):
     return None
 
 
-def validate(c, pid, part):
+def validate(c, pid, part, promised=None):
     c["id"], c["part"] = pid, part
     for k in ("module", "topic", "hook", "slides", "caption"):
         if not c.get(k):
@@ -225,6 +226,10 @@ def validate(c, pid, part):
         raise ValueError(f"unknown slide types {bad}")
     rows = topics()
     rv = c.get("revisit_of") or None
+    if promised:  # the previous post said "Next: <promised>": use exactly that topic
+        c["topic"] = promised
+        old = similar_topic(promised)
+        rv = (old.get("revisit_of") or old["id"]) if old else None
     if rv:
         first = next((t for t in rows if t["id"] == rv), None)
         if not first:
@@ -234,7 +239,8 @@ def validate(c, pid, part):
         if n > MAX_PART:
             raise ValueError(f"{rv} already has {n - 1} parts (max {MAX_PART}); pick another topic")
         base = re.sub(r"\s*part\s*\d+\s*$", "", c["topic"], flags=re.I).strip()
-        c["topic"] = f"{base} Part {n}"
+        suffix = f" Part {n}"
+        c["topic"] = base[:24 - len(suffix)].rstrip(" -:,") + suffix  # fits the cover chip
     else:
         old = similar_topic(c["topic"])
         if old:
@@ -277,7 +283,7 @@ def make_post(pid, part, topic):
         raw = None
         try:
             raw = ask_gemini(build_prompt(pid, part, topic, feedback, previous))
-            c = validate(raw, pid, part)
+            c = validate(raw, pid, part, topic)
         except (ValueError, KeyError, TypeError, json.JSONDecodeError) as e:
             print(f"  bad answer: {e}", flush=True)
             feedback, previous = str(e), raw
@@ -318,8 +324,7 @@ def main():
         topic = None
         if os.path.exists(prev_file):
             topic = json.load(open(prev_file, encoding="utf-8")).get("next")
-        if topic and similar_topic(topic):
-            topic = None
+        # a "next" close to a covered topic is kept: validate() turns it into "<topic> Part N"
 
         c = make_post(pid, part, topic)
         if "--preview" in args:
