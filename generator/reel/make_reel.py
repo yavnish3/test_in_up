@@ -343,7 +343,16 @@ def make_reel(post, out_root):
             print(f"  bad script: {e}", flush=True)
             feedback = str(e)
             continue
-        tl = build_timeline(sc, wd)
+        try:
+            tl = build_timeline(sc, wd)
+        except RuntimeError as e:
+            if ENGINE != "gemini":
+                raise
+            # Gemini TTS quota used up on every key: use the unlimited Microsoft voice instead
+            print(f"  {e}: switching to the backup voice (neerja_expressive)", flush=True)
+            os.environ["REEL_VOICE"] = voice_name = "neerja_expressive"
+            pick_voice()
+            tl = build_timeline(sc, wd)
         d = tl["duration"]
         words = sum(len(b["say"].split()) for b in sc["beats"])
         print(f"  voice: {d:.1f}s ({words} words)", flush=True)
