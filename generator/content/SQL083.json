@@ -118,5 +118,5 @@
   }
  ],
  "caption": "Badi table queries slow kar rahi hai? Partitioning use karo bhai 📂\n\nIs post mein:\n✅ Partitioning kya hai (chote tukde)\n✅ RANGE aur LIST partition\n✅ Partition Pruning ka magic\n✅ Purana data drop karna super fast\n\nSQL Series · Part 83/81\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #database #partitioning #learnsql #sqlinhindi #dataanalytics #coding #datascience #databaseadmin #sqlperformance",
- "revisit_of": "SQL054"
+ "revisit_of": null
 }

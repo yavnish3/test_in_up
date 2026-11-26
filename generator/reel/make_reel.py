@@ -55,7 +55,7 @@ Language: simple, clear Hinglish, the voice is a young FEMALE creator (feminine 
 
 QUERY TOPICS: if the topic is an interview question / a query to write, the query is the hero.
 Use this plan: b1 = the sample data ("table") and what we must find; b2 = ONE "query" walkthrough with
-the FULL, runnable query (SELECT ... FROM ... ;, 4-7 lines, one clause per line); its cap EXPLAINS each
+the FULL, runnable query (SELECT ... FROM ... ;, or the full CREATE/ALTER/INSERT/UPDATE/DELETE statement for DDL/DML topics like partitioning or indexes; 4-7 lines, one clause per line); its cap EXPLAINS each
 clause in order in Hinglish (what it does and why) - do NOT just read the code aloud, e.g.
 "Pehle users table lo, phir LEFT JOIN se har user ke orders jodo; jinka order nahi mila unka order id
 NULL aata hai, aur WHERE wahi users rakhta hai" - so b2 may use 35-55 words; b3 = how the query runs on the
@@ -191,8 +191,11 @@ def check_script(sc, post):
                 raise ValueError(f"beat {b['id']}: {v['type']} visual needs '{need}'")
             if v["type"] == "query":
                 full = " ".join(str(l.get("code", "")) for l in v["lines"]).upper()
-                if len(v["lines"]) < 3 or "SELECT" not in full or "FROM" not in full:
-                    raise ValueError(f"beat {b['id']}: a query visual must hold the FULL query (SELECT ... FROM ..., 3-7 lines)")
+                is_select = "SELECT" in full and "FROM" in full
+                is_other = re.search(r"\b(CREATE|ALTER|INSERT|UPDATE|DELETE|MERGE|DROP|TRUNCATE|GRANT|EXPLAIN|BEGIN|START TRANSACTION)\b", full)
+                if len(v["lines"]) < 3 or not (is_select or is_other):
+                    raise ValueError(f"beat {b['id']}: a query visual must hold the FULL statement, 3-7 lines "
+                                     f"(SELECT ... FROM ..., or CREATE/ALTER/INSERT/UPDATE/DELETE ... for DDL/DML topics)")
                 if not all(len(str(l.get("explain", "")).split()) >= 4 for l in v["lines"]):
                     raise ValueError(f"beat {b['id']}: every query line needs an 'explain' of 4-7 Hinglish words "
                                      f"saying what the clause does and why (e.g. 'Har user rakho, order ho ya na ho')")

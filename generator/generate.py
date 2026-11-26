@@ -205,7 +205,8 @@ STOP = {"aur", "and", "vs", "ka", "ki", "ke", "kya", "hai", "hain", "the", "of",
 
 def words(text):
     out = set()
-    for w in re.findall(r"[a-z0-9_]+", text.lower()):
+    text = re.sub(r"\b(partition|group|order)\s+by\b", r"\1by", text.lower())
+    for w in re.findall(r"[a-z0-9_]+", text):
         if w in STOP or len(w) < 3:
             continue
         if len(w) > 5 and w.endswith("ing"):
