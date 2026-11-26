@@ -50,28 +50,32 @@ def pick_voice():
     print(f"  voice: {name}", flush=True)
     return name
 GEMINI_TTS_MODELS = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"]
-TTS_STYLE = ("Read this as a fast-talking, energetic young Indian Gen Z girl making an Instagram reel. "
-             "Natural Hinglish, quick pace, no long pauses, upbeat: ")
+TTS_STYLE = ("Read this as a young Indian Gen Z girl teaching on her Instagram reel: clear, friendly, "
+             "confident, natural Hinglish, quick pace, no long pauses: ")
 MAX_TEMPO = 1.35  # Gemini TTS speaks slowly; speed it up (pitch kept) by at most this much
 GAP, HOOK_GAP, TAIL = 0.18, 0.1, 0.25
 MIN_SECONDS, MAX_SECONDS = 20, 90  # Instagram accepts 3 s - 15 min; keep reels 20-90 s
 
 STYLE = """
 You write the voiceover for a 45-75 second Instagram Reel of "The 30 sec developers" (@the30secdev, SQL in Hinglish).
-Style: GEN Z Hinglish, the voice is a young FEMALE creator (feminine verbs: "batati hoon",
-"samjhati hoon"). Fast, punchy, meme-y but the SQL must be 100% correct.
-Use Gen Z words naturally: "bro", "no cap", "lowkey", "fr", "literally", "vibe",
-"red flag", "main character", "scene kya hai", "it's giving", "bestie", "chill".
-Desi touch too: "yaar", "bhai", "arre". Max 1-2 slang words per sentence.
+GOAL: the viewer must actually UNDERSTAND the topic after watching. Teach it like a
+good teacher talking to a friend: what it is, why it matters, how to use it (walk through
+the example shown on screen), and what the result / output means. Every sentence must
+teach something concrete. No filler, no hype, no "save karo / follow karo" in the voice.
+The SQL must be 100% correct.
+Language: simple, clear Hinglish, the voice is a young FEMALE creator (feminine verbs:
+"batati hoon", "samjhati hoon"). Friendly and modern, but at most ONE light word like
+"yaar" or "bhai" in the whole beat; no slang like "no cap", "fr", "bestie", "it's giving".
 
 Return JSON: {"beats": [...], "caption": "..."}
 beats = exactly 7, in this order:
-  1. {"id":"hook","slide":"hook", ...}  scroll-stopping first line (__W_HOOK__ words)
+  1. {"id":"hook","slide":"hook", ...}  a question that states the real problem this topic solves (__W_HOOK__ words)
   2-5. four teaching beats, each {"id":"b1".."b4","slide":<index 0-5 of the post's slides>}
        pick 4 DIFFERENT slides that teach best (prefer code/table/compare), in a logical order.
-       Talk about exactly what that slide shows, with a quick example. __W_BEAT__ words each.
-  6. {"id":"galti","slide":"mistake", ...}  the common mistake + fix (__W_GALTI__ words)
-  7. {"id":"recap","slide":"recap", ...}  quick recap + "save karo, follow karo" CTA (__W_RECAP__ words)
+       Explain exactly what that slide shows: the idea, then the example on screen step by step. __W_BEAT__ words each.
+       Each beat builds on the previous one, so the 4 beats together explain the topic fully.
+  6. {"id":"galti","slide":"mistake", ...}  the common mistake, why it is wrong, and the right way (__W_GALTI__ words)
+  7. {"id":"recap","slide":"recap", ...}  2-3 key takeaways of the topic, nothing else (__W_RECAP__ words)
 __SAYCAP__
 caption: reel caption like the carousel's (hook line + emoji, 3-4 "✅" lines,
 "SQL Series · Part N", "Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!", 30 hashtags).
