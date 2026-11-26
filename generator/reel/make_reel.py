@@ -31,7 +31,8 @@ def pick_voice():
     ENGINE, VOICE, RATE, SCRIPT = VOICES[name]
     print(f"  voice: {name}", flush=True)
     return name
-GEMINI_TTS_MODELS = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview", "gemini-3.8-flash-lite-tts"]
+GEMINI_TTS_MODELS = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview", "gemini-3.8-flash-lite-tts",
+                     "gemini-2.5-flash-preview-tts"]
 MAX_TEMPO = 1.35
 GAP, HOOK_GAP, TAIL = 0.18, 0.1, 0.25
 MIN_SECONDS, MAX_SECONDS = 20, 90
