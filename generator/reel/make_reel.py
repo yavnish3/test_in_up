@@ -166,7 +166,7 @@ def mix(wd, tl, silent, final):
     filters.append(f"{''.join(labels)}amix=inputs={len(labels)}:normalize=0:duration=longest,"
                    f"alimiter=limit=0.89:level=disabled[a]")
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", *inputs, "-filter_complex", ";".join(filters),
-                    "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
+                    "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "44100", "-ac", "2",
                     "-t", str(tl["duration"]), "-movflags", "+faststart", final], check=True)
 
 
