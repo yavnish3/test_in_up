@@ -92,9 +92,9 @@ Each beat (except hook) has:
       copied exactly from this beat's cap; the element appears when that word is spoken,
       so pick the word where you talk about it. Types (use at least 4 different types overall,
       never the same type twice in a row):
-    {"type":"code","file":"x.sql","lines":[{"code":"<= 30 chars","at":"word"}, ... max 7],
+    {"type":"code","file":"x.sql","lines":[{"code":"<= 40 chars","at":"word"}, ... max 7],
        "output":"<= 60 chars result shown after RUN (optional)","output_at":"word"}
-    {"type":"query","file":"x.sql","lines":[{"code":"<= 30 chars, one clause","at":"word","explain":"4-7 Hinglish words: what it does + why"}, ... 3-7],
+    {"type":"query","file":"x.sql","lines":[{"code":"<= 40 chars, one clause","at":"word","explain":"4-7 Hinglish words: what it does + why"}, ... 3-7],
        "output":"real result rows, <= 60 chars","output_at":"word"}   (WALKTHROUGH: full query shown, each clause lit + explained as you say it)
     {"type":"table","columns":["<= 10 chars", ... max 4],"rows":[[...], ... max 4],
        "row_at":["word for row 1", ...],"highlight":[row indexes]}
@@ -237,8 +237,8 @@ def check_script(sc, post):
                         parts.append(sentence)
                     b["cap"] = b["say"] = " ".join(parts)
                     print(f"  {b['id']}: voice now explains each query line ({len(b['cap'].split())} words)", flush=True)
-            if v["type"] in ("code", "query") and any(len(str(l.get("code", ""))) > 34 for l in v["lines"]):
-                raise ValueError(f"beat {b['id']}: code lines must be <= 30 chars")
+            if v["type"] in ("code", "query") and any(len(str(l.get("code", ""))) > 44 for l in v["lines"]):
+                raise ValueError(f"beat {b['id']}: code lines must be <= 40 chars (split long clauses over two lines)")
             if v["type"] == "table" and (len(v["columns"]) > 4 or len(v.get("rows", [])) > 5):
                 raise ValueError(f"beat {b['id']}: table max 4 columns, 4 rows")
             if len(str(b.get("title", ""))) > 30:
