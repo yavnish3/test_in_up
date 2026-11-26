@@ -1,7 +1,8 @@
-name: Generate posts
+name: Generate loop
 
-# Keeps ~5 ready (unposted) carousels on Cloudinary after SQL081:
-# Gemini writes the next topic's slides, Playwright renders them, Cloudinary stores them.
+# Own self-restarting loop: each run tops up the stock of ready (unposted)
+# carousels to 5 (Gemini writes, Playwright renders, Cloudinary stores),
+# waits ~5 hours, then starts the next run of itself.
 on:
   workflow_dispatch:
     inputs:
@@ -9,26 +10,28 @@ on:
         description: "Make this many new posts now (0 = only top up the stock)"
         required: false
         default: "0"
-  schedule:
-    - cron: "30 3 * * *"   # daily 09:00 IST (backup; the Carousel loop also triggers this)
 
 permissions:
   contents: write
+  actions: write       # start the next run of this workflow
 
 concurrency:
-  group: generate-posts
+  group: generate-loop
   cancel-in-progress: false
 
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 355
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       MEDIA_BASE_URL: ${{ secrets.MEDIA_BASE_URL }}
       CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
       CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
     steps:
+      - name: Note start time
+        run: echo "LOOP_START=$(date +%s)" >> "$GITHUB_ENV"
+
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
@@ -50,6 +53,7 @@ jobs:
 
       - name: Generate
         if: steps.need.outputs.go == 'yes'
+        continue-on-error: true   # a Gemini hiccup must not stop the loop
         run: |
           if [ "${{ inputs.count || '0' }}" != "0" ]; then
             python -u generator/generate.py --count "${{ inputs.count }}"
@@ -67,3 +71,16 @@ jobs:
           git commit -m "Generated new posts"
           for i in 1 2 3 4 5; do git pull --rebase && git push && exit 0; sleep 10; done
           exit 1
+
+      - name: Wait before the next check (run lasts ~5h 20m in total)
+        if: ${{ !cancelled() }}
+        run: |
+          left=$(( 19200 - ($(date +%s) - LOOP_START) ))
+          echo "Sleeping $(( left / 60 )) min"
+          [ "$left" -gt 0 ] && sleep "$left" || true
+
+      - name: Start the next loop run
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run generate_loop.yml --ref main
