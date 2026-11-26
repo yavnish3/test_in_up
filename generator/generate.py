@@ -17,7 +17,7 @@ Usage:
     python generator/generate.py --preview  # make the next post in generator/out/ only (no upload, no save)
 
 Env: GEMINI_API_KEY (+ optional GEMINI_API_KEY_2..9 / GEMINI_API_KEYS used when one is busy,
-     and OPENROUTER_API_KEY as a last backup), MEDIA_BASE_URL (https://res.cloudinary.com/<cloud>),
+     and GROQ_API_KEY / GitHub Models / OPENROUTER_API_KEY as backups), MEDIA_BASE_URL (https://res.cloudinary.com/<cloud>),
      CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, optional GEMINI_MODEL, STOCK.
 """
 
@@ -132,33 +132,41 @@ def gemini_keys():
     return keys
 
 
-OPENROUTER_MODELS = [m.strip() for m in os.environ.get(
-    "OPENROUTER_MODELS", "google/gemma-4-31b-it:free,nvidia/nemotron-3-ultra-550b-a55b:free").split(",") if m.strip()]
+# Backup writers (OpenAI-style chat APIs), tried in this order when every Gemini key is busy.
+# name: (url, env var(s) holding the key, models)
+BACKUPS = [
+    ("groq", "https://api.groq.com/openai/v1/chat/completions", ("GROQ_API_KEY",),
+     os.environ.get("GROQ_MODELS", "openai/gpt-oss-120b,qwen/qwen3.8-27b")),
+    ("github", "https://models.github.ai/inference/chat/completions", ("GH_MODELS_TOKEN", "GITHUB_TOKEN"),
+     os.environ.get("GITHUB_MODELS", "openai/gpt-4.1-mini,openai/gpt-4o-mini,meta/Llama-3.3-70B-Instruct")),
+    ("openrouter", "https://openrouter.ai/api/v1/chat/completions", ("OPENROUTER_API_KEY",),
+     os.environ.get("OPENROUTER_MODELS", "google/gemma-4-31b-it:free,nvidia/nemotron-3-ultra-550b-a55b:free")),
+]
 
 
-def ask_openrouter(prompt):
-    """Backup writer when every Gemini key is busy: OpenRouter free models (OPENROUTER_API_KEY).
-    Returns the parsed JSON, or None if not configured / not available."""
+def ask_backup(prompt):
+    """Ask Groq, then GitHub Models, then OpenRouter (whichever keys are set).
+    Returns the parsed JSON answer, or None if none of them could answer."""
     import requests
-    key = os.environ.get("OPENROUTER_API_KEY", "").strip()
-    if not key:
-        return None
-    for model in OPENROUTER_MODELS:
-        try:
-            r = requests.post("https://openrouter.ai/api/v1/chat/completions",
-                              headers={"Authorization": f"Bearer {key}"},
-                              json={"model": model, "temperature": 0.9,
-                                    "messages": [{"role": "user", "content": prompt + "\n\nAnswer with ONLY the JSON object."}]},
-                              timeout=300)
-            if not r.ok:
-                print(f"openrouter {model}: {r.status_code} {r.text[:120]}", flush=True)
-                continue
-            text = r.json()["choices"][0]["message"]["content"] or ""
-            text = text[text.index("{"):text.rindex("}") + 1]
-            print(f"openrouter {model}: answered", flush=True)
-            return json.loads(text)
-        except (requests.RequestException, ValueError, KeyError, IndexError) as e:
-            print(f"openrouter {model}: failed ({type(e).__name__})", flush=True)
+    for name, url, key_vars, models in BACKUPS:
+        key = next((os.environ.get(v, "").strip() for v in key_vars if os.environ.get(v, "").strip()), "")
+        if not key:
+            continue
+        for model in [m.strip() for m in models.split(",") if m.strip()]:
+            try:
+                r = requests.post(url, headers={"Authorization": f"Bearer {key}"},
+                                  json={"model": model, "temperature": 0.9, "messages": [
+                                      {"role": "user", "content": prompt + "\n\nAnswer with ONLY the JSON object."}]},
+                                  timeout=300)
+                if not r.ok:
+                    print(f"{name} {model}: {r.status_code} {r.text[:100]}", flush=True)
+                    continue
+                text = r.json()["choices"][0]["message"]["content"] or ""
+                answer = json.loads(text[text.index("{"):text.rindex("}") + 1])
+                print(f"{name} {model}: answered", flush=True)
+                return answer
+            except (requests.RequestException, ValueError, KeyError, IndexError) as e:
+                print(f"{name} {model}: failed ({type(e).__name__})", flush=True)
     return None
 
 
@@ -179,8 +187,8 @@ def ask_gemini(prompt):
             continue
         if resp.status_code in (429, 500, 503):  # free-tier limit / busy
             print(f"{tag}: busy ({resp.status_code}), trying again", flush=True)
-            if (attempt + 1) % len(combos) == 0:  # every Gemini key is busy: try OpenRouter
-                answer = ask_openrouter(prompt)
+            if (attempt + 1) % len(combos) == 0:  # every Gemini key is busy: try the backups
+                answer = ask_backup(prompt)
                 if answer is not None:
                     return answer
                 time.sleep(20 * (attempt + 1) // len(combos))
