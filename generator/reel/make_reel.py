@@ -54,10 +54,10 @@ TTS_STYLE = ("Read this as a fast-talking, energetic young Indian Gen Z girl mak
              "Natural Hinglish, quick pace, no long pauses, upbeat: ")
 MAX_TEMPO = 1.35  # Gemini TTS speaks slowly; speed it up (pitch kept) by at most this much
 GAP, HOOK_GAP, TAIL = 0.18, 0.1, 0.25
-MIN_SECONDS, MAX_SECONDS = 50, 59  # every reel lands between 50 and 59 seconds
+MIN_SECONDS, MAX_SECONDS = 40, 59  # every reel lands between 40 and 59 seconds
 
 STYLE = """
-You write the voiceover for a 50-58 second Instagram Reel of "The 30 sec developers" (@the30secdev, SQL in Hinglish).
+You write the voiceover for a 45-58 second Instagram Reel of "The 30 sec developers" (@the30secdev, SQL in Hinglish).
 Style: GEN Z Hinglish, the voice is a young FEMALE creator (feminine verbs: "batati hoon",
 "samjhati hoon"). Fast, punchy, meme-y but the SQL must be 100% correct.
 Use Gen Z words naturally: "bro", "no cap", "lowkey", "fr", "literally", "vibe",
@@ -310,12 +310,12 @@ def make_reel(post, out_root):
         if d < MAX_SECONDS and (best is None or d > best[1]["duration"]):
             best = (sc, tl)
         need = round(words * 54 / d)
-        feedback = (f"the reel is {d:.0f}s with {words} words; it must be 50-58s. "
+        feedback = (f"the reel is {d:.0f}s with {words} words; it must be 40-58s. "
                     f"Write about {need} words in total"
                     + (" (add a concrete example / one more detail per beat)." if d < MIN_SECONDS else " (cut words)."))
     else:
         if best is None:
-            raise RuntimeError(f"{pid}: could not make a reel script of 50-59 seconds")
+            raise RuntimeError(f"{pid}: could not make a reel script of 40-59 seconds")
         sc, tl = best
         # a little short: speak the same script slower to stretch it into the window
         for rate in (("+22%", "+15%", "+8%") if ENGINE == "edge" else ()):
@@ -324,7 +324,7 @@ def make_reel(post, out_root):
             if tl["duration"] >= MIN_SECONDS:
                 break
         if not MIN_SECONDS <= tl["duration"] <= MAX_SECONDS:
-            raise RuntimeError(f"{pid}: reel is {tl['duration']:.0f}s, outside 50-59 s")
+            raise RuntimeError(f"{pid}: reel is {tl['duration']:.0f}s, outside 40-59 s")
 
     for f in ("reel_lib.js", "reel_base.css", "gsap.min.js"):
         shutil.copy(os.path.join(HERE, f), wd)
