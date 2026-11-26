@@ -404,8 +404,21 @@ def build_timeline(sc, wd, rate=RATE):
     return {"fps": FPS, "duration": round(t, 3), "beats": beats}
 
 
-THEME_ACCENT = {"fire": "#F05A28", "ocean": "#3B82F6", "matrix": "#16A34A", "gold": "#D97706",
-                "candy": "#DB2777", "neon": "#4F46E5"}
+# Same palettes as scene.html (accent, accent2, accent3, background) so the cover matches the reel.
+THEMES = {
+    "neon":   ["#C6FF3D", "#FF4FD8", "#3DF5FF", "#0B0716"],
+    "fire":   ["#FFC93D", "#FF5A36", "#FF9F45", "#140806"],
+    "ocean":  ["#3DF5FF", "#4F7BFF", "#9DFFDF", "#05101C"],
+    "matrix": ["#5CFF8A", "#00C26E", "#C6FF3D", "#03100A"],
+    "gold":   ["#FFD23F", "#FF7EB6", "#B79BFF", "#100C04"],
+    "candy":  ["#FF7EB6", "#B79BFF", "#7CC4FF", "#120818"],
+}
+
+
+def theme_of(post, theme=None):
+    """The reel's theme name (scene.html falls back by part number the same way)."""
+    names = list(THEMES)
+    return theme if theme in THEMES else names[(post.get("part") or 0) % len(names)]
 
 
 def thumb_data(post, theme=None):
@@ -420,7 +433,7 @@ def thumb_data(post, theme=None):
         code = code[:150].rsplit(" ", 1)[0] + " ..."
     return {"part": post.get("part"), "hook": re.sub(r"\[\[|\]\]", "", str(post.get("hook", ""))),
             "emoji": post.get("cover_sticker") or "", "topic": post.get("topic", ""), "code": code,
-            "accent": THEME_ACCENT.get(theme or "", "#3B82F6")}
+            "theme": THEMES[theme_of(post, theme)]}
 
 
 async def render_thumb(data, out_jpg):

@@ -31,11 +31,22 @@ body{background:#0E1424;font-family:Inter,system-ui,sans-serif;color:#fff;positi
 <div class="card" id="card"><div class="dots"><i style="background:#EF4444"></i><i style="background:#EAB308"></i><i style="background:#22C55E"></i></div><pre id="code"></pre></div>
 <div class="foot">Save kar lo<i>·</i>Interview mein kaam aayega</div>
 <script>
-const T = __THUMB__;  // {part, hook, emoji, topic, code, accent}
+const T = __THUMB__;  // {part, hook, emoji, topic, code, theme: [accent, accent2, accent3, bg]}
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 document.getElementById('part').textContent = T.part;
-document.getElementById('pill').style.background = T.accent;
-document.getElementById('glow').style.background = `radial-gradient(circle, ${T.accent}, transparent 62%)`;
+// colours from the reel's theme, so cover and reel look like one piece
+const [A1, A2, A3, BG] = T.theme;
+document.body.style.background = BG;
+document.getElementById('fade').style.background = `linear-gradient(180deg, ${BG}A6 0%, ${BG}00 22%, ${BG}33 55%, ${BG} 82%)`;
+document.getElementById('glow').style.background = `radial-gradient(circle, ${A2}, transparent 62%)`;
+const pill = document.getElementById('pill'); pill.style.background = A2;
+document.getElementById('topic').style.color = A1;
+const card = document.getElementById('card');
+card.style.background = 'rgba(255,255,255,.05)'; card.style.borderColor = A3 + '66';
+document.getElementById('code').style.color = A3;
+const hot = document.createElement('div');  // second soft glow bottom-right like the reel background
+hot.style.cssText = `position:absolute;right:-420px;bottom:-200px;width:1100px;height:1100px;border-radius:50%;filter:blur(40px);opacity:.35;background:radial-gradient(circle, ${A1}55, transparent 62%)`;
+document.body.insertBefore(hot, document.getElementById('fade'));
 const hook = document.getElementById('hook');
 hook.innerHTML = esc(T.hook) + (T.emoji ? ` <span style="font-family:'Apple Color Emoji','Noto Color Emoji',sans-serif">${esc(T.emoji)}</span>` : '');
 let fs = 112;  // shrink the hook until it fits (old covers used 100-112px)
@@ -43,7 +54,6 @@ while (hook.scrollHeight > 560 && fs > 70) { fs -= 4; hook.style.fontSize = fs +
 const topic = document.getElementById('topic');
 topic.textContent = T.topic;
 topic.style.top = (470 + Math.min(hook.scrollHeight, 560) + 20) + 'px';
-const card = document.getElementById('card');
 if (T.code) {
   document.getElementById('code').textContent = T.code;
   card.style.top = (topic.offsetTop + topic.offsetHeight + 70) + 'px';
