@@ -30,10 +30,10 @@ sys.path.insert(0, GEN)
 FPS = 30
 VOICE, RATE = "hi-IN-SwaraNeural", "+30%"
 GAP, HOOK_GAP, TAIL = 0.18, 0.1, 0.25
-MAX_SECONDS = 59
+MIN_SECONDS, MAX_SECONDS = 50, 59  # every reel lands between 50 and 59 seconds
 
 STYLE = """
-You write the voiceover for an Instagram Reel (any length up to 58 seconds, never more) of "The 30 sec developers" (@the30secdev, SQL in Hinglish).
+You write the voiceover for a 50-58 second Instagram Reel of "The 30 sec developers" (@the30secdev, SQL in Hinglish).
 Style: GEN Z Hinglish, the voice is a young FEMALE creator (feminine verbs: "batati hoon",
 "samjhati hoon"). Fast, punchy, meme-y but the SQL must be 100% correct.
 Use Gen Z words naturally: "bro", "no cap", "lowkey", "fr", "literally", "vibe",
@@ -42,18 +42,18 @@ Desi touch too: "yaar", "bhai", "arre". Max 1-2 slang words per sentence.
 
 Return JSON: {"beats": [...], "caption": "..."}
 beats = exactly 7, in this order:
-  1. {"id":"hook","slide":"hook", ...}  scroll-stopping first line (<= 14 words)
+  1. {"id":"hook","slide":"hook", ...}  scroll-stopping first line (10-14 words)
   2-5. four teaching beats, each {"id":"b1".."b4","slide":<index 0-5 of the post's slides>}
        pick 4 DIFFERENT slides that teach best (prefer code/table/compare), in a logical order.
-       Talk about exactly what that slide shows. 14-24 words each.
-  6. {"id":"galti","slide":"mistake", ...}  the common mistake + fix (<= 22 words)
-  7. {"id":"recap","slide":"recap", ...}  quick recap + "save karo, follow karo" CTA (<= 20 words)
+       Talk about exactly what that slide shows, with a quick example. 24-30 words each.
+  6. {"id":"galti","slide":"mistake", ...}  the common mistake + fix (18-24 words)
+  7. {"id":"recap","slide":"recap", ...}  quick recap + "save karo, follow karo" CTA (14-20 words)
 Each beat has:
   "say": what the TTS speaks: Hindi words in Devanagari, English/tech words in Latin
          (e.g. "EXPLAIN लगाओ और plan देखो, no cap!"). SQL keywords stay English.
   "cap": the SAME sentence in Roman Hinglish with EXACTLY the same number of words as "say"
          (word by word, same order). Count carefully.
-Total words of all "say" <= 150 (the whole reel must stay under 60 seconds).
+Total words of all "say" must be 135-155 (that is 50-58 seconds of speech).
 caption: reel caption like the carousel's (hook line + emoji, 3-4 "✅" lines,
 "SQL Series · Part N", "Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!", 30 hashtags).
 """
@@ -92,9 +92,9 @@ def check_script(sc, post):
     return sc
 
 
-async def tts_beat(text, path):
+async def tts_beat(text, path, rate=RATE):
     import edge_tts
-    comm = edge_tts.Communicate(text, VOICE, rate=RATE, boundary="WordBoundary")
+    comm = edge_tts.Communicate(text, VOICE, rate=rate, boundary="WordBoundary")
     words = []
     with open(path, "wb") as f:
         async for ch in comm.stream():
@@ -111,12 +111,12 @@ def duration(path):
     return float(out.strip())
 
 
-def build_timeline(sc, wd):
+def build_timeline(sc, wd, rate=RATE):
     os.makedirs(os.path.join(wd, "voice"), exist_ok=True)
     beats, t = [], 0.0
     for i, b in enumerate(sc["beats"]):
         mp3 = os.path.join(wd, "voice", f"beat_{i}.mp3")
-        words = asyncio.run(tts_beat(b["say"], mp3))
+        words = asyncio.run(tts_beat(b["say"], mp3, rate))
         vlen = duration(mp3)
         speech = min(vlen, words[-1]["t"] + words[-1]["d"] + TAIL) if words else vlen
         dur = speech + (HOOK_GAP if i == 0 else GAP)
@@ -176,7 +176,8 @@ def make_reel(post, out_root):
     shutil.rmtree(wd, ignore_errors=True)
     os.makedirs(wd)
     feedback = None
-    for attempt in range(1, 4):
+    best = None  # (script, timeline) closest to the 50-59 s window
+    for attempt in range(1, 5):
         print(f"{pid} reel: asking Gemini for the script (attempt {attempt})", flush=True)
         try:
             sc = check_script(ask_script(post, feedback), post)
@@ -185,12 +186,29 @@ def make_reel(post, out_root):
             feedback = str(e)
             continue
         tl = build_timeline(sc, wd)
-        print(f"  voice: {tl['duration']:.1f}s", flush=True)
-        if tl["duration"] <= MAX_SECONDS:
+        d = tl["duration"]
+        words = sum(len(b["say"].split()) for b in sc["beats"])
+        print(f"  voice: {d:.1f}s ({words} words)", flush=True)
+        if MIN_SECONDS <= d <= MAX_SECONDS:
             break
-        feedback = f"the reel is {tl['duration']:.0f}s, must be under 60s: use fewer words"
+        if d < MAX_SECONDS and (best is None or d > best[1]["duration"]):
+            best = (sc, tl)
+        need = round(words * 54 / d)
+        feedback = (f"the reel is {d:.0f}s with {words} words; it must be 50-58s. "
+                    f"Write about {need} words in total"
+                    + (" (add a concrete example / one more detail per beat)." if d < MIN_SECONDS else " (cut words)."))
     else:
-        raise RuntimeError(f"{pid}: could not make a short enough reel script")
+        if best is None:
+            raise RuntimeError(f"{pid}: could not make a reel script of 50-59 seconds")
+        sc, tl = best
+        # a little short: speak the same script slower to stretch it into the window
+        for rate in ("+22%", "+15%", "+8%"):
+            tl = build_timeline(sc, wd, rate)
+            print(f"  slower voice {rate}: {tl['duration']:.1f}s", flush=True)
+            if tl["duration"] >= MIN_SECONDS:
+                break
+        if not MIN_SECONDS <= tl["duration"] <= MAX_SECONDS:
+            raise RuntimeError(f"{pid}: reel is {tl['duration']:.0f}s, outside 50-59 s")
 
     for f in ("reel_lib.js", "reel_base.css", "gsap.min.js"):
         shutil.copy(os.path.join(HERE, f), wd)
