@@ -63,7 +63,13 @@ GOAL: the viewer must actually UNDERSTAND the topic after watching. Teach it lik
 good teacher talking to a friend: what it is, why it matters, how to use it (walk through
 the example shown on screen), and what the result / output means. Every sentence must
 teach something concrete. No filler, no hype, no "save karo / follow karo" in the voice.
-The SQL must be 100% correct.
+The SQL must be 100% correct. Accuracy rules:
+- A code "output" must be what that query really returns (rows / values, e.g. "Kabir" or
+  "name: Kabir | Riya"), or for EXPLAIN the real plan line. Never a made-up timing as the output
+  of a normal SELECT.
+- No performance claims unless they are generally true for MySQL and PostgreSQL. Prefer
+  correctness reasons (e.g. "NOT EXISTS is NULL-safe") over "X is faster than Y".
+- Every number, table row and result shown must match each other and the query.
 Language: simple, clear Hinglish, the voice is a young FEMALE creator (feminine verbs:
 "batati hoon", "samjhati hoon"). Friendly and modern, but at most ONE light word like
 "yaar" or "bhai" in the whole beat; no slang like "no cap", "fr", "bestie", "it's giving".
