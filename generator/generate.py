@@ -315,8 +315,8 @@ def upload(path, public_id, folder, kind):
     import requests
     cloud = os.environ["MEDIA_BASE_URL"].rstrip("/").rsplit("/", 1)[-1]
     key, secret = os.environ["CLOUDINARY_API_KEY"], os.environ["CLOUDINARY_API_SECRET"]
-    params = {"public_id": public_id, "asset_folder": folder,
-              "overwrite": "true", "timestamp": str(int(time.time()))}
+    params = {"public_id": public_id, "asset_folder": folder, "invalidate": "true",
+              "overwrite": "true", "timestamp": str(int(time.time()))}  # invalidate: CDN drops old copies
     to_sign = "&".join(f"{k}={params[k]}" for k in sorted(params)) + secret
     params.update(api_key=key, signature=hashlib.sha1(to_sign.encode()).hexdigest())
     for attempt in range(3):

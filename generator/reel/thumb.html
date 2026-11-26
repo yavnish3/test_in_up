@@ -1,0 +1,53 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@700;800&family=JetBrains+Mono:wght@400&display=block" rel="stylesheet">
+<style>
+/* Reel cover in the style of the SQL001-081 thumbnails (1080x1920):
+   series pill, big hook + emoji, topic in yellow, code card, "Save kar lo" footer.
+   The accent colour (pill + glow) follows the reel's topic theme. */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden}
+body{background:#0E1424;font-family:Inter,system-ui,sans-serif;color:#fff;position:relative}
+#glow{position:absolute;left:-380px;top:-260px;width:1300px;height:1300px;border-radius:50%;filter:blur(40px);opacity:.55}
+#fade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,28,.65) 0%,rgba(10,14,28,0) 22%,rgba(14,20,36,.2) 55%,#0F1526 80%)}
+.pill{position:absolute;left:90px;top:300px;font:800 40px Inter;padding:18px 34px;border-radius:40px;color:#fff;letter-spacing:.01em}
+.pill i{font-style:normal;margin:0 16px;opacity:.85}
+#hook{position:absolute;left:90px;top:470px;width:910px;max-height:560px;font:400 112px/1.12 'Archivo Black',Inter,sans-serif;letter-spacing:-.01em;overflow:hidden}
+#topic{position:absolute;left:90px;font:800 58px/1.15 Inter;color:#F7C324;width:900px}
+.card{position:absolute;left:90px;width:900px;border-radius:30px;background:#18203A;border:3px solid #283252;padding:34px 40px 40px}
+.card .dots{display:flex;gap:14px;margin-bottom:28px}
+.card .dots i{width:26px;height:26px;border-radius:50%}
+.card pre{font:400 40px/1.36 'JetBrains Mono',monospace;color:#C9D7F2;white-space:pre-wrap;word-break:break-word}
+.foot{position:absolute;left:0;right:0;top:1660px;text-align:center;font:800 40px Inter;color:#8792A8}
+.foot i{font-style:normal;margin:0 18px}
+</style></head>
+<body>
+<div id="glow"></div><div id="fade"></div>
+<div class="pill" id="pill">SQL SERIES<i>·</i>PART <span id="part"></span></div>
+<div id="hook"></div>
+<div id="topic"></div>
+<div class="card" id="card"><div class="dots"><i style="background:#EF4444"></i><i style="background:#EAB308"></i><i style="background:#22C55E"></i></div><pre id="code"></pre></div>
+<div class="foot">Save kar lo<i>·</i>Interview mein kaam aayega</div>
+<script>
+const T = __THUMB__;  // {part, hook, emoji, topic, code, accent}
+const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+document.getElementById('part').textContent = T.part;
+document.getElementById('pill').style.background = T.accent;
+document.getElementById('glow').style.background = `radial-gradient(circle, ${T.accent}, transparent 62%)`;
+const hook = document.getElementById('hook');
+hook.innerHTML = esc(T.hook) + (T.emoji ? ` <span style="font-family:'Apple Color Emoji','Noto Color Emoji',sans-serif">${esc(T.emoji)}</span>` : '');
+let fs = 112;  // shrink the hook until it fits (old covers used 100-112px)
+while (hook.scrollHeight > 560 && fs > 70) { fs -= 4; hook.style.fontSize = fs + 'px'; }
+const topic = document.getElementById('topic');
+topic.textContent = T.topic;
+topic.style.top = (470 + Math.min(hook.scrollHeight, 560) + 20) + 'px';
+const card = document.getElementById('card');
+if (T.code) {
+  document.getElementById('code').textContent = T.code;
+  card.style.top = (topic.offsetTop + topic.offsetHeight + 70) + 'px';
+} else card.style.display = 'none';
+window.ready = true;
+</script>
+</body></html>

@@ -404,6 +404,43 @@ def build_timeline(sc, wd, rate=RATE):
     return {"fps": FPS, "duration": round(t, 3), "beats": beats}
 
 
+THEME_ACCENT = {"fire": "#F05A28", "ocean": "#3B82F6", "matrix": "#16A34A", "gold": "#D97706",
+                "candy": "#DB2777", "neon": "#4F46E5"}
+
+
+def thumb_data(post, theme=None):
+    """Cover text in the old thumbnail style: hook + emoji, topic, a short example query."""
+    code = ""
+    for s in post.get("slides", []):
+        if s.get("type") == "code" and s.get("code"):
+            lines = [ln for ln in str(s["code"]).split("\n") if ln.strip() and not ln.strip().startswith("--")]
+            code = " ".join(" ".join(lines).split())
+            break
+    if len(code) > 150:  # keep it to ~3 lines on the card
+        code = code[:150].rsplit(" ", 1)[0] + " ..."
+    return {"part": post.get("part"), "hook": re.sub(r"\[\[|\]\]", "", str(post.get("hook", ""))),
+            "emoji": post.get("cover_sticker") or "", "topic": post.get("topic", ""), "code": code,
+            "accent": THEME_ACCENT.get(theme or "", "#3B82F6")}
+
+
+async def render_thumb(data, out_jpg):
+    from playwright.async_api import async_playwright
+    html = open(os.path.join(HERE, "thumb.html"), encoding="utf-8").read().replace(
+        "__THUMB__", json.dumps(data, ensure_ascii=False))
+    tmp = out_jpg + ".html"
+    open(tmp, "w", encoding="utf-8").write(html)
+    async with async_playwright() as p:
+        b = await p.chromium.launch()
+        pg = await b.new_page(viewport={"width": 1080, "height": 1920})
+        await pg.goto("file://" + os.path.abspath(tmp))
+        await pg.evaluate("document.fonts.ready.then(() => true)")
+        await pg.wait_for_function("window.ready === true")
+        await pg.wait_for_timeout(300)
+        await pg.screenshot(path=out_jpg, type="jpeg", quality=92)
+        await b.close()
+    os.remove(tmp)
+
+
 async def capture(scene, out_mp4, cover_jpg, dur):
     from playwright.async_api import async_playwright
     async with async_playwright() as p:
@@ -511,6 +548,7 @@ def make_reel(post, out_root):
                             os.path.join(wd, f"{pid}.jpg"))
     print("  rendering frames...", flush=True)
     asyncio.run(capture(scene, silent, cover, tl["duration"]))
+    asyncio.run(render_thumb(thumb_data(post, sc.get("theme")), cover))  # designed cover, not a video frame
     mix(wd, tl, silent, final)
     json.dump({"voice": voice_name, "script": sc, "caption": sc.get("caption", "")},
               open(os.path.join(wd, "reel.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
@@ -540,6 +578,10 @@ def rerender(wd):
 if __name__ == "__main__":
     from generate import load_env
     load_env()
+    if sys.argv[1:2] == ["--thumb"]:  # --thumb content.json out.jpg [theme]
+        post = json.load(open(sys.argv[2], encoding="utf-8"))
+        asyncio.run(render_thumb(thumb_data(post, sys.argv[4] if len(sys.argv) > 4 else None), sys.argv[3]))
+        sys.exit()
     if sys.argv[1:2] == ["--rerender"]:
         for wd in sys.argv[2:]:
             rerender(os.path.abspath(wd))
