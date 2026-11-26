@@ -1,21 +1,4 @@
-"""
-Post the next SQL reel or carousel to Instagram.
-
-Media lives on Cloudinary (MEDIA_BASE_URL = https://res.cloudinary.com/<cloud>):
-    video/upload/insta/reel/SQLxxx.mp4         reel video
-    image/upload/insta/thumbnails/SQLxxx.jpg         reel cover
-    image/upload/insta/post/SQLxxx/01.jpg   carousel slides (01.jpg ... 10.jpg)
-Uploaded from the Mac with cloud_upload.py.
-
-Captions: reels from sql_reel_posts.csv, carousels from carousels.json.
-Progress: posted.csv (reels) and posted_posts.csv (carousels). Posted ids are
-never posted again.
-
-Usage:
-    python post_next.py reel
-    python post_next.py carousel
-    python post_next.py reel --dry-run     # show what would be posted
-"""
+"""Post the next reel or carousel."""
 
 import csv
 import json
@@ -33,8 +16,6 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 POSTED = {"reel": "posted.csv", "carousel": "posted_posts.csv"}
 
 
-# Instagram allows at most 30 hashtags per post. Captions get topped up to 30
-# from this pool (relevant tags only; ones already in the caption are skipped).
 MAX_TAGS = 30
 TAG_POOL = """#sql #learnsql #sqlinhindi #sqltutorial #sqlforbeginners #sqlqueries #sqlserver
 #mysql #postgresql #database #databases #dbms #rdbms #dataanalyst #dataanalytics
@@ -57,7 +38,7 @@ def fill_hashtags(caption):
     if not extra:
         return caption
     out = caption.rstrip() + " " + " ".join(extra)
-    return out if len(out) <= 2200 else caption  # Instagram caption limit
+    return out if len(out) <= 2200 else caption
 
 
 def load_posted(kind):
@@ -93,7 +74,7 @@ def reel_queue():
 
 def carousel_queue():
     with open(os.path.join(HERE, "carousels.json"), encoding="utf-8") as f:
-        return json.load(f)  # {id: {"caption": ..., "slides": [...]}}
+        return json.load(f)
 
 
 def post_reel(base, user_id, token, media, post_id, caption):
@@ -156,8 +137,6 @@ def main():
     media = os.environ["MEDIA_BASE_URL"].rstrip("/")
     base = graph_host(token)
 
-    # Rate limit (#4): wait 15 min and retry (max 3 times so the job stays short).
-    # Other errors (e.g. Instagram processing hiccups): retry after 2 min, 3 attempts.
     for attempt in range(1, 4):
         try:
             if kind == "reel":
@@ -184,21 +163,18 @@ YT_POSTED_URL = "https://raw.githubusercontent.com/yavnish3/test_y_30sec/main/yt
 
 
 def posted_on_both():
-    """Reel ids already on Instagram and on YouTube. Empty if YouTube's list can't be read."""
     import io
     try:
         resp = requests.get(YT_POSTED_URL, params={"t": int(time.time())}, timeout=30)
         resp.raise_for_status()
         yt = {r["id"] for r in csv.DictReader(io.StringIO(resp.text))}
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         print(f"Could not read YouTube's posted list ({e}): keeping the video")
         return []
-    return sorted(load_posted("reel") & yt)[-100:]  # Cloudinary deletes up to 100 per call
+    return sorted(load_posted("reel") & yt)[-100:]
 
 
 def delete_from_cloudinary(kind, post_id, item, media):
-    """After a successful post, remove its files from Cloudinary (needs
-    CLOUDINARY_API_KEY / CLOUDINARY_API_SECRET). Never fails the post."""
     key = os.environ.get("CLOUDINARY_API_KEY")
     secret = os.environ.get("CLOUDINARY_API_SECRET")
     if not key or not secret:
@@ -206,9 +182,6 @@ def delete_from_cloudinary(kind, post_id, item, media):
         return
     cloud = media.rstrip("/").rsplit("/", 1)[-1]
     if kind == "reel":
-        # insta/reel/<id>.mp4 and insta/thumbnails/<id>.jpg are shared with the YouTube loop
-        # (yavnish3/test_y_30sec, which uses the cover as the YouTube thumbnail):
-        # delete them only once the reel is posted on BOTH Instagram and YouTube.
         both = posted_on_both()
         groups = {"video": [f"insta/reel/{i}" for i in both], "image": [f"insta/thumbnails/{i}" for i in both]}
         groups = {k: v for k, v in groups.items() if v}
@@ -226,7 +199,7 @@ def delete_from_cloudinary(kind, post_id, item, media):
             print(f"Deleted from Cloudinary ({rtype}): {len(gone)}/{len(ids)}")
         except requests.RequestException as e:
             print(f"Warning: could not delete {rtype} files from Cloudinary: {e}")
-    if kind == "carousel":  # the now-empty folder insta/post/<id> stays otherwise
+    if kind == "carousel":
         try:
             time.sleep(5)
             resp = requests.delete(f"https://api.cloudinary.com/v1_1/{cloud}/folders/insta/post/{post_id}",

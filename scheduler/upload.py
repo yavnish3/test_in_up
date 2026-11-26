@@ -1,14 +1,4 @@
-"""
-Upload a video (as a Reel) to Instagram using the official Instagram Graph API.
-
-Usage:
-    python upload.py path/to/video.mp4 "My caption #hashtag"
-    python upload.py https://example.com/video.mp4 "Caption"   # public URL also works
-
-Config is read from a .env file in this folder (or environment variables):
-    IG_USER_ID=1784xxxxxxxxxxxx
-    IG_ACCESS_TOKEN=EAAG... or IGAA...
-"""
+"""Usage: python upload.py video.mp4 caption"""
 
 import os
 import sys
@@ -20,7 +10,6 @@ API_VERSION = os.environ.get("IG_API_VERSION", "v23.0")
 
 
 def load_env(path=".env"):
-    """Tiny .env loader so no extra package is needed."""
     if not os.path.exists(path):
         return
     with open(path) as f:
@@ -32,8 +21,6 @@ def load_env(path=".env"):
 
 
 def graph_host(token):
-    # Tokens from "Instagram Login" start with IGAA -> graph.instagram.com
-    # Tokens from "Facebook Login" (Page-linked account) start with EAA -> graph.facebook.com
     host = "graph.instagram.com" if token.startswith("IG") else "graph.facebook.com"
     return f"https://{host}/{API_VERSION}"
 
@@ -69,9 +56,7 @@ def upload_local_file(container_id, token, file_path):
     }
     print(f"Uploading {file_path} ({size / 1024 / 1024:.1f} MB)...")
     with open(file_path, "rb") as f:
-        body = f.read()  # send raw bytes; streaming the file object is rejected
-    # The upload server sometimes answers ProcessingFailedError when busy or
-    # throttled; retrying the same container after a pause usually works.
+        body = f.read()
     waits = [60, 120, 240, 480]
     for attempt in range(len(waits) + 1):
         resp = requests.post(url, headers=headers, data=body)
@@ -98,7 +83,7 @@ def wait_until_ready(base, container_id, token, timeout=600):
             return
         if status in ("ERROR", "EXPIRED"):
             raise RuntimeError(f"Video processing failed: {data}")
-        time.sleep(20)  # poll slowly: frequent polling hits Meta's app request limit
+        time.sleep(20)
     raise TimeoutError("Video was not processed in time")
 
 

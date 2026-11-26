@@ -1,26 +1,4 @@
-"""
-Auto-generate the next SQL carousel posts (SQL082, SQL083, ...) and keep a stock
-of ready, unposted carousels on Cloudinary.
-
-For each new post:
-  1. Gemini picks the topic (the previous post's "next", else a new one) and
-     writes the content JSON in the same format as content/SQL001..081.json.
-  2. render.py turns it into 10 PNG slides (1080x1080) with post_template.html.
-     If text overflows, Gemini is asked to shorten it (up to 3 tries).
-  3. Slides + caption.txt go to Cloudinary insta/post/<id>/, and the post is
-     added to scheduler/carousels.json so the Carousel loop posts it.
-
-Usage:
-    python generator/generate.py            # top up the stock (default 5)
-    python generator/generate.py --check    # exit 0 if new posts are needed, else 1
-    python generator/generate.py --count 1  # make exactly 1 new post
-    python generator/generate.py --preview  # make the next post in generator/out/ only (no upload, no save)
-    python generator/generate.py --no-reel  # carousel only
-
-Env: GEMINI_API_KEY (+ optional GEMINI_API_KEY_2..9 / GEMINI_API_KEYS used when one is busy,
-     and GROQ_API_KEY / GitHub Models / OPENROUTER_API_KEY as backups), MEDIA_BASE_URL (https://res.cloudinary.com/<cloud>),
-     CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, optional GEMINI_MODEL, STOCK.
-"""
+"""Make the next topic."""
 
 import csv
 import hashlib
@@ -39,16 +17,16 @@ TOPICS = os.path.join(HERE, "topics.csv")
 CAROUSELS = os.path.join(SCHED, "carousels.json")
 POSTED = os.path.join(SCHED, "posted_posts.csv")
 STOCK = int(os.environ.get("STOCK", "5"))
-MODELS = [os.environ.get("GEMINI_MODEL", "gemini-flash-latest"), "gemini-flash-lite-latest"]  # 2nd = fallback when busy
+MODELS = [os.environ.get("GEMINI_MODEL", "gemini-flash-latest"), "gemini-flash-lite-latest"]
 EXAMPLES = ["SQL045", "SQL068"]
-MAX_PART = 4  # a topic can go up to Part 4 when it needs more detail
+MAX_PART = 4
 SLIDE_TYPES = {"concept", "code", "table", "compare", "mistake", "recap"}
 
 sys.path.insert(0, HERE)
 
 
 def load_env():
-    path = os.path.join(ROOT, "..", ".env")  # local runs: in_up/.env
+    path = os.path.join(ROOT, "..", ".env")
     if os.path.exists(path):
         for line in open(path):
             if "=" in line and not line.startswith("#"):
@@ -75,8 +53,6 @@ def topics():
     with open(TOPICS, encoding="utf-8") as f:
         return list(csv.DictReader(f))
 
-
-# ---------- Gemini ----------
 
 RULES = """
 You write Instagram carousel posts for "The 30 sec developers" (@the30secdev), an Indian SQL-teaching page.
@@ -127,19 +103,15 @@ Rules:
 
 
 def gemini_keys():
-    """All configured Gemini keys, tried in order when one is busy / over its limit:
-    GEMINI_API_KEY, GEMINI_API_KEY_2 ... GEMINI_API_KEY_9, and/or GEMINI_API_KEYS="k1,k2,..."."""
     names = ["GEMINI_API_KEY"] + [f"GEMINI_API_KEY_{i}" for i in range(2, 10)]
     keys = [os.environ.get(n, "").strip() for n in names]
     keys += [k.strip() for k in os.environ.get("GEMINI_API_KEYS", "").split(",")]
-    keys = list(dict.fromkeys(k for k in keys if k))  # drop empties and duplicates
+    keys = list(dict.fromkeys(k for k in keys if k))
     if not keys:
         raise RuntimeError("GEMINI_API_KEY is not set")
     return keys
 
 
-# Backup writers (OpenAI-style chat APIs), tried in this order when every Gemini key is busy.
-# name: (url, env var(s) holding the key, models)
 BACKUPS = [
     ("groq", "https://api.groq.com/openai/v1/chat/completions", ("GROQ_API_KEY",),
      os.environ.get("GROQ_MODELS", "openai/gpt-oss-120b,qwen/qwen3.8-27b")),
@@ -151,8 +123,6 @@ BACKUPS = [
 
 
 def ask_backup(prompt):
-    """Ask Groq, then GitHub Models, then OpenRouter (whichever keys are set).
-    Returns the parsed JSON answer, or None if none of them could answer."""
     import requests
     for name, url, key_vars, models in BACKUPS:
         key = next((os.environ.get(v, "").strip() for v in key_vars if os.environ.get(v, "").strip()), "")
@@ -178,7 +148,7 @@ def ask_backup(prompt):
 
 def ask_gemini(prompt):
     import requests
-    combos = [(m, k) for k in gemini_keys() for m in MODELS]  # every model on every key
+    combos = [(m, k) for k in gemini_keys() for m in MODELS]
     body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
             "generationConfig": {"responseMimeType": "application/json", "temperature": 0.9}}
     for attempt in range(3 * len(combos)):
@@ -191,9 +161,9 @@ def ask_gemini(prompt):
         except requests.RequestException as e:
             print(f"{tag}: no answer ({type(e).__name__}), trying again", flush=True)
             continue
-        if resp.status_code in (429, 500, 503):  # free-tier limit / busy
+        if resp.status_code in (429, 500, 503):
             print(f"{tag}: busy ({resp.status_code}), trying again", flush=True)
-            if (attempt + 1) % len(combos) == 0:  # every Gemini key is busy: try the backups
+            if (attempt + 1) % len(combos) == 0:
                 answer = ask_backup(prompt)
                 if answer is not None:
                     return answer
@@ -239,17 +209,16 @@ def words(text):
         if w in STOP or len(w) < 3:
             continue
         if len(w) > 5 and w.endswith("ing"):
-            w = w[:-3]                      # indexing -> index
+            w = w[:-3]
         elif len(w) > 4 and re.search(r"(xes|ses|ches|shes)$", w):
-            w = w[:-2]                      # indexes -> index
+            w = w[:-2]
         elif len(w) > 3 and w.endswith("s") and not w.endswith("ss"):
-            w = w[:-1]                      # procedures -> procedure
+            w = w[:-1]
         out.add(w)
     return out
 
 
 def similar_topic(topic):
-    """A covered topic whose key words all appear in the new topic (e.g. INDEX vs Indexes aur B-Tree)."""
     new = words(topic)
     for t in topics():
         old = words(t["topic"])
@@ -263,9 +232,9 @@ def validate(c, pid, part, promised=None):
     for k in ("module", "topic", "hook", "slides", "caption"):
         if not c.get(k):
             raise ValueError(f"missing {k}")
-    if c.get("next") and len(c["next"]) > 22:  # becomes the next post's topic name on the cover
+    if c.get("next") and len(c["next"]) > 22:
         raise ValueError(f'"next" topic "{c["next"]}" is too long; keep it <= 18 chars')
-    if len(c["topic"]) > 24:  # longer names run under the "Save kar lo" sticker on the cover
+    if len(c["topic"]) > 24:
         raise ValueError(f'topic "{c["topic"]}" is {len(c["topic"])} chars; keep it <= 22 (short name)')
     if len(re.sub(r"\[\[|\]\]", "", c["hook"])) > 50:
         raise ValueError("hook is too long; keep it <= 45 chars")
@@ -279,7 +248,7 @@ def validate(c, pid, part, promised=None):
         raise ValueError(f"unknown slide types {bad}")
     rows = topics()
     rv = c.get("revisit_of") or None
-    if promised:  # the previous post said "Next: <promised>": use exactly that topic
+    if promised:
         c["topic"] = promised
         old = similar_topic(promised)
         rv = (old.get("revisit_of") or old["id"]) if old else None
@@ -287,13 +256,13 @@ def validate(c, pid, part, promised=None):
         first = next((t for t in rows if t["id"] == rv), None)
         if not first:
             raise ValueError(f"revisit_of {rv} is not a covered id")
-        rv = first.get("revisit_of") or rv  # always point at the first part
+        rv = first.get("revisit_of") or rv
         n = 2 + sum(t.get("revisit_of") == rv for t in rows)
         if n > MAX_PART:
             raise ValueError(f"{rv} already has {n - 1} parts (max {MAX_PART}); pick another topic")
         base = re.sub(r"\s*part\s*\d+\s*$", "", c["topic"], flags=re.I).strip()
         suffix = f" Part {n}"
-        while len(base) + len(suffix) > 24 and " " in base:  # fit the cover chip, whole words only
+        while len(base) + len(suffix) > 24 and " " in base:
             base = base.rsplit(" ", 1)[0].rstrip(" -:,")
             if base.lower().endswith((" vs", " aur", " and", " &")):
                 base = base.rsplit(" ", 1)[0]
@@ -309,14 +278,12 @@ def validate(c, pid, part, promised=None):
     return c
 
 
-# ---------- Cloudinary ----------
-
 def upload(path, public_id, folder, kind):
     import requests
     cloud = os.environ["MEDIA_BASE_URL"].rstrip("/").rsplit("/", 1)[-1]
     key, secret = os.environ["CLOUDINARY_API_KEY"], os.environ["CLOUDINARY_API_SECRET"]
     params = {"public_id": public_id, "asset_folder": folder, "invalidate": "true",
-              "overwrite": "true", "timestamp": str(int(time.time()))}  # invalidate: CDN drops old copies
+              "overwrite": "true", "timestamp": str(int(time.time()))}
     to_sign = "&".join(f"{k}={params[k]}" for k in sorted(params)) + secret
     params.update(api_key=key, signature=hashlib.sha1(to_sign.encode()).hexdigest())
     for attempt in range(3):
@@ -330,10 +297,8 @@ def upload(path, public_id, folder, kind):
     raise RuntimeError(f"Could not upload {public_id}")
 
 
-# ---------- main ----------
-
 def make_post(pid, part, topic):
-    from render import render  # needs playwright
+    from render import render
     feedback = previous = best = None
     for attempt in range(1, 5):
         print(f"{pid}: asking Gemini (attempt {attempt}) topic={topic or 'auto'}", flush=True)
@@ -350,7 +315,7 @@ def make_post(pid, part, topic):
             return c
         print(f"  slides too full: {warn}", flush=True)
         feedback, previous, best = warn, c, c
-    if best is not None:  # valid but a bit full after all tries: use it (template auto-shrinks)
+    if best is not None:
         print("  using the last valid attempt", flush=True)
         render(best, OUT)
         return best
@@ -374,14 +339,13 @@ def main():
 
     for _ in range(need):
         data = carousels()
-        last = max(data)  # e.g. SQL081
+        last = max(data)
         part = int(last[3:]) + 1
         pid = f"SQL{part:03d}"
         prev_file = os.path.join(CONTENT, f"{last}.json")
         topic = None
         if os.path.exists(prev_file):
             topic = json.load(open(prev_file, encoding="utf-8")).get("next")
-        # a "next" close to a covered topic is kept: validate() turns it into "<topic> Part N"
 
         c = make_post(pid, part, topic)
         if "--preview" in args:
@@ -413,21 +377,19 @@ REELS_CSV = os.path.join(SCHED, "sql_reel_posts.csv")
 
 
 def make_reel_for(c):
-    """Same topic as a reel: render it, upload video + cover, add it to the reel queue.
-    A failure here never loses the carousel (it is already saved)."""
     pid = c["id"]
     try:
         sys.path.insert(0, os.path.join(HERE, "reel"))
         from make_reel import make_reel
         video, cover, sc = make_reel(c, OUT)
-        upload(video, f"insta/reel/{pid}", "insta/reel", "video")  # shared by Instagram + YouTube loops
+        upload(video, f"insta/reel/{pid}", "insta/reel", "video")
         upload(cover, f"insta/thumbnails/{pid}", "insta/thumbnails", "image")
         caption = (sc.get("caption") or c["caption"]).strip()
         with open(REELS_CSV, "a", newline="", encoding="utf-8") as f:
             csv.writer(f).writerow([pid, c["module"], c["topic"], c.get("revisit_of") or "",
                                     f"Part {c['part']} | {c['topic']}", caption, ""])
         print(f"{pid}: reel ready", flush=True)
-    except Exception as e:  # noqa: BLE001 - keep the loop alive
+    except Exception as e:
         print(f"{pid}: reel failed ({type(e).__name__}: {e}); the carousel is still queued", flush=True)
 
 

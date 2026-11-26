@@ -34,7 +34,6 @@ body{background:#0E1424;font-family:Inter,system-ui,sans-serif;color:#fff;positi
 const T = __THUMB__;  // {part, hook, emoji, topic, code, theme: [accent, accent2, accent3, bg]}
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 document.getElementById('part').textContent = T.part;
-// colours from the reel's theme, so cover and reel look like one piece
 const [A1, A2, A3, BG] = T.theme;
 document.body.style.background = BG;
 document.getElementById('fade').style.background = `linear-gradient(180deg, ${BG}A6 0%, ${BG}00 22%, ${BG}33 55%, ${BG} 82%)`;

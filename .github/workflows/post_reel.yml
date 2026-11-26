@@ -1,7 +1,7 @@
 name: Post reel
 
 on:
-  workflow_dispatch:   # manual only; the Post loop does the scheduled posting
+  workflow_dispatch:
 
 permissions:
   contents: write

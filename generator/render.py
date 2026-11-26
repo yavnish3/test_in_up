@@ -1,10 +1,4 @@
-"""
-Render a carousel content JSON into 10 PNG slides (1080x1080) + caption.txt,
-using post_template.html (cover + 8 content slides + about slide).
-
-Usage:
-    python generator/render.py content/SQL045.json   # renders to generator/out/SQL045/
-"""
+"""Render slides."""
 
 import asyncio
 import json
@@ -37,7 +31,7 @@ async def _render(c, out_root):
         await pg.wait_for_timeout(600)
         for i in range(10):
             r = await pg.evaluate("([P,i]) => window.renderSlide(P,i)", [c, i])
-            if i == 0 and r["scale"] < 0.85:  # cover hook shrank: originals stay >= 0.8
+            if i == 0 and r["scale"] < 0.85:
                 warn.append(f"cover hook too long (font {r['scale']:.0%}): write a shorter hook "
                             f"(<= 40 chars, short words, [[1 short word]])")
             elif r["overflow"] or r["scale"] < 0.7:
@@ -50,7 +44,6 @@ async def _render(c, out_root):
 
 
 def render(c, out_root):
-    """Returns '' when every slide fits, else a short description of the problem."""
     return asyncio.run(_render(c, out_root))
 
 

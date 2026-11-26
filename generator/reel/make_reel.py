@@ -1,20 +1,4 @@
-"""
-Make a Gen Z style animated reel (1080x1920, <= 60 s) for a generated carousel post.
-
-Pipeline:
-  1. Gemini writes the voiceover (Devanagari "say" for the TTS + Roman "cap" for
-     captions) for: hook -> 4 teaching beats (picked from the carousel slides) ->
-     mistake -> recap/CTA, plus the reel caption.
-  2. edge-tts (hi-IN-SwaraNeural, same voice as SQL001-081) speaks each beat and
-     gives word timings.
-  3. scene.html animates the carousel content on those word timings; Playwright
-     captures frames -> ffmpeg -> voice mixed in.
-
-Usage:
-    python generator/reel/make_reel.py generator/content/SQL082.json
-    python generator/reel/make_reel.py --rerender generator/out/reel_SQL082   # new design, same voice
-Output: generator/out/reel_<id>/<id>.mp4, <id>.jpg (cover), reel.json (script + caption)
-"""
+"""Make a reel."""
 
 import asyncio
 import json
@@ -29,15 +13,11 @@ GEN = os.path.dirname(HERE)
 sys.path.insert(0, GEN)
 
 FPS = 30
-# Default voice: "neerja_expressive" (user's final choice: clear, no daily limit, captions synced).
-# REEL_VOICE=gemini uses the Gemini Zephyr voice (falls back to Neerja if its quota is used up).
-# REEL_VOICE=<name> forces another one, REEL_VOICE=random picks one at random.
-#   name: (engine, voice, rate, script) ; script "deva" = Hindi in Devanagari, "roman" = Roman Hinglish
 VOICES = {
     "swara": ("edge", "hi-IN-SwaraNeural", "+30%", "deva"),
     "neerja_expressive": ("edge", "en-IN-NeerjaExpressiveNeural", "+20%", "roman"),
     "neerja": ("edge", "en-IN-NeerjaNeural", "+20%", "roman"),
-    "gemini": ("gemini", "Zephyr", None, "roman"),  # bright young female voice
+    "gemini": ("gemini", "Zephyr", None, "roman"),
 }
 ENGINE, VOICE, RATE, SCRIPT = VOICES["swara"]
 
@@ -52,10 +32,9 @@ def pick_voice():
     print(f"  voice: {name}", flush=True)
     return name
 GEMINI_TTS_MODELS = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"]
-# No style instruction is sent to Gemini TTS: it would read the instruction aloud.
-MAX_TEMPO = 1.35  # Gemini TTS speaks slowly; speed it up (pitch kept) by at most this much
+MAX_TEMPO = 1.35
 GAP, HOOK_GAP, TAIL = 0.18, 0.1, 0.25
-MIN_SECONDS, MAX_SECONDS = 20, 90  # Instagram accepts 3 s - 15 min; keep reels 20-90 s
+MIN_SECONDS, MAX_SECONDS = 20, 90
 
 STYLE = """
 You write the voiceover for a 45-75 second Instagram Reel of "The 30 sec developers" (@the30secdev, SQL in Hinglish).
@@ -147,7 +126,6 @@ Total words of all "say" must be 135-155 (about 50-70 seconds of speech).""",
   "say": same text as "cap".
 Total words of all beats must be __TOTAL__ (about 55-70 seconds of speech).""",
 }
-# per-beat word counts (hook, teaching beat, galti, recap) + total, by engine
 WORDS = {"edge": ("10-14", "24-30", "18-24", "14-20", "135-155"),
          "gemini": ("8-11", "16-20", "13-16", "10-13", "100-115")}
 
@@ -160,7 +138,6 @@ def style():
 
 
 def targets(s):
-    """On-screen items of a slide in the order scene.html numbers them (cue targets 1..n)."""
     t = s.get("type")
     if t == "concept":
         out = list(s.get("points", [])[:4])
@@ -224,15 +201,13 @@ def check_script(sc, post):
                 need = max(28, 6 * len(v["lines"]))
                 reads_code = said and sum(w in code_words for w in said) / len(said) > 0.5
                 if reads_code or len(str(b.get("cap", "")).split()) < need:
-                    # too short / just reads the code: speak the clause explanations instead,
-                    # one sentence per line, and light each line on the first word of its sentence
                     lead = ["Pehle,", "Phir,", "Uske baad,", "Phir,", "Uske baad,", "Phir,", "Aur"]
                     parts = []
                     for k, l in enumerate(v["lines"]):
                         intro = "Aakhir mein," if k == len(v["lines"]) - 1 and k > 0 else lead[min(k, len(lead) - 1)]
                         ex = str(l["explain"]).strip().rstrip(".")
                         if len(ex) > 1 and ex[0].isupper() and ex[1].islower():
-                            ex = ex[0].lower() + ex[1:]  # "Pehle, humein ..." (keep SQL words like LEFT)
+                            ex = ex[0].lower() + ex[1:]
                         sentence = f"{intro} {ex}."
                         l["at"] = sentence.split()[0]
                         parts.append(sentence)
@@ -279,7 +254,6 @@ def duration(path):
 
 
 def gemini_tts(text, wav, trim=True):
-    """Gemini TTS -> 24 kHz mono WAV (leading/trailing silence trimmed). Returns seconds."""
     import base64
     import time
     import wave
@@ -298,7 +272,7 @@ def gemini_tts(text, wav, trim=True):
             continue
         if r.status_code in (429, 500, 503):
             print(f"  {model} (key {gemini_keys().index(key) + 1}): busy ({r.status_code})", flush=True)
-            if (attempt + 1) % len(combos) == 0:  # every model on every key is busy: wait
+            if (attempt + 1) % len(combos) == 0:
                 time.sleep(30 * (attempt + 1) // len(combos))
             continue
         r.raise_for_status()
@@ -323,8 +297,6 @@ TRIM = ("silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
 
 
 def gemini_tts_once(texts, wd):
-    """Whole script in ONE TTS request (saves free quota), then cut it into beats at the
-    pauses between paragraphs. Returns per-beat lengths, or None if the cut is unclear."""
     full = os.path.join(wd, "voice", "full.wav")
     gemini_tts("\n\n".join(texts), full, trim=False)
     out = subprocess.run(["ffmpeg", "-i", full, "-af", "silencedetect=noise=-40dB:d=0.2", "-f", "null", "-"],
@@ -343,7 +315,7 @@ def gemini_tts_once(texts, wd):
     for i in range(len(texts)):
         seg = bounds[i + 1] - bounds[i]
         expect = total * words[i] / sum(words)
-        if not 0.45 <= seg / expect <= 2.2:  # a cut landed inside a sentence
+        if not 0.45 <= seg / expect <= 2.2:
             return None
         wav = os.path.join(wd, "voice", f"beat_{i}.wav")
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", full, "-ss", f"{bounds[i]:.3f}",
@@ -353,7 +325,6 @@ def gemini_tts_once(texts, wd):
 
 
 def spread_words(cap, t0, length):
-    """No word timings from Gemini TTS: spread the caption words by their length."""
     ws = cap.split()
     weight = [len(w) + 2 for w in ws]
     total, acc, out = sum(weight), 0, []
@@ -367,12 +338,12 @@ def build_timeline(sc, wd, rate=RATE):
     os.makedirs(os.path.join(wd, "voice"), exist_ok=True)
     if ENGINE == "gemini":
         lens = gemini_tts_once([b["say"] for b in sc["beats"]], wd)
-        if lens is None:  # pauses unclear: one request per beat instead
+        if lens is None:
             print("  could not split the voice cleanly, using one request per beat", flush=True)
             lens = [gemini_tts(b["say"], os.path.join(wd, "voice", f"beat_{i}.wav"))
                     for i, b in enumerate(sc["beats"])]
         gaps = HOOK_GAP + GAP * (len(lens) - 1)
-        tempo = min(MAX_TEMPO, max(1.0, sum(lens) / (80 - gaps)))  # only speed up very long ones
+        tempo = min(MAX_TEMPO, max(1.0, sum(lens) / (80 - gaps)))
         beats, t = [], 0.0
         for i, b in enumerate(sc["beats"]):
             wav, mp3 = os.path.join(wd, "voice", f"beat_{i}.wav"), os.path.join(wd, "voice", f"beat_{i}.mp3")
@@ -393,7 +364,6 @@ def build_timeline(sc, wd, rate=RATE):
         vlen = duration(mp3)
         speech = min(vlen, words[-1]["t"] + words[-1]["d"] + TAIL) if words else vlen
         dur = speech + (HOOK_GAP if i == 0 else GAP)
-        # captions: Roman words spread over the spoken word timings (counts may differ a bit)
         cap = b["cap"].split()
         n = len(words)
         cw = [{"w": c, "t": round(t + words[min(n - 1, j * n // len(cap))]["t"], 3), "d": 0.2}
@@ -404,7 +374,6 @@ def build_timeline(sc, wd, rate=RATE):
     return {"fps": FPS, "duration": round(t, 3), "beats": beats}
 
 
-# Same palettes as scene.html (accent, accent2, accent3, background) so the cover matches the reel.
 THEMES = {
     "neon":   ["#C6FF3D", "#FF4FD8", "#3DF5FF", "#0B0716"],
     "fire":   ["#FFC93D", "#FF5A36", "#FF9F45", "#140806"],
@@ -416,20 +385,18 @@ THEMES = {
 
 
 def theme_of(post, theme=None):
-    """The reel's theme name (scene.html falls back by part number the same way)."""
     names = list(THEMES)
     return theme if theme in THEMES else names[(post.get("part") or 0) % len(names)]
 
 
 def thumb_data(post, theme=None):
-    """Cover text in the old thumbnail style: hook + emoji, topic, a short example query."""
     code = ""
     for s in post.get("slides", []):
         if s.get("type") == "code" and s.get("code"):
             lines = [ln for ln in str(s["code"]).split("\n") if ln.strip() and not ln.strip().startswith("--")]
             code = " ".join(" ".join(lines).split())
             break
-    if len(code) > 150:  # keep it to ~3 lines on the card
+    if len(code) > 150:
         code = code[:150].rsplit(" ", 1)[0] + " ..."
     return {"part": post.get("part"), "hook": re.sub(r"\[\[|\]\]", "", str(post.get("hook", ""))),
             "emoji": post.get("cover_sticker") or "", "topic": post.get("topic", ""), "code": code,
@@ -500,7 +467,7 @@ def make_reel(post, out_root):
     shutil.rmtree(wd, ignore_errors=True)
     os.makedirs(wd)
     feedback = None
-    best = None  # (script, timeline) closest to the 50-59 s window
+    best = None
     previous = None
     for attempt in range(1, 7):
         print(f"{pid} reel: asking Gemini for the script (attempt {attempt})", flush=True)
@@ -517,7 +484,6 @@ def make_reel(post, out_root):
         except RuntimeError as e:
             if ENGINE != "gemini":
                 raise
-            # Gemini TTS quota used up on every key: use the unlimited Microsoft voice instead
             print(f"  {e}: switching to the backup voice (neerja_expressive)", flush=True)
             os.environ["REEL_VOICE"] = voice_name = "neerja_expressive"
             pick_voice()
@@ -537,7 +503,6 @@ def make_reel(post, out_root):
         if best is None:
             raise RuntimeError(f"{pid}: could not make a reel script of 20-90 seconds")
         sc, tl = best
-        # a little short: speak the same script slower to stretch it into the window
         for rate in (("+22%", "+15%", "+8%") if ENGINE == "edge" else ()):
             tl = build_timeline(sc, wd, rate)
             print(f"  slower voice {rate}: {tl['duration']:.1f}s", flush=True)
@@ -561,7 +526,7 @@ def make_reel(post, out_root):
                             os.path.join(wd, f"{pid}.jpg"))
     print("  rendering frames...", flush=True)
     asyncio.run(capture(scene, silent, cover, tl["duration"]))
-    asyncio.run(render_thumb(thumb_data(post, sc.get("theme")), cover))  # designed cover, not a video frame
+    asyncio.run(render_thumb(thumb_data(post, sc.get("theme")), cover))
     mix(wd, tl, silent, final)
     json.dump({"voice": voice_name, "script": sc, "caption": sc.get("caption", "")},
               open(os.path.join(wd, "reel.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
@@ -570,8 +535,6 @@ def make_reel(post, out_root):
 
 
 def rerender(wd):
-    """Rebuild the video of an existing reel folder with the current scene.html
-    (same script + voice, no Gemini / TTS calls). Handy after design changes."""
     old = open(os.path.join(wd, "scene.html"), encoding="utf-8").read()
     tl = json.loads(re.search(r"const TL = (\{.*?\}); const CAPS", old, re.S).group(1))
     caps = re.search(r"const CAPS = (\[.*?\]); const R =", old, re.S).group(1)
@@ -591,7 +554,7 @@ def rerender(wd):
 if __name__ == "__main__":
     from generate import load_env
     load_env()
-    if sys.argv[1:2] == ["--thumb"]:  # --thumb content.json out.jpg [theme]
+    if sys.argv[1:2] == ["--thumb"]:
         post = json.load(open(sys.argv[2], encoding="utf-8"))
         asyncio.run(render_thumb(thumb_data(post, sys.argv[4] if len(sys.argv) > 4 else None), sys.argv[3]))
         sys.exit()

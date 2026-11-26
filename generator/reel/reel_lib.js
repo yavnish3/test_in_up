@@ -6,7 +6,6 @@
   const P = t => t + LEAD;
   const B = Object.fromEntries(TL.beats.map(b => [b.id, b]));
   const norm = s => s.normalize('NFC').toLowerCase().replace(/[.,?!।:;]/g, '');
-  // time of a spoken word in a beat: index, or the word text (nth occurrence via [word, n])
   const wt = (id, w) => {
     const ws = B[id].words;
     let i = w;
@@ -21,7 +20,6 @@
   const master = gsap.timeline({ paused: true });
   const $ = s => document.querySelector(s);
 
-  // ---- headers (.hdr#h-<beatId>) ----
   function hdrInit() {
     gsap.set('.hdr .ln>span', { yPercent: 110 });
     gsap.set('.hdr .sub, .hdr .step', { opacity: 0, y: 24 });
@@ -36,10 +34,8 @@
     master.to(`#h-${id} .ln>span`, { yPercent: -110, duration: 0.3, ease: 'power2.in' }, at);
     master.to(`#h-${id} .sub, #h-${id} .step`, { opacity: 0, y: -16, duration: 0.3, ease: 'power2.in' }, at);
   }
-  // pop in / out helpers
   const popIn = (sel, at, o = {}) => master.to(sel, Object.assign({ opacity: 1, scale: 1, y: 0, x: 0, duration: 0.55, ease: 'back.out(1.7)' }, o), at);
   const fadeOut = (sel, at, o = {}) => master.to(sel, Object.assign({ opacity: 0, duration: 0.3, ease: 'power2.in' }, o), at);
-  // typing: element must be a single-line .code with known text length; caret optional
   function typeText(sel, nChars, at, caretSel, caretX0, caretY, cw) {
     const d = Math.min(1.1, nChars * 0.05);
     master.to(sel, { clipPath: 'inset(0 0% 0 0)', duration: d, ease: `steps(${nChars})` }, at);
@@ -52,12 +48,10 @@
   const charWidth = (font = '500 38px "DM Mono"') => {
     const c = document.createElement('canvas').getContext('2d'); c.font = font; return c.measureText('MMMMMMMMMM').width / 10;
   };
-  // counter: writes formatted number into el from t (call from build via onUpdate-free approach)
   const counters = [];
   function counter(sel, from, to, at, dur, fmt = n => Math.round(n).toLocaleString('en-IN')) {
     counters.push({ el: $(sel), from, to, at, dur, fmt });
   }
-  // several counters may target one element: use the latest one that has started (or the earliest if none has)
   function drawCounters(t) {
     const pt = P(t), pick = new Map();
     for (const c of counters) {
@@ -73,11 +67,9 @@
       c.el.textContent = c.fmt(c.from + (c.to - c.from) * e);
     }
   }
-  // per-frame hooks (for things like looping dots) — fn(t)
   const frameFns = [];
   const everyFrame = fn => frameFns.push(fn);
 
-  // ---- captions ----
   const GROUPS = [];
   TL.beats.forEach((b, bi) => {
     const cw = CAPS[bi]; let g = null;
@@ -117,7 +109,6 @@
     capbox.style.transform = `translateY(${(1 - e) * 14}px)`;
   }
 
-  // ---- ambient background ----
   function drawBg(t) {
     $('#dots').style.transform = `translate(${(t * 7) % 40}px, ${(t * 11) % 40}px)`;
     $('#g1').style.transform = `translate(${Math.sin(t * 0.3) * 40}px,${Math.cos(t * 0.25) * 30}px) scale(${1 + 0.06 * Math.sin(t * 0.9)})`;
@@ -129,14 +120,11 @@
     document.querySelectorAll('.caret').forEach(c => c.style.visibility = (Math.floor(t * 2.2) % 2 === 0) ? 'visible' : 'hidden');
   }
 
-  // ---- reusable pieces ----
   const CYL = `<svg viewBox="0 0 360 480"><defs><linearGradient id="cg" x1="0" x2="1"><stop offset="0" stop-color="#1d3566"/><stop offset=".5" stop-color="#2a4c8f"/><stop offset="1" stop-color="#16294f"/></linearGradient></defs>
   <path d="M20 70 V410 A160 50 0 0 0 340 410 V70" fill="url(#cg)" stroke="#4F8CFF" stroke-width="4"/>
   <path d="M20 185 A160 50 0 0 0 340 185 M20 300 A160 50 0 0 0 340 300" fill="none" stroke="#4F8CFF" stroke-opacity=".6" stroke-width="4"/>
   <ellipse cx="180" cy="70" rx="160" ry="50" fill="#26467f" stroke="#7FB0FF" stroke-width="4"/></svg>`;
-  // every empty .dbi becomes a database cylinder (360x480, scale it with gsap)
   document.querySelectorAll('.dbi:empty').forEach(d => d.innerHTML = '<div class="gl"></div>' + CYL);
-  // table builder: cols = [{h:'ID', w:140, c:'p'}], rows = [[...]]; row i gets id `${pre}${i}`, cells get class c-<h>
   function table(sel, cols, rows, pre) {
     const el = $(sel); pre = pre || el.id + 'r';
     const cell = (c, v) => `<div style="width:${c.w}px" class="c-${c.h.toLowerCase().replace(/[^a-z0-9]/g, '')} ${c.c || ''}">${v}</div>`;
@@ -144,8 +132,6 @@
       rows.map((r, i) => `<div class="tr td" id="${pre}${i}">${cols.map((c, k) => cell(c, r[k])).join('')}</div>`).join(''));
   }
 
-  // ---- row animation helpers (call inside build) ----
-  // absRows: make .td rows absolutely positioned so they can filter / reorder. Returns state object.
   function absRows(sel) {
     const el = $(sel), rows = [...el.querySelectorAll('.td')];
     const hh = el.querySelector('.th').offsetHeight, rh = rows.length ? rows[0].offsetHeight : 68;
@@ -154,7 +140,6 @@
     el._st = { rows, hh, rh, vis: rows.map((_, i) => i) };
     return el._st;
   }
-  // filterRows: keep = row indices to keep (original index). Others slide out, kept rows close the gaps.
   function filterRows(sel, keep, at, o = {}) {
     const st = $(sel)._st, gone = st.vis.filter(i => !keep.includes(i));
     gone.forEach((i, k) => master.to(st.rows[i], { x: o.dx || 160, opacity: 0, duration: 0.35, ease: 'power2.in' }, at + k * 0.05));
@@ -163,15 +148,12 @@
     master.to(sel, { height: st.hh + nv.length * st.rh + 4, duration: 0.55, ease: 'expo.out' }, t2);
     st.vis = nv; return t2 + 0.55;
   }
-  // showRows: bring a set of rows (in given order) back into view
   function showRows(sel, order, at) {
     const st = $(sel)._st;
     order.forEach((i, slot) => { master.set(st.rows[i], { y: st.hh + slot * st.rh }, at); master.to(st.rows[i], { x: 0, opacity: 1, duration: 0.4, ease: 'expo.out' }, at + slot * 0.04); });
     master.to(sel, { height: st.hh + order.length * st.rh + 4, duration: 0.4, ease: 'expo.out' }, at);
     st.vis = order.slice(); return at + 0.5;
   }
-  // reorderRows: order = row indices in new top-to-bottom order (must be the visible set)
-  // rows that move slide out, jump to their new slot, and cascade back in (never cross / overlap)
   function reorderRows(sel, order, at, dur = 0.8) {
     const st = $(sel)._st, moving = order.filter((i, slot) => st.vis.indexOf(i) !== slot);
     moving.forEach(i => master.to(st.rows[i], { x: 60, opacity: 0, duration: 0.22, ease: 'power2.in' }, at));

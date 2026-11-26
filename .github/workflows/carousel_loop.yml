@@ -1,7 +1,7 @@
 name: Carousel loop
 
 on:
-  workflow_dispatch:   # start it once by hand; after that it restarts itself
+  workflow_dispatch:
     inputs:
       post_now:
         description: "Post one carousel right away when this run starts, then continue on schedule"
@@ -10,12 +10,12 @@ on:
         default: "no"
 
 permissions:
-  contents: write      # save posted CSVs
-  actions: write       # start the next run of this workflow
+  contents: write
+  actions: write
 
 concurrency:
   group: carousel-loop
-  cancel-in-progress: false   # only one loop at a time
+  cancel-in-progress: false
 
 jobs:
   loop:
