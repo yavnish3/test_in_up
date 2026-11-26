@@ -37,7 +37,7 @@ TOPICS = os.path.join(HERE, "topics.csv")
 CAROUSELS = os.path.join(SCHED, "carousels.json")
 POSTED = os.path.join(SCHED, "posted_posts.csv")
 STOCK = int(os.environ.get("STOCK", "5"))
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+MODELS = [os.environ.get("GEMINI_MODEL", "gemini-flash-latest"), "gemini-flash-lite-latest"]  # 2nd = fallback when busy
 EXAMPLES = ["SQL045", "SQL068"]
 SLIDE_TYPES = {"concept", "code", "table", "compare", "mistake", "recap"}
 
@@ -104,7 +104,9 @@ Rules:
 - "caption": hook line + emoji, blank line, "Is post mein:" + 4-5 "✅ ..." lines,
   blank line, "SQL Series · Part {part}", "Save karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!",
   blank line, 10 hashtags starting with #sql (include #sqlinhindi #learnsql).
-- Never repeat a topic that was already covered (list below). Go deeper: advanced
+- Never repeat a topic that was already covered (list below). If a related basic
+  topic exists (e.g. INDEX was covered), do NOT re-explain its basics: write only
+  NEW, deeper material and say "Part N mein basics dekhe the" once if useful. Go deeper: advanced
   SQL, real interview questions, query optimization, real-world case studies,
   database design, PostgreSQL/MySQL features.
 """
@@ -115,15 +117,21 @@ def ask_gemini(prompt):
     key = os.environ["GEMINI_API_KEY"]
     body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
             "generationConfig": {"responseMimeType": "application/json", "temperature": 0.9}}
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
-    for attempt in range(5):
-        resp = requests.post(url, headers={"x-goog-api-key": key}, json=body, timeout=180)
-        if resp.status_code in (429, 500, 503):  # free-tier limit / busy: wait and retry
-            wait = 30 * (attempt + 1)
-            print(f"Gemini busy ({resp.status_code}), retrying in {wait}s", flush=True)
-            time.sleep(wait)
+    for attempt in range(6):
+        model = MODELS[attempt % 2]  # alternate: Flash, then Flash-Lite if Flash is busy
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+        t0 = time.time()
+        try:
+            resp = requests.post(url, headers={"x-goog-api-key": key}, json=body, timeout=300)
+        except requests.RequestException as e:
+            print(f"{model}: no answer ({type(e).__name__}), trying again", flush=True)
+            continue
+        if resp.status_code in (429, 500, 503):  # free-tier limit / busy
+            print(f"{model}: busy ({resp.status_code}), trying again", flush=True)
+            time.sleep(10 * (attempt + 1))
             continue
         resp.raise_for_status()
+        print(f"{model}: answered in {time.time() - t0:.0f}s", flush=True)
         text = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
         return json.loads(re.sub(r"^```(json)?|```$", "", text.strip()))
     raise RuntimeError("Gemini did not answer")
