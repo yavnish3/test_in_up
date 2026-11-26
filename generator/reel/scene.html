@@ -140,20 +140,54 @@ R.beats.forEach((b, bi) => {
   }
 });
 
+
+/* ---- word matching for syncing screen items with the voice ---- */
+const STOPW = new Set('the and aur hai hain ka ki ke ko se mein me par pe ye yeh wo woh jo kya kaise matlab bas toh to ek do tum hum isse iska iski uska uski hota hoti hote karo karna karte kar liye lekin agar sirf bhi nahi with for from you this that are was not all ham'.split(' '));
+const norm = w => String(w).toLowerCase().normalize('NFKD').replace(/[^a-z0-9_]/g, '');
+function keyWords(text) {
+  return [...new Set(text.split(/[^A-Za-z0-9_]+/).map(norm).filter(w => w.length >= 3 && !STOPW.has(w) && !/^\d+$/.test(w)))];
+}
+function sameWord(spoken, key) {
+  const a = norm(spoken); if (a.length < 3) return false;
+  if (a === key) return true;
+  const n = Math.min(a.length, key.length);
+  return n >= 4 && a.slice(0, Math.max(4, n - 2)) === key.slice(0, Math.max(4, n - 2)); // index/indexes, scan/scanning
+}
+
 Reel.build(R2 => {
   const { master, B, P: lead } = R2;
   R.beats.forEach((b, bi) => {
     const bt = B[b.id], start = lead(bt.start), end = lead(bt.end), list = items[b.id];
     gsap.set(list, { opacity: 0, y: 40, scale: 0.96 });
     if (bi === 0) R2.hdrIn(b.id, lead(0) - 0.35); else R2.hdrIn(b.id);
-    // spread the items over the spoken words of this beat
-    const words = bt.words, span = Math.max(0.6, (end - start) - 1.0);
+    // Sync: each item appears when the voice says one of its words (captions = spoken words).
+    // Containers (code panel, table frame) come in first; unmatched items are placed between
+    // their matched neighbours, so everything still appears in order.
+    const words = bt.words;
+    const isBox = sel => /-(c|tb|vs)$/.test(sel);
+    const times = list.map(() => null);
+    let from = 0;
     list.forEach((sel, k) => {
-      const isLine = /-l\d+$/.test(sel);
-      let at = start + 0.35 + (list.length > 1 ? k * span / list.length : 0);
-      const wi = Math.min(words.length - 1, Math.floor(k * words.length / list.length));
-      if (words[wi]) at = Math.max(at, lead(words[wi].t) - 0.15);
-      if (isLine) { master.set(sel, { opacity: 1, y: 0, scale: 1 }, at); master.to(sel, { clipPath: 'inset(0 0% 0 0)', duration: 0.45, ease: 'steps(18)' }, at); }
+      if (isBox(sel)) return;
+      const keys = keyWords(document.querySelector(sel)?.textContent || '');
+      for (let w = from; w < words.length; w++) {
+        if (keys.some(key => sameWord(words[w].w, key))) { times[k] = lead(words[w].t) - 0.12; from = w + 1; break; }
+      }
+    });
+    // fill gaps: boxes at beat start, unmatched items evenly between known times
+    const first = start + 0.25, last = Math.max(first + 0.3, end - 0.6);
+    list.forEach((sel, k) => { if (isBox(sel)) times[k] = sel.endsWith('-vs') ? null : first; });
+    for (let k = 0; k < list.length; k++) {
+      if (times[k] !== null) continue;
+      let a = k - 1; while (a >= 0 && times[a] === null) a--;
+      let z = k + 1; while (z < list.length && times[z] === null) z++;
+      const ta = a >= 0 ? times[a] : first, tz = z < list.length ? times[z] : last;
+      times[k] = ta + (tz - ta) * (k - a) / (z - a);
+    }
+    for (let k = 1; k < list.length; k++) times[k] = Math.max(times[k], times[k - 1] + 0.08); // keep order
+    list.forEach((sel, k) => {
+      const at = Math.min(Math.max(times[k], first), end - 0.4);
+      if (/-l\d+$/.test(sel)) { master.set(sel, { opacity: 1, y: 0, scale: 1 }, at); master.to(sel, { clipPath: 'inset(0 0% 0 0)', duration: 0.45, ease: 'steps(18)' }, at); }
       else R2.popIn(sel, at, sel.endsWith('-vs') ? { ease: 'back.out(3)', duration: 0.5 } : {});
     });
     if (bi < R.beats.length - 1) { R2.hdrOut(b.id); R2.fadeOut(list, end - 0.3, { y: -30 }); }
