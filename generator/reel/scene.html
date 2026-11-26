@@ -58,12 +58,23 @@
 #cta .save{background:var(--gold);color:#0B0716}
 #cta .fol b{color:var(--gold)}
 #capbox{background:rgba(11,7,22,.82);border:3px solid rgba(198,255,61,.35)}
+
+/* ---- Gen Z motion library (cues) ---- */
+.kin{position:absolute;left:50%;top:1150px;transform:translate(-50%,0) rotate(-4deg);font:800 96px/1 var(--head);color:#0B0716;
+  background:var(--gold);padding:18px 40px;border-radius:28px;box-shadow:10px 10px 0 var(--pink),0 0 60px rgba(198,255,61,.45);white-space:nowrap;opacity:0;z-index:20}
+.kin.p{background:var(--pink);color:#fff;box-shadow:10px 10px 0 var(--cyan),0 0 60px rgba(255,79,216,.5)}
+.kin.c{background:var(--cyan);box-shadow:10px 10px 0 var(--gold),0 0 60px rgba(61,245,255,.45)}
+.burst{position:absolute;font-size:120px;opacity:0;z-index:21;filter:drop-shadow(0 10px 24px rgba(0,0,0,.5))}
+#wipe{position:absolute;left:0;top:0;width:1080px;height:1920px;background:var(--pink);z-index:30}
+#wipe2{position:absolute;left:0;top:0;width:1080px;height:1920px;background:var(--gold);z-index:29}
+#prog{position:absolute;left:0;top:0;height:12px;width:0;background:linear-gradient(90deg,var(--gold),var(--pink),var(--cyan));z-index:40}
 #handle{position:absolute;left:0;right:0;top:1820px;text-align:center;font:600 30px var(--mono);color:rgba(232,238,248,.55)}
 </style></head>
 <body>
 <div id="bg"><div id="dots"></div><div class="glow" id="g1"></div><div class="glow" id="g2"></div><div id="vig"></div></div>
 <div id="stage"></div>
-<div id="fx"></div>
+<div id="fx"><div id="wipe2"></div><div id="wipe"></div></div>
+<div id="prog"></div>
 <div id="cap"><div id="capbox"></div></div>
 <div id="handle">@the30secdev · SQL in 30 sec</div>
 
@@ -156,19 +167,32 @@ function sameWord(spoken, key) {
 
 Reel.build(R2 => {
   const { master, B, P: lead } = R2;
+  gsap.set(['#wipe', '#wipe2'], { xPercent: -120, skewX: -12 });  // parked off-screen (left)
   R.beats.forEach((b, bi) => {
     const bt = B[b.id], start = lead(bt.start), end = lead(bt.end), list = items[b.id];
     gsap.set(list, { opacity: 0, y: 40, scale: 0.96 });
     if (bi === 0) R2.hdrIn(b.id, lead(0) - 0.35); else R2.hdrIn(b.id);
     // Sync: each item appears when the voice says one of its words (captions = spoken words).
-    // Containers (code panel, table frame) come in first; unmatched items are placed between
-    // their matched neighbours, so everything still appears in order.
+    // Cues from the script ("pop" item N at word X) win; containers (code panel, table frame)
+    // come in first; unmatched items are placed between their matched neighbours.
     const words = bt.words;
     const isBox = sel => /-(c|tb|vs)$/.test(sel);
+    const content = list.filter(sel => !isBox(sel));       // cue targets 1..n
     const times = list.map(() => null);
+    const cueAt = (word, from = 0) => {                      // time of a spoken word (>= from index)
+      const key = norm(word);
+      for (let w = from; w < words.length; w++) if (norm(words[w].w) === key || sameWord(words[w].w, key)) return w;
+      for (let w = 0; w < words.length; w++) if (norm(words[w].w) === key || sameWord(words[w].w, key)) return w;
+      return -1;
+    };
+    const cues = (b.cues || []).map(c => ({ ...c, wi: cueAt(String(c.word || '')) })).filter(c => c.wi >= 0);
+    cues.forEach(c => {
+      const sel = content[(parseInt(c.target) || 0) - 1];
+      if (c.do === 'pop' && sel) times[list.indexOf(sel)] = lead(words[c.wi].t) - 0.12;
+    });
     let from = 0;
     list.forEach((sel, k) => {
-      if (isBox(sel)) return;
+      if (isBox(sel) || times[k] !== null) return;
       const keys = keyWords(document.querySelector(sel)?.textContent || '');
       for (let w = from; w < words.length; w++) {
         if (keys.some(key => sameWord(words[w].w, key))) { times[k] = lead(words[w].t) - 0.12; from = w + 1; break; }
@@ -184,6 +208,37 @@ Reel.build(R2 => {
       const ta = a >= 0 ? times[a] : first, tz = z < list.length ? times[z] : last;
       times[k] = ta + (tz - ta) * (k - a) / (z - a);
     }
+    // ---- effects from cues, on the exact spoken word ----
+    cues.forEach((c, ci) => {
+      const at = Math.min(lead(words[c.wi].t) - 0.05, end - 0.5);
+      const sel = content[(parseInt(c.target) || 0) - 1];
+      if (c.do === 'kinetic') {
+        const id = `${b.id}-k${ci}`, cls = ['', 'p', 'c'][ci % 3];
+        stage.insertAdjacentHTML('beforeend', `<div class="kin ${cls}" id="${id}">${esc(String(c.target || c.word).slice(0, 16))}</div>`);
+        master.fromTo(`#${id}`, { opacity: 0, scale: 0.4, rotate: -14 }, { opacity: 1, scale: 1, rotate: -4, duration: 0.35, ease: 'back.out(2.5)' }, at);
+        master.to(`#${id}`, { opacity: 0, scale: 1.25, duration: 0.25, ease: 'power2.in' }, at + 1.05);
+      } else if (c.do === 'emoji') {
+        const id = `${b.id}-e${ci}`;
+        stage.insertAdjacentHTML('beforeend', `<div class="burst" id="${id}" style="left:${800 - (ci % 2) * 120}px;top:${1180 + (ci % 2) * 40}px">${esc(String(c.target || '🔥').slice(0, 4))}</div>`);
+        master.fromTo(`#${id}`, { opacity: 0, scale: 0.2, y: 40 }, { opacity: 1, scale: 1.2, y: 0, duration: 0.3, ease: 'back.out(3)' }, at);
+        master.to(`#${id}`, { opacity: 0, y: -160, rotate: 25, duration: 0.8, ease: 'power1.in' }, at + 0.5);
+      } else if (sel && c.do === 'highlight') {
+        const el = document.querySelector(sel), base = getComputedStyle(el).boxShadow;
+        const glow = '0 0 0 6px #C6FF3D, 0 0 70px rgba(198,255,61,.65)';
+        master.to(sel, { scale: 1.05, boxShadow: glow, duration: 0.2, ease: 'power2.out' }, at);
+        master.to(sel, { scale: 1, boxShadow: base === 'none' ? '0 0 0 0 rgba(0,0,0,0)' : base, duration: 0.35 }, at + 1.0);
+      } else if (sel && c.do === 'zoom') {
+        master.to(sel, { scale: 1.12, duration: 0.25, ease: 'power3.out' }, at);
+        master.to(sel, { scale: 1, duration: 0.35, ease: 'power2.inOut' }, at + 0.8);
+      } else if (sel && c.do === 'shake') {
+        master.to(sel, { keyframes: [{ x: -16 }, { x: 14 }, { x: -10 }, { x: 8 }, { x: 0 }], duration: 0.45 }, at);
+      }
+    });
+    // Gen Z cut between beats: two coloured panels swipe across
+    if (bi > 0) {
+      master.fromTo('#wipe2', { xPercent: -120 }, { xPercent: 120, duration: 0.42, ease: 'power3.inOut', immediateRender: false }, start - 0.3);
+      master.fromTo('#wipe', { xPercent: -120 }, { xPercent: 120, duration: 0.42, ease: 'power3.inOut', immediateRender: false }, start - 0.24);
+    }
     for (let k = 1; k < list.length; k++) times[k] = Math.max(times[k], times[k - 1] + 0.08); // keep order
     list.forEach((sel, k) => {
       const at = Math.min(Math.max(times[k], first), end - 0.4);
@@ -192,8 +247,11 @@ Reel.build(R2 => {
     });
     if (bi < R.beats.length - 1) { R2.hdrOut(b.id); R2.fadeOut(list, end - 0.3, { y: -30 }); }
   });
-  // floating hook sticker wiggle
-  R2.everyFrame(t => { const e = document.getElementById(`${R.beats[0].id}-e`); if (e) e.style.rotate = `${Math.sin(t * 3) * 6}deg`; });
+  // floating hook sticker wiggle + progress bar
+  R2.everyFrame(t => {
+    const e = document.getElementById(`${R.beats[0].id}-e`); if (e) e.style.rotate = `${Math.sin(t * 3) * 6}deg`;
+    document.getElementById('prog').style.width = `${Math.min(100, 100 * t / TL.duration)}%`;
+  });
 });
 </script>
 </body></html>

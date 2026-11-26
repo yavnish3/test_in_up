@@ -77,6 +77,17 @@ beats = exactly 7, in this order:
   6. {"id":"galti","slide":"mistake", ...}  the common mistake, why it is wrong, and the right way (__W_GALTI__ words)
   7. {"id":"recap","slide":"recap", ...}  2-3 key takeaways of the topic, nothing else (__W_RECAP__ words)
 __SAYCAP__
+  "cues": 3-5 animation cues that MATCH what is being said, each
+     {"word": "<one word copied exactly from this beat's cap>", "do": "<action>", "target": ...}
+     actions:
+       "pop"       -> show on-screen item number <target> exactly when that word is spoken
+       "highlight" -> make item <target> glow when you talk about it
+       "zoom"      -> punch-in on item <target> (code line / row) for emphasis
+       "shake"     -> shake item <target> (use for wrong / slow / error)
+       "kinetic"   -> big Gen Z sticker text <target> (<= 14 chars, e.g. "SLOW 🐢", "FULL SCAN", "0.2 ms ⚡")
+       "emoji"     -> emoji burst <target> (one emoji) on a fun / dramatic word
+     Item numbers come from "targets" of that beat's slide (1 = first). Mix actions; every
+     teaching beat should pop its items in the order they are explained. Hook: 1-2 kinetic/emoji.
 caption: reel caption like the carousel's (hook line + emoji, 3-4 "✅" lines,
 "SQL Series · Part N", "Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!", 30 hashtags).
 """
@@ -107,13 +118,33 @@ def style():
             .replace("__W_GALTI__", w[2]).replace("__W_RECAP__", w[3]))
 
 
+def targets(s):
+    """On-screen items of a slide in the order scene.html numbers them (cue targets 1..n)."""
+    t = s.get("type")
+    if t == "concept":
+        out = list(s.get("points", [])[:4])
+        return out + ([s["note"]] if s.get("note") and len(s.get("points", [])) <= 3 else [])
+    if t == "code":
+        return [ln for ln in str(s.get("code", "")).split("\n")[:10]]
+    if t == "table":
+        return [" | ".join(map(str, r)) for r in s.get("rows", [])[:5]] + ([s["note"]] if s.get("note") else [])
+    if t == "compare":
+        return [s["left"]["label"], s["right"]["label"]]
+    if t == "mistake":
+        return ["GALAT: " + s.get("wrong", ""), "SAHI: " + s.get("right", ""), s.get("why", "")]
+    if t == "recap":
+        return list(s.get("points", [])[:4])
+    return []
+
+
 def ask_script(post, feedback=None):
     from generate import ask_gemini
-    slides = [{"index": i, **s} for i, s in enumerate(post["slides"][:6])]
+    slides = [{"index": i, **s, "targets": targets(s)} for i, s in enumerate(post["slides"][:6])]
     prompt = (style() + "\nThe post (carousel content) this reel is about:\n"
               + json.dumps({"part": post["part"], "topic": post["topic"], "hook": post["hook"],
                             "next": post.get("next"), "slides": slides,
-                            "mistake": post["slides"][6], "recap": post["slides"][7]},
+                            "mistake": {**post["slides"][6], "targets": targets(post["slides"][6])},
+                            "recap": {**post["slides"][7], "targets": targets(post["slides"][7])}},
                            ensure_ascii=False))
     if feedback:
         prompt += f"\n\nFix this problem from your last attempt: {feedback}"
@@ -139,6 +170,10 @@ def check_script(sc, post):
             b["say"] = b.get("cap") or b.get("say")
         if not b.get("say") or not b.get("cap"):
             raise ValueError(f"beat {i + 1}: say/cap missing")
+        capw = {re.sub(r"[^a-z0-9]", "", w.lower()) for w in b["cap"].split()}
+        b["cues"] = [c for c in (b.get("cues") or []) if isinstance(c, dict)
+                     and re.sub(r"[^a-z0-9]", "", str(c.get("word", "")).lower()) in capw
+                     and c.get("do") in ("pop", "highlight", "zoom", "shake", "kinetic", "emoji")]
         if SCRIPT == "deva" and not re.search(r"[\u0900-\u097F]", b["say"]):
             raise ValueError(f'beat {i + 1}: "say" must have Hindi words in Devanagari')
     return sc
