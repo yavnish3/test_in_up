@@ -16,7 +16,7 @@ Usage:
     python generator/generate.py --count 1  # make exactly 1 new post
     python generator/generate.py --preview  # make the next post in generator/out/ only (no upload, no save)
 
-Env: GEMINI_API_KEY (+ optional GEMINI_API_KEY_2 used when the first is busy), MEDIA_BASE_URL (https://res.cloudinary.com/<cloud>),
+Env: GEMINI_API_KEY (+ optional GEMINI_API_KEY_2..9 / GEMINI_API_KEYS used when one is busy), MEDIA_BASE_URL (https://res.cloudinary.com/<cloud>),
      CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, optional GEMINI_MODEL, STOCK.
 """
 
@@ -120,9 +120,12 @@ Rules:
 
 
 def gemini_keys():
-    """All configured Gemini keys; the 2nd is tried when the 1st is busy / over its limit."""
-    keys = [os.environ.get(k, "").strip() for k in ("GEMINI_API_KEY", "GEMINI_API_KEY_2")]
-    keys = [k for k in keys if k]
+    """All configured Gemini keys, tried in order when one is busy / over its limit:
+    GEMINI_API_KEY, GEMINI_API_KEY_2 ... GEMINI_API_KEY_9, and/or GEMINI_API_KEYS="k1,k2,..."."""
+    names = ["GEMINI_API_KEY"] + [f"GEMINI_API_KEY_{i}" for i in range(2, 10)]
+    keys = [os.environ.get(n, "").strip() for n in names]
+    keys += [k.strip() for k in os.environ.get("GEMINI_API_KEYS", "").split(",")]
+    keys = list(dict.fromkeys(k for k in keys if k))  # drop empties and duplicates
     if not keys:
         raise RuntimeError("GEMINI_API_KEY is not set")
     return keys
