@@ -28,10 +28,28 @@ GEN = os.path.dirname(HERE)
 sys.path.insert(0, GEN)
 
 FPS = 30
-ENGINE = os.environ.get("REEL_VOICE", "gemini")  # "gemini" (Gemini TTS) or "edge" (Swara)
-VOICE, RATE = "hi-IN-SwaraNeural", "+30%"          # edge-tts voice
+# Default voice: "gemini" (the Gen Z girl Instagram creator vibe the user picked).
+# REEL_VOICE=<name> forces another one, REEL_VOICE=random picks one at random.
+#   name: (engine, voice, rate, script) ; script "deva" = Hindi in Devanagari, "roman" = Roman Hinglish
+VOICES = {
+    "swara": ("edge", "hi-IN-SwaraNeural", "+30%", "deva"),
+    "neerja_expressive": ("edge", "en-IN-NeerjaExpressiveNeural", "+20%", "roman"),
+    "neerja": ("edge", "en-IN-NeerjaNeural", "+20%", "roman"),
+    "gemini": ("gemini", "Kore", None, "roman"),
+}
+ENGINE, VOICE, RATE, SCRIPT = VOICES["swara"]
+
+
+def pick_voice():
+    import random
+    global ENGINE, VOICE, RATE, SCRIPT
+    name = os.environ.get("REEL_VOICE") or "gemini"
+    if name == "random":
+        name = random.choice(list(VOICES))
+    ENGINE, VOICE, RATE, SCRIPT = VOICES[name]
+    print(f"  voice: {name}", flush=True)
+    return name
 GEMINI_TTS_MODELS = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"]
-GEMINI_VOICE = "Kore"
 TTS_STYLE = ("Read this as a fast-talking, energetic young Indian Gen Z girl making an Instagram reel. "
              "Natural Hinglish, quick pace, no long pauses, upbeat: ")
 MAX_TEMPO = 1.35  # Gemini TTS speaks slowly; speed it up (pitch kept) by at most this much
@@ -61,25 +79,28 @@ caption: reel caption like the carousel's (hook line + emoji, 3-4 "✅" lines,
 
 
 SAYCAP = {
-    "edge": """Each beat has:
+    "deva": """Each beat has:
   "say": what the TTS speaks: Hindi words in Devanagari, English/tech words in Latin
          (e.g. "EXPLAIN लगाओ और plan देखो, no cap!"). SQL keywords stay English.
   "cap": the SAME sentence in Roman Hinglish with EXACTLY the same number of words as "say"
          (word by word, same order). Count carefully.
 Total words of all "say" must be 135-155 (that is 50-58 seconds of speech).""",
-    "gemini": """Each beat has:
+    "roman": """Each beat has:
   "cap": the sentence in natural Roman Hinglish (it is spoken by the voice AND shown as captions),
          e.g. "EXPLAIN lagao aur plan dekho, no cap!". SQL keywords stay English.
   "say": same text as "cap".
-Total words of all beats must be 100-115 (that is about 55 seconds of speech).""",
+Total words of all beats must be __TOTAL__ (that is about 55 seconds of speech).""",
 }
-WORDS = {"edge": ("10-14", "24-30", "18-24", "14-20"), "gemini": ("8-11", "16-20", "13-16", "10-13")}
+# per-beat word counts (hook, teaching beat, galti, recap) + total, by engine
+WORDS = {"edge": ("10-14", "24-30", "18-24", "14-20", "135-155"),
+         "gemini": ("8-11", "16-20", "13-16", "10-13", "100-115")}
 
 
 def style():
     w = WORDS[ENGINE]
-    return (STYLE.replace("__SAYCAP__", SAYCAP[ENGINE]).replace("__W_HOOK__", w[0])
-            .replace("__W_BEAT__", w[1]).replace("__W_GALTI__", w[2]).replace("__W_RECAP__", w[3]))
+    return (STYLE.replace("__SAYCAP__", SAYCAP[SCRIPT].replace("__TOTAL__", w[4]))
+            .replace("__W_HOOK__", w[0]).replace("__W_BEAT__", w[1])
+            .replace("__W_GALTI__", w[2]).replace("__W_RECAP__", w[3]))
 
 
 def ask_script(post, feedback=None):
@@ -110,11 +131,11 @@ def check_script(sc, post):
             if not isinstance(s, int) or not 0 <= s <= 5 or s in seen:
                 raise ValueError(f"beat {i + 1}: slide must be a new index 0-5, got {s}")
             seen.add(s)
-        if ENGINE == "gemini":
+        if SCRIPT == "roman":
             b["say"] = b.get("cap") or b.get("say")
         if not b.get("say") or not b.get("cap"):
             raise ValueError(f"beat {i + 1}: say/cap missing")
-        if ENGINE == "edge" and not re.search(r"[\u0900-\u097F]", b["say"]):
+        if SCRIPT == "deva" and not re.search(r"[\u0900-\u097F]", b["say"]):
             raise ValueError(f'beat {i + 1}: "say" must have Hindi words in Devanagari')
     return sc
 
@@ -147,7 +168,7 @@ def gemini_tts(text, wav):
     key = os.environ["GEMINI_API_KEY"]
     body = {"contents": [{"parts": [{"text": TTS_STYLE + text}]}],
             "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {
-                "voiceConfig": {"prebuiltVoiceConfig": {"voiceName": GEMINI_VOICE}}}}}
+                "voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOICE}}}}}
     for attempt in range(8):
         model = GEMINI_TTS_MODELS[attempt % len(GEMINI_TTS_MODELS)]
         try:
@@ -266,6 +287,7 @@ def mix(wd, tl, silent, final):
 
 def make_reel(post, out_root):
     pid = post["id"]
+    voice_name = pick_voice()
     wd = os.path.join(out_root, f"reel_{pid}")
     shutil.rmtree(wd, ignore_errors=True)
     os.makedirs(wd)
@@ -319,7 +341,7 @@ def make_reel(post, out_root):
     print("  rendering frames...", flush=True)
     asyncio.run(capture(scene, silent, cover, tl["duration"]))
     mix(wd, tl, silent, final)
-    json.dump({"script": sc, "caption": sc.get("caption", "")},
+    json.dump({"voice": voice_name, "script": sc, "caption": sc.get("caption", "")},
               open(os.path.join(wd, "reel.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(f"  done: {final}", flush=True)
     return final, cover, sc
