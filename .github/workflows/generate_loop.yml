@@ -1,7 +1,8 @@
 name: Generate loop
 
-# Own self-restarting loop: every ~4.5 hours one new carousel is generated
-# (Gemini writes, Playwright renders) and saved to Cloudinary + carousels.json.
+# Own self-restarting loop: every ~4.5 hours one new topic is generated: a carousel and a
+# reel on the same topic (Gemini writes, Playwright renders, Neerja voice), saved to
+# Cloudinary + carousels.json / sql_reel_posts.csv for the Carousel and Reel loops.
 on:
   workflow_dispatch:
     inputs:
@@ -47,8 +48,8 @@ jobs:
 
       - name: Install renderer
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-color-emoji
-          pip install requests playwright
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-color-emoji ffmpeg
+          pip install requests playwright edge-tts
           python -m playwright install --with-deps chromium
 
       - name: Generate
@@ -60,7 +61,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add scheduler/carousels.json generator/content generator/topics.csv
+          git add scheduler/carousels.json scheduler/sql_reel_posts.csv generator/content generator/topics.csv
           git diff --cached --quiet && exit 0
           git commit -m "Generated new posts"
           for i in 1 2 3 4 5; do git pull --rebase && git push && exit 0; sleep 10; done

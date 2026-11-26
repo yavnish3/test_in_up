@@ -4,8 +4,8 @@ Self-restarting posting loop for ONE kind of post (LOOP_KIND = reel | carousel).
 Each GitHub Actions run sleeps until the next posting time, posts once with
 post_next.py, saves the posted CSV and ends. The workflow (reel_loop.yml /
 carousel_loop.yml) then starts a fresh run of itself, so every post has its own run.
-When the series is finished it writes .loop_done_<kind> so the workflow stops
-restarting itself.
+The loops never stop on their own: the Generate loop keeps adding new reels/carousels.
+If nothing is ready at posting time, the run waits 1 hour and the next run checks again.
 
 Posting times:
   reels      every 5 hours, counted from the last posted reel (posted.csv)
@@ -78,8 +78,9 @@ def post(kind):
                             capture_output=True, text=True)
     print(result.stdout, result.stderr, flush=True)
     save(CSV[kind])
-    # Carousels keep coming from the generator, so only the reel series can finish.
-    return kind == "reel" and "Nothing to post" in result.stdout
+    return "Nothing to post" in result.stdout  # queue empty right now
+
+
 
 
 def main():
@@ -90,7 +91,6 @@ def main():
     kind = os.environ.get("LOOP_KIND", "")
     if kind not in TIMES and kind not in EVERY:
         sys.exit("Set LOOP_KIND to reel or carousel")
-    done_file = os.path.join(HERE, f".loop_done_{kind}")
 
     if os.environ.get("POST_NOW", "no") == "yes":
         print(f"POST NOW: {kind}", flush=True)
@@ -106,8 +106,10 @@ def main():
         print(f"Next: {kind} at {slot:%Y-%m-%d %H:%M} UTC, sleeping {wait / 60:.0f} min", flush=True)
         time.sleep(max(0, wait))
     if post(kind):
-        print(f"All {kind}s are posted. Stopping the {kind} loop.")
-        open(done_file, "w").close()
+        # Reels and carousels keep coming from the Generate loop, so never stop the loop:
+        # just wait an hour before the next run checks again (no rapid re-runs).
+        print(f"No {kind} ready right now; checking again in 1 hour.", flush=True)
+        time.sleep(3600)
 
 
 if __name__ == "__main__":

@@ -88,7 +88,7 @@ def reachable(url):
 def reel_queue():
     with open(os.path.join(HERE, "sql_reel_posts.csv"), encoding="utf-8-sig") as f:
         rows = {r["id"].strip(): r for r in csv.DictReader(f)}
-    return {pid: f"{r['caption'].strip()}\n\n{r['hashtags'].strip()}" for pid, r in rows.items()}
+    return {pid: f"{r['caption'].strip()}\n\n{(r.get('hashtags') or '').strip()}".strip() for pid, r in rows.items()}
 
 
 def carousel_queue():

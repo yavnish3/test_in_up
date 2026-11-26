@@ -15,6 +15,7 @@ Usage:
     python generator/generate.py --check    # exit 0 if new posts are needed, else 1
     python generator/generate.py --count 1  # make exactly 1 new post
     python generator/generate.py --preview  # make the next post in generator/out/ only (no upload, no save)
+    python generator/generate.py --no-reel  # carousel only
 
 Env: GEMINI_API_KEY (+ optional GEMINI_API_KEY_2..9 / GEMINI_API_KEYS used when one is busy,
      and GROQ_API_KEY / GitHub Models / OPENROUTER_API_KEY as backups), MEDIA_BASE_URL (https://res.cloudinary.com/<cloud>),
@@ -399,6 +400,30 @@ def main():
         with open(CAROUSELS, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=1)
         print(f"{pid}: ready ({c['topic']}), next: {c.get('next')}", flush=True)
+        if "--no-reel" not in args:
+            make_reel_for(c)
+
+
+REELS_CSV = os.path.join(SCHED, "sql_reel_posts.csv")
+
+
+def make_reel_for(c):
+    """Same topic as a reel: render it, upload video + cover, add it to the reel queue.
+    A failure here never loses the carousel (it is already saved)."""
+    pid = c["id"]
+    try:
+        sys.path.insert(0, os.path.join(HERE, "reel"))
+        from make_reel import make_reel
+        video, cover, sc = make_reel(c, OUT)
+        upload(video, f"insta/reel/{pid}", "insta/reel", "video")
+        upload(cover, f"insta/thumbnails/{pid}", "insta/thumbnails", "image")
+        caption = (sc.get("caption") or c["caption"]).strip()
+        with open(REELS_CSV, "a", newline="", encoding="utf-8") as f:
+            csv.writer(f).writerow([pid, c["module"], c["topic"], c.get("revisit_of") or "",
+                                    f"Part {c['part']} | {c['topic']}", caption, ""])
+        print(f"{pid}: reel ready", flush=True)
+    except Exception as e:  # noqa: BLE001 - keep the loop alive
+        print(f"{pid}: reel failed ({type(e).__name__}: {e}); the carousel is still queued", flush=True)
 
 
 if __name__ == "__main__":
