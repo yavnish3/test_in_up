@@ -16,7 +16,8 @@ Usage:
     python generator/generate.py --count 1  # make exactly 1 new post
     python generator/generate.py --preview  # make the next post in generator/out/ only (no upload, no save)
 
-Env: GEMINI_API_KEY (+ optional GEMINI_API_KEY_2..9 / GEMINI_API_KEYS used when one is busy), MEDIA_BASE_URL (https://res.cloudinary.com/<cloud>),
+Env: GEMINI_API_KEY (+ optional GEMINI_API_KEY_2..9 / GEMINI_API_KEYS used when one is busy,
+     and OPENROUTER_API_KEY as a last backup), MEDIA_BASE_URL (https://res.cloudinary.com/<cloud>),
      CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, optional GEMINI_MODEL, STOCK.
 """
 
@@ -131,6 +132,36 @@ def gemini_keys():
     return keys
 
 
+OPENROUTER_MODELS = [m.strip() for m in os.environ.get(
+    "OPENROUTER_MODELS", "google/gemma-4-31b-it:free,nvidia/nemotron-3-ultra-550b-a55b:free").split(",") if m.strip()]
+
+
+def ask_openrouter(prompt):
+    """Backup writer when every Gemini key is busy: OpenRouter free models (OPENROUTER_API_KEY).
+    Returns the parsed JSON, or None if not configured / not available."""
+    import requests
+    key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+    if not key:
+        return None
+    for model in OPENROUTER_MODELS:
+        try:
+            r = requests.post("https://openrouter.ai/api/v1/chat/completions",
+                              headers={"Authorization": f"Bearer {key}"},
+                              json={"model": model, "temperature": 0.9,
+                                    "messages": [{"role": "user", "content": prompt + "\n\nAnswer with ONLY the JSON object."}]},
+                              timeout=300)
+            if not r.ok:
+                print(f"openrouter {model}: {r.status_code} {r.text[:120]}", flush=True)
+                continue
+            text = r.json()["choices"][0]["message"]["content"] or ""
+            text = text[text.index("{"):text.rindex("}") + 1]
+            print(f"openrouter {model}: answered", flush=True)
+            return json.loads(text)
+        except (requests.RequestException, ValueError, KeyError, IndexError) as e:
+            print(f"openrouter {model}: failed ({type(e).__name__})", flush=True)
+    return None
+
+
 def ask_gemini(prompt):
     import requests
     combos = [(m, k) for k in gemini_keys() for m in MODELS]  # every model on every key
@@ -148,7 +179,10 @@ def ask_gemini(prompt):
             continue
         if resp.status_code in (429, 500, 503):  # free-tier limit / busy
             print(f"{tag}: busy ({resp.status_code}), trying again", flush=True)
-            if (attempt + 1) % len(combos) == 0:  # all busy: wait before the next round
+            if (attempt + 1) % len(combos) == 0:  # every Gemini key is busy: try OpenRouter
+                answer = ask_openrouter(prompt)
+                if answer is not None:
+                    return answer
                 time.sleep(20 * (attempt + 1) // len(combos))
             continue
         resp.raise_for_status()
