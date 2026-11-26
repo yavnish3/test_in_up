@@ -420,11 +420,7 @@ def make_reel_for(c):
         sys.path.insert(0, os.path.join(HERE, "reel"))
         from make_reel import make_reel
         video, cover, sc = make_reel(c, OUT)
-        upload(video, f"insta/reel/{pid}", "insta/reel", "video")
-        try:  # extra copy for the YouTube loop (yavnish3/test_y_30sec); Instagram never deletes it
-            upload(video, f"yt/reel/{pid}", "yt/reel", "video")
-        except Exception as e:  # noqa: BLE001
-            print(f"{pid}: YouTube copy failed: {e}", flush=True)
+        upload(video, f"insta/reel/{pid}", "insta/reel", "video")  # shared by Instagram + YouTube loops
         upload(cover, f"insta/thumbnails/{pid}", "insta/thumbnails", "image")
         caption = (sc.get("caption") or c["caption"]).strip()
         with open(REELS_CSV, "a", newline="", encoding="utf-8") as f:

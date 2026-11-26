@@ -180,6 +180,22 @@ def main():
     delete_from_cloudinary(kind, post_id, item, media)
 
 
+YT_POSTED_URL = "https://raw.githubusercontent.com/yavnish3/test_y_30sec/main/yt/yt_posted.csv"
+
+
+def posted_on_both():
+    """Reel ids already on Instagram and on YouTube. Empty if YouTube's list can't be read."""
+    import io
+    try:
+        resp = requests.get(YT_POSTED_URL, params={"t": int(time.time())}, timeout=30)
+        resp.raise_for_status()
+        yt = {r["id"] for r in csv.DictReader(io.StringIO(resp.text))}
+    except Exception as e:  # noqa: BLE001
+        print(f"Could not read YouTube's posted list ({e}): keeping the video")
+        return []
+    return sorted(load_posted("reel") & yt)[-100:]  # Cloudinary deletes up to 100 per call
+
+
 def delete_from_cloudinary(kind, post_id, item, media):
     """After a successful post, remove its files from Cloudinary (needs
     CLOUDINARY_API_KEY / CLOUDINARY_API_SECRET). Never fails the post."""
@@ -190,7 +206,11 @@ def delete_from_cloudinary(kind, post_id, item, media):
         return
     cloud = media.rstrip("/").rsplit("/", 1)[-1]
     if kind == "reel":
-        groups = {"video": [f"insta/reel/{post_id}"], "image": [f"insta/thumbnails/{post_id}"]}
+        # insta/reel/<id>.mp4 is shared with the YouTube loop (yavnish3/test_y_30sec):
+        # delete a video only once it is posted on BOTH Instagram and YouTube.
+        groups = {"video": [f"insta/reel/{i}" for i in posted_on_both()], "image": [f"insta/thumbnails/{post_id}"]}
+        if not groups["video"]:
+            del groups["video"]
     else:
         stems = [os.path.splitext(s)[0] for s in item["slides"]]
         groups = {"image": [f"insta/post/{post_id}/{s}" for s in stems],
