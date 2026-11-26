@@ -44,10 +44,9 @@ b{color:var(--gold);font-weight:800}
 .tb .td.hi>div{color:var(--gold)}
 .scan{position:absolute;left:0;right:0;height:92px;background:linear-gradient(90deg,rgba(61,245,255,0),rgba(61,245,255,.28),rgba(61,245,255,0));border-top:3px solid var(--cyan);border-bottom:3px solid var(--cyan);opacity:0}
 /* flow */
-.fs{position:absolute;left:190px;width:700px;height:118px;border-radius:28px;background:var(--card);border:3px solid rgba(139,124,255,.6);display:flex;align-items:center;justify-content:center;gap:18px;font:800 50px var(--head)}
+.fs{position:absolute;left:140px;width:800px;height:150px;border-radius:32px;background:var(--card);border:3px solid rgba(139,124,255,.6);display:flex;align-items:center;justify-content:center;gap:18px;font:800 60px var(--head)}
 .fs.on{border-color:var(--gold);box-shadow:0 0 50px rgba(198,255,61,.35)}
 .fa{position:absolute;left:532px;width:16px;height:64px;border-radius:8px;background:rgba(139,124,255,.35)}
-.dot{position:absolute;left:520px;width:40px;height:40px;border-radius:50%;background:var(--gold);box-shadow:0 0 30px var(--gold);opacity:0}
 /* stat */
 .st{position:absolute;left:0;right:0;top:600px;text-align:center}
 .st .num{font:800 230px/1 var(--head);color:var(--gold);letter-spacing:-.04em;text-shadow:0 0 60px rgba(198,255,61,.35)}
@@ -151,14 +150,14 @@ R.beats.forEach((b, bi) => {
     els.push({ sel: `#${id}-tb`, kind: 'box' });
     rows.forEach((r, k) => els.push({ sel: `#${id}-r${k}`, at: (v.row_at || [])[k] || r[0], kind: 'row', k }));
   } else if (t === 'flow') {
-    const steps = (v.steps || []).slice(0, 5), top0 = 590, gap = 182;
+    const steps = (v.steps || []).slice(0, 5), top0 = 590;
+    const gap = steps.length > 1 ? Math.min(300, (1330 - top0 - 150) / (steps.length - 1)) : 0;  // fill the space
     steps.forEach((s, k) => {
       h += `<div class="fs" id="${id}-f${k}" style="top:${top0 + k * gap}px">${md(s.text)}</div>`;
-      if (k < steps.length - 1) h += `<div class="fa" id="${id}-a${k}" style="top:${top0 + k * gap + 118}px"></div>`;
+      if (k < steps.length - 1) h += `<div class="fa" id="${id}-a${k}" style="top:${top0 + k * gap + 150}px;height:${gap - 150}px"></div>`;
       els.push({ sel: `#${id}-f${k}`, at: s.at, kind: 'step', k });
       if (k < steps.length - 1) els.push({ sel: `#${id}-a${k}`, kind: 'arrow' });
     });
-    h += `<div class="dot" id="${id}-d"></div>`;
   } else if (t === 'stat') {
     h += `<div class="st" id="${id}-s"><div class="num" id="${id}-n">0</div><div class="lab">${md(v.label || '')}</div><div class="barw"><div class="bar" id="${id}-b"></div></div></div>`;
     els.push({ sel: `#${id}-s`, at: v.at, kind: 'stat' });
@@ -226,9 +225,10 @@ Reel.build(R2 => {
       }
       else if (e.kind === 'step') {
         gsap.set(e.sel, { opacity: 0, scale: 0.7 }); master.to(e.sel, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }, at);
+        // the step being spoken glows; the previous one calms down (highlight moves down the flow)
         master.to(e.sel, { borderColor: '#C6FF3D', boxShadow: '0 0 50px rgba(198,255,61,.35)', duration: 0.2 }, at + 0.1);
-        master.set(`#${b.id}-d`, { opacity: 1 }, at);
-        master.to(`#${b.id}-d`, { top: 590 + e.k * 182 + 39, duration: 0.35, ease: 'power2.inOut' }, at);
+        if (e.k > 0) master.to(`#${b.id}-f${e.k - 1}`, { borderColor: 'rgba(139,124,255,.6)', boxShadow: '0 0 0 rgba(0,0,0,0)', duration: 0.25 }, at + 0.1);
+        if (e.k > 0) master.to(`#${b.id}-a${e.k - 1}`, { backgroundColor: '#C6FF3D', duration: 0.25 }, at - 0.1);
       }
       else if (e.kind === 'arrow') { gsap.set(e.sel, { scaleY: 0, transformOrigin: '50% 0' }); master.to(e.sel, { scaleY: 1, duration: 0.3 }, at); }
       else if (e.kind === 'stat') {
@@ -281,11 +281,10 @@ Reel.build(R2 => {
       master.fromTo('#wipe', { xPercent: -120 }, { xPercent: 120, duration: 0.42, ease: 'power3.inOut', immediateRender: false }, start - 0.24);
     }
   });
-  // continuous life: every visual floats a little, hook sticker wiggles, flow dot pulses, progress bar
+  // continuous life: every visual floats a little, hook sticker wiggles, VS badge rocks, progress bar
   R2.everyFrame(t => {
     R.beats.forEach((b, bi) => { const el = document.getElementById(`v-${b.id}`); if (el) el.style.translate = `0 ${Math.sin(t * 1.6 + bi) * 8}px`; });
     const e = document.getElementById(`${R.beats[0].id}-e`); if (e) e.style.rotate = `${Math.sin(t * 3) * 8}deg`;
-    document.querySelectorAll('.dot').forEach(d => d.style.scale = 1 + 0.18 * Math.sin(t * 8));
     document.querySelectorAll('.vs').forEach(d => d.style.rotate = `${Math.sin(t * 2) * 6}deg`);
     document.getElementById('prog').style.width = `${Math.min(100, 100 * t / TL.duration)}%`;
   });

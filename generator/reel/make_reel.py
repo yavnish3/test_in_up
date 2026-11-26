@@ -12,6 +12,7 @@ Pipeline:
 
 Usage:
     python generator/reel/make_reel.py generator/content/SQL082.json
+    python generator/reel/make_reel.py --rerender generator/out/reel_SQL082   # new design, same voice
 Output: generator/out/reel_<id>/<id>.mp4, <id>.jpg (cover), reel.json (script + caption)
 """
 
@@ -457,8 +458,31 @@ def make_reel(post, out_root):
     return final, cover, sc
 
 
+def rerender(wd):
+    """Rebuild the video of an existing reel folder with the current scene.html
+    (same script + voice, no Gemini / TTS calls). Handy after design changes."""
+    old = open(os.path.join(wd, "scene.html"), encoding="utf-8").read()
+    tl = json.loads(re.search(r"const TL = (\{.*?\}); const CAPS", old, re.S).group(1))
+    caps = re.search(r"const CAPS = (\[.*?\]); const R =", old, re.S).group(1)
+    reel = re.search(r"const R = (\{.*\});</script>", old, re.S).group(1)
+    for f in ("reel_lib.js", "reel_base.css", "gsap.min.js"):
+        shutil.copy(os.path.join(HERE, f), wd)
+    html = (open(os.path.join(HERE, "scene.html"), encoding="utf-8").read()
+            .replace("__TL__", json.dumps(tl, ensure_ascii=False)).replace("__CAPS__", caps).replace("__REEL__", reel))
+    scene = os.path.join(wd, "scene.html")
+    open(scene, "w", encoding="utf-8").write(html)
+    pid = os.path.basename(wd).replace("reel_", "")
+    asyncio.run(capture(scene, os.path.join(wd, "silent.mp4"), os.path.join(wd, f"{pid}.jpg"), tl["duration"]))
+    mix(wd, tl, os.path.join(wd, "silent.mp4"), os.path.join(wd, f"{pid}.mp4"))
+    print(f"  re-rendered: {os.path.join(wd, pid + '.mp4')}", flush=True)
+
+
 if __name__ == "__main__":
     from generate import load_env
     load_env()
-    for path in sys.argv[1:]:
-        make_reel(json.load(open(path, encoding="utf-8")), os.path.join(GEN, "out"))
+    if sys.argv[1:2] == ["--rerender"]:
+        for wd in sys.argv[2:]:
+            rerender(os.path.abspath(wd))
+    else:
+        for path in sys.argv[1:]:
+            make_reel(json.load(open(path, encoding="utf-8")), os.path.join(GEN, "out"))
