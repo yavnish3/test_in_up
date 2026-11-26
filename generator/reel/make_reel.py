@@ -17,7 +17,7 @@ VOICES = {
     "swara": ("edge", "hi-IN-SwaraNeural", "+30%", "deva"),
     "neerja_expressive": ("edge", "en-IN-NeerjaExpressiveNeural", "+20%", "roman"),
     "neerja": ("edge", "en-IN-NeerjaNeural", "+20%", "roman"),
-    "gemini": ("gemini", "Zephyr", None, "roman"),
+    "gemini": ("gemini", "Leda", None, "roman"),
 }
 ENGINE, VOICE, RATE, SCRIPT = VOICES["swara"]
 
@@ -286,13 +286,16 @@ def duration(path):
     return float(out.strip())
 
 
+TTS_LOCK = []
+
+
 def gemini_tts(text, wav, trim=True):
     import base64
     import time
     import wave
     import requests
     from generate import gemini_keys
-    combos = [(m, k) for k in gemini_keys() for m in GEMINI_TTS_MODELS]
+    combos = TTS_LOCK[:1] or [(m, k) for k in gemini_keys() for m in GEMINI_TTS_MODELS]
     voice = os.environ.get("REEL_GEMINI_VOICE", "").strip() or VOICE
     body = {"contents": [{"parts": [{"text": text}]}],
             "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {
@@ -310,6 +313,8 @@ def gemini_tts(text, wav, trim=True):
                 time.sleep(30 * (attempt + 1) // len(combos))
             continue
         r.raise_for_status()
+        if not TTS_LOCK:
+            TTS_LOCK.append((model, key))
         pcm = base64.b64decode(r.json()["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])
         raw = wav + ".raw.wav"
         with wave.open(raw, "wb") as w:
@@ -331,26 +336,30 @@ TRIM = ("silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
 
 
 def gemini_tts_once(texts, wd):
+    """One TTS request for the whole script (one consistent voice), then cut it into beats at the
+    pause nearest to where each beat should end (by word count)."""
     full = os.path.join(wd, "voice", "full.wav")
     gemini_tts("\n\n".join(texts), full, trim=False)
-    out = subprocess.run(["ffmpeg", "-i", full, "-af", "silencedetect=noise=-40dB:d=0.2", "-f", "null", "-"],
+    out = subprocess.run(["ffmpeg", "-i", full, "-af", "silencedetect=noise=-38dB:d=0.12", "-f", "null", "-"],
                          capture_output=True, text=True).stderr
     starts = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", out)]
     ends = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", out)]
     total = duration(full)
-    gaps = [(e - st, (st + e) / 2) for st, e in zip(starts, ends) if st > 0.3 and e < total - 0.3]
-    need = len(texts) - 1
-    if len(gaps) < need:
-        return None
-    cuts = sorted(m for _, m in sorted(gaps, reverse=True)[:need])
-    bounds = [0.0] + cuts + [total]
+    mids = [((st + e) / 2, e - st) for st, e in zip(starts, ends) if st > 0.3 and e < total - 0.3]
     words = [len(t.split()) for t in texts]
+    cum, cuts, last = 0, [], 0.0
+    for i in range(len(texts) - 1):
+        cum += words[i]
+        want = total * cum / sum(words)
+        win = 0.35 * total * words[i] / sum(words) + 0.6
+        near = [(abs(m - want) - 0.4 * d, m) for m, d in mids if m > last + 0.4 and abs(m - want) <= win]
+        if not near:
+            return None
+        last = min(near)[1]
+        cuts.append(last)
+    bounds = [0.0] + cuts + [total]
     lens = []
     for i in range(len(texts)):
-        seg = bounds[i + 1] - bounds[i]
-        expect = total * words[i] / sum(words)
-        if not 0.45 <= seg / expect <= 2.2:
-            return None
         wav = os.path.join(wd, "voice", f"beat_{i}.wav")
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", full, "-ss", f"{bounds[i]:.3f}",
                         "-to", f"{bounds[i + 1]:.3f}", "-af", TRIM, wav], check=True)
