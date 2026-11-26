@@ -74,6 +74,15 @@ Language: simple, clear Hinglish, the voice is a young FEMALE creator (feminine 
 "batati hoon", "samjhati hoon"). Friendly and modern, but at most ONE light word like
 "yaar" or "bhai" in the whole beat; no slang like "no cap", "fr", "bestie", "it's giving".
 
+QUERY TOPICS: if the topic is an interview question / a query to write, the query is the hero.
+Use this plan: b1 = the sample data ("table") and what we must find; b2 = ONE "query" walkthrough with
+the FULL, runnable query (SELECT ... FROM ... ;, 4-7 lines, one clause per line); its cap EXPLAINS each
+clause in order in Hinglish (what it does and why) - do NOT just read the code aloud, e.g.
+"Pehle users table lo, phir LEFT JOIN se har user ke orders jodo; jinka order nahi mila unka order id
+NULL aata hai, aur WHERE wahi users rakhta hai" - so b2 may use 35-55 words; b3 = how the query runs on the
+sample data / the result rows ("table" or "flow"); b4 = an alternative query ("query", also full) or the
+trade-off. Most words go to explaining the query.
+
 Do NOT copy the carousel post. The post below is only the topic reference: make the reel
 feel like a real Instagram reel with its OWN fresh examples, mini story, numbers, and
 visuals (new example tables, a flow of how it works, a Gen Z chat, a big stat...).
@@ -81,7 +90,8 @@ visuals (new example tables, a flow of how it works, a Gen Z chat, a big stat...
 Return JSON: {"beats": [...], "caption": "..."}
 beats = exactly 7, in this order, ids: "hook", "b1", "b2", "b3", "b4", "galti", "recap"
   hook:  a question that states the real problem this topic solves (__W_HOOK__ words). No visual needed.
-  b1-b4: teach the topic step by step (__W_BEAT__ words each); together they explain it fully.
+  b1-b4: teach the topic step by step (__W_BEAT__ words each; a "query" walkthrough beat needs 6-8 words
+         PER query line, e.g. 5 lines -> 30-40 words); together they explain it fully.
   galti: the common mistake, why it is wrong, and the right way (__W_GALTI__ words)
   recap: 2-3 key takeaways, nothing else (__W_RECAP__ words)
 Each beat (except hook) has:
@@ -92,6 +102,8 @@ Each beat (except hook) has:
       never the same type twice in a row):
     {"type":"code","file":"x.sql","lines":[{"code":"<= 30 chars","at":"word"}, ... max 7],
        "output":"<= 60 chars result shown after RUN (optional)","output_at":"word"}
+    {"type":"query","file":"x.sql","lines":[{"code":"<= 30 chars, one clause","at":"word","explain":"<= 34 chars: what this clause does"}, ... 3-7],
+       "output":"real result rows, <= 60 chars","output_at":"word"}   (WALKTHROUGH: full query shown, each clause lit + explained as you say it)
     {"type":"table","columns":["<= 10 chars", ... max 4],"rows":[[...], ... max 4],
        "row_at":["word for row 1", ...],"highlight":[row indexes]}
     {"type":"flow","steps":[{"text":"<= 16 chars","at":"word"}, ... 3-5]}   (how it works, step by step)
@@ -157,7 +169,7 @@ def targets(s):
     return []
 
 
-def ask_script(post, feedback=None):
+def ask_script(post, feedback=None, previous=None):
     from generate import ask_gemini
     slides = [{"index": i, **s, "targets": targets(s)} for i, s in enumerate(post["slides"][:6])]
     prompt = (style() + "\nThe post (carousel content) this reel is about:\n"
@@ -168,10 +180,13 @@ def ask_script(post, feedback=None):
                            ensure_ascii=False))
     if feedback:
         prompt += f"\n\nFix this problem from your last attempt: {feedback}"
+    if previous:
+        prompt += ("\nYour last attempt (keep everything that was fine, change only what the problem needs):\n"
+                   + json.dumps(previous, ensure_ascii=False))
     return ask_gemini(prompt)
 
 
-VISUALS = {"code": "lines", "table": "columns", "flow": "steps", "stat": "value", "compare": "left",
+VISUALS = {"query": "lines", "code": "lines", "table": "columns", "flow": "steps", "stat": "value", "compare": "left",
            "chat": "messages", "checklist": "items", "kinetic": "lines"}
 
 
@@ -188,13 +203,38 @@ def check_script(sc, post):
             need = VISUALS[v["type"]]
             if not v.get(need):
                 raise ValueError(f"beat {b['id']}: {v['type']} visual needs '{need}'")
-            if v["type"] == "code" and any(len(str(l.get("code", ""))) > 34 for l in v["lines"]):
+            if v["type"] == "query":
+                full = " ".join(str(l.get("code", "")) for l in v["lines"]).upper()
+                if len(v["lines"]) < 3 or "SELECT" not in full or "FROM" not in full:
+                    raise ValueError(f"beat {b['id']}: a query visual must hold the FULL query (SELECT ... FROM ..., 3-7 lines)")
+                if not all(l.get("explain") for l in v["lines"]):
+                    raise ValueError(f"beat {b['id']}: every query line needs an 'explain'")
+                code_words = set(re.findall(r"[a-z_]+", full.lower()))
+                said = re.findall(r"[a-z_]+", str(b.get("cap", "")).lower())
+                need = max(28, 6 * len(v["lines"]))
+                reads_code = said and sum(w in code_words for w in said) / len(said) > 0.5
+                if reads_code or len(str(b.get("cap", "")).split()) < need:
+                    # too short / just reads the code: speak the clause explanations instead,
+                    # one sentence per line, and light each line on the first word of its sentence
+                    lead = ["Pehle,", "Phir,", "Uske baad,", "Phir,", "Uske baad,", "Phir,", "Aur"]
+                    parts = []
+                    for k, l in enumerate(v["lines"]):
+                        intro = "Aakhir mein," if k == len(v["lines"]) - 1 and k > 0 else lead[min(k, len(lead) - 1)]
+                        ex = str(l["explain"]).strip().rstrip(".")
+                        if len(ex) > 1 and ex[0].isupper() and ex[1].islower():
+                            ex = ex[0].lower() + ex[1:]  # "Pehle, humein ..." (keep SQL words like LEFT)
+                        sentence = f"{intro} {ex}."
+                        l["at"] = sentence.split()[0]
+                        parts.append(sentence)
+                    b["cap"] = b["say"] = " ".join(parts)
+                    print(f"  {b['id']}: voice now explains each query line ({len(b['cap'].split())} words)", flush=True)
+            if v["type"] in ("code", "query") and any(len(str(l.get("code", ""))) > 34 for l in v["lines"]):
                 raise ValueError(f"beat {b['id']}: code lines must be <= 30 chars")
             if v["type"] == "table" and (len(v["columns"]) > 4 or len(v.get("rows", [])) > 5):
                 raise ValueError(f"beat {b['id']}: table max 4 columns, 4 rows")
             if len(str(b.get("title", ""))) > 30:
                 raise ValueError(f"beat {b['id']}: title must be <= 22 chars")
-            if i > 1 and v["type"] == beats[i - 1].get("visual", {}).get("type"):
+            if i > 1 and v["type"] != "query" and v["type"] == beats[i - 1].get("visual", {}).get("type"):
                 raise ValueError(f"beat {b['id']}: don't use the same visual type twice in a row")
         if SCRIPT == "roman":
             b["say"] = b.get("cap") or b.get("say")
@@ -401,13 +441,16 @@ def make_reel(post, out_root):
     os.makedirs(wd)
     feedback = None
     best = None  # (script, timeline) closest to the 50-59 s window
-    for attempt in range(1, 5):
+    previous = None
+    for attempt in range(1, 7):
         print(f"{pid} reel: asking Gemini for the script (attempt {attempt})", flush=True)
+        raw = None
         try:
-            sc = check_script(ask_script(post, feedback), post)
+            raw = ask_script(post, feedback, previous)
+            sc = check_script(raw, post)
         except (ValueError, KeyError, TypeError, json.JSONDecodeError) as e:
             print(f"  bad script: {e}", flush=True)
-            feedback = str(e)
+            feedback, previous = str(e), raw if isinstance(raw, dict) else None
             continue
         try:
             tl = build_timeline(sc, wd)
