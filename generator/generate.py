@@ -86,7 +86,8 @@ Rules:
   topic <= 22 chars, title <= 28 chars, each point <= 48 chars, note <= 80 chars,
   code <= 9 lines and <= 32 chars per line, table <= 4 columns and <= 4 rows,
   cell <= 12 chars, compare points <= 22 chars, mistake wrong/right <= 70 chars.
-- "next": the topic of the following post (short, <= 18 chars), a natural next step.
+- "next": the topic of the following post (short, <= 18 chars), a natural next step that is a NEW topic
+  (NOT in the covered list below and not this post's topic).
 - "caption": hook line + emoji, blank line, "Is post mein:" + 4-5 "✅ ..." lines,
   blank line, "SQL Series · Part {part}", "Save karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!",
   blank line, exactly 30 hashtags (Instagram max) starting with #sql: topic-specific ones first,
@@ -266,6 +267,11 @@ def validate(c, pid, part, promised=None):
             raise ValueError(f"missing {k}")
     if c.get("next") and len(c["next"]) > 22:
         raise ValueError(f'"next" topic "{c["next"]}" is too long; keep it <= 18 chars')
+    if c.get("next"):
+        dup = similar_topic(c["next"])
+        if dup or words(c["next"]) & words(c.get("topic", "")) == words(c["next"]):
+            raise ValueError(f'"next" topic "{c["next"]}" is already covered'
+                             f'{" (" + dup["id"] + " " + dup["topic"] + ")" if dup else ""}; pick a NEW next topic')
     if len(c["topic"]) > 24:
         raise ValueError(f'topic "{c["topic"]}" is {len(c["topic"])} chars; keep it <= 22 (short name)')
     if len(re.sub(r"\[\[|\]\]", "", c["hook"])) > 50:
