@@ -83,3 +83,4 @@ SQL081,Interview Prep,Advanced SQL Recap,"Window: ROW_NUMBER · RANK · DENSE_RA
 SQL082,Advanced Basics,EXPLAIN ANALYZE,"EXPLAIN ANALYZE se execution plan milta hai, type, rows, Extra se bottleneck pehchano, Index ya column selection se plan improve karo, Har query ke liye plan check karna best practice",
 SQL083,Database Design,Partitioning Part 2,"Partitioning = Badi table ke chote tukde, Partition Pruning se queries fast, Range, List aur Hash types, Purana data drop karna easy",
 SQL084,Database Design,Sharding,"Sharding = data alag servers par baantna, Scale-out ke liye zaroori, Shard Key dhyan se chunni padti hai, Complexity laata hai, jab zaroorat ho tabhi use karo",
+SQL085,Database Design,Replication,"Replication = DB Photocopy, Master writes, Replica reads, High Availability + Fast scaling, Binlogs se data sync hota hai",

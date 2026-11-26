@@ -596,3 +596,15 @@ SQL Series · Part 84
 Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!
 
 #sql #database #sharding #backend #systemdesign #softwareengineering #coding #programming #mysql #postgresql #scalability #dataengineer #techhindi #interviewtips #developerlife #webdevelopment #fullstack #dbms #bigdata #distributed #performance #cloudcomputing #techindia #codewithme #internship #placement #softwareengineer #the30secdev",
+SQL085,Database Design,Replication,,Part 85 | Replication,"Database load se phat raha hai? 🤯 Replication use karo!
+
+✅ Master handles all Writes (INSERT/UPDATE)
+✅ Replica handles all Reads (SELECT)
+✅ Binary Logs keep data in sync
+✅ High Availability & Performance ⚡
+
+SQL Series · Part 85
+
+Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!
+
+#sql #database #backend #replication #systemdesign #codingtips #engineering #mysql #postgresql #dbms #webdev #softwareengineer #techindia #hindi #hinglish #interviewtips #scalability #dataengineering #developer #programmer #codinglife #techlife #internship #masterreplica #loadbalancing #backenddeveloper #computerscience #the30secdev #sqlqueries #databaseoptimization",

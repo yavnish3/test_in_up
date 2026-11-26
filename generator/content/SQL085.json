@@ -1,0 +1,124 @@
+{
+ "id": "SQL085",
+ "part": 85,
+ "module": "Database Design",
+ "topic": "Replication",
+ "next": "Duplicate Emails",
+ "hook": "DB load se [[phat]] raha hai? Replication karo",
+ "cover_sticker": "👯",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "[[Replication]] kya hai bhai?",
+   "sticker": "👯",
+   "points": [
+    "DB ka data **doosre server** pe copy karna",
+    "Ek server down, toh doosra **zinda** hai",
+    "Data hamesha **sync** mein rehta hai"
+   ],
+   "note": "Bole toh: Zomato ka backup DB. Ek gaya toh doosre se order chalega",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "concept",
+   "title": "[[Kyun]] chahiye ye setup?",
+   "sticker": "🤔",
+   "points": [
+    "**Load Balancing**: Read/Write alag karo",
+    "**Backup**: Data udne ka darr khatam",
+    "**Performance**: Queries super fast ⚡"
+   ],
+   "note": "Heavy traffic handle karne ka sabse mast tarika hai",
+   "who": "DHYAAN DO"
+  },
+  {
+   "type": "concept",
+   "title": "[[Master-Replica]] funda",
+   "sticker": "👑",
+   "points": [
+    "**Master**: Sirf INSERT/UPDATE queries",
+    "**Replica**: Sirf SELECT/READ queries",
+    "Master saara data Replica ko **bhejta** hai"
+   ],
+   "note": "Master = Captain, Replica = Team. Captain plan banata hai, team follow karti hai",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "compare",
+   "title": "Master vs [[Replica]]",
+   "left": {
+    "label": "Master 👑",
+    "points": [
+     "Handle Writes",
+     "Primary source",
+     "Binary Logs"
+    ]
+   },
+   "right": {
+    "label": "Replica 👥",
+    "points": [
+     "Handle Reads",
+     "Multiple copies",
+     "Data safety"
+    ]
+   },
+   "note": "Real world mein 1 Master aur kai saare Replicas hote hain",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "code",
+   "title": "Status [[check]] query",
+   "sticker": "💻",
+   "file": "check_rep.sql",
+   "code": "-- MySQL Master check\nSHOW MASTER STATUS;\n\n-- Replica side check\nSHOW REPLICA STATUS\\G;\n\n-- Log files check\nSHOW BINARY LOGS;",
+   "note": "Binlog (Binary Log) hi saara **jaadu** karta hai changes copy karne mein",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "table",
+   "title": "Replication ka [[Flow]]",
+   "sticker": "🔄",
+   "columns": [
+    "STEP",
+    "ACTOR",
+    "ACTION"
+   ],
+   "rows": [
+    [
+     "1. Write",
+     "Master",
+     "Log entry"
+    ],
+    [
+     "2. Sync",
+     "Network",
+     "Bhej diya"
+    ],
+    [
+     "3. Read",
+     "Replica",
+     "Local update"
+    ]
+   ],
+   "note": "Isse **asynchronous** replication bolte hain. Network delay ho sakta hai",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Replica server par jaake **UPDATE query** chala dena",
+   "right": "Hamesha **Master pe write** karo, Replica pe select",
+   "why": "Replica pe direct write kiya toh **Data Mismatch** ho jayega aur sync toot jayega 💀"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Replication = **DB Photocopy**",
+    "**Master** writes, **Replica** reads",
+    "High Availability + Fast scaling",
+    "**Binlogs** se data sync hota hai"
+   ]
+  }
+ ],
+ "caption": "DB load se phat raha hai? Replication karo 👯\n\nEk DB se kaam nahi chal raha? SQL Replication seekho aur system scale karo!\nIs post mein:\n✅ Replication kya hai (Live copies)\n✅ Master-Replica architecture\n✅ Read vs Write separation\n✅ Status check queries aur flow\n\nSQL Series · Part 85\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #sqlreplication #databasereplication #learnsql #sqlinhindi #dataengineering #backend #dbms #systemdesign #sqlqueries #mysql #postgresql #dataanalyst #bigdata #codinghindi #the30secdev #techindia #database #sqlinterview #backenddeveloper #programming #softwareengineer #webdev #scalability #highavailability #loadbalancing #datainfrastructure #sqlserver #codinglife #sqlforbeginners",
+ "revisit_of": null
+}
