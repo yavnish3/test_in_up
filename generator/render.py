@@ -37,7 +37,10 @@ async def _render(c, out_root):
         await pg.wait_for_timeout(600)
         for i in range(10):
             r = await pg.evaluate("([P,i]) => window.renderSlide(P,i)", [c, i])
-            if r["overflow"] or r["scale"] < 0.7:
+            if i == 0 and r["scale"] < 0.85:  # cover hook shrank: originals stay >= 0.8
+                warn.append(f"cover hook too long (font {r['scale']:.0%}): write a shorter hook "
+                            f"(<= 40 chars, short words, [[1 short word]])")
+            elif r["overflow"] or r["scale"] < 0.7:
                 warn.append(f"slide {i + 1}: scale {r['scale']:.2f}{' OVERFLOW' if r['overflow'] else ''}")
             await pg.screenshot(path=os.path.join(od, f"{i + 1:02d}.png"))
         await b.close()

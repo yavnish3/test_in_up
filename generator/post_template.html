@@ -202,7 +202,7 @@ window.renderSlide = (P, i) => {
     html = `${bgn}${top}<div class="title" id="tt">${ttl}</div>${stk}<div class="body" id="bd">${body}</div>${dots}${sw}`;
   }
   s.innerHTML = html;
-  if (sl.type === 'cover') fit(document.getElementById('hk'), 52);
+  if (sl.type === 'cover') { const hk = document.getElementById('hk'); fit(hk, 52); return { scale: parseFloat(getComputedStyle(hk).fontSize) / 116, overflow: hk.scrollHeight > hk.clientHeight + 1 }; }
   const tt = document.getElementById('tt');
   if (tt) { tt.style.height = '150px'; tt.style.overflow = 'hidden'; fit(tt, 38); }
   fit(document.getElementById('gname'), 20);
