@@ -240,7 +240,11 @@ def validate(c, pid, part, promised=None):
             raise ValueError(f"{rv} already has {n - 1} parts (max {MAX_PART}); pick another topic")
         base = re.sub(r"\s*part\s*\d+\s*$", "", c["topic"], flags=re.I).strip()
         suffix = f" Part {n}"
-        c["topic"] = base[:24 - len(suffix)].rstrip(" -:,") + suffix  # fits the cover chip
+        while len(base) + len(suffix) > 24 and " " in base:  # fit the cover chip, whole words only
+            base = base.rsplit(" ", 1)[0].rstrip(" -:,")
+            if base.lower().endswith((" vs", " aur", " and", " &")):
+                base = base.rsplit(" ", 1)[0]
+        c["topic"] = base + suffix
     else:
         old = similar_topic(c["topic"])
         if old:
