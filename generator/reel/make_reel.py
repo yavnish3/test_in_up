@@ -46,9 +46,7 @@ teach something concrete. No filler, no hype, no "save karo / follow karo / comm
 any question for the viewer in the last beat.
 STORY: tell ONE mini story with named Indian people (e.g. Rahul, Amit, Priya) and ONE small example
 table that you keep using through the whole reel, like a real-world interview trap.
-QUIZ: one beat (b2, b3 or b4) asks the viewer to PREDICT the result ("Toh batao, kitni rows aayengi?"),
-then says the common wrong answer ("Zyadatar log bolenge 2 rows...") and then "Galat!" and the right
-answer with the reason. That beat uses the "quiz" visual.
+NO QUIZ: do not ask the viewer to guess; spend that time SHOWING how it works.
 The SQL must be 100% correct. Accuracy rules:
 - A code "output" must be what that query really returns (rows / values, e.g. "Kabir" or
   "name: Kabir | Riya"), or for EXPLAIN the real plan line. Never a made-up timing as the output
@@ -62,10 +60,10 @@ Language: simple, clear Hinglish, the voice is a young FEMALE creator (feminine 
 
 INTERVIEW QUERY REELS (the post has "interview": true): the QUERY is the hero and gets most of the time:
   b1 = "define": SHORT definition + what we must find (12-16 words);
-  b2 = "query": the FULL query walkthrough, 45-60 words, every clause: what it does AND why it is needed;
-  b3 = "quiz": predict the query's output on the sample data -> common wrong answer -> "Galat!" -> right rows;
-  b4 = "demo": LIVE DRY RUN - the intermediate result the query builds step by step (add_col for extra columns
-       like rn or date - rn, then filter / highlight the answer rows), so the viewer SEES how the query works; 30-40 words;
+  b2 = "query": WRITE the FULL query line by line, 45-60 words, every clause: what it does AND why it is needed;
+  b3 = "demo": LIVE DRY RUN on the sample rows - the intermediate result the query builds step by step (add_col for
+       extra columns like rn or date - rn, filter / sort ...), so the viewer SEES how the query works; 35-50 words;
+  b4 = "demo" (or "table"): the FINAL result rows highlighted + why exactly those rows; 30-40 words;
   galti = "compare" or "code": the common WRONG query vs the RIGHT one.
 QUERY TOPICS: if the topic is an interview question / a query to write, the query is the hero.
 Use this plan: b1 = the sample data ("table") and what we must find; b2 = ONE "query" walkthrough with
@@ -73,7 +71,7 @@ the FULL, runnable query (SELECT ... FROM ... ;, or the full CREATE/ALTER/INSERT
 clause in order in Hinglish (what it does and why) - do NOT just read the code aloud, e.g.
 "Pehle users table lo, phir LEFT JOIN se har user ke orders jodo; jinka order nahi mila unka order id
 NULL aata hai, aur WHERE wahi users rakhta hai" - so b2 may use 35-55 words; b3 = how the query runs on the
-sample data / the result rows, as the QUIZ beat (predict the output -> common wrong answer -> right answer); b4 = an alternative query ("query", also full) or the
+sample data / the result rows, as a live "demo" (the rows change step by step on screen); b4 = the final result / a second "demo" or the
 trade-off. Most words go to explaining the query.
 
 Use your OWN fresh example (new table / story / numbers), but the reel MUST TEACH every point in
@@ -84,12 +82,12 @@ every row. A viewer who only watches the reel must understand as much as the car
 DEFINITION: beat b1 MUST start by defining the topic in one simple line ("<topic> matlab ..." /
 "<topic> yaani ..."), and b1's visual MUST be "define" (the term + its meaning).
 
-PRACTICAL FIRST (every reel): the viewer must SEE the topic work on real rows, not only hear about it.
-  CONCEPT reels: b2 = live "demo" (the operation happens on the table step by step, 30-40 words);
-                 b3 = "quiz" on what that demo / query returns; b4 = "query" or "code" with its REAL output
-                 (or a second "demo"); most of the words go to b2-b4.
-  INTERVIEW reels: b2 = "query" walkthrough, b3 = "quiz", b4 = live "demo" dry run (computed columns filling in).
-  Every demo step shows its SQL line; the voice narrates what happens on the rows and why.
+PRACTICAL FIRST (every reel): WRITE the query, then VISUALISE what it does on real rows. No quiz.
+  CONCEPT reels: b2 = "query" (or "code"): write the query line by line and explain each line (35-50 words);
+                 b3 = live "demo": that query running on the table step by step (35-50 words);
+                 b4 = second live "demo" (a variation / edge case / the final output) or "code" with its REAL output.
+  INTERVIEW reels: b2 = "query", b3 = live "demo" dry run, b4 = "demo" / "table" final result.
+  Most of the words go to b2-b4. Every demo step shows its SQL line; the voice narrates what happens on the rows and why.
 Pick the visuals that fit THIS topic (any JOIN / anti-join topic MUST include one "venn" beat; aggregates -> bars, transactions / order -> timeline,
 queries -> query walkthrough...), and a colour "theme" for the mood of the topic:
 "fire" (performance, speed, slow queries), "ocean" (joins, relations), "matrix" (data quality, NULLs,
@@ -143,9 +141,6 @@ Each beat (except hook) has:
         e.g. UPDATE a salary in "emp" -> a new row appears in "audit" (table2))
     {"type":"define","term":"<= 24 chars, the topic","meaning":"<= 80 chars, simple ROMAN HINGLISH definition (not English), e.g. Input mein SQL ghusa ke DB ko bewakoof banana","at":"word","meaning_at":"word"}
        (ONLY for b1: the definition card)
-    {"type":"quiz","question":"<= 34 chars, e.g. Kitni rows aayengi?","q_at":"word",
-       "wrong":"<= 22 chars common wrong answer","wrong_at":"word","right":"<= 22 chars right answer","right_at":"word"}
-       (exactly ONE quiz beat among b2-b4; right_at = the word right after "Galat")
 __SAYCAP__
   "cues": 3-5 extra effects on exact words (spread across the beat, something new every 2-3 seconds; at least one
      "zoom" or "shake" per beat), each {"word": "<word from this beat's cap>", "do": "...", "target": ...}
@@ -173,7 +168,7 @@ Total words of all "say" must be 135-155 (about 50-70 seconds of speech).""",
 Total words of all beats must be __TOTAL__ (about 55-70 seconds of speech).""",
 }
 WORDS = {"edge": ("10-14", "24-30", "18-24", "14-20", "135-155"),
-         "gemini": ("10-14", "22-28", "16-20", "12-16", "130-150")}
+         "gemini": ("10-14", "30-40", "16-20", "12-16", "150-175")}
 
 
 def style():
@@ -381,21 +376,19 @@ def check_script(sc, post):
     miss = missing_points(post, " ".join(b["cap"] for b in beats))
     if len(miss) > 1:
         raise ValueError(f"the reel must teach the carousel's key points; these are missing from the voice: {miss}")
-    kinds = [b.get("visual", {}).get("type") for b in beats[1:]]
-    if post.get("interview"):
-        if kinds[1] != "query" or kinds[2] != "quiz" or kinds[3] != "demo":
-            raise ValueError('interview reel plan: b2 = "query" walkthrough, b3 = "quiz" on its output, '
-                             'b4 = live "demo" dry run of the intermediate result')
-    elif kinds[1] != "demo" or kinds[2] != "quiz" or kinds[3] not in ("query", "code", "demo"):
-        raise ValueError('practical-first plan: b2 = live "demo" on the table, b3 = "quiz" on its result, '
-                         'b4 = "query" / "code" with the real output (or another "demo")')
-        if len(beats[2]["cap"].split()) < 36:
-            raise ValueError("interview reel: the b2 query walkthrough needs 45-60 words (what + why for every clause)")
-    if kinds[:4].count("quiz") != 1 or "quiz" in kinds[:1]:
-        raise ValueError('exactly ONE of b2, b3, b4 must use the "quiz" visual (predict -> wrong answer -> right answer)')
     for b in beats[2:5]:
         fix_demo(b)
     kinds = [b.get("visual", {}).get("type") for b in beats[1:]]
+    if "quiz" in kinds:
+        raise ValueError('no quiz: use that beat to SHOW the query working on the rows (a live "demo")')
+    if kinds[1] not in ("query", "code"):
+        raise ValueError('practical plan: b2 = "query" (write the query line by line and explain each line)')
+    if kinds[2] != "demo":
+        raise ValueError('practical plan: b3 = live "demo" - the b2 query running on the table step by step')
+    if kinds[3] not in (("demo", "table") if post.get("interview") else ("demo", "code", "query", "table")):
+        raise ValueError('practical plan: b4 = a second live "demo" / the final result rows (or code with its real output)')
+    if len(beats[2]["cap"].split()) < (36 if post.get("interview") else 28):
+        raise ValueError("b2: explain every line of the query (what + why), 35-60 words")
     demo_beats = [b for b in beats[2:5] if b.get("visual", {}).get("type") == "demo"]
     if not demo_beats or not any(len(b["visual"].get("steps") or []) >= 3 for b in demo_beats):
         raise ValueError('at least one of b2-b4 must be a live "demo" table with 3-5 steps (insert / delete / update / '
@@ -413,9 +406,6 @@ def check_script(sc, post):
             raise ValueError("demo beat: the voice must narrate every step (what happens on the table and why), 25-40 words")
     if "cliff" in kinds:
         raise ValueError('do not use the "cliff" visual; the recap ends with takeaways (checklist / kinetic)')
-    q = next(b["visual"] for b in beats if b.get("visual", {}).get("type") == "quiz")
-    if not (q.get("wrong") and q.get("right")) or len(str(q["wrong"])) > 26 or len(str(q["right"])) > 26:
-        raise ValueError("quiz visual needs short 'wrong' and 'right' answers (<= 22 chars each)")
     if os.environ.get("REEL_TONE", "").strip():
         slang = r"\b(bro|scene|literally|no cap|full on|lowkey|sach mein|ekdum|chill|bhai|yaar)\b"
         extras = [" No cap!", " Literally!", " Ekdum simple, bro!", " Full on clear!"]

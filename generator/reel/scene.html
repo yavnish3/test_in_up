@@ -305,8 +305,9 @@ R.beats.forEach((b, bi) => {
     const maxRows = two ? 3 : 5, RH = two ? 64 : 76;
     const T = [{ tag: 'a', name: v.name || '', cols: (v.columns || []).slice(0, 4), rows: (v.rows || []).slice(0, maxRows) }];
     if (two) T.push({ tag: 'b', name: v.table2.name || '', cols: (v.table2.columns || []).slice(0, 4), rows: (v.table2.rows || []).slice(0, maxRows) });
-    T.forEach(tb => { tb.hasNew = steps.some(st => st.op === 'add_col' && (parseInt(st.table) || 1) === (tb.tag === 'a' ? 1 : 2));
-      const avail = 960 - (tb.hasNew ? 200 : 0), allRows = tb.rows.concat(steps.filter(st => st.op === 'insert').map(st => st.row || []));
+    T.forEach(tb => { tb.newCols = steps.filter(st => st.op === 'add_col' && (parseInt(st.table) || 1) === (tb.tag === 'a' ? 1 : 2)).map(st => String(st.name || 'new'));
+      tb.hasNew = tb.newCols.length > 0; tb.NW = tb.newCols.length ? Math.min(200, Math.floor(420 / tb.newCols.length)) : 0;
+      const avail = 960 - tb.NW * tb.newCols.length, allRows = tb.rows.concat(steps.filter(st => st.op === 'insert').map(st => st.row || []));
       const need = tb.cols.map((c, i) => Math.max(String(c).length, ...allRows.map(r => String((r || [])[i] ?? '').length), 3));
       const tot = need.reduce((a, x) => a + x, 0);
       tb.Ws = need.map(x => Math.max(110, Math.floor(avail * x / tot)));
@@ -324,7 +325,7 @@ R.beats.forEach((b, bi) => {
       else if (st.op === 'filter') { const keep = (st.keep || []).map(i => order[i]).filter(x => x != null); p.drop = order.filter(r => !keep.includes(r)); tb.order = keep; }
       else if (st.op === 'sort') { const o = (st.order || []).map(i => order[i]).filter(x => x != null); if (o.length === order.length) tb.order = o; }
       else if (st.op === 'highlight') { p.rows = (st.rows || []).map(i => order[i]).filter(x => x != null); }
-      else if (st.op === 'add_col') { p.name = String(st.name || 'new'); p.vals = order.map((r, i) => String((st.values || [])[i] ?? '')); p.ids = order.slice(); tb.newName = p.name; }
+      else if (st.op === 'add_col') { p.name = String(st.name || 'new'); p.j = (tb.nj = (tb.nj ?? -1) + 1); p.vals = order.map((r, i) => String((st.values || [])[i] ?? '')); p.ids = order.slice(); p.NW = tb.NW; }
       p.order = tb.order.slice(); tb.peak = Math.max(tb.peak, tb.order.length); plan.push(p);
     });
     const tableHtml = (tb, top) => {
@@ -332,10 +333,10 @@ R.beats.forEach((b, bi) => {
         (tb.upd[rid + '-' + c] || []).map(([k, nv]) => `<span class="nv" id="${id}-u${k}">${esc(nv)}</span>`).join('') + `</div>`;
       const n0 = tb.rows.length;
       return (tb.name ? `<div class="lnm" style="top:${top - 46}px">${esc(tb.name)}</div>` : '') +
-        `<div class="lth" style="top:${top}px">${tb.cols.map((c, i) => `<div style="width:${tb.Ws[i]}px">${esc(c)}</div>`).join('')}<div class="lnc" id="${id}-${tb.tag}nh">${esc(tb.newName || '')}</div></div>` +
+        `<div class="lth" style="top:${top}px">${tb.cols.map((c, i) => `<div style="width:${tb.Ws[i]}px">${esc(c)}</div>`).join('')}${tb.newCols.map((nm, j) => `<div class="lnc" id="${id}-${tb.tag}nh${j}">${esc(nm)}</div>`).join('')}</div>` +
         `<div class="lbody" style="top:${top + 62}px;height:${RH * Math.max(1, tb.peak)}px">` +
         tb.data.map((r, rid) => r ? `<div class="lr${two ? ' sm' : ''}" id="${id}-${tb.tag}r${rid}" style="top:${Math.min(rid, n0) * RH}px;height:${RH}px${rid >= n0 ? ';opacity:0' : ''}">` +
-          r.map((val, c) => cell(rid, c, val)).join('') + `<div class="ln" id="${id}-${tb.tag}n${rid}"></div><i class="lx"></i></div>` : '').join('') + `</div>`;
+          r.map((val, c) => cell(rid, c, val)).join('') + `${tb.newCols.map((_, j) => `<div class="ln" id="${id}-${tb.tag}n${rid}-${j}"></div>`).join('')}<i class="lx"></i></div>` : '').join('') + `</div>`;
     };
     const top1 = 88 + (T[0].name ? 46 : 0), top2 = top1 + 62 + RH * Math.max(1, T[0].peak) + 70;
     const lastBottom = (two ? top2 + 62 + RH * Math.max(1, T[1].peak) : top1 + 62 + RH * Math.max(1, T[0].peak));
@@ -434,6 +435,8 @@ Reel.build(R2 => {
         master.to(`#${b.id}-tf`, { height: e.y + 10, duration: 0.35, ease: 'power2.out' }, at);
       }
       else if (e.kind === 'qline') {
+        gsap.set(e.sel, { clipPath: 'inset(0 100% 0 0)' });
+        master.to(e.sel, { clipPath: 'inset(0 0% 0 0)', duration: 0.6, ease: 'steps(18)' }, at - 0.05);
         master.to(e.sel, { opacity: 1, borderLeftColor: '#3DF5FF', backgroundColor: 'rgba(61,245,255,.10)', duration: 0.2 }, at);
         if (e.k > 0) master.to(`#${b.id}-ql${e.k - 1}`, { opacity: 0.55, borderLeftColor: 'rgba(0,0,0,0)', backgroundColor: 'rgba(0,0,0,0)', duration: 0.2 }, at);
         gsap.set(`#${b.id}-qx${e.k}`, { opacity: 0, y: 20 });
@@ -516,10 +519,10 @@ Reel.build(R2 => {
         } else if (p.op === 'highlight') {
           p.rows.forEach(rid => master.to(row(rid), { backgroundColor: 'rgba(255,200,87,.35)', scale: 1.03, duration: 0.25, yoyo: true, repeat: 1 }, at + 0.1));
         } else if (p.op === 'add_col') {
-          master.to(`#${id}-${g}nh`, { width: 200, opacity: 1, duration: 0.35 }, at);
-          p.ids.forEach((rid, i) => { const el = document.querySelector(`#${id}-${g}n${rid}`); if (el) el.textContent = p.vals[i];
-            master.to(`#${id}-${g}n${rid}`, { width: 200, opacity: 1, duration: 0.25 }, at + 0.25 + i * 0.22);
-            master.fromTo(`#${id}-${g}n${rid}`, { color: '#FFFFFF' }, { color: '#C6FF3D', duration: 0.3, immediateRender: false }, at + 0.3 + i * 0.22); });
+          master.to(`#${id}-${g}nh${p.j}`, { width: p.NW, opacity: 1, duration: 0.35 }, at);
+          p.ids.forEach((rid, i) => { const el = document.querySelector(`#${id}-${g}n${rid}-${p.j}`); if (el) el.textContent = p.vals[i];
+            master.to(`#${id}-${g}n${rid}-${p.j}`, { width: p.NW, opacity: 1, duration: 0.25 }, at + 0.25 + i * 0.22);
+            master.fromTo(`#${id}-${g}n${rid}-${p.j}`, { color: '#FFFFFF' }, { color: '#C6FF3D', duration: 0.3, immediateRender: false }, at + 0.3 + i * 0.22); });
         }
       }
       else if (e.kind === 'tfilter') {
