@@ -86,13 +86,35 @@ b2-b4 shows real SQL working (a live "demo", a typed "query", or "code" with its
   - transactions / ACID / execution order -> "timeline" / "flow"
   - performance / indexes -> "stat", "compare" (slow vs fast), EXPLAIN "code"
   - theory (normalization, keys) -> "compare", "flow", "table"
+  - NULL handling / COALESCE -> "demo" (NULL cells highlighted, then filled) + "compare" (= NULL vs IS NULL)
+  - CASE WHEN -> "demo" add_col with the label filling per row + typed "query"
+  - window functions (ROW_NUMBER, RANK, LAG, running total) -> "demo" add_col per row + "query"
+  - subquery / CTE / recursive CTE -> "flow" (inner -> outer) + "demo" of the intermediate result
+  - string / date functions -> "code" with REAL output per function, or "demo" add_col
+  - VIEW / stored procedure / function -> "flow" (call -> runs -> result) + "code"
+  - isolation levels / locks / deadlock -> "timeline" (two sessions side by side) + "compare"
+  - UNION / INTERSECT / EXCEPT -> two-table "demo" merging rows + "venn"
+  - pivot / conditional aggregation -> "demo" from long rows to wide columns + "bars"
+  - duplicates / DISTINCT -> "demo" (duplicate rows highlighted, then removed)
+  - JSON / arrays -> "demo" add_col extracting values + "code"
+  - partitioning / sharding / replication -> "flow" + two-table "demo" (rows going to different tables)
+  - data types / constraints -> "demo" (a bad INSERT rejected, a good one accepted) + "compare"
+  - interview patterns (top-N per group, nth highest, gaps & islands, YoY growth) -> typed "query" + "demo" dry run
+STORY FORMAT - choose the one that fits THIS topic best (say which one in "plan"):
+  - BUG HUNT: run a wrong query -> wrong rows on screen -> find the bug -> fixed query -> right rows
+  - BEFORE / AFTER: the slow / wrong way, then the right way, side by side
+  - REAL WORLD: a Swiggy / Zomato orders table, a bank transfer, Instagram likes, Flipkart cart...
+  - BUILD-UP: start with SELECT * and add one clause at a time; the result changes on screen after each
+  - INTERVIEWER ASKS: "Interviewer ne poocha..." -> think -> solve live
+  - MYTH VS FACT: a common belief, then a demo that breaks it
+  - SPEED RUN: 2-3 ways to solve it, one after another, and which one to use when
 Most of the words go to b2-b4. Every demo step shows its SQL line; the voice narrates what happens and why.
 Pick the visuals that fit THIS topic (any JOIN / anti-join topic MUST include one "venn" beat; aggregates -> bars, transactions / order -> timeline,
 queries -> query walkthrough...), and a colour "theme" for the mood of the topic:
 "fire" (performance, speed, slow queries), "ocean" (joins, relations), "matrix" (data quality, NULLs,
 cleaning), "gold" (transactions, money, banking), "candy" (functions, strings, dates), "neon" (anything else).
 
-Return JSON: {"plan": "1-2 lines: why these visuals teach THIS topic best", "theme": "...", "beats": [...], "caption": "..."}
+Return JSON: {"plan": "1-2 lines: the story format + why these visuals teach THIS topic best", "theme": "...", "beats": [...], "caption": "..."}
 beats = exactly 7, in this order, ids: "hook", "b1", "b2", "b3", "b4", "galti", "recap"
   hook:  a question that states the real problem this topic solves (__W_HOOK__ words). No visual needed.
   b1-b4: teach the topic step by step (__W_BEAT__ words each; a "query" walkthrough beat needs 6-8 words
@@ -354,9 +376,11 @@ def check_script(sc, post):
                 raise ValueError(f"beat {b['id']}: code lines must be <= 40 chars (split long clauses over two lines)")
             if v["type"] == "table" and (len(v["columns"]) > 4 or len(v.get("rows", [])) > 5):
                 raise ValueError(f"beat {b['id']}: table max 4 columns, 4 rows")
-            if len(str(b.get("title", ""))) > 30:
-                raise ValueError(f"beat {b['id']}: title must be <= 22 chars")
-            if i > 1 and v["type"] != "query" and v["type"] == beats[i - 1].get("visual", {}).get("type"):
+            if len(str(b.get("title", ""))) > 30:  # shorten instead of rejecting the whole script
+                t = str(b["title"])[:28]
+                b["title"] = t.rsplit(" ", 1)[0] if " " in t else t
+            if i > 1 and v["type"] not in ("query", "demo", "code", "table") \
+                    and v["type"] == beats[i - 1].get("visual", {}).get("type"):
                 raise ValueError(f"beat {b['id']}: don't use the same visual type twice in a row")
         if SCRIPT == "roman":
             b["say"] = b.get("cap") or b.get("say")
@@ -402,8 +426,8 @@ def check_script(sc, post):
                     raise ValueError(f"demo: inserted row {new_row} is already in the starting rows - start with the rows that "
                                      "exist BEFORE the operation (the table may even start empty)")
                 rows.append(new_row)
-        if len(b["cap"].split()) < 22:
-            raise ValueError("demo beat: the voice must narrate every step (what happens on the table and why), 25-40 words")
+        if len(b["cap"].split()) < 14:
+            raise ValueError("demo beat: the voice must narrate the steps (what happens on the table and why), 20-40 words")
     if "cliff" in kinds:
         raise ValueError('do not use the "cliff" visual; the recap ends with takeaways (checklist / kinetic)')
     if os.environ.get("REEL_TONE", "").strip():
