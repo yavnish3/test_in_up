@@ -305,8 +305,10 @@ def validate(c, pid, part, promised=None):
     if c.get("next") and len(c["next"]) > 22:
         raise ValueError(f'"next" topic "{c["next"]}" is too long; keep it <= 18 chars')
     if c.get("next"):
-        dup = similar_topic(c["next"])
-        if dup or words(c["next"]) & words(c.get("topic", "")) == words(c["next"]):
+        nw = words(c["next"])  # reject only a next topic that adds nothing new to a covered one
+        dup = next((t for t in topics() + [{"id": c.get("id", ""), "topic": c.get("topic", "")}]
+                    if nw and nw <= words(t["topic"])), None)
+        if dup:
             raise ValueError(f'"next" topic "{c["next"]}" is already covered'
                              f'{" (" + dup["id"] + " " + dup["topic"] + ")" if dup else ""}; pick a NEW next topic')
     if len(c["topic"]) > 24:

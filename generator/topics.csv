@@ -91,3 +91,4 @@ SQL089,Database Programming,Database Triggers,"Trigger = auto-run on DML, BEFORE
 SQL090,Advanced Database Features,JSON in SQL,"Modern DBs mein JSON column type, `->` object deta hai, `->>` text deta hai, Dynamic data ke liye best, NoSQL ki flexibility, SQL ki safety",
 SQL091,Interview Prep,Dept Top Earner,"Har dept ka top earner nikalna = classic interview q, CTE + DENSE_RANK() sabse best tarika, PARTITION BY dept se team alag hoti hai, WHERE rnk = 1 se sirf winners bachte hain",
 SQL092,Database Programming,Audit Trail Log,"Audit Trail = Data ka CCTV, OLD aur NEW values track karo, Trigger se automatic logging, Security aur debugging ke liye best",
+SQL093,Interview Prep,Rolling 7-Day Avg,"Rolling avg = trend analysis, 6 PRECEDING zaroori hai, Window functions best weapon, Data smooth karke insights",

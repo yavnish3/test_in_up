@@ -1,0 +1,132 @@
+{
+ "id": "SQL093",
+ "part": 93,
+ "module": "Interview Prep",
+ "topic": "Rolling 7-Day Avg",
+ "next": "Index Merge",
+ "hook": "Weekly trend? [[Rolling 7-Day]] avg query",
+ "cover_sticker": "📈",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Rolling 7-Day [[Average]]",
+   "sticker": "💡",
+   "points": [
+    "Har din = **aaj + pichle 6 din**",
+    "Sales ki **asli trend** dekho",
+    "Window function **ROWS BETWEEN**"
+   ],
+   "note": "Jaise share market ka 7-day moving average 📊",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Sample Table: [[sales]]",
+   "sticker": "📋",
+   "columns": [
+    "DATE",
+    "AMT"
+   ],
+   "rows": [
+    [
+     "2024-01-01",
+     "100"
+    ],
+    [
+     "2024-01-02",
+     "200"
+    ],
+    [
+     "2024-01-03",
+     "300"
+    ]
+   ],
+   "note": "Daily sales data table jisme amount stored hai",
+   "who": "DHYAAN DO"
+  },
+  {
+   "type": "code",
+   "title": "Interview Wali [[Query]]",
+   "sticker": "💻",
+   "file": "rolling.sql",
+   "code": "SELECT dt, amt,\n  AVG(amt) OVER (\n    ORDER BY dt\n    ROWS BETWEEN 6 PRECEDING\n    AND CURRENT ROW\n  ) AS roll_avg\nFROM sales;",
+   "note": "Pichle 6 din aur aaj ko mila kar average 🚀",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "Clause By [[Clause]]",
+   "sticker": "🔍",
+   "points": [
+    "**OVER (ORDER BY dt)**: date wise",
+    "**6 PRECEDING**: pichli 6 rows",
+    "**CURRENT ROW**: aaj ka din"
+   ],
+   "note": "Bole toh: 7 din ki range ka window frame 🪟",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "table",
+   "title": "Exact [[Result]]",
+   "sticker": "🎯",
+   "columns": [
+    "DATE",
+    "AMT",
+    "ROLL_AVG"
+   ],
+   "rows": [
+    [
+     "2024-01-01",
+     "100",
+     "100.00"
+    ],
+    [
+     "2024-01-02",
+     "200",
+     "150.00"
+    ],
+    [
+     "2024-01-03",
+     "300",
+     "200.00"
+    ]
+   ],
+   "highlight": [
+    1,
+    2
+   ],
+   "note": "Pehle din 1 row, doosre din 2 rows ka avg ⚡",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Kahan use [[hota hai]]?",
+   "sticker": "🌟",
+   "points": [
+    "**E-commerce**: daily orders",
+    "**Finance**: stock price",
+    "**Server load**: traffic"
+   ]
+  },
+  {
+   "type": "mistake",
+   "wrong": "AVG(amt) OVER (ORDER BY dt)",
+   "right": "AVG(amt) OVER (ORDER BY dt ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)",
+   "why": "Bina ROWS BETWEEN ke default frame poora lifetime average nikal deta hai ⚠️",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "**Rolling avg** = trend analysis",
+    "**6 PRECEDING** zaroori hai",
+    "Window functions best weapon",
+    "Data smooth karke insights"
+   ]
+  }
+ ],
+ "caption": "Weekly sales trend nikalna hai? Rolling 7-day avg query seekho 📈\n\nIs post mein:\n✅ Rolling average ka simple funda\n✅ Sample sales table\n✅ Complete interview SQL query\n✅ ROWS BETWEEN ka breakdown\n\nSQL Series · Part 93/100\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #rollingavg #sqlquery #sqlinterview #learnsql #sqlinhindi #dataanalyst #datascience #coding #analytics #database #SQLqueries #sqlDeveloper #techhindi #sqlskills #queryoptimization #windowfunction #businessintelligence #dataengineering #sqlshortcuts #codinglife #learncoding #techreels #indiandevs #programming #devcommunity #datainsights #sqlmaster #backend #sqlbasics",
+ "interview": true,
+ "revisit_of": null
+}

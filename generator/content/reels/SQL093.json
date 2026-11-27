@@ -1,0 +1,363 @@
+{
+ "plan": "INTERVIEWER ASKS: Query walkthrough of Rolling 7-Day Average. b1 defines it and shows sales table, b2 types out the query line by line, b3 runs a demo dry-run on rows, b4 shows final outputs, galti shows the trap without ROWS BETWEEN.",
+ "theme": "ocean",
+ "beats": [
+  {
+   "id": "hook",
+   "cap": "Weekly trend nikalne ke liye rolling seven day avg query kaise likhte hain? No cap!",
+   "say": "Weekly trend nikalne ke liye rolling seven day avg query kaise likhte hain? No cap!",
+   "cues": [
+    {
+     "word": "trend",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "liye",
+     "do": "emoji",
+     "target": "🔥"
+    }
+   ]
+  },
+  {
+   "id": "b1",
+   "title": "Rolling 7-Day **Average**",
+   "visual": {
+    "type": "define",
+    "term": "Rolling 7-Day Average",
+    "meaning": "Har din ka average nikalne ke liye aaj aur pichle 6 din ka data smooth karte hain",
+    "at": "Rolling",
+    "meaning_at": "average"
+   },
+   "cap": "Rolling 7-Day Average yaani sales ka asli trend dekhne ke liye aaj aur pichle 6 din ka data smooth karna. Literally!",
+   "say": "Rolling 7-Day Average yaani sales ka asli trend dekhne ke liye aaj aur pichle 6 din ka data smooth karna. Literally!",
+   "cues": [
+    {
+     "word": "trend",
+     "do": "emoji",
+     "target": "📈"
+    },
+    {
+     "word": "smooth",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "yaani",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b2",
+   "title": "Interview Wali **Query**",
+   "visual": {
+    "type": "query",
+    "file": "rolling.sql",
+    "lines": [
+     {
+      "code": "SELECT dt, amt,",
+      "at": "Pehle,",
+      "explain": "Pehle date aur amount columns select karo."
+     },
+     {
+      "code": "  AVG(amt) OVER (",
+      "at": "Phir,",
+      "explain": "Window function se average calculate karo."
+     },
+     {
+      "code": "    ORDER BY dt",
+      "at": "Uske",
+      "explain": "Date ke hisaab se order maintain rakho."
+     },
+     {
+      "code": "    ROWS BETWEEN 6 PRECEDING",
+      "at": "Phir,",
+      "explain": "Pichli 6 rows ko window frame mein lo."
+     },
+     {
+      "code": "    AND CURRENT ROW",
+      "at": "Uske",
+      "explain": "Aaj ka din bhi include karo."
+     },
+     {
+      "code": "  ) AS roll_avg",
+      "at": "Phir,",
+      "explain": "Result ko roll_avg naam do."
+     },
+     {
+      "code": "FROM sales;",
+      "at": "Aakhir",
+      "explain": "Ye sales table par run hoga."
+     }
+    ],
+    "output": "dt | amt | roll_avg",
+    "output_at": "sales"
+   },
+   "cap": "Pehle, date aur amount columns select karo. Phir, window function se average calculate karo. Uske baad, date ke hisaab se order maintain rakho. Phir, pichli 6 rows ko window frame mein lo. Uske baad, aaj ka din bhi include karo. Phir, result ko roll_avg naam do. Aakhir mein, ye sales table par run hoga.",
+   "say": "Pehle, date aur amount columns select karo. Phir, window function se average calculate karo. Uske baad, date ke hisaab se order maintain rakho. Phir, pichli 6 rows ko window frame mein lo. Uske baad, aaj ka din bhi include karo. Phir, result ko roll_avg naam do. Aakhir mein, ye sales table par run hoga.",
+   "cues": [
+    {
+     "word": "karo.",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "window",
+     "do": "emoji",
+     "target": "💯"
+    },
+    {
+     "word": "naam",
+     "do": "shake",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b3",
+   "title": "Exact **Result**",
+   "visual": {
+    "type": "demo",
+    "name": "sales",
+    "columns": [
+     "DATE",
+     "AMT",
+     "ROLL_AVG"
+    ],
+    "rows": [
+     [
+      "2024-01-01",
+      "100",
+      "100.00"
+     ],
+     [
+      "2024-01-02",
+      "200",
+      "150.00"
+     ],
+     [
+      "2024-01-03",
+      "300",
+      "200.00"
+     ]
+    ],
+    "link": "⚡ RUN QUERY",
+    "steps": [
+     {
+      "op": "highlight",
+      "rows": [
+       0
+      ],
+      "sql": "Row 1 avg",
+      "note": "Pehle din sirf 1 row ka average 100",
+      "at": "Pehle"
+     },
+     {
+      "op": "highlight",
+      "rows": [
+       1
+      ],
+      "sql": "Row 2 avg",
+      "note": "Doosre din 2 rows ka average 150",
+      "at": "doosre"
+     },
+     {
+      "op": "highlight",
+      "rows": [
+       2
+      ],
+      "sql": "Row 3 avg",
+      "note": "Teesre din 3 rows ka average 200",
+      "at": "teesre"
+     }
+    ]
+   },
+   "cap": "Pehle din ek row ka average 100, doosre din do rows ka 150, aur teesre din teen rows ka 200 aata hai! Ekdum simple, bro!",
+   "say": "Pehle din ek row ka average 100, doosre din do rows ka 150, aur teesre din teen rows ka 200 aata hai! Ekdum simple, bro!",
+   "cues": [
+    {
+     "word": "100,",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "150,",
+     "do": "flash",
+     "target": 1
+    },
+    {
+     "word": "200",
+     "do": "emoji",
+     "target": "🎯"
+    }
+   ]
+  },
+  {
+   "id": "b4",
+   "title": "Kahan use **hota hai**?",
+   "visual": {
+    "type": "bars",
+    "unit": "k",
+    "bars": [
+     {
+      "label": "Orders",
+      "value": 90,
+      "at": "E-commerce"
+     },
+     {
+      "label": "Stocks",
+      "value": 85,
+      "at": "Finance"
+     },
+     {
+      "label": "Traffic",
+      "value": 95,
+      "at": "Server"
+     }
+    ]
+   },
+   "cap": "Ye full on E-commerce orders, Finance stock price, aur Server load traffic track karne ke liye use hota hai.",
+   "say": "Ye full on E-commerce orders, Finance stock price, aur Server load traffic track karne ke liye use hota hai.",
+   "cues": [
+    {
+     "word": "full",
+     "do": "kinetic",
+     "target": "USE CASES 🌟"
+    },
+    {
+     "word": "orders,",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "Finance",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "galti",
+   "title": "Common **Mistake**",
+   "visual": {
+    "type": "compare",
+    "left": {
+     "label": "GALAT",
+     "at": "Bina",
+     "points": [
+      {
+       "text": "AVG(amt) OVER (ORDER BY dt)",
+       "at": "bina"
+      }
+     ]
+    },
+    "right": {
+     "label": "SAHI",
+     "at": "ROWS",
+     "points": [
+      {
+       "text": "6 PRECEDING zaroori hai",
+       "at": "zaroori"
+      }
+     ]
+    }
+   },
+   "cap": "Bina ROWS BETWEEN ke default frame poora lifetime average nikal deta hai, no cap!",
+   "say": "Bina ROWS BETWEEN ke default frame poora lifetime average nikal deta hai, no cap!",
+   "cues": [
+    {
+     "word": "lifetime",
+     "do": "shake",
+     "target": 1
+    },
+    {
+     "word": "cap!",
+     "do": "zoom",
+     "target": 2
+    },
+    {
+     "word": "default",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "recap",
+   "title": "Quick **Recap**",
+   "visual": {
+    "type": "checklist",
+    "items": [
+     {
+      "text": "Rolling avg = trend analysis",
+      "at": "trend"
+     },
+     {
+      "text": "6 PRECEDING zaroori hai",
+      "at": "PRECEDING"
+     },
+     {
+      "text": "Window functions best weapon",
+      "at": "Window"
+     },
+     {
+      "text": "Data smooth karke insights",
+      "at": "insights"
+     }
+    ]
+   },
+   "cap": "Rolling avg trend analysis deta hai, 6 PRECEDING zaroori hai, aur window functions best weapon hain.",
+   "say": "Rolling avg trend analysis deta hai, 6 PRECEDING zaroori hai, aur window functions best weapon hain.",
+   "cues": [
+    {
+     "word": "analysis",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "weapon",
+     "do": "emoji",
+     "target": "⚔️"
+    },
+    {
+     "word": "deta",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  }
+ ],
+ "caption": "Weekly trend? 📈 Master the Rolling 7-Day Average query in SQL!\n\n✅ Har din = aaj + pichle 6 din\n✅ 6 PRECEDING frame is crucial\n✅ Window functions best weapon\n✅ Data smooth karke insights\n\nSQL Series · Part 93\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #datascience #analytics #coding #interview #learnsql #database #query #sqlqueries #tech #developer #engineering #growth #business #insights #windowfunctions #postgresql #mysql #codinglife #programming #techtips #computerscience #softwareengineering #bigdata #dataanalytics #code #learning #dev #portfolio #career",
+ "beat_times": [
+  [
+   0.0,
+   5.01
+  ],
+  [
+   5.01,
+   11.18
+  ],
+  [
+   11.18,
+   28.23
+  ],
+  [
+   28.23,
+   35.39
+  ],
+  [
+   35.39,
+   41.12
+  ],
+  [
+   41.12,
+   45.62
+  ],
+  [
+   45.62,
+   50.41
+  ]
+ ]
+}
