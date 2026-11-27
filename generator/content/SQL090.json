@@ -1,0 +1,101 @@
+{
+ "id": "SQL090",
+ "part": 90,
+ "module": "Advanced Database Features",
+ "topic": "JSON in SQL",
+ "next": "Dept Top Earner",
+ "hook": "NoSQL chhoddo, [[JSON data]] ab SQL mein rakho",
+ "cover_sticker": "📦",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "SQL aur [[JSON]] ka mel",
+   "sticker": "🤝",
+   "points": [
+    "Modern databases **JSON** store kar sakte hain",
+    "Flexibility NoSQL jaisi, **power** SQL ki",
+    "Alag table banane ki **zaroorat nahi**"
+   ],
+   "note": "Bole toh: Ek hi column mein poora **profile object** rakh lena 📦",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "JSON data [[store]] karo",
+   "sticker": "💾",
+   "file": "insert_json.sql",
+   "code": "CREATE TABLE users (\n  id INT,\n  meta JSON\n);\n\nINSERT INTO users VALUES (\n  1, '{\"city\": \"Delhi\", \"lang\": \"Hindi\"}'\n);"
+  },
+  {
+   "type": "concept",
+   "title": "Data nikalne ke [[operators]]",
+   "sticker": "🔍",
+   "points": [
+    "`->` operator: JSON **object** deta hai",
+    "`->>` operator: Seedha **text/value** deta hai",
+    "Nested keys ke liye `-> 'key'` use karo"
+   ],
+   "note": "Double arrow `->>` sabse zyada use hota hai jab string chahiye 🎯",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "code",
+   "title": "Query mein [[access]]",
+   "sticker": "🛠️",
+   "file": "query_json.sql",
+   "code": "SELECT \n  meta->>'city' AS city,\n  meta->'skills'->0 AS first_skill\nFROM users\nWHERE meta->>'lang' = 'Hindi';",
+   "note": "PostgreSQL aur MySQL dono mein yeh syntax supported hai ⚡",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "table",
+   "title": "Query ka [[result]]",
+   "sticker": "📋",
+   "columns": [
+    "CITY",
+    "FIRST_SKILL"
+   ],
+   "rows": [
+    [
+     "Delhi",
+     "SQL"
+    ],
+    [
+     "Mumbai",
+     "Python"
+    ]
+   ],
+   "note": "Index `-> 0` se JSON array ka **pehla item** nikal gaya 📊",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Kahan use [[karein]]?",
+   "sticker": "🎯",
+   "points": [
+    "**User settings**: alag columns ka jhanjhat nahi",
+    "**API responses**: jaise ke taisi save karo",
+    "**E-commerce**: har product ki alag specs"
+   ]
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT meta.city FROM users\n-- dot operator se access",
+   "right": "SELECT meta->>'city' FROM users\n-- JSON arrow operators use karo",
+   "why": "SQL column dot notation JSON ke andar nahi ja sakta, arrow operators zaroori hain ⚠️",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Modern DBs mein **JSON column** type",
+    "`->` object deta hai, `->>` text deta hai",
+    "Dynamic data ke liye **best**",
+    "NoSQL ki flexibility, SQL ki safety"
+   ]
+  }
+ ],
+ "caption": "NoSQL ki zaroorat nahi, JSON ab seedha SQL mein rakho 📦\n\nIs post mein:\n✅ SQL mein JSON table banana\n✅ `->` aur `->>` operators\n✅ Nested JSON se data nikalna\n✅ Common mistakes se bachna\n\nSQL Series · Part 90\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #json #sqlinhindi #learnsql #database #dataanalyst #backend #coding #postgresql #mysql #datastructure #sqlqueries #techhindi #programming #webdev #databaselogic #sqltricks #query #developer #codinglife #sqldeveloper #data #techreels #softwareengineer #computerscience #learncoding #code #analytics #dbs #devcommunity",
+ "revisit_of": null
+}

@@ -697,8 +697,16 @@ async def capture(scene, out_mp4, cover_jpg, dur):
                                "-r", str(FPS), out_mp4], stdin=subprocess.PIPE)
         n = round(dur * FPS)
         for i in range(n):
-            await pg.evaluate(f"window.renderFrame({i / FPS})")
-            ff.stdin.write(await pg.screenshot(type="jpeg", quality=92))
+            for tries in range(3):  # a single stuck frame must not kill the whole reel
+                try:
+                    await pg.evaluate(f"window.renderFrame({i / FPS})")
+                    ff.stdin.write(await pg.screenshot(type="jpeg", quality=92, timeout=90000))
+                    break
+                except Exception as e:  # noqa: BLE001
+                    if tries == 2:
+                        raise
+                    print(f"  frame {i}: {type(e).__name__}, retrying", flush=True)
+                    await pg.wait_for_timeout(2000)
             if i % (FPS * 10) == 0:
                 print(f"  frame {i}/{n}", flush=True)
         ff.stdin.close()

@@ -88,3 +88,4 @@ SQL086,Interview Prep,Duplicate Emails,"Duplicate matlab COUNT > 1, GROUP BY gro
 SQL087,Database Security,SQL Injection,"SQL Injection = Hacking via input, `' OR '1'='1` logic ko bypass karta hai, Never use string concatenation, Always use Prepared Statements 🛡️",
 SQL088,Interview Prep,Consecutive Logins,"Consecutive = Gap and Island problem, ROW_NUMBER partition by user lo, Date - rank = Constant group, GROUP BY + HAVING se count check karo",
 SQL089,Database Programming,Database Triggers,"Trigger = auto-run on DML, BEFORE aur AFTER types, OLD aur NEW values, Use: Audit logs & checks",
+SQL090,Advanced Database Features,JSON in SQL,"Modern DBs mein JSON column type, `->` object deta hai, `->>` text deta hai, Dynamic data ke liye best, NoSQL ki flexibility, SQL ki safety",

@@ -306,7 +306,12 @@ R.beats.forEach((b, bi) => {
     const T = [{ tag: 'a', name: v.name || '', cols: (v.columns || []).slice(0, 4), rows: (v.rows || []).slice(0, maxRows) }];
     if (two) T.push({ tag: 'b', name: v.table2.name || '', cols: (v.table2.columns || []).slice(0, 4), rows: (v.table2.rows || []).slice(0, maxRows) });
     T.forEach(tb => { tb.hasNew = steps.some(st => st.op === 'add_col' && (parseInt(st.table) || 1) === (tb.tag === 'a' ? 1 : 2));
-      tb.W = Math.floor((960 - (tb.hasNew ? 200 : 0)) / Math.max(1, tb.cols.length));
+      const avail = 960 - (tb.hasNew ? 200 : 0), allRows = tb.rows.concat(steps.filter(st => st.op === 'insert').map(st => st.row || []));
+      const need = tb.cols.map((c, i) => Math.max(String(c).length, ...allRows.map(r => String((r || [])[i] ?? '').length), 3));
+      const tot = need.reduce((a, x) => a + x, 0);
+      tb.Ws = need.map(x => Math.max(110, Math.floor(avail * x / tot)));
+      const over = tb.Ws.reduce((a, x) => a + x, 0) - avail; if (over > 0) { const k = tb.Ws.indexOf(Math.max(...tb.Ws)); tb.Ws[k] -= over; }
+      tb.W = Math.floor(avail / Math.max(1, tb.cols.length));
       tb.data = tb.rows.map(r => r.slice(0, tb.cols.length).map(String)); tb.order = tb.data.map((_, k) => k); tb.next = tb.data.length; tb.upd = {}; tb.peak = tb.data.length; });
     const plan = [];
     steps.forEach((st, k) => {
@@ -323,11 +328,11 @@ R.beats.forEach((b, bi) => {
       p.order = tb.order.slice(); tb.peak = Math.max(tb.peak, tb.order.length); plan.push(p);
     });
     const tableHtml = (tb, top) => {
-      const cell = (rid, c, val) => `<div style="width:${tb.W}px" id="${id}-${tb.tag}c${rid}-${c}"><span class="ov">${esc(val)}</span>` +
+      const cell = (rid, c, val) => `<div style="width:${tb.Ws[c]}px" id="${id}-${tb.tag}c${rid}-${c}"><span class="ov">${esc(val)}</span>` +
         (tb.upd[rid + '-' + c] || []).map(([k, nv]) => `<span class="nv" id="${id}-u${k}">${esc(nv)}</span>`).join('') + `</div>`;
       const n0 = tb.rows.length;
       return (tb.name ? `<div class="lnm" style="top:${top - 46}px">${esc(tb.name)}</div>` : '') +
-        `<div class="lth" style="top:${top}px">${tb.cols.map(c => `<div style="width:${tb.W}px">${esc(c)}</div>`).join('')}<div class="lnc" id="${id}-${tb.tag}nh">${esc(tb.newName || '')}</div></div>` +
+        `<div class="lth" style="top:${top}px">${tb.cols.map((c, i) => `<div style="width:${tb.Ws[i]}px">${esc(c)}</div>`).join('')}<div class="lnc" id="${id}-${tb.tag}nh">${esc(tb.newName || '')}</div></div>` +
         `<div class="lbody" style="top:${top + 62}px;height:${RH * Math.max(1, tb.peak)}px">` +
         tb.data.map((r, rid) => r ? `<div class="lr${two ? ' sm' : ''}" id="${id}-${tb.tag}r${rid}" style="top:${Math.min(rid, n0) * RH}px;height:${RH}px${rid >= n0 ? ';opacity:0' : ''}">` +
           r.map((val, c) => cell(rid, c, val)).join('') + `<div class="ln" id="${id}-${tb.tag}n${rid}"></div><i class="lx"></i></div>` : '').join('') + `</div>`;

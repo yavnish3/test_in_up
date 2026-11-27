@@ -1,0 +1,347 @@
+{
+ "theme": "matrix",
+ "beats": [
+  {
+   "id": "hook",
+   "cap": "NoSQL chhoddo, JSON data ab SQL mein rakhne ka scene kya hai?",
+   "say": "NoSQL chhoddo, JSON data ab SQL mein rakhne ka scene kya hai?",
+   "title": "SQL & JSON",
+   "visual": {
+    "type": "kinetic",
+    "lines": [
+     {
+      "text": "NoSQL CHHODDO",
+      "at": "chhoddo"
+     },
+     {
+      "text": "JSON IN SQL",
+      "at": "JSON"
+     },
+     {
+      "text": "SCENE KYA HAI?",
+      "at": "hai"
+     }
+    ]
+   },
+   "cues": [
+    {
+     "word": "chhoddo",
+     "do": "kinetic",
+     "target": "NO SQL"
+    },
+    {
+     "word": "JSON",
+     "do": "zoom",
+     "target": 2
+    },
+    {
+     "word": "hai",
+     "do": "shake",
+     "target": 3
+    }
+   ]
+  },
+  {
+   "id": "b1",
+   "cap": "JSON in SQL yaani modern DBs mein JSON column type, jisse NoSQL ki flexibility aur SQL ki safety dono milti hain.",
+   "say": "JSON in SQL yaani modern DBs mein JSON column type, jisse NoSQL ki flexibility aur SQL ki safety dono milti hain.",
+   "title": "**Definition**",
+   "visual": {
+    "type": "define",
+    "term": "JSON in SQL",
+    "meaning": "Modern DBs mein JSON column store karna, NoSQL jaisi flexibility aur SQL ki safety dono ek hi column mein.",
+    "at": "modern",
+    "meaning_at": "flexibility"
+   },
+   "cues": [
+    {
+     "word": "modern",
+     "do": "emoji",
+     "target": "⚡"
+    },
+    {
+     "word": "flexibility",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "safety",
+     "do": "shake",
+     "target": 2
+    }
+   ]
+  },
+  {
+   "id": "b2",
+   "cap": "Pehle users table banate hain, phir do rows insert karte hain, meta JSON mein skill array add karte hain, aur Hindi users filter karte hain, full on demo!",
+   "say": "Pehle users table banate hain, phir do rows insert karte hain, meta JSON mein skill array add karte hain, aur Hindi users filter karte hain, full on demo!",
+   "title": "**Demo**",
+   "visual": {
+    "type": "demo",
+    "name": "users",
+    "columns": [
+     "id",
+     "meta"
+    ],
+    "rows": [
+     [
+      1,
+      "{\"city\":\"Delhi\",\"lang\":\"Hindi\"}"
+     ],
+     [
+      2,
+      "{\"city\":\"Mumbai\",\"lang\":\"English\"}"
+     ]
+    ],
+    "link": "⚡ INSERT/UPDATE",
+    "steps": [
+     {
+      "op": "insert",
+      "row": [
+       3,
+       "{\"city\":\"Bengaluru\",\"lang\":\"Hindi\"}"
+      ],
+      "table": 1,
+      "sql": "INSERT INTO users VALUES (3, '{\"city\":\"Bengaluru\",\"lang\":\"Hindi\"}');",
+      "note": "Naya row insert",
+      "at": "insert"
+     },
+     {
+      "op": "update",
+      "row_index": 0,
+      "col": 1,
+      "value": "{\"city\":\"Delhi\",\"lang\":\"Hindi\",\"skills\":[\"SQL\",\"Python\"]}",
+      "sql": "UPDATE users SET meta = JSON_SET(meta,'$.skills','[\"SQL\",\"Python\"]') WHERE id=1;",
+      "note": "Skill array add",
+      "at": "array"
+     },
+     {
+      "op": "filter",
+      "keep": [
+       0,
+       2
+      ],
+      "sql": "SELECT * FROM users WHERE meta->>'lang'='Hindi';",
+      "note": "Hindi users filter",
+      "at": "filter"
+     }
+    ]
+   },
+   "cues": [
+    {
+     "word": "insert",
+     "do": "flash",
+     "target": 1
+    },
+    {
+     "word": "filter",
+     "do": "emoji",
+     "target": "🔍"
+    },
+    {
+     "word": "array",
+     "do": "emoji",
+     "target": "💯"
+    }
+   ]
+  },
+  {
+   "id": "b3",
+   "cap": "Toh batao, meta->>'city' query karne par kitni rows aayengi? Zyadatar log bolenge 2 rows, Galat! Actually 2 rows aayengi kyunki sirf Hindi users hain.",
+   "say": "Toh batao, meta->>'city' query karne par kitni rows aayengi? Zyadatar log bolenge 2 rows, Galat! Actually 2 rows aayengi kyunki sirf Hindi users hain.",
+   "title": "**Quiz**",
+   "visual": {
+    "type": "quiz",
+    "question": "meta->>'city' ka output?",
+    "q_at": "output",
+    "wrong": "2 rows",
+    "wrong_at": "bolenge",
+    "right": "2 rows",
+    "right_at": "Galat"
+   },
+   "cues": [
+    {
+     "word": "batao",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "Galat",
+     "do": "shake",
+     "target": 1
+    },
+    {
+     "word": "rows",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b4",
+   "cap": "Ab operators dikhate hain: -> object deta hai, ->> text deta hai, aur ->'skills'->0 se array ka pehla element milta hai, literally full on!",
+   "say": "Ab operators dikhate hain: -> object deta hai, ->> text deta hai, aur ->'skills'->0 se array ka pehla element milta hai, literally full on!",
+   "title": "**Operators**",
+   "visual": {
+    "type": "code",
+    "file": "operators.sql",
+    "lines": [
+     {
+      "code": "SELECT meta->'city' FROM users;",
+      "at": "object",
+      "explain": "city object return karta hai"
+     },
+     {
+      "code": "SELECT meta->>'city' FROM users;",
+      "at": "text",
+      "explain": "city ko plain text deta hai"
+     },
+     {
+      "code": "SELECT meta->'skills'->0 FROM users;",
+      "at": "array",
+      "explain": "skills array ka first item nikalta hai"
+     }
+    ],
+    "output": "Delhi | Bengaluru",
+    "output_at": "full"
+   },
+   "cues": [
+    {
+     "word": "object",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "text",
+     "do": "flash",
+     "target": 2
+    },
+    {
+     "word": "array",
+     "do": "emoji",
+     "target": "📊"
+    }
+   ]
+  },
+  {
+   "id": "galti",
+   "cap": "Common galti: dot notation se JSON access karna. Galat! Arrow operators -> aur ->> zaroori hain, warna error milta hai.",
+   "say": "Common galti: dot notation se JSON access karna. Galat! Arrow operators -> aur ->> zaroori hain, warna error milta hai.",
+   "title": "**Galti**",
+   "visual": {
+    "type": "compare",
+    "left": {
+     "label": "Galat",
+     "at": "dot",
+     "points": [
+      {
+       "text": "SELECT meta.city",
+       "at": "dot"
+      }
+     ]
+    },
+    "right": {
+     "label": "Sahi",
+     "at": "arrow",
+     "points": [
+      {
+       "text": "SELECT meta->>'city'",
+       "at": "arrow"
+      }
+     ]
+    }
+   },
+   "cues": [
+    {
+     "word": "Galat",
+     "do": "shake",
+     "target": 1
+    },
+    {
+     "word": "arrow",
+     "do": "zoom",
+     "target": 2
+    },
+    {
+     "word": "error",
+     "do": "emoji",
+     "target": "⚠️"
+    }
+   ]
+  },
+  {
+   "id": "recap",
+   "cap": "JSON column use karo, -> object, ->> text, dynamic data ke liye best, NoSQL flexibility aur SQL safety dono milti hain, full on!",
+   "say": "JSON column use karo, -> object, ->> text, dynamic data ke liye best, NoSQL flexibility aur SQL safety dono milti hain, full on!",
+   "title": "**Recap**",
+   "visual": {
+    "type": "checklist",
+    "items": [
+     {
+      "text": "JSON column type",
+      "at": "JSON"
+     },
+     {
+      "text": "-> and ->> operators",
+      "at": "operators"
+     },
+     {
+      "text": "Dynamic data ke liye best",
+      "at": "dynamic"
+     },
+     {
+      "text": "NoSQL flexibility + SQL safety",
+      "at": "flexibility"
+     }
+    ]
+   },
+   "cues": [
+    {
+     "word": "JSON",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "best",
+     "do": "emoji",
+     "target": "🔥"
+    },
+    {
+     "word": "flexibility",
+     "do": "kinetic",
+     "target": "POWER"
+    }
+   ]
+  }
+ ],
+ "beat_times": [
+  [
+   0.0,
+   3.99
+  ],
+  [
+   3.99,
+   11.63
+  ],
+  [
+   11.63,
+   20.3
+  ],
+  [
+   20.3,
+   29.87
+  ],
+  [
+   29.87,
+   37.83
+  ],
+  [
+   37.83,
+   45.78
+  ],
+  [
+   45.78,
+   52.87
+  ]
+ ]
+}

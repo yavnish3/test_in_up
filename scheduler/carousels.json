@@ -1333,5 +1333,20 @@
    "09.jpg",
    "10.jpg"
   ]
+ },
+ "SQL090": {
+  "caption": "NoSQL ki zaroorat nahi, JSON ab seedha SQL mein rakho 📦\n\nIs post mein:\n✅ SQL mein JSON table banana\n✅ `->` aur `->>` operators\n✅ Nested JSON se data nikalna\n✅ Common mistakes se bachna\n\nSQL Series · Part 90\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #json #sqlinhindi #learnsql #database #dataanalyst #backend #coding #postgresql #mysql #datastructure #sqlqueries #techhindi #programming #webdev #databaselogic #sqltricks #query #developer #codinglife #sqldeveloper #data #techreels #softwareengineer #computerscience #learncoding #code #analytics #dbs #devcommunity",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
  }
 }
