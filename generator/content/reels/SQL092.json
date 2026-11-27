@@ -1,0 +1,443 @@
+{
+ "plan": "REAL WORLD story with bug-hunt vibe: Amit aur Pooja ki employees table, audit log table banate hain, trigger set karte hain, live demo dikhate hain ki salary change hone par audit entry kaise aati hai, aur common overwrite mistake ko highlight karte hain.",
+ "theme": "matrix",
+ "beats": [
+  {
+   "id": "hook",
+   "cap": "Data delete ho gaya aur tumhein pata hi nahi ki kisne kiya, scene kya hai bro?",
+   "say": "Data delete ho gaya aur tumhein pata hi nahi ki kisne kiya, scene kya hai bro?",
+   "cues": [
+    {
+     "word": "delete",
+     "do": "emoji",
+     "target": "🗑️"
+    },
+    {
+     "word": "scene",
+     "do": "shake",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b1",
+   "title": "Audit Trail **CCTV**",
+   "visual": {
+    "type": "define",
+    "term": "Audit Trail",
+    "meaning": "Database mein kya hua, kab hua, aur kisne kiya ka pakka saboot, bilkul CCTV ki tarah",
+    "at": "matlab",
+    "meaning_at": "Database"
+   },
+   "cap": "Audit Trail matlab database ka CCTV camera jo batata hai ki data mein kya hua, kab hua, aur kaun kar raha tha, no cap!",
+   "say": "Audit Trail matlab database ka CCTV camera jo batata hai ki data mein kya hua, kab hua, aur kaun kar raha tha, no cap!",
+   "cues": [
+    {
+     "word": "CCTV",
+     "do": "emoji",
+     "target": "📹"
+    },
+    {
+     "word": "matlab",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "no",
+     "do": "kinetic",
+     "target": "CAP"
+    }
+   ]
+  },
+  {
+   "id": "b2",
+   "title": "Employees **Table**",
+   "visual": {
+    "type": "demo",
+    "name": "employees",
+    "columns": [
+     "ID",
+     "NAME",
+     "SALARY"
+    ],
+    "rows": [
+     [
+      "1",
+      "Amit",
+      "50000"
+     ],
+     [
+      "2",
+      "Pooja",
+      "70000"
+     ]
+    ],
+    "link": "👥 ASLI DATA",
+    "steps": [
+     {
+      "op": "highlight",
+      "rows": [
+       0
+      ],
+      "at": "Amit"
+     },
+     {
+      "op": "highlight",
+      "rows": [
+       1
+      ],
+      "at": "Pooja"
+     },
+     {
+      "op": "highlight",
+      "table": 1,
+      "rows": [
+       0
+      ],
+      "note": "Ye raha result 👀",
+      "at": "humko"
+     }
+    ]
+   },
+   "cap": "Pehle employees table dekhte hain jahan Amit aur Pooja ki salary safe hai, lekin humko har change ka record chahiye, isliye audit trail banayenge, full on.",
+   "say": "Pehle employees table dekhte hain jahan Amit aur Pooja ki salary safe hai, lekin humko har change ka record chahiye, isliye audit trail banayenge, full on.",
+   "cues": [
+    {
+     "word": "table",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "full",
+     "do": "shake",
+     "target": 1
+    },
+    {
+     "word": "Amit",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b3",
+   "title": "Log Table aur **Trigger**",
+   "visual": {
+    "type": "code",
+    "file": "audit_trigger.sql",
+    "lines": [
+     {
+      "code": "CREATE TABLE emp_audit (",
+      "at": "banao",
+      "explain": "audit table banane ke liye start"
+     },
+     {
+      "code": "  audit_id INT AUTO_INCREMENT,",
+      "at": "id",
+      "explain": "unique id auto increment"
+     },
+     {
+      "code": "  emp_id INT,",
+      "at": "emp",
+      "explain": "original employee id store"
+     },
+     {
+      "code": "  action VARCHAR(10),",
+      "at": "action",
+      "explain": "UPDATE ya DELETE ka type"
+     },
+     {
+      "code": "  old_salary DECIMAL(10,2),",
+      "at": "OLD",
+      "explain": "purani salary capture"
+     },
+     {
+      "code": "  changed_at TIMESTAMP",
+      "at": "time",
+      "explain": "kab change hua"
+     },
+     {
+      "code": ");",
+      "at": "aur",
+      "explain": "table end"
+     },
+     {
+      "code": "CREATE TRIGGER log_update",
+      "at": "trigger",
+      "explain": "trigger ka naam"
+     },
+     {
+      "code": "AFTER UPDATE ON employees",
+      "at": "AFTER",
+      "explain": "salary change ke baad fire"
+     },
+     {
+      "code": "FOR EACH ROW",
+      "at": "ROW",
+      "explain": "har row ke liye execute"
+     },
+     {
+      "code": "BEGIN",
+      "at": "BEGIN",
+      "explain": "block start"
+     },
+     {
+      "code": "  INSERT INTO emp_audit",
+      "at": "INSERT",
+      "explain": "audit table mein insert"
+     },
+     {
+      "code": "  VALUES (OLD.id, 'UPDATE',",
+      "at": "VALUES",
+      "explain": "OLD se purani salary le"
+     },
+     {
+      "code": "  OLD.salary, NOW());",
+      "at": "NOW",
+      "explain": "timestamp ke sath complete"
+     },
+     {
+      "code": "END;",
+      "at": "END",
+      "explain": "trigger close"
+     }
+    ],
+    "output": "Trigger log_update created",
+    "output_at": "trigger"
+   },
+   "cap": "Ab emp_audit table banao aur AFTER UPDATE trigger likho jo har salary change par OLD salary ko audit table mein insert kare, isse history automatically capture ho jayegi.",
+   "say": "Ab emp_audit table banao aur AFTER UPDATE trigger likho jo har salary change par OLD salary ko audit table mein insert kare, isse history automatically capture ho jayegi.",
+   "cues": [
+    {
+     "word": "banao",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "OLD",
+     "do": "flash",
+     "target": "OLD"
+    },
+    {
+     "word": "trigger",
+     "do": "emoji",
+     "target": "⚡"
+    }
+   ]
+  },
+  {
+   "id": "b4",
+   "title": "Live **Demo**",
+   "visual": {
+    "type": "demo",
+    "name": "employees",
+    "columns": [
+     "ID",
+     "NAME",
+     "SALARY"
+    ],
+    "rows": [
+     [
+      "1",
+      "Amit",
+      "50000"
+     ],
+     [
+      "2",
+      "Pooja",
+      "70000"
+     ]
+    ],
+    "link": "⚡ TRIGGER",
+    "table2": {
+     "name": "emp_audit",
+     "columns": [
+      "EMP_ID",
+      "ACTION",
+      "OLD_SAL",
+      "TIME"
+     ],
+     "rows": []
+    },
+    "steps": [
+     {
+      "op": "update",
+      "row_index": 0,
+      "sql": "UPDATE employees SET salary = 60000 WHERE id = 1;",
+      "note": "Amit ki salary 60k ho gayi",
+      "at": "salary"
+     },
+     {
+      "op": "insert",
+      "row": [
+       "1",
+       "UPDATE",
+       "50000",
+       "NOW()"
+      ],
+      "table": 2,
+      "sql": "INSERT INTO emp_audit (emp_id,action,old_salary,changed_at) VALUES (1,'UPDATE',50000,NOW());",
+      "note": "Trigger ne audit entry daal di",
+      "at": "audit"
+     },
+     {
+      "op": "highlight",
+      "rows": [
+       0
+      ],
+      "table": 2,
+      "at": "ek"
+     }
+    ]
+   },
+   "cap": "Jab Amit ki salary update hoti hai, trigger turant audit table mein OLD salary 50,000 ke saath ek row insert karta hai, isse har change ka proof milta hai, literally full on logging.",
+   "say": "Jab Amit ki salary update hoti hai, trigger turant audit table mein OLD salary 50,000 ke saath ek row insert karta hai, isse har change ka proof milta hai, literally full on logging.",
+   "cues": [
+    {
+     "word": "salary",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "turant",
+     "do": "emoji",
+     "target": "⚡"
+    },
+    {
+     "word": "proof",
+     "do": "shake",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "galti",
+   "title": "Common **Mistake**",
+   "visual": {
+    "type": "compare",
+    "left": {
+     "label": "GALAT",
+     "at": "overwrite",
+     "points": [
+      {
+       "text": "Data direct overwrite",
+       "at": "overwrite"
+      },
+      {
+       "text": "History gayab",
+       "at": "gayab"
+      }
+     ]
+    },
+    "right": {
+     "label": "SAHI",
+     "at": "TRIGGER",
+     "points": [
+      {
+       "text": "Main table clean",
+       "at": "clean"
+      },
+      {
+       "text": "Trigger se log",
+       "at": "TRIGGER"
+      }
+     ]
+    }
+   },
+   "cap": "Galti mat karo ki main table mein hi purana data overwrite kar do; hamesha trigger se alag audit table mein log karo taaki history kabhi na gayab ho, sach mein.",
+   "say": "Galti mat karo ki main table mein hi purana data overwrite kar do; hamesha trigger se alag audit table mein log karo taaki history kabhi na gayab ho, sach mein.",
+   "cues": [
+    {
+     "word": "overwrite",
+     "do": "shake",
+     "target": 1
+    },
+    {
+     "word": "TRIGGER",
+     "do": "flash",
+     "target": 2
+    },
+    {
+     "word": "history",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "recap",
+   "title": "Quick **Recap**",
+   "visual": {
+    "type": "checklist",
+    "items": [
+     {
+      "text": "Audit Trail = Data ka CCTV",
+      "at": "CCTV"
+     },
+     {
+      "text": "OLD aur NEW values track karo",
+      "at": "track"
+     },
+     {
+      "text": "Trigger se automation",
+      "at": "automation"
+     },
+     {
+      "text": "Security aur debugging ke liye best",
+      "at": "debugging"
+     }
+    ]
+   },
+   "cap": "Audit Trail data ka CCTV hai, OLD aur NEW values track karo, trigger se automation full on, aur security/debugging ke liye best, no cap!",
+   "say": "Audit Trail data ka CCTV hai, OLD aur NEW values track karo, trigger se automation full on, aur security/debugging ke liye best, no cap!",
+   "cues": [
+    {
+     "word": "CCTV",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "automation",
+     "do": "kinetic",
+     "target": "AUTO"
+    },
+    {
+     "word": "best",
+     "do": "emoji",
+     "target": "🏆"
+    }
+   ]
+  }
+ ],
+ "caption": "Kisne data delete kiya? Audit trail rakho 📹\n\n✅ Audit Trail = Data ka CCTV\n✅ OLD aur NEW values track karo\n✅ Trigger se automatic logging\n✅ Security aur debugging ke liye best\n\nSQL Series · Part 92\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #audit #database #coding #tech #learntocode #softwareengineering #backend #programming #sqlqueries #postgres #mysql #datastructures #dbms #webdev #codequality #techreels #computerscience #codinglife #hacks #interviewtips #systemdesign #engineering #techcommunity #devlife #query #databaseadmin #analytics #automation #cctv",
+ "beat_times": [
+  [
+   0.0,
+   4.24
+  ],
+  [
+   4.24,
+   11.45
+  ],
+  [
+   11.45,
+   19.44
+  ],
+  [
+   19.44,
+   28.34
+  ],
+  [
+   28.34,
+   37.88
+  ],
+  [
+   37.88,
+   45.9
+  ],
+  [
+   45.9,
+   53.38
+  ]
+ ]
+}

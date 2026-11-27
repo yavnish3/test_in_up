@@ -416,6 +416,10 @@ def check_script(sc, post):
     kinds = [b.get("visual", {}).get("type") for b in beats[1:]]
     if "quiz" in kinds:
         raise ValueError('no quiz: use that beat to SHOW the query working on the rows (a live "demo")')
+    total = sum(len(b["cap"].split()) for b in beats)
+    if ENGINE == "gemini" and total < 125:
+        raise ValueError(f"the script is only {total} words (~{total // 3} s); write 150-175 words - give the practical "
+                         "beats (demo / query / code) more explanation of what happens and why")
     practical = [k for k in kinds[1:4] if k in ("demo", "query", "code")]
     if not practical:
         raise ValueError('make it practical: at least one of b2-b4 must show real SQL working - a live "demo", '
@@ -438,8 +442,8 @@ def check_script(sc, post):
                     raise ValueError(f"demo: inserted row {new_row} is already in the starting rows - start with the rows that "
                                      "exist BEFORE the operation (the table may even start empty)")
                 rows.append(new_row)
-        if len(b["cap"].split()) < 14:
-            raise ValueError("demo beat: the voice must narrate the steps (what happens on the table and why), 20-40 words")
+        if len(b["cap"].split()) < 20:
+            raise ValueError(f"{b['id']} demo: too fast - narrate each step (what changes on the table and why), 25-40 words")
     if "cliff" in kinds:
         raise ValueError('do not use the "cliff" visual; the recap ends with takeaways (checklist / kinetic)')
     if os.environ.get("REEL_TONE", "").strip():

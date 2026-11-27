@@ -1,0 +1,116 @@
+{
+ "id": "SQL092",
+ "part": 92,
+ "module": "Database Programming",
+ "topic": "Audit Trail Log",
+ "next": "Rolling 7-Day Avg",
+ "hook": "Kisne data [[delete]] kiya? Audit trail rakho",
+ "cover_sticker": "🕵️",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Audit Trail = [[CCTV camera]]",
+   "sticker": "📹",
+   "points": [
+    "Database mein **kya hua**, kab hua",
+    "Kisne change kiya **OLD vs NEW**",
+    "Security aur compliance ke liye **zaroori**"
+   ],
+   "note": "Bole toh: Bank account ka passbook. Har transaction ka pakka saboot 📜",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Asli [[employees]] table",
+   "sticker": "👥",
+   "columns": [
+    "ID",
+    "NAME",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "1",
+     "Amit",
+     "50,000"
+    ],
+    [
+     "2",
+     "Pooja",
+     "70,000"
+    ]
+   ],
+   "note": "Main table jahan data safe rehta hai, par history track karni hai 🔍",
+   "who": "DHYAAN DO"
+  },
+  {
+   "type": "code",
+   "title": "Audit log table [[banao]]",
+   "sticker": "🛠️",
+   "file": "audit_table.sql",
+   "code": "CREATE TABLE emp_audit (\n  audit_id INT AUTO_INCREMENT,\n  emp_id INT,\n  action VARCHAR(10),\n  old_salary DECIMAL(10,2),\n  changed_at TIMESTAMP\n);",
+   "note": "Har UPDATE ya DELETE ka record yahan aake chipak jayega 📌",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "code",
+   "title": "Trigger se karo [[automation]]",
+   "sticker": "⚡",
+   "file": "audit_trigger.sql",
+   "code": "CREATE TRIGGER log_update\nAFTER UPDATE ON employees\nFOR EACH ROW\nBEGIN\n  INSERT INTO emp_audit\n  (emp_id, action, old_salary, changed_at)\n  VALUES (OLD.id, 'UPDATE', OLD.salary, NOW());\nEND;",
+   "note": "MySQL syntax: **OLD** keyword purana data pakadta hai 🎯",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "Trigger ka [[result]]",
+   "sticker": "📋",
+   "columns": [
+    "EMP_ID",
+    "ACTION",
+    "OLD_SAL",
+    "TIME"
+   ],
+   "rows": [
+    [
+     "1",
+     "UPDATE",
+     "50,000",
+     "10:45 AM"
+    ]
+   ],
+   "highlight": [
+    0
+   ],
+   "note": "Jaise hi Amit ki salary badli, audit table mein entry ho gayi ⚡",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Kahan [[kaam]] aata hai?",
+   "sticker": "🎯",
+   "points": [
+    "**Financial fraud**: Paisa kisne nikala",
+    "**Data safety**: Galti se DELETE bachao",
+    "**Debugging**: Kis query ne row kharab ki"
+   ]
+  },
+  {
+   "type": "mistake",
+   "wrong": "Main table ke andar hi **purana data** update karke overwrite kar do",
+   "right": "Main table clean rakho, **TRIGGER** se alag audit table mein log karo",
+   "why": "Overwrite karne se history gayab ho jati hai, audit trail zaroori hai 🕵️"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Audit Trail = Data ka **CCTV**",
+    "**OLD** aur **NEW** values track karo",
+    "**Trigger** se automatic logging",
+    "Security aur debugging ke liye **best**"
+   ]
+  }
+ ],
+ "caption": "Kisne data delete ya update kiya? Pata lagao Audit Trail se 🕵️\n\nIs post mein:\n✅ Audit Trail kya hota hai (CCTV)\n✅ Emp audit table banana\n✅ Trigger se automatic logging\n✅ OLD keyword ka kamaal\n\nSQL Series · Part 92\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #sqlinhindi #database #learnsql #dataanalyst #programming #sqlqueries #techhindi #coding #databasemanagement #backend #sqlserver #mysql #postgresql #devcommunity #softwareengineering #dataengineer #analytics #coderlife #dbms #sqldeveloper #techreels #codingbootcamp #computerscience #data #code #webdev #techblog #learning #developer",
+ "revisit_of": null
+}
