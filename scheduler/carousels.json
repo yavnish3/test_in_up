@@ -1288,5 +1288,20 @@
    "09.jpg",
    "10.jpg"
   ]
+ },
+ "SQL087": {
+  "caption": "Aapka DB hack ho sakta hai? SQL Injection se bacho! 🛡️\n\nIs post mein:\n✅ SQL Injection kya hai\n✅ 'OR 1=1' wala attack\n✅ Vulnerable vs Safe queries\n✅ Prepared Statements ka use\n\nSQL Series · Part 87\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #sqlinjection #sqlsecurity #sqlinhindi #learnsql #dataanalyst #cybersecurity #coding #backend #database #interviewprep #webdevelopment #programmer #sqlqueries #mysql #postgresql #sqlserver #datasecurity #programminglife #techhindi #30secdev #softwareengineer #codingbootcamp #infosec #websecurity #developer #dbms #sqlforbeginners #hacker #codingtips",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
  }
 }

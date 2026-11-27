@@ -1,0 +1,120 @@
+{
+ "id": "SQL087",
+ "part": 87,
+ "module": "Database Security",
+ "topic": "SQL Injection",
+ "next": "Consecutive Logins",
+ "hook": "Aapka DB [[hack]] ho sakta hai?",
+ "cover_sticker": "💉",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "SQL Injection kya [[hai]]?",
+   "sticker": "🔓",
+   "points": [
+    "Hacking technique jo DB udati hai",
+    "Input field mein **malicious SQL** daalna",
+    "Queries ko **manipulate** karke login bypass",
+    "Secret data churaane ka **shortcut**"
+   ],
+   "note": "Bole toh: Lock todne ke bajaye, keyhole mein liquid daal kar lock kholna",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Sample [[users]] table",
+   "sticker": "📋",
+   "columns": [
+    "ID",
+    "USER",
+    "PASSWORD"
+   ],
+   "rows": [
+    [
+     "1",
+     "admin",
+     "admin@123"
+    ],
+    [
+     "2",
+     "rohan",
+     "rohan#pass"
+    ]
+   ],
+   "note": "In users ka data bina password ke mil sakta hai agar query weak ho 😱",
+   "who": "DHYAAN DO"
+  },
+  {
+   "type": "code",
+   "title": "[[Vulnerable]] Query",
+   "sticker": "❌",
+   "file": "unsafe_login.sql",
+   "code": "SELECT * FROM users\nWHERE user = 'input_user'\nAND pass = 'input_pass';",
+   "note": "Yahan variable ko seedha string mein add kiya jata hai, jo sabse badi galti hai",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "concept",
+   "title": "Query kaise [[badli]]?",
+   "sticker": "🧠",
+   "points": [
+    "User ne dala: `' OR '1'='1`",
+    "WHERE user='' **OR '1'='1'** ban gaya",
+    "**'1'='1'** hamesha TRUE hota hai",
+    "DB ko laga validation **pass** ho gaya"
+   ],
+   "note": "AND ke baad wala password check ab bekar ho gaya, logic hi bypass! 🕵️",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "table",
+   "title": "Hack wala [[Result]]",
+   "sticker": "💥",
+   "columns": [
+    "ID",
+    "USER",
+    "PASSWORD"
+   ],
+   "rows": [
+    [
+     "1",
+     "admin",
+     "admin@123"
+    ],
+    [
+     "2",
+     "rohan",
+     "rohan#pass"
+    ]
+   ],
+   "note": "Bina password ke saari rows return ho gayi. Hacker logged in! 💀",
+   "who": "DHYAAN DO"
+  },
+  {
+   "type": "code",
+   "title": "Safe [[Prepared]] Statement",
+   "sticker": "🛡️",
+   "file": "safe_query.sql",
+   "code": "SELECT * FROM users\nWHERE user = ?\nAND pass = ?;\n\n-- ? is a placeholder",
+   "note": "Placeholder use karne se DB input ko sirf 'data' maanta hai, code nahi 🛡️",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Query string ko variable se [[concatenate]] karna",
+   "right": "**Prepared Statements** aur placeholders use karna",
+   "why": "Concatenation se hacker query ka logic hi badal sakta hai, placeholders safe hain"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "SQL Injection = **Hacking** via input",
+    "`' OR '1'='1` logic ko bypass karta hai",
+    "Never use **string concatenation**",
+    "Always use **Prepared Statements** 🛡️"
+   ]
+  }
+ ],
+ "caption": "Aapka DB hack ho sakta hai? SQL Injection se bacho! 🛡️\n\nIs post mein:\n✅ SQL Injection kya hai\n✅ 'OR 1=1' wala attack\n✅ Vulnerable vs Safe queries\n✅ Prepared Statements ka use\n\nSQL Series · Part 87\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #sqlinjection #sqlsecurity #sqlinhindi #learnsql #dataanalyst #cybersecurity #coding #backend #database #interviewprep #webdevelopment #programmer #sqlqueries #mysql #postgresql #sqlserver #datasecurity #programminglife #techhindi #30secdev #softwareengineer #codingbootcamp #infosec #websecurity #developer #dbms #sqlforbeginners #hacker #codingtips",
+ "revisit_of": null
+}

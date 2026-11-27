@@ -85,3 +85,4 @@ SQL083,Database Design,Partitioning Part 2,"Partitioning = Badi table ke chote t
 SQL084,Database Design,Sharding,"Sharding = data alag servers par baantna, Scale-out ke liye zaroori, Shard Key dhyan se chunni padti hai, Complexity laata hai, jab zaroorat ho tabhi use karo",
 SQL085,Database Design,Replication,"Replication = DB Photocopy, Master writes, Replica reads, High Availability + Fast scaling, Binlogs se data sync hota hai",
 SQL086,Interview Prep,Duplicate Emails,"Duplicate matlab COUNT > 1, GROUP BY grouping karta hai, HAVING aggregates filter karta, Interview ki favorite query 🏆",
+SQL087,Database Security,SQL Injection,"SQL Injection = Hacking via input, `' OR '1'='1` logic ko bypass karta hai, Never use string concatenation, Always use Prepared Statements 🛡️",
