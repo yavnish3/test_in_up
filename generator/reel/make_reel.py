@@ -113,13 +113,14 @@ Each beat (except hook) has:
     {"type":"bars","unit":"k","bars":[{"label":"<= 8 chars","value":90,"at":"word"}, ... 2-5]}   (GROUP BY / SUM / COUNT / AVG)
     {"type":"timeline","events":[{"text":"<= 14 chars","note":"<= 26 chars","at":"word"}, ... 3-5]}   (transactions, execution order, steps in time)
     {"type":"kinetic","lines":[{"text":"<= 12 chars","at":"word"}, ... max 3]}  (big words, use sparingly)
-    {"type":"define","term":"<= 24 chars, the topic","meaning":"<= 80 chars simple Hinglish definition","at":"word","meaning_at":"word"}
+    {"type":"define","term":"<= 24 chars, the topic","meaning":"<= 80 chars, simple ROMAN HINGLISH definition (not English), e.g. Input mein SQL ghusa ke DB ko bewakoof banana","at":"word","meaning_at":"word"}
        (ONLY for b1: the definition card)
     {"type":"quiz","question":"<= 34 chars, e.g. Kitni rows aayengi?","q_at":"word",
        "wrong":"<= 22 chars common wrong answer","wrong_at":"word","right":"<= 22 chars right answer","right_at":"word"}
        (exactly ONE quiz beat among b2-b4; right_at = the word right after "Galat")
 __SAYCAP__
-  "cues": 2-4 extra effects on exact words, each {"word": "<word from this beat's cap>", "do": "...", "target": ...}
+  "cues": 3-5 extra effects on exact words (spread across the beat, something new every 2-3 seconds; at least one
+     "zoom" or "shake" per beat), each {"word": "<word from this beat's cap>", "do": "...", "target": ...}
      "kinetic" -> big sticker text <target> (<= 14 chars, e.g. "SLOW 🐢", "FULL SCAN", "0.2 ms ⚡")
      "emoji"   -> emoji burst <target>
      "flash"   -> quick white flash (big reveal)
@@ -232,6 +233,27 @@ VISUALS = {"venn": "left", "bars": "bars", "timeline": "events", "query": "lines
            "define": "meaning"}
 
 
+AUTO_EMOJI = ["🔥", "⚡", "🤯", "💯", "👀", "🚀"]
+
+
+def auto_cues(b, i):
+    """Keep every beat lively: top up to 3 effects (2 on the hook), spread over the beat, on real words."""
+    want = 2 if i == 0 else 3
+    words = [w for w in b["cap"].split() if len(re.sub(r"[^A-Za-z0-9]", "", w)) >= 4]
+    used = {re.sub(r"[^a-z0-9]", "", str(c.get("word", "")).lower()) for c in b["cues"]}
+    kinds = ["zoom", "emoji", "shake"] if i else ["emoji", "zoom"]
+    for k, pos in enumerate((0.3, 0.6, 0.85)):
+        if len(b["cues"]) >= want or not words:
+            break
+        w = words[min(len(words) - 1, int(pos * len(words)))]
+        key = re.sub(r"[^a-z0-9]", "", w.lower())
+        if key in used:
+            continue
+        do = kinds[k % len(kinds)]
+        b["cues"].append({"word": w, "do": do, "target": AUTO_EMOJI[(i + k) % len(AUTO_EMOJI)] if do == "emoji" else 1})
+        used.add(key)
+
+
 def check_script(sc, post):
     beats = sc.get("beats") or []
     if len(beats) != 7:
@@ -291,6 +313,7 @@ def check_script(sc, post):
         b["cues"] = [c for c in (b.get("cues") or []) if isinstance(c, dict)
                      and re.sub(r"[^a-z0-9]", "", str(c.get("word", "")).lower()) in capw
                      and c.get("do") in ("pop", "highlight", "zoom", "shake", "kinetic", "emoji", "flash")]
+        auto_cues(b, i)
         if SCRIPT == "deva" and not re.search(r"[\u0900-\u097F]", b["say"]):
             raise ValueError(f'beat {i + 1}: "say" must have Hindi words in Devanagari')
     if beats[1].get("visual", {}).get("type") != "define" or not re.search(
@@ -447,7 +470,7 @@ def build_timeline(sc, wd, rate=RATE):
             lens = [gemini_tts(tagged(b), os.path.join(wd, "voice", f"beat_{i}.wav"))
                     for i, b in enumerate(sc["beats"])]
         gaps = HOOK_GAP + GAP * (len(lens) - 1)
-        tempo = min(MAX_TEMPO, max(1.0, sum(lens) / (80 - gaps)))
+        tempo = min(MAX_TEMPO, max(1.1, sum(lens) / (80 - gaps)))  # >= 1.1x: snappier reels
         beats, t = [], 0.0
         for i, b in enumerate(sc["beats"]):
             wav, mp3 = os.path.join(wd, "voice", f"beat_{i}.wav"), os.path.join(wd, "voice", f"beat_{i}.mp3")
@@ -562,7 +585,11 @@ def sfx_times(sc, tl):
         hit = next((w["t"] for w in tb["words"] if key and norm(w["w"]) == norm(key)), None)
         if hit is not None:
             out.append({"t": round(hit, 3), "s": "ding"})
-    return out
+        for c in b.get("cues") or []:
+            t = next((w["t"] for w in tb["words"] if norm(w["w"]) == norm(c.get("word"))), None)
+            if t is not None and c.get("do") in ("kinetic", "emoji", "zoom", "shake", "flash"):
+                out.append({"t": round(t + 0.05, 3), "s": "pop"})
+    return sorted(out, key=lambda e: e["t"])
 
 
 CHORDS = [(220, 261.63, 329.63), (174.61, 220, 261.63), (261.63, 329.63, 392), (196, 246.94, 293.66)]
@@ -598,6 +625,8 @@ def mix(wd, tl, silent, final):
         ms = int(round(max(0, e["t"] - (0.12 if e["s"] == "whoosh" else 0)) * 1000))
         if e["s"] == "whoosh":
             src = "aevalsrc=exprs='0.35*(2*random(0)-1)*sin(PI*t/0.32)':s=44100:d=0.32,highpass=f=900,lowpass=f=6000"
+        elif e["s"] == "pop":
+            src = "aevalsrc=exprs='0.32*sin(2*PI*(520+900*exp(-30*t))*t)*exp(-22*t)':s=44100:d=0.18"
         else:
             src = "aevalsrc=exprs='0.30*sin(2*PI*1320*t)*exp(-9*t)+0.18*sin(2*PI*1980*t)*exp(-12*t)':s=44100:d=0.5"
         filters.append(f"{src},adelay={ms}|{ms}[fx{k}]")

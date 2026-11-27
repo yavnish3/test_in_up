@@ -325,6 +325,14 @@ Reel.build(R2 => {
     els.forEach(e => e.t = Math.min(Math.max(e.t, first - 0.1), end - 0.45));
 
     if (bi === 0) R2.hdrIn(b.id, lead(0) - 0.35); else R2.hdrIn(b.id);
+    if (bi === 0) {  // punchy first second: flash, shake, emoji burst
+      const t0 = Math.max(0.05, lead(0) - 0.1);
+      master.fromTo('#flash', { opacity: 0.35 }, { opacity: 0, duration: 0.25, immediateRender: false }, t0);
+      master.to('#stage', { x: 18, duration: 0.05, yoyo: true, repeat: 5 }, t0 + 0.05);
+      add(`<div class="burst" id="hook-burst" style="left:760px;top:1060px">${esc(P.cover_sticker || '🔥')}</div>`);
+      master.fromTo('#hook-burst', { opacity: 0, scale: 0.2, y: 40 }, { opacity: 1, scale: 1.4, y: 0, duration: 0.3, ease: 'back.out(3)', immediateRender: false }, t0 + 0.1);
+      master.to('#hook-burst', { opacity: 0, y: -200, rotate: 25, duration: 0.9, ease: 'power1.in' }, t0 + 0.7);
+    }
     const sels = els.map(e => e.sel);
     els.forEach(e => {
       const at = e.t;
