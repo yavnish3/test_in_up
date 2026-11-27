@@ -221,7 +221,7 @@ R.beats.forEach((b, bi) => {
               { sel: `#${id}-hi`, at: v.at, kind: 'vhi' }, { sel: `#${id}-vl`, at: v.at });
   } else if (t === 'bars') {
     const bars = (v.bars || []).slice(0, 5), max = Math.max(1, ...bars.map(x => Number(x.value) || 0));
-    h += `<div class="bars" id="${id}-bs">` + bars.map((x, k) => `<div class="b"><div class="bv" id="${id}-bv${k}">${esc(x.value)}${esc(v.unit || '')}</div>` +
+    h += `<div class="bars" id="${id}-bs">` + bars.map((x, k) => `<div class="b"><div class="bv" id="${id}-bv${k}">${esc(x.value)}${String(v.unit || '').length > 1 ? ' ' : ''}${esc(v.unit || '')}</div>` +
       `<div class="bb" id="${id}-bb${k}" data-h="${Math.round(560 * (Number(x.value) || 0) / max)}"></div><div class="bl">${esc(x.label)}</div></div>`).join('') + `</div>`;
     els.push({ sel: `#${id}-bs`, kind: 'box' });
     bars.forEach((x, k) => els.push({ sel: `#${id}-bb${k}`, at: x.at, kind: 'bar', k }));
@@ -342,8 +342,8 @@ Reel.build(R2 => {
         master.to(e.sel, { opacity: 1, borderLeftColor: '#3DF5FF', backgroundColor: 'rgba(61,245,255,.10)', duration: 0.2 }, at);
         if (e.k > 0) master.to(`#${b.id}-ql${e.k - 1}`, { opacity: 0.55, borderLeftColor: 'rgba(0,0,0,0)', backgroundColor: 'rgba(0,0,0,0)', duration: 0.2 }, at);
         gsap.set(`#${b.id}-qx${e.k}`, { opacity: 0, y: 20 });
-        master.to(`#${b.id}-qx${e.k}`, { opacity: 1, y: 0, duration: 0.3, ease: 'back.out(2)' }, at + 0.05);
-        if (e.k > 0) master.to(`#${b.id}-qx${e.k - 1}`, { opacity: 0, duration: 0.15 }, at);
+        master.to(`#${b.id}-qx${e.k}`, { opacity: 1, y: 0, duration: 0.3, ease: 'back.out(2)' }, at + 0.12);
+        if (e.k > 0) master.to(`#${b.id}-qx${e.k - 1}`, { opacity: 0, duration: 0.08 }, at);
       }
       else if (e.kind === 'qres') {
         master.to(`#${b.id}-ql${e.n - 1}`, { opacity: 0.55, borderLeftColor: 'rgba(0,0,0,0)', backgroundColor: 'rgba(0,0,0,0)', duration: 0.2 }, at);
@@ -402,6 +402,7 @@ Reel.build(R2 => {
     });
     from = 0;
     (b.cues || []).forEach((c, ci) => {
+      if (IV && bi === 0 && c.do === 'kinetic') return;  // the INTERVIEW stamp owns the hook
       let at = find(c.word); if (at == null) return;
       at = Math.min(at + 0.05, end - 0.6);
       const target = els.filter(e => !['box', 'arrow', 'vs'].includes(e.kind))[(parseInt(c.target) || 0) - 1];
