@@ -1,0 +1,116 @@
+{
+ "id": "SQL088",
+ "part": 88,
+ "module": "Interview Prep",
+ "topic": "Consecutive Logins",
+ "next": "Database Triggers",
+ "hook": "[[3 Din Lagatar]]? Interview logic!",
+ "cover_sticker": "🔥",
+ "revisit_of": null,
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Interview ka [[Monster]] ques",
+   "sticker": "🤯",
+   "points": [
+    "Problem: Wo users dhundo jo **3+ days** lagatar login karein",
+    "Ye **Gap & Island** problem hai yaar",
+    "Sirf COUNT se kaam nahi chalega ❌"
+   ],
+   "note": "FAANG interviews mein ye logic baar baar pucha jaata hai",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "table",
+   "title": "Sample table: [[Logins]]",
+   "sticker": "📅",
+   "columns": [
+    "U_ID",
+    "L_DT"
+   ],
+   "rows": [
+    [
+     "1",
+     "2024-01-01"
+    ],
+    [
+     "1",
+     "2024-01-02"
+    ],
+    [
+     "1",
+     "2024-01-03"
+    ],
+    [
+     "2",
+     "2024-01-01"
+    ]
+   ],
+   "note": "Yahan User 1 ne 3 din lagatar login kiya hai ✅",
+   "who": "DHYAAN DO"
+  },
+  {
+   "type": "concept",
+   "title": "Simple [[Magic]] logic",
+   "sticker": "🪄",
+   "points": [
+    "**ROW_NUMBER** se har user ko numbering do",
+    "Date mein se numbering **minus** karo",
+    "Agar streak hai, toh result **constant** aayega"
+   ],
+   "note": "Bole toh: 10 Jan - 1 = 9 Jan, 11 Jan - 2 = 9 Jan. Same diff!",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "code",
+   "title": "Likhte hain [[Full Query]]",
+   "sticker": "💻",
+   "file": "streak.sql",
+   "code": "WITH t AS (\n  SELECT u_id, l_dt,\n    ROW_NUMBER() OVER(PARTITION BY u_id\n      ORDER BY l_dt) AS rn\n  FROM logins\n)\nSELECT u_id FROM t\nGROUP BY u_id, (l_dt - rn)\nHAVING COUNT(*) >= 3;"
+  },
+  {
+   "type": "concept",
+   "title": "[[Breakdown]] Clause-wise",
+   "sticker": "🔍",
+   "points": [
+    "**CTE (t)**: Har user ki dates ko rank kiya",
+    "**l_dt - rn**: Consecutive dates ko group kiya",
+    "**HAVING**: Jinka count 3 ya usse zyada hai"
+   ],
+   "note": "Ye logic tabhi chalta hai jab dates unique hon per user per day",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "[[Final Result]] dekho",
+   "sticker": "🏆",
+   "columns": [
+    "U_ID"
+   ],
+   "rows": [
+    [
+     "1"
+    ]
+   ],
+   "note": "User 2 filter ho gaya kyunki uska streak 3 nahi tha",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Sirf COUNT(DISTINCT date) >= 3 check karna",
+   "right": "ROW_NUMBER se grouping karke COUNT check karna",
+   "why": "COUNT se pata nahi chalta ki dates **lagatar** hain ya beech mein gap hai ❌"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Consecutive = **Gap and Island** problem",
+    "**ROW_NUMBER** partition by user lo",
+    "Date - rank = **Constant group**",
+    "GROUP BY + HAVING se count check karo"
+   ]
+  }
+ ],
+ "caption": "3 din lagatar login? [[Consecutive]] logic samjho 🔁\n\nIs post mein:\n✅ Interview ka toughest sawal\n✅ ROW_NUMBER() ka magic\n✅ Gap and Island logic\n✅ Final Query breakdown\n\nSQL Series · Part 88\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #sqlinterview #consecutive #gapandislands #learnsql #sqlinhindi #dataanalytics #dataanalyst #coding #datascience #sqlqueries #database #mysql #postgresql #windowfunctions #sqlprep #interviewtips #techhindi #programming #backend #analyst #datavisualization #sqlcourse #sqllearning #dbms #codinglife #softwareengineering #engineer #data #logic",
+ "interview": true
+}
