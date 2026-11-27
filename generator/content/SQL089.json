@@ -1,0 +1,110 @@
+{
+ "id": "SQL089",
+ "part": 89,
+ "module": "Database Programming",
+ "topic": "Database Triggers",
+ "next": "JSON in SQL",
+ "hook": "Auto-magic action? [[Triggers]] use karo bhai",
+ "cover_sticker": "⚡",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Trigger = [[auto-pilot]]",
+   "sticker": "🤖",
+   "points": [
+    "Table pe action hone par **auto-run**",
+    "**BEFORE** ya **AFTER** insert/update",
+    "Audit log ya **validation** ke liye"
+   ],
+   "note": "Jaise Swiggy pe order hote hi **SMS auto-trigger** 📲",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "concept",
+   "title": "Kab run [[hote hain]]?",
+   "sticker": "🕒",
+   "points": [
+    "**BEFORE**: save hone se pehle",
+    "**AFTER**: save hone ke baad",
+    "**FOR EACH ROW**: har row par"
+   ]
+  },
+  {
+   "type": "code",
+   "title": "Audit log [[trigger]]",
+   "sticker": "💻",
+   "file": "audit_trg.sql",
+   "code": "CREATE TRIGGER log_sal\nAFTER UPDATE ON emp\nFOR EACH ROW\nBEGIN\n  INSERT INTO audit(id, old, new)\n  VALUES (OLD.id, OLD.sal, NEW.sal);\nEND;",
+   "note": "OLD aur NEW se purana naya data milta hai 📊",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "table",
+   "title": "Trigger ka [[action]]",
+   "sticker": "📋",
+   "columns": [
+    "ID",
+    "OLD",
+    "NEW"
+   ],
+   "rows": [
+    [
+     "101",
+     "50k",
+     "65k"
+    ]
+   ],
+   "note": "Salary badli → Trigger ne **audit** table bhar di 📝",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "concept",
+   "title": "Kahan use [[karein]]?",
+   "sticker": "🎯",
+   "points": [
+    "**Audit trail**: kisne data badla",
+    "**Validation**: galat data roko",
+    "**Auto-sync**: doosri table update"
+   ]
+  },
+  {
+   "type": "compare",
+   "title": "Trigger vs [[Procedure]]",
+   "left": {
+    "label": "Trigger ⚡",
+    "points": [
+     "Auto-run hota",
+     "CALL nahi chahiye",
+     "Background task"
+    ]
+   },
+   "right": {
+    "label": "Procedure 🛠️",
+    "points": [
+     "Manual call",
+     "CALL likhna padta",
+     "Complex logic"
+    ]
+   },
+   "note": "Zyada triggers se **debugging mushkil** hoti hai ⚠️",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "mistake",
+   "wrong": "Trigger ke andar same table update karo jispe wo laga hai",
+   "right": "Sirf OLD/NEW values use karo, same table ko mat chhedo",
+   "why": "Infinite loop ban jayega, server crash ho sakta hai! 💀"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Trigger = **auto-run** on DML",
+    "**BEFORE** aur **AFTER** types",
+    "**OLD** aur **NEW** values",
+    "Use: **Audit logs** & checks"
+   ]
+  }
+ ],
+ "caption": "Database mein auto-pilot chahiye? Triggers use karo bhai ⚡\n\nIs post mein:\n✅ Database trigger kya hai\n✅ BEFORE vs AFTER triggers\n✅ OLD aur NEW keyword ka magic\n✅ Real-world audit log example\n\nSQL Series · Part 89/90\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #database #learnsql #sqlinhindi #dataanalyst #programming #coding #sqlqueries #backenddev #sqldeveloper #techhindi #sqltips #data #sqlserver #mysql #postgresql #sqltriggers #dbms #softwareengineering #codehindimien #devlife #computerscience #backend #datastructures #queryoptimization #sqlcode #databaseadmin #techreels #codingbootcamp #learning",
+ "revisit_of": null
+}
