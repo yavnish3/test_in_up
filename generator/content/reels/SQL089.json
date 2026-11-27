@@ -3,176 +3,231 @@
  "beats": [
   {
    "id": "hook",
-   "cap": "Database mein khud-ba-khud action chahiye? Yeh scene hai Database Triggers ka, bro!",
-   "say": "Database mein khud-ba-khud action chahiye? Yeh scene hai Database Triggers ka, bro!",
+   "cap": "Manual entry se thaka? DB trigger se audit log automatic banao, no cap!",
+   "say": "Manual entry se thaka? DB trigger se audit log automatic banao, no cap!",
    "cues": [
     {
-     "word": "action",
-     "do": "kinetic",
-     "target": "AUTO-PILOT"
+     "word": "Manual",
+     "do": "shake",
+     "target": 1
     },
     {
-     "word": "scene",
-     "do": "zoom",
+     "word": "automatic",
+     "do": "kinetic",
+     "target": "AUTO ✨"
+    },
+    {
+     "word": "no",
+     "do": "flash",
      "target": 1
     }
    ]
   },
   {
    "id": "b1",
-   "title": "Trigger **concept**",
+   "title": "Trigger = **auto-pilot**",
    "visual": {
     "type": "define",
     "term": "Database Trigger",
-    "meaning": "Table pe DML action hone par auto-run hone wala background code block",
-    "at": "matlab",
-    "meaning_at": "auto-run"
+    "meaning": "DML (Insert/Update) par khud chalne wala code, bina CALL ke.",
+    "at": "Trigger",
+    "meaning_at": "khud"
    },
-   "cap": "Trigger matlab ek auto-pilot code jo table par INSERT, UPDATE ya DELETE hone par auto-run hota hai, no cap!",
-   "say": "Trigger matlab ek auto-pilot code jo table par INSERT, UPDATE ya DELETE hone par auto-run hota hai, no cap!",
+   "cap": "Rahul ko samjhao, Trigger matlab automatic code jo table pe update hone par khud chalta hai, koi CALL nahi chahiye! Literally!",
+   "say": "Rahul ko samjhao, Trigger matlab automatic code jo table pe update hone par khud chalta hai, koi CALL nahi chahiye! Literally!",
    "cues": [
     {
-     "word": "auto-pilot",
-     "do": "emoji",
-     "target": "🤖"
-    },
-    {
-     "word": "auto-run",
-     "do": "shake",
-     "target": 1
-    },
-    {
-     "word": "code",
+     "word": "matlab",
      "do": "zoom",
      "target": 1
+    },
+    {
+     "word": "automatic",
+     "do": "kinetic",
+     "target": "AUTO 🤖"
+    },
+    {
+     "word": "khud",
+     "do": "emoji",
+     "target": "⚡"
     }
    ]
   },
   {
    "id": "b2",
-   "title": "Audit log **trigger**",
+   "title": "Live **demo**",
    "visual": {
-    "type": "query",
-    "file": "audit_trg.sql",
-    "lines": [
+    "type": "demo",
+    "name": "emp",
+    "columns": [
+     "ID",
+     "Name",
+     "Sal"
+    ],
+    "rows": [
+     [
+      "101",
+      "Rahul",
+      "50k"
+     ],
+     [
+      "102",
+      "Priya",
+      "40k"
+     ]
+    ],
+    "table2": {
+     "name": "audit",
+     "columns": [
+      "id",
+      "old",
+      "new"
+     ],
+     "rows": []
+    },
+    "steps": [
      {
-      "code": "CREATE TRIGGER log_sal",
-      "at": "Pehle,",
-      "explain": "Naya trigger banao jo update pe chale"
+      "op": "update",
+      "row_index": 0,
+      "col": 2,
+      "value": "65k",
+      "sql": "UPDATE emp SET sal=65k",
+      "at": "badalte",
+      "note": "Rahul ki salary 50k → 65k"
      },
      {
-      "code": "AFTER UPDATE ON emp",
-      "at": "Phir,",
-      "explain": "Emp table me update hone ke baad"
+      "op": "highlight",
+      "rows": [
+       0
+      ],
+      "at": "Rahul",
+      "note": "Isi UPDATE pe trigger jaga 👀"
      },
      {
-      "code": "FOR EACH ROW",
-      "at": "Uske",
-      "explain": "Har badli hui row ke liye run hoga"
-     },
-     {
-      "code": "BEGIN INSERT INTO audit",
-      "at": "Phir,",
-      "explain": "Audit table me entry insert karo"
-     },
-     {
-      "code": "VALUES (OLD.id, OLD.sal, NEW.sal);",
-      "at": "Aakhir",
-      "explain": "Purana aur naya data save karo"
+      "op": "insert",
+      "row": [
+       "101",
+       "50k",
+       "65k"
+      ],
+      "table": 2,
+      "sql": "INSERT INTO audit",
+      "at": "audit",
+      "note": "⚡ Trigger ne audit me row daali"
      }
     ],
-    "output": "1 row inserted in audit",
-    "output_at": "save"
+    "link": "⚡ TRIGGER"
    },
-   "cap": "Pehle, naya trigger banao jo update pe chale. Phir, emp table me update hone ke baad. Uske baad, har badli hui row ke liye run hoga. Phir, audit table me entry insert karo. Aakhir mein, purana aur naya data save karo.",
-   "say": "Pehle, naya trigger banao jo update pe chale. Phir, emp table me update hone ke baad. Uske baad, har badli hui row ke liye run hoga. Phir, audit table me entry insert karo. Aakhir mein, purana aur naya data save karo.",
+   "cap": "Dekho, emp table me Rahul ki salary 65k badalte hi, trigger ne audit table me purani aur nayi value insert kar di! Full on, scene kya hai.",
+   "say": "Dekho, emp table me Rahul ki salary 65k badalte hi, trigger ne audit table me purani aur nayi value insert kar di! Full on, scene kya hai.",
    "cues": [
     {
-     "word": "UPDATE",
+     "word": "badalte",
      "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "insert",
+     "do": "flash",
      "target": 2
     },
     {
-     "word": "audit",
+     "word": "scene",
      "do": "emoji",
-     "target": "💯"
-    },
-    {
-     "word": "purana",
-     "do": "shake",
-     "target": 1
+     "target": "👀"
     }
    ]
   },
   {
    "id": "b3",
-   "title": "Trigger ka **action**",
+   "title": "Predict **quiz**",
    "visual": {
     "type": "quiz",
-    "question": "Salary 50k se 65k hui, audit me kya gaya?",
-    "q_at": "gaya",
-    "wrong": "101 | 50k | 50k",
-    "wrong_at": "gaya",
-    "right": "101 | 50k | 65k",
-    "right_at": "Galat!"
+    "question": "Audit table me kitni rows hongi?",
+    "q_at": "kitni",
+    "wrong": "2 rows",
+    "wrong_at": "2",
+    "right": "1 row",
+    "right_at": "1"
    },
-   "cap": "Toh batao audit me kya values aayengi? Zyadatar log purana data bolenge. Galat! OLD.sal 50k aur NEW.sal 65k aayega, literally!",
-   "say": "Toh batao audit me kya values aayengi? Zyadatar log purana data bolenge. Galat! OLD.sal 50k aur NEW.sal 65k aayega, literally!",
+   "cap": "Toh batao, audit table me kitni rows aayengi? Zyadatar log bolenge 2 rows... Galat! Sirf 1 row aayi kyunki sirf ek employee update hua.",
+   "say": "Toh batao, audit table me kitni rows aayengi? Zyadatar log bolenge 2 rows... Galat! Sirf 1 row aayi kyunki sirf ek employee update hua.",
    "cues": [
     {
-     "word": "Galat!",
+     "word": "Galat",
      "do": "shake",
      "target": 1
     },
     {
-     "word": "65k",
+     "word": "1",
      "do": "zoom",
      "target": 1
     },
     {
-     "word": "aayengi?",
-     "do": "zoom",
-     "target": 1
+     "word": "update",
+     "do": "kinetic",
+     "target": "1 ROW ✅"
     }
    ]
   },
   {
    "id": "b4",
-   "title": "Kahan use **karein**?",
+   "title": "Trigger **code**",
    "visual": {
-    "type": "flow",
-    "steps": [
+    "type": "query",
+    "file": "audit.sql",
+    "lines": [
      {
-      "text": "Audit trail",
-      "at": "Audit"
+      "code": "CREATE TRIGGER log_sal",
+      "at": "Pehle,",
+      "explain": "Trigger ka unique naam set karo"
      },
      {
-      "text": "Validation",
-      "at": "galat"
+      "code": "AFTER UPDATE ON emp",
+      "at": "Phir,",
+      "explain": "emp update hone ke baad chale"
      },
      {
-      "text": "Auto-sync tables",
-      "at": "Doosri"
+      "code": "FOR EACH ROW",
+      "at": "Uske",
+      "explain": "Har affected row pe execute hoga"
+     },
+     {
+      "code": "BEGIN",
+      "at": "Logic",
+      "explain": "Yahan se trigger ka body shuru"
+     },
+     {
+      "code": "INSERT INTO audit",
+      "at": "Audit",
+      "explain": "Audit log table me data daalo"
+     },
+     {
+      "code": "(OLD.id, OLD.sal, NEW.sal)",
+      "at": "values",
+      "explain": "Purani aur nayi salary capture karo"
      }
-    ]
+    ],
+    "output": "1 row inserted: (101, 50k, 65k)",
+    "output_at": "capture"
    },
-   "cap": "Audit trail rakhne ke liye, galat data rokne ke liye, aur doosri tables auto-sync karne ke liye triggers use karo!",
-   "say": "Audit trail rakhne ke liye, galat data rokne ke liye, aur doosri tables auto-sync karne ke liye triggers use karo!",
+   "cap": "Pehle, trigger ka naam lo. Phir, UPDATE ke baad run hona set karo. Uske liye, FOR EACH ROW lagao. Logic shuru karo. Audit table me INSERT do. Finally, OLD aur NEW values se difference store karo.",
+   "say": "Pehle, trigger ka naam lo. Phir, UPDATE ke baad run hona set karo. Uske liye, FOR EACH ROW lagao. Logic shuru karo. Audit table me INSERT do. Finally, OLD aur NEW values se difference store karo.",
    "cues": [
     {
-     "word": "galat",
+     "word": "naam",
      "do": "zoom",
      "target": 1
     },
     {
-     "word": "tables",
-     "do": "emoji",
-     "target": "🚀"
+     "word": "INSERT",
+     "do": "flash",
+     "target": 1
     },
     {
-     "word": "liye",
-     "do": "shake",
-     "target": 1
+     "word": "store",
+     "do": "emoji",
+     "target": "📝"
     }
    ]
   },
@@ -182,120 +237,120 @@
    "visual": {
     "type": "compare",
     "left": {
-     "label": "Galat ❌",
-     "at": "wahi",
+     "label": "GALAT ⚠️",
+     "at": "GALAT",
      "points": [
       {
-       "text": "Same table update",
-       "at": "update"
+       "text": "Same table update karo",
+       "at": "same"
       }
      ]
     },
     "right": {
-     "label": "Sahi ✅",
-     "at": "Sirf",
+     "label": "SAHI ✅",
+     "at": "SAHI",
      "points": [
       {
-       "text": "Use OLD / NEW only",
-       "at": "use"
+       "text": "Sirf OLD/NEW use karo",
+       "at": "Sirf"
       }
      ]
     }
    },
-   "cap": "Galti mat karo: trigger ke andar wahi table update mat karo jispe wo laga hai, infinite loop se server crash hoga, lowkey!",
-   "say": "Galti mat karo: trigger ke andar wahi table update mat karo jispe wo laga hai, infinite loop se server crash hoga, lowkey!",
+   "cap": "GALAT: Trigger ke andar same table update mat karo, warna infinite loop ban jayega. SAHI: Sirf OLD aur NEW values use karo.",
+   "say": "GALAT: Trigger ke andar same table update mat karo, warna infinite loop ban jayega. SAHI: Sirf OLD aur NEW values use karo.",
    "cues": [
     {
-     "word": "wahi",
+     "word": "GALAT",
      "do": "shake",
      "target": 1
     },
     {
-     "word": "crash",
-     "do": "flash",
-     "target": 1
+     "word": "loop",
+     "do": "kinetic",
+     "target": "LOOP ♾️"
     },
     {
-     "word": "laga",
-     "do": "emoji",
-     "target": "🔥"
+     "word": "SAHI",
+     "do": "flash",
+     "target": 2
     }
    ]
   },
   {
    "id": "recap",
-   "title": "Quick **recap**",
+   "title": "Key **takeaways**",
    "visual": {
     "type": "checklist",
     "items": [
      {
-      "text": "Trigger = auto-run on DML",
-      "at": "auto-run"
+      "text": "Trigger = Auto-run on DML",
+      "at": "be"
      },
      {
-      "text": "BEFORE aur AFTER types",
-      "at": "BEFORE"
+      "text": "BEFORE/AFTER timing",
+      "at": "AFTER"
      },
      {
-      "text": "OLD aur NEW values",
-      "at": "OLD"
+      "text": "OLD/NEW values",
+      "at": "NEW"
      },
      {
-      "text": "Use: Audit logs & checks",
-      "at": "Audit"
+      "text": "Audit logs ke liye best",
+      "at": "logs"
      }
     ]
    },
-   "cap": "Trigger matlab auto-run on DML, BEFORE aur AFTER types, OLD aur NEW values, full on background automation!",
-   "say": "Trigger matlab auto-run on DML, BEFORE aur AFTER types, OLD aur NEW values, full on background automation!",
+   "cap": "Toh yaad rakho: Trigger auto-run hota hai, BEFORE ya AFTER, OLD/NEW values, aur audit logs ke liye ekdum best hai!",
+   "say": "Toh yaad rakho: Trigger auto-run hota hai, BEFORE ya AFTER, OLD/NEW values, aur audit logs ke liye ekdum best hai!",
    "cues": [
     {
-     "word": "auto-run",
+     "word": "yaad",
      "do": "zoom",
      "target": 1
     },
     {
-     "word": "automation",
+     "word": "best",
      "do": "emoji",
-     "target": "⚡"
+     "target": "🏆"
     },
     {
-     "word": "BEFORE",
-     "do": "zoom",
-     "target": 1
+     "word": "Trigger",
+     "do": "kinetic",
+     "target": "TRIGGER 🤖"
     }
    ]
   }
  ],
- "caption": "Auto-magic action chahiye? Database Triggers use karo bhai! 🤖\n\n✅ Trigger = auto-run on DML\n✅ BEFORE aur AFTER types\n✅ OLD aur NEW values\n✅ Use: Audit logs & checks\n\nSQL Series · Part 89\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #databasestriggers #codinghindi #learntosql #backend #devlife #sqlqueries #programming #techreels #coding #database #mysql #postgresql #devcommunity #interviewprep #softwareengineer #webdev #code #learncoding #techshorts #datastructures #computerscience #engineering #dev #codequality #tech #developer #sqlserver #techcontent #coderslife",
+ "caption": "Database Triggers: Auto-pilot for your DB! 🤖✨\n\n✅ Trigger = auto-run on DML (Insert/Update)\n✅ BEFORE vs AFTER timing samjho\n✅ OLD aur NEW values ka use\n✅ Audit logs ke liye best use case\n\nSQL Series · Part 89\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #triggers #coding #programming #techreels #devlife #webdev #mysql #postgres #learncoding #softwareengineer #backend #codinglife #dbms #developers #code #hinglish #tech #computerscience #engineering #automation #audit #data #query #tips #tricks #student #career #codingtips #sqlquery",
  "beat_times": [
   [
    0.0,
-   4.38
+   3.48
   ],
   [
-   4.38,
-   10.46
+   3.48,
+   10.18
   ],
   [
-   10.46,
-   23.96
+   10.18,
+   18.41
   ],
   [
-   23.96,
-   29.81
+   18.41,
+   25.14
   ],
   [
-   29.81,
-   35.67
+   25.14,
+   35.25
   ],
   [
-   35.67,
-   41.6
+   35.25,
+   41.59
   ],
   [
-   41.6,
-   47.03
+   41.59,
+   48.04
   ]
  ]
 }

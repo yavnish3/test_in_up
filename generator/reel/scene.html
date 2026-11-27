@@ -94,6 +94,8 @@ b{color:var(--gold);font-weight:800}
 .lth .lnc{width:0;opacity:0;color:var(--gold)}
 .lbody{position:absolute;left:0;top:150px;width:960px}
 .lnm{position:absolute;left:0;font:800 30px var(--mono);color:var(--pink);letter-spacing:.04em}
+.llk{position:absolute;left:0;right:0;text-align:center;font:800 34px var(--head);color:#fff;transform-origin:50% 50%}
+.lnote{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;max-width:920px;font:700 40px var(--text);color:#0B0716;background:var(--cyan);padding:14px 28px;border-radius:20px;box-shadow:8px 8px 0 var(--pink);opacity:0}
 .lr.sm{font-size:32px}.lr.sm>div{height:64px;line-height:64px}.lr.sm .lx{top:30px}
 .lr{position:absolute;left:0;width:960px;height:76px;display:flex;align-items:center;background:#150E27;border:2px solid rgba(255,255,255,.08);font:700 36px var(--text);color:#fff}
 .lr>div{position:relative;height:76px;line-height:76px;padding-left:18px;white-space:nowrap;overflow:hidden}
@@ -331,8 +333,10 @@ R.beats.forEach((b, bi) => {
           r.map((val, c) => cell(rid, c, val)).join('') + `<div class="ln" id="${id}-${tb.tag}n${rid}"></div><i class="lx"></i></div>` : '').join('') + `</div>`;
     };
     const top1 = 88 + (T[0].name ? 46 : 0), top2 = top1 + 62 + RH * Math.max(1, T[0].peak) + 70;
+    const lastBottom = (two ? top2 + 62 + RH * Math.max(1, T[1].peak) : top1 + 62 + RH * Math.max(1, T[0].peak));
     h += `<div class="lt" id="${id}-lt">` + plan.map((p, k) => `<div class="lsq" id="${id}-sq${k}" style="font-size:${p.sql.length > 40 ? Math.max(22, Math.floor(34 * 40 / p.sql.length)) : 34}px">${esc(p.sql)}</div>`).join('') +
-      tableHtml(T[0], top1) + (two ? tableHtml(T[1], top2) : '') + `</div>`;
+      tableHtml(T[0], top1) + (two ? `<div class="llk" id="${id}-lk" style="top:${top2 - 66}px">${esc(v.link || '⬇')}</div>` + tableHtml(T[1], top2) : '') +
+      steps.map((st, k) => st.note ? `<div class="lnote" id="${id}-no${k}" style="top:${Math.min(lastBottom + 20, 760)}px">${md(st.note)}</div>` : '').join('') + `</div>`;
     V[id].live = { plan, RH };
     els.push({ sel: `#${id}-lt`, kind: 'box' });
     plan.forEach((p, k) => els.push({ sel: `#${id}-lt`, at: steps[k].at, kind: 'dstep', k }));
@@ -475,6 +479,14 @@ Reel.build(R2 => {
         if (p.sql) {
           if (e.k > 0) master.to(`#${id}-sq${e.k - 1}`, { opacity: 0, duration: 0.15 }, at - 0.15);
           gsap.set(`#${id}-sq${e.k}`, { opacity: 0, y: -14 }); master.to(`#${id}-sq${e.k}`, { opacity: 1, y: 0, duration: 0.25 }, at - 0.1);
+        }
+        const note = document.getElementById(`${id}-no${e.k}`);
+        if (note) {
+          document.querySelectorAll(`[id^="${id}-no"]`).forEach(n => { if (n !== note) master.to(n, { opacity: 0, duration: 0.15 }, at); });
+          gsap.set(note, { opacity: 0, y: 20 }); master.to(note, { opacity: 1, y: 0, duration: 0.3, ease: 'back.out(2)' }, at + 0.35);
+        }
+        if (g === 'b' && document.getElementById(`${id}-lk`)) {
+          master.fromTo(`#${id}-lk`, { scale: 1, color: '#FFFFFF' }, { scale: 1.25, color: '#C6FF3D', duration: 0.2, yoyo: true, repeat: 3, immediateRender: false }, at);
         }
         if (p.op === 'insert') {
           gsap.set(row(p.rid), { opacity: 0, x: 260, top: (p.order.length - 1) * RH });

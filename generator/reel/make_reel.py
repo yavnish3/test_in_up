@@ -127,9 +127,10 @@ Each beat (except hook) has:
     {"type":"timeline","events":[{"text":"<= 14 chars","note":"<= 26 chars","at":"word"}, ... 3-5]}   (transactions, execution order, steps in time)
     {"type":"kinetic","lines":[{"text":"<= 12 chars","at":"word"}, ... max 3]}  (big words, use sparingly)
     {"type":"demo","name":"emp","columns":["<= 10 chars", ... max 4],"rows":[[...], ... 2-5 rows that exist BEFORE the operation],
+       "link":"<= 14 chars label between the two tables, e.g. ⚡ TRIGGER / 🔗 JOIN / 🔑 FOREIGN KEY",
        "table2":{"name":"audit","columns":[...],"rows":[... 0-3 rows]}  (OPTIONAL second table for triggers / joins /
         foreign keys / copies; with table2 keep 2-3 rows per table; a step with "table":2 acts on table2),
-       "steps":[{"op":"insert","row":[...],"table":1,"sql":"<= 40 chars","at":"word"} |
+       "steps":[{"op":"insert","row":[...],"table":1,"sql":"<= 40 chars","note":"<= 40 chars what just happened, Hinglish","at":"word"} |
                 {"op":"delete","row_index":2,"sql":"...","at":"word"} |
                 {"op":"update","row_index":1,"col":2,"value":"60000","sql":"...","at":"word"} |
                 {"op":"filter","keep":[0,2],"sql":"WHERE ...","at":"word"} |
@@ -282,6 +283,36 @@ def auto_cues(b, i):
         used.add(key)
 
 
+def fix_demo(b):
+    """Make a beat's demo watchable without another AI round: a b2 'table' becomes a live demo (rows appear
+    one by one), 2-step demos get a closing highlight, and step words follow the order they are spoken."""
+    v = b.get("visual") or {}
+    caps = [re.sub(r"[^a-z0-9]", "", w.lower()) for w in b.get("cap", "").split()]
+    if v.get("type") == "table" and b.get("id") == "b2" and v.get("rows"):
+        rows = v["rows"][:5]
+        at = v.get("row_at") or []
+        v = {"type": "demo", "columns": v.get("columns", []), "rows": [],
+             "steps": [{"op": "insert", "row": r, "at": at[k] if k < len(at) else ""} for k, r in enumerate(rows)]
+             + ([{"op": "highlight", "rows": v.get("highlight") or [0]}] if v.get("highlight") else [])}
+        b["visual"] = v
+    if v.get("type") != "demo":
+        return
+    steps = v.get("steps") or []
+    if len(steps) == 2:
+        last = steps[-1]
+        steps.append({"op": "highlight", "table": last.get("table", 1), "rows": [0],
+                      "note": "Ye raha result 👀"})
+    pos = -1
+    for st in steps:  # each step's word must come after the previous step's word
+        key = re.sub(r"[^a-z0-9]", "", str(st.get("at", "")).lower())
+        found = next((i for i in range(pos + 1, len(caps)) if caps[i] == key), None)
+        if found is None:
+            found = min(len(caps) - 1, pos + max(2, len(caps) // (len(steps) + 1)))
+            st["at"] = b["cap"].split()[found] if caps else ""
+        pos = found
+    v["steps"] = steps
+
+
 def check_script(sc, post):
     beats = sc.get("beats") or []
     if len(beats) != 7:
@@ -362,6 +393,9 @@ def check_script(sc, post):
             raise ValueError("interview reel: the b2 query walkthrough needs 45-60 words (what + why for every clause)")
     if kinds[:4].count("quiz") != 1 or "quiz" in kinds[:1]:
         raise ValueError('exactly ONE of b2, b3, b4 must use the "quiz" visual (predict -> wrong answer -> right answer)')
+    for b in beats[2:5]:
+        fix_demo(b)
+    kinds = [b.get("visual", {}).get("type") for b in beats[1:]]
     demo_beats = [b for b in beats[2:5] if b.get("visual", {}).get("type") == "demo"]
     if not demo_beats or not any(len(b["visual"].get("steps") or []) >= 3 for b in demo_beats):
         raise ValueError('at least one of b2-b4 must be a live "demo" table with 3-5 steps (insert / delete / update / '
