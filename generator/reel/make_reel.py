@@ -69,9 +69,13 @@ NULL aata hai, aur WHERE wahi users rakhta hai" - so b2 may use 35-55 words; b3 
 sample data / the result rows, as the QUIZ beat (predict the output -> common wrong answer -> right answer); b4 = an alternative query ("query", also full) or the
 trade-off. Most words go to explaining the query.
 
-Do NOT copy the carousel post. The post below is only the topic reference: make the reel
-feel like a real Instagram reel with its OWN fresh examples, mini story, numbers, and
-visuals (new example tables, a flow of how it works, a Gen Z chat, a big stat...).
+Use your OWN fresh example (new table / story / numbers), but the reel MUST TEACH every point in
+"must_teach" (taken from the carousel): say each one clearly in the voice AND show it on screen
+(a checklist / flow / compare / code / query item). Explain the WHY and the HOW, not only the what:
+e.g. for SQL injection show the attacker's input, the query it turns into, and why that returns
+every row. A viewer who only watches the reel must understand as much as the carousel reader.
+DEFINITION: beat b1 MUST start by defining the topic in one simple line ("<topic> matlab ..." /
+"<topic> yaani ..."), and b1's visual MUST be "define" (the term + its meaning).
 
 Pick the visuals that fit THIS topic (any JOIN / anti-join topic MUST include one "venn" beat; aggregates -> bars, transactions / order -> timeline,
 queries -> query walkthrough...), and a colour "theme" for the mood of the topic:
@@ -109,6 +113,8 @@ Each beat (except hook) has:
     {"type":"bars","unit":"k","bars":[{"label":"<= 8 chars","value":90,"at":"word"}, ... 2-5]}   (GROUP BY / SUM / COUNT / AVG)
     {"type":"timeline","events":[{"text":"<= 14 chars","note":"<= 26 chars","at":"word"}, ... 3-5]}   (transactions, execution order, steps in time)
     {"type":"kinetic","lines":[{"text":"<= 12 chars","at":"word"}, ... max 3]}  (big words, use sparingly)
+    {"type":"define","term":"<= 24 chars, the topic","meaning":"<= 80 chars simple Hinglish definition","at":"word","meaning_at":"word"}
+       (ONLY for b1: the definition card)
     {"type":"quiz","question":"<= 34 chars, e.g. Kitni rows aayengi?","q_at":"word",
        "wrong":"<= 22 chars common wrong answer","wrong_at":"word","right":"<= 22 chars right answer","right_at":"word"}
        (exactly ONE quiz beat among b2-b4; right_at = the word right after "Galat")
@@ -138,7 +144,7 @@ Total words of all "say" must be 135-155 (about 50-70 seconds of speech).""",
 Total words of all beats must be __TOTAL__ (about 55-70 seconds of speech).""",
 }
 WORDS = {"edge": ("10-14", "24-30", "18-24", "14-20", "135-155"),
-         "gemini": ("8-11", "16-20", "13-16", "10-13", "100-115")}
+         "gemini": ("10-14", "22-28", "16-20", "12-16", "130-150")}
 
 
 def style():
@@ -173,12 +179,43 @@ def targets(s):
     return []
 
 
+def must_teach(post):
+    """The carousel's key points the reel has to cover: recap points + concept slide titles + the mistake."""
+    clean = lambda t: re.sub(r"\[\[|\]\]|\*\*", "", str(t)).strip()
+    pts = [clean(p) for s in post["slides"] if s.get("type") == "recap" for p in s.get("points", [])]
+    pts += [clean(s.get("title")) for s in post["slides"] if s.get("type") in ("concept", "code") and s.get("title")]
+    mk = next((s for s in post["slides"] if s.get("type") == "mistake"), None)
+    if mk:
+        pts.append("Common mistake: " + clean(mk.get("wrong")) + " -> " + clean(mk.get("right")))
+    return list(dict.fromkeys(p for p in pts if p))[:10]
+
+
+KEY_STOP = {"hota", "hoti", "karna", "karo", "jaata", "jaati", "sirf", "kabhi", "hamesha", "zaroor", "pehle",
+            "baad", "liye", "wala", "wali", "matlab", "bahut", "query", "table", "using", "always", "never",
+            "karta", "karte", "karti", "sakta", "sakte", "rakho", "banta", "nahin", "aapka", "apna", "dekho"}
+
+
+def missing_points(post, caps):
+    """Recap points whose key words never appear in the reel voice."""
+    said = set(re.findall(r"[a-z0-9_]+", caps.lower()))
+    miss = []
+    for s in post["slides"]:
+        if s.get("type") != "recap":
+            continue
+        for p in s.get("points", []):
+            keys = {w for w in re.findall(r"[a-z0-9_]+", re.sub(r"\*\*|\[\[|\]\]", "", p).lower())
+                    if len(w) >= 5 and w not in KEY_STOP}
+            if keys and not keys & said:
+                miss.append(re.sub(r"\*\*|\[\[|\]\]", "", p))
+    return miss
+
+
 def ask_script(post, feedback=None, previous=None, attempt=1):
     from generate import ask_writer
     slides = [{"index": i, **s, "targets": targets(s)} for i, s in enumerate(post["slides"][:6])]
     prompt = (style() + "\nThe post (carousel content) this reel is about:\n"
               + json.dumps({"part": post["part"], "topic": post["topic"], "hook": post["hook"],
-                            "next": post.get("next"), "slides": slides,
+                            "next": post.get("next"), "must_teach": must_teach(post), "slides": slides,
                             "mistake": {**post["slides"][6], "targets": targets(post["slides"][6])},
                             "recap": {**post["slides"][7], "targets": targets(post["slides"][7])}},
                            ensure_ascii=False))
@@ -191,7 +228,8 @@ def ask_script(post, feedback=None, previous=None, attempt=1):
 
 
 VISUALS = {"venn": "left", "bars": "bars", "timeline": "events", "query": "lines", "code": "lines", "table": "columns", "flow": "steps", "stat": "value", "compare": "left",
-           "chat": "messages", "checklist": "items", "kinetic": "lines", "quiz": "question", "cliff": "question"}
+           "chat": "messages", "checklist": "items", "kinetic": "lines", "quiz": "question", "cliff": "question",
+           "define": "meaning"}
 
 
 def check_script(sc, post):
@@ -255,6 +293,12 @@ def check_script(sc, post):
                      and c.get("do") in ("pop", "highlight", "zoom", "shake", "kinetic", "emoji", "flash")]
         if SCRIPT == "deva" and not re.search(r"[\u0900-\u097F]", b["say"]):
             raise ValueError(f'beat {i + 1}: "say" must have Hindi words in Devanagari')
+    if beats[1].get("visual", {}).get("type") != "define" or not re.search(
+            r"\b(matlab|yaani|yani|means|kehte|definition|ka matlab)\b", beats[1]["cap"].lower()):
+        raise ValueError('b1 must define the topic first ("<topic> matlab ...") with the "define" visual (term + meaning)')
+    miss = missing_points(post, " ".join(b["cap"] for b in beats))
+    if len(miss) > 1:
+        raise ValueError(f"the reel must teach the carousel's key points; these are missing from the voice: {miss}")
     kinds = [b.get("visual", {}).get("type") for b in beats[1:]]
     if kinds[:4].count("quiz") != 1 or "quiz" in kinds[:1]:
         raise ValueError('exactly ONE of b2, b3, b4 must use the "quiz" visual (predict -> wrong answer -> right answer)')

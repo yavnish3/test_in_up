@@ -87,6 +87,11 @@ b{color:var(--gold);font-weight:800}
 .cf .tg{font:800 32px var(--mono);color:var(--pink);letter-spacing:.06em}
 .cf .q{font:800 64px/1.15 var(--head);color:#fff;margin-top:20px}
 .cta{position:absolute;left:0;right:0;top:1150px;text-align:center}
+.df{position:absolute;left:60px;top:560px;width:960px;border-radius:34px;padding:40px 44px;background:var(--card);border:4px solid var(--gold);box-shadow:12px 12px 0 var(--pink)}
+.df .tg{font:800 30px var(--mono);color:var(--gold);letter-spacing:.06em}
+.df .tm2{font:800 92px/1.02 var(--head);color:#fff;margin-top:14px;letter-spacing:-.02em}
+.df .eq{font:800 70px/1 var(--head);color:var(--pink);margin:10px 0 6px}
+.df .mn{font:700 50px/1.22 var(--text);color:#fff}
 .qz .tm{display:inline-block;margin-top:14px;font:800 34px var(--mono);color:#0B0716;background:var(--gold);padding:8px 22px;border-radius:14px;animation:tmp 0.6s ease-in-out infinite alternate}
 @keyframes tmp{from{transform:scale(1)}to{transform:scale(1.08)}}
 .ivs{position:absolute;left:80px;top:1080px;font:800 76px/1 var(--head);color:#fff;background:var(--pink);border:6px solid #fff;padding:22px 34px;border-radius:22px;box-shadow:12px 12px 0 var(--gold);letter-spacing:-.01em}
@@ -260,6 +265,10 @@ R.beats.forEach((b, bi) => {
   } else if (t === 'stat') {
     h += `<div class="st" id="${id}-s"><div class="num" id="${id}-n">0</div><div class="lab">${md(v.label || '')}</div><div class="barw"><div class="bar" id="${id}-b"></div></div></div>`;
     els.push({ sel: `#${id}-s`, at: v.at, kind: 'stat' });
+  } else if (t === 'define') {
+    h += `<div class="df" id="${id}-df"><div class="tg">📖 DEFINITION</div><div class="tm2" id="${id}-dt">${md(v.term || P.topic)}</div>` +
+      `<div class="eq">=</div><div class="mn" id="${id}-dm">${md(v.meaning || '')}</div></div>`;
+    els.push({ sel: `#${id}-df`, at: v.at }, { sel: `#${id}-dm`, at: v.meaning_at });
   } else if (t === 'quiz') {
     h += `<div class="qz" id="${id}-qz"><div class="q">${md(v.question || '')}</div><div class="qm" id="${id}-qm">?</div><div class="tm" id="${id}-tm">⏱ Socho… 3 · 2 · 1</div></div>` +
       `<div class="qa w" id="${id}-qw"><span class="tg">ZYADATAR LOG BOLENGE</span>${md(v.wrong || '')}<i class="x" id="${id}-qx"></i></div>` +
