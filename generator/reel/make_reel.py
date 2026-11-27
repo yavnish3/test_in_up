@@ -575,6 +575,17 @@ async def capture(scene, out_mp4, cover_jpg, dur):
         await b.close()
 
 
+OUTRO = 2.2
+
+
+def add_outro(tl):
+    """Extra seconds after the voice: a 'screenshot le lo' cheat sheet, then a cut back to the hook (loop)."""
+    if "outro" not in tl:
+        tl["outro"] = round(tl["duration"], 3)
+        tl["duration"] = round(tl["duration"] + OUTRO, 3)
+    return tl
+
+
 def sfx_times(sc, tl):
     """Whoosh on every beat change, a 'ding' when the quiz answer and the cliffhanger CTA appear."""
     norm = lambda w: re.sub(r"[^a-z0-9]", "", str(w).lower())
@@ -596,6 +607,8 @@ def sfx_times(sc, tl):
             t = next((w["t"] for w in tb["words"] if norm(w["w"]) == norm(c.get("word"))), None)
             if t is not None and c.get("do") in ("kinetic", "emoji", "zoom", "shake", "flash"):
                 out.append({"t": round(t + 0.05, 3), "s": "pop"})
+    if tl.get("outro"):
+        out += [{"t": tl["outro"], "s": "ding"}, {"t": round(tl["duration"] - 0.4, 3), "s": "whoosh"}]
     return sorted(out, key=lambda e: e["t"])
 
 
@@ -708,6 +721,7 @@ def make_reel(post, out_root):
         if not MIN_SECONDS <= tl["duration"] <= MAX_SECONDS:
             raise RuntimeError(f"{pid}: reel is {tl['duration']:.0f}s, outside 20-90 s")
 
+    add_outro(tl)
     tl["sfx"] = sfx_times(sc, tl)
     for f in ("reel_lib.js", "reel_base.css", "gsap.min.js"):
         shutil.copy(os.path.join(HERE, f), wd)
@@ -734,7 +748,7 @@ def make_reel(post, out_root):
 
 def rerender(wd):
     old = open(os.path.join(wd, "scene.html"), encoding="utf-8").read()
-    tl = json.loads(re.search(r"const TL = (\{.*?\}); const CAPS", old, re.S).group(1))
+    tl = add_outro(json.loads(re.search(r"const TL = (\{.*?\}); const CAPS", old, re.S).group(1)))
     caps = re.search(r"const CAPS = (\[.*?\]); const R =", old, re.S).group(1)
     reel = re.search(r"const R = (\{.*\});</script>", old, re.S).group(1)
     for f in ("reel_lib.js", "reel_base.css", "gsap.min.js"):
