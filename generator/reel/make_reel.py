@@ -31,8 +31,8 @@ def pick_voice():
     ENGINE, VOICE, RATE, SCRIPT = VOICES[name]
     print(f"  voice: {name}", flush=True)
     return name
-GEMINI_TTS_MODELS = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview", "gemini-3.8-flash-lite-tts",
-                     "gemini-2.5-flash-preview-tts"]
+GEMINI_TTS_MODELS = ["gemini-2.5-flash-preview-tts", "gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview",
+                     "gemini-3.8-flash-lite-tts"]  # 2.5 first: the expressive voice the user approved
 MAX_TEMPO = 1.35
 GAP, HOOK_GAP, TAIL = 0.18, 0.1, 0.25
 MIN_SECONDS, MAX_SECONDS = 20, 90
@@ -409,7 +409,7 @@ TRIM = ("silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
         "silenceremove=start_periods=1:start_threshold=-45dB,areverse")
 
 
-TAGS = {"hook": "[excited]", "b1": "[playful]", "b2": "[energetic]", "b3": "[energetic]", "b4": "[playful]",
+TAGS = {"hook": "[excited]", "b1": "[excited]", "b2": "[energetic]", "b3": "[energetic]", "b4": "[playful]",
         "galti": "[teasing]", "recap": "[confident]"}
 
 
