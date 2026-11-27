@@ -64,8 +64,8 @@ INTERVIEW QUERY REELS (the post has "interview": true): the QUERY is the hero an
   b1 = "define": SHORT definition + what we must find (12-16 words);
   b2 = "query": the FULL query walkthrough, 45-60 words, every clause: what it does AND why it is needed;
   b3 = "quiz": predict the query's output on the sample data -> common wrong answer -> "Galat!" -> right rows;
-  b4 = "table": DRY RUN - the intermediate result the query builds step by step (e.g. the extra columns
-       like rn or date - rn for each row), so the viewer SEES how the query works; 30-40 words;
+  b4 = "demo": LIVE DRY RUN - the intermediate result the query builds step by step (add_col for extra columns
+       like rn or date - rn, then filter / highlight the answer rows), so the viewer SEES how the query works; 30-40 words;
   galti = "compare" or "code": the common WRONG query vs the RIGHT one.
 QUERY TOPICS: if the topic is an interview question / a query to write, the query is the hero.
 Use this plan: b1 = the sample data ("table") and what we must find; b2 = ONE "query" walkthrough with
@@ -84,6 +84,12 @@ every row. A viewer who only watches the reel must understand as much as the car
 DEFINITION: beat b1 MUST start by defining the topic in one simple line ("<topic> matlab ..." /
 "<topic> yaani ..."), and b1's visual MUST be "define" (the term + its meaning).
 
+PRACTICAL FIRST (every reel): the viewer must SEE the topic work on real rows, not only hear about it.
+  CONCEPT reels: b2 = live "demo" (the operation happens on the table step by step, 30-40 words);
+                 b3 = "quiz" on what that demo / query returns; b4 = "query" or "code" with its REAL output
+                 (or a second "demo"); most of the words go to b2-b4.
+  INTERVIEW reels: b2 = "query" walkthrough, b3 = "quiz", b4 = live "demo" dry run (computed columns filling in).
+  Every demo step shows its SQL line; the voice narrates what happens on the rows and why.
 Pick the visuals that fit THIS topic (any JOIN / anti-join topic MUST include one "venn" beat; aggregates -> bars, transactions / order -> timeline,
 queries -> query walkthrough...), and a colour "theme" for the mood of the topic:
 "fire" (performance, speed, slow queries), "ocean" (joins, relations), "matrix" (data quality, NULLs,
@@ -120,6 +126,20 @@ Each beat (except hook) has:
     {"type":"bars","unit":"k","bars":[{"label":"<= 8 chars","value":90,"at":"word"}, ... 2-5]}   (GROUP BY / SUM / COUNT / AVG)
     {"type":"timeline","events":[{"text":"<= 14 chars","note":"<= 26 chars","at":"word"}, ... 3-5]}   (transactions, execution order, steps in time)
     {"type":"kinetic","lines":[{"text":"<= 12 chars","at":"word"}, ... max 3]}  (big words, use sparingly)
+    {"type":"demo","name":"emp","columns":["<= 10 chars", ... max 4],"rows":[[...], ... 2-5 rows that exist BEFORE the operation],
+       "table2":{"name":"audit","columns":[...],"rows":[... 0-3 rows]}  (OPTIONAL second table for triggers / joins /
+        foreign keys / copies; with table2 keep 2-3 rows per table; a step with "table":2 acts on table2),
+       "steps":[{"op":"insert","row":[...],"table":1,"sql":"<= 40 chars","at":"word"} |
+                {"op":"delete","row_index":2,"sql":"...","at":"word"} |
+                {"op":"update","row_index":1,"col":2,"value":"60000","sql":"...","at":"word"} |
+                {"op":"filter","keep":[0,2],"sql":"WHERE ...","at":"word"} |
+                {"op":"sort","order":[2,0,1],"sql":"ORDER BY ...","at":"word"} |
+                {"op":"highlight","rows":[1],"at":"word"} |
+                {"op":"add_col","name":"rn","values":[1,2,3],"sql":"ROW_NUMBER() ...","at":"word"}, ... 2-5 steps]}
+       (LIVE table: the viewer WATCHES the operation happen on the rows; indexes are positions in the table
+        as it is at that step; every value must be exactly what the SQL would produce; 3-5 steps; the voice narrates
+        each step as it happens, 25-40 words; for two-table topics like triggers / joins, show the table that changes,
+        e.g. UPDATE a salary in "emp" -> a new row appears in "audit" (table2))
     {"type":"define","term":"<= 24 chars, the topic","meaning":"<= 80 chars, simple ROMAN HINGLISH definition (not English), e.g. Input mein SQL ghusa ke DB ko bewakoof banana","at":"word","meaning_at":"word"}
        (ONLY for b1: the definition card)
     {"type":"quiz","question":"<= 34 chars, e.g. Kitni rows aayengi?","q_at":"word",
@@ -237,7 +257,7 @@ def ask_script(post, feedback=None, previous=None, attempt=1):
 
 
 VISUALS = {"venn": "left", "bars": "bars", "timeline": "events", "query": "lines", "code": "lines", "table": "columns", "flow": "steps", "stat": "value", "compare": "left",
-           "chat": "messages", "checklist": "items", "kinetic": "lines", "quiz": "question", "cliff": "question",
+           "chat": "messages", "checklist": "items", "kinetic": "lines", "quiz": "question", "cliff": "question", "demo": "steps",
            "define": "meaning"}
 
 
@@ -332,13 +352,31 @@ def check_script(sc, post):
         raise ValueError(f"the reel must teach the carousel's key points; these are missing from the voice: {miss}")
     kinds = [b.get("visual", {}).get("type") for b in beats[1:]]
     if post.get("interview"):
-        if kinds[1] != "query" or kinds[2] != "quiz" or kinds[3] not in ("table", "flow"):
+        if kinds[1] != "query" or kinds[2] != "quiz" or kinds[3] != "demo":
             raise ValueError('interview reel plan: b2 = "query" walkthrough, b3 = "quiz" on its output, '
-                             'b4 = "table" dry run of the intermediate result')
+                             'b4 = live "demo" dry run of the intermediate result')
+    elif kinds[1] != "demo" or kinds[2] != "quiz" or kinds[3] not in ("query", "code", "demo"):
+        raise ValueError('practical-first plan: b2 = live "demo" on the table, b3 = "quiz" on its result, '
+                         'b4 = "query" / "code" with the real output (or another "demo")')
         if len(beats[2]["cap"].split()) < 36:
             raise ValueError("interview reel: the b2 query walkthrough needs 45-60 words (what + why for every clause)")
     if kinds[:4].count("quiz") != 1 or "quiz" in kinds[:1]:
         raise ValueError('exactly ONE of b2, b3, b4 must use the "quiz" visual (predict -> wrong answer -> right answer)')
+    demo_beats = [b for b in beats[2:5] if b.get("visual", {}).get("type") == "demo"]
+    if not demo_beats or not any(len(b["visual"].get("steps") or []) >= 3 for b in demo_beats):
+        raise ValueError('at least one of b2-b4 must be a live "demo" table with 3-5 steps (insert / delete / update / '
+                         'filter / sort / highlight / add_col) so the viewer SEES the topic happen on the rows')
+    for b in demo_beats:
+        rows = [list(map(str, r)) for r in b["visual"].get("rows") or []]
+        for st in b["visual"].get("steps") or []:
+            if st.get("op") == "insert":
+                new_row = list(map(str, st.get("row") or []))
+                if new_row in rows:
+                    raise ValueError(f"demo: inserted row {new_row} is already in the starting rows - start with the rows that "
+                                     "exist BEFORE the operation (the table may even start empty)")
+                rows.append(new_row)
+        if len(b["cap"].split()) < 22:
+            raise ValueError("demo beat: the voice must narrate every step (what happens on the table and why), 25-40 words")
     if "cliff" in kinds:
         raise ValueError('do not use the "cliff" visual; the recap ends with takeaways (checklist / kinetic)')
     q = next(b["visual"] for b in beats if b.get("visual", {}).get("type") == "quiz")
@@ -346,6 +384,12 @@ def check_script(sc, post):
         raise ValueError("quiz visual needs short 'wrong' and 'right' answers (<= 22 chars each)")
     if os.environ.get("REEL_TONE", "").strip():
         slang = r"\b(bro|scene|literally|no cap|full on|lowkey|sach mein|ekdum|chill|bhai|yaar)\b"
+        extras = [" No cap!", " Literally!", " Ekdum simple, bro!", " Full on clear!"]
+        for k, b in enumerate([b for b in beats if b["id"] in ("hook", "b1", "b3", "galti", "recap")]):
+            if len(re.findall(slang, " ".join(x["cap"] for x in beats).lower())) >= 5:
+                break
+            if not re.search(slang, b["cap"].lower()):  # top up Gen Z flavour instead of rejecting the script
+                b["cap"] = b["say"] = b["cap"].rstrip() + extras[k % len(extras)]
         n = len(re.findall(slang, " ".join(b["cap"] for b in beats).lower()))
         if n < 5:
             raise ValueError(f"Gen Z tone: only {n} Gen Z phrases; use at least one per beat (bro, scene kya hai, "
@@ -653,6 +697,11 @@ def sfx_times(sc, tl):
             out.append({"t": round(hit, 3), "s": "drop" if v.get("type") == "quiz" else "ding"})
             if v.get("type") == "quiz":
                 out.append({"t": round(max(tb["start"], hit - 1.3), 3), "s": "riser"})
+        if v.get("type") == "demo":
+            for st in v.get("steps") or []:
+                t = next((w["t"] for w in tb["words"] if norm(w["w"]) == norm(st.get("at"))), None)
+                if t is not None:
+                    out.append({"t": round(t + 0.15, 3), "s": "pop"})
         if v.get("type") in ("code", "query"):
             for ln in v.get("lines") or []:
                 t = next((w["t"] for w in tb["words"] if norm(w["w"]) == norm(ln.get("at"))), None)
@@ -734,7 +783,8 @@ def make_reel(post, out_root):
     feedback = None
     best = None
     previous = None
-    for attempt in range(1, 7):
+    fb_hist = []
+    for attempt in range(1, 9):
         print(f"{pid} reel: asking AI for the script (attempt {attempt})", flush=True)
         raw = None
         try:
@@ -742,7 +792,10 @@ def make_reel(post, out_root):
             sc = check_script(raw, post)
         except (ValueError, KeyError, TypeError, json.JSONDecodeError) as e:
             print(f"  bad script: {e}", flush=True)
-            feedback, previous = str(e), raw if isinstance(raw, dict) else None
+            fb_hist.append(str(e))
+            earlier = [f for f in dict.fromkeys(fb_hist[:-1]) if f != str(e)][-4:]
+            feedback = str(e) + ("\nAlso keep these earlier problems fixed: " + " | ".join(earlier) if earlier else "")
+            previous = raw if isinstance(raw, dict) else None
             continue
         try:
             tl = build_timeline(sc, wd)
