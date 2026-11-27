@@ -17,7 +17,7 @@ TOPICS = os.path.join(HERE, "topics.csv")
 CAROUSELS = os.path.join(SCHED, "carousels.json")
 POSTED = os.path.join(SCHED, "posted_posts.csv")
 STOCK = int(os.environ.get("STOCK", "5"))
-MODELS = [os.environ.get("GEMINI_MODEL", "gemini-flash-latest"), "gemini-3-flash-preview",
+MODELS = [os.environ.get("GEMINI_MODEL", "gemini-3-flash-preview"), "gemini-flash-latest",
           "gemini-flash-lite-latest", "gemini-3.1-flash-lite"]
 EXAMPLES = ["SQL045", "SQL068"]
 MAX_PART = 4
@@ -189,7 +189,7 @@ def ask_gemini(prompt):
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
         t0 = time.time()
         try:
-            resp = requests.post(url, headers={"x-goog-api-key": key}, json=body, timeout=300)
+            resp = requests.post(url, headers={"x-goog-api-key": key}, json=body, timeout=120)
         except requests.RequestException as e:
             print(f"{tag}: no answer ({type(e).__name__}), trying again", flush=True)
             continue
