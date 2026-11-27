@@ -1,0 +1,224 @@
+{
+ "theme": "matrix",
+ "beats": [
+  {
+   "id": "hook",
+   "cap": "Kya aapka database hack ho sakta hai? Rahul ne login bypass karke full on access le liya, scene kya hai samjhati hoon.",
+   "say": "Kya aapka database hack ho sakta hai? Rahul ne login bypass karke full on access le liya, scene kya hai samjhati hoon.",
+   "cues": [
+    {
+     "word": "hack",
+     "do": "shake",
+     "target": 0
+    },
+    {
+     "word": "full",
+     "do": "kinetic",
+     "target": "HACKED 💀"
+    }
+   ]
+  },
+  {
+   "id": "b1",
+   "title": "**SQL Injection** kya hai?",
+   "visual": {
+    "type": "define",
+    "term": "SQL Injection",
+    "meaning": "Input field mein malicious SQL daal kar database ko hack karna aur data churana",
+    "at": "Injection",
+    "meaning_at": "malicious"
+   },
+   "cap": "SQL Injection matlab input field mein malicious SQL daal kar database ko hack karna, bro. Ye literally queries manipulate karke data nikaalne ka shortcut hai.",
+   "say": "SQL Injection matlab input field mein malicious SQL daal kar database ko hack karna, bro. Ye literally queries manipulate karke data nikaalne ka shortcut hai.",
+   "cues": [
+    {
+     "word": "bro",
+     "do": "emoji",
+     "target": "🕵️"
+    },
+    {
+     "word": "literally",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b2",
+   "title": "**Vulnerable** Query",
+   "visual": {
+    "type": "query",
+    "file": "unsafe.sql",
+    "lines": [
+     {
+      "code": "SELECT *",
+      "at": "SELECT",
+      "explain": "Saara data nikaalne ke liye"
+     },
+     {
+      "code": "FROM users",
+      "at": "users",
+      "explain": "Hamari main users table se"
+     },
+     {
+      "code": "WHERE user = '$user'",
+      "at": "WHERE",
+      "explain": "Username filter karne ke liye"
+     },
+     {
+      "code": "AND pass = '$pass';",
+      "at": "AND",
+      "explain": "Password match karne ke liye"
+     }
+    ],
+    "output": "Result: Vulnerable to Injection",
+    "output_at": "concatenate"
+   },
+   "cap": "Pehle SELECT se saara data uthao users table se, phir WHERE clause se username match karo, aur AND se password verify karo; par variables concatenate karna risk hai.",
+   "say": "Pehle SELECT se saara data uthao users table se, phir WHERE clause se username match karo, aur AND se password verify karo; par variables concatenate karna risk hai.",
+   "cues": [
+    {
+     "word": "concatenate",
+     "do": "shake",
+     "target": 1
+    },
+    {
+     "word": "risk",
+     "do": "kinetic",
+     "target": "DANGER ⚠️"
+    }
+   ]
+  },
+  {
+   "id": "b3",
+   "title": "Hack wala **Result**",
+   "visual": {
+    "type": "quiz",
+    "question": "Kitni rows return hongi?",
+    "q_at": "batao",
+    "wrong": "0 rows",
+    "wrong_at": "bolenge",
+    "right": "2 rows (Hacked!)",
+    "right_at": "dikhengi"
+   },
+   "cap": "Agar Amit password mein single quote OR one equals one daale, toh batao, kitni rows aayengi? Zyadatar log bolenge zero... Galat! Saari rows dikhengi kyunki logic bypass ho gaya!",
+   "say": "Agar Amit password mein single quote OR one equals one daale, toh batao, kitni rows aayengi? Zyadatar log bolenge zero... Galat! Saari rows dikhengi kyunki logic bypass ho gaya!",
+   "cues": [
+    {
+     "word": "Galat!",
+     "do": "flash"
+    },
+    {
+     "word": "rows",
+     "do": "emoji",
+     "target": "🔥"
+    }
+   ]
+  },
+  {
+   "id": "b4",
+   "title": "**Safe** Solution",
+   "visual": {
+    "type": "code",
+    "file": "safe_query.sql",
+    "lines": [
+     {
+      "code": "SELECT * FROM users",
+      "at": "SELECT"
+     },
+     {
+      "code": "WHERE user = ?",
+      "at": "placeholders"
+     },
+     {
+      "code": "AND pass = ?;",
+      "at": "safe"
+     }
+    ],
+    "output": "Status: 100% Secured 🛡️",
+    "output_at": "cap"
+   },
+   "cap": "Iska solution Prepared Statements hai. SELECT lagao, WHERE mein placeholders use karo; ye input ko sirf safe text maanta hai, koi executable code nahi, no cap!",
+   "say": "Iska solution Prepared Statements hai. SELECT lagao, WHERE mein placeholders use karo; ye input ko sirf safe text maanta hai, koi executable code nahi, no cap!",
+   "cues": [
+    {
+     "word": "cap",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "safe",
+     "do": "emoji",
+     "target": "🛡️"
+    }
+   ]
+  },
+  {
+   "id": "galti",
+   "title": "Common **Mistake**",
+   "visual": {
+    "type": "compare",
+    "left": {
+     "label": "Galti",
+     "at": "concatenate",
+     "points": [
+      {
+       "text": "String Concat",
+       "at": "risky"
+      }
+     ]
+    },
+    "right": {
+     "label": "Sahi",
+     "at": "Prepared",
+     "points": [
+      {
+       "text": "Placeholders",
+       "at": "lagao"
+      }
+     ]
+    }
+   },
+   "cap": "Query string ko variable se concatenate karna sach mein risky hai; hamesha Prepared Statements lagao logic bypass bachane ke liye.",
+   "say": "Query string ko variable se concatenate karna sach mein risky hai; hamesha Prepared Statements lagao logic bypass bachane ke liye.",
+   "cues": [
+    {
+     "word": "risky",
+     "do": "shake",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "recap",
+   "title": "Quick **Recap**",
+   "visual": {
+    "type": "checklist",
+    "items": [
+     {
+      "text": "Injection = Hacking",
+      "at": "Injection"
+     },
+     {
+      "text": "Avoid Concatenation",
+      "at": "avoid"
+     },
+     {
+      "text": "Use Prepared Statements",
+      "at": "Prepared"
+     }
+    ]
+   },
+   "cap": "Injection hacking hai, concatenation avoid karo, Prepared Statements use karo. DB safe toh life chill!",
+   "say": "Injection hacking hai, concatenation avoid karo, Prepared Statements use karo. DB safe toh life chill!",
+   "cues": [
+    {
+     "word": "chill",
+     "do": "kinetic",
+     "target": "STAY SAFE 🛡️"
+    }
+   ]
+  }
+ ],
+ "caption": "Kya aapka DB hack ho sakta hai? 🔓\n\nSQL Injection ek aisi technique hai jahan hacker aapke input fields ka misuse karke database ka control le leta hai. String concatenation use karna sabse bada security risk hai!\n\n✅ SQL Injection = Hacking via input\n✅ ' OR '1'='1 logic bypass karta hai\n✅ Never use string concatenation\n✅ Always use Prepared Statements 🛡️\n\nSQL Series · Part 87\n\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #hacking #cybersecurity #backend #programming #codingtips #sqlinjection #webdev #security #learnsql #mysql #postgresql #interviewtips #techhindi #hinglish #softwareengineer #infosec #websecurity #codinglife #developer #datasecurity #preparedstatements #fullstack #backenddeveloper #programmer #securitytips #dbms #sqlqueries #the30secdev"
+}

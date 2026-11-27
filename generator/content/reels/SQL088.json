@@ -1,0 +1,275 @@
+{
+ "theme": "matrix",
+ "beats": [
+  {
+   "id": "hook",
+   "cap": "Rahul aur Amit ne 3-3 baar login kiya, par streak sirf Rahul ki count hogi, ekdum!",
+   "say": "Rahul aur Amit ne 3-3 baar login kiya, par streak sirf Rahul ki count hogi, ekdum!",
+   "cues": [
+    {
+     "word": "streak",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "ekdum",
+     "do": "emoji",
+     "target": "🔥"
+    }
+   ]
+  },
+  {
+   "id": "b1",
+   "title": "Lagatar **Activity**",
+   "visual": {
+    "type": "define",
+    "term": "Consecutive Logins",
+    "meaning": "Gap and Island problem yaani lagatar bina break ke activity ko track karna",
+    "at": "Logins",
+    "meaning_at": "Gap"
+   },
+   "cap": "Consecutive logins matlab lagatar activity track karna, jise hum Gap and Island problem kehte hain. Scene kya hai, samjhati hoon!",
+   "say": "Consecutive logins matlab lagatar activity track karna, jise hum Gap and Island problem kehte hain. Scene kya hai, samjhati hoon!",
+   "cues": [
+    {
+     "word": "Consecutive",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "Island",
+     "do": "shake",
+     "target": 1
+    },
+    {
+     "word": "Scene",
+     "do": "emoji",
+     "target": "🧐"
+    },
+    {
+     "word": "hoon",
+     "do": "flash"
+    }
+   ]
+  },
+  {
+   "id": "b2",
+   "title": "Full **Query**",
+   "visual": {
+    "type": "query",
+    "file": "streak.sql",
+    "lines": [
+     {
+      "code": "WITH t AS (SELECT u_id, l_dt,",
+      "at": "Pehle,",
+      "explain": "Pehle base table se data select karo"
+     },
+     {
+      "code": "ROW_NUMBER() OVER(",
+      "at": "Phir,",
+      "explain": "Ranking function shuru karo"
+     },
+     {
+      "code": "PARTITION BY u_id ORDER BY l_dt) as rn",
+      "at": "Uske",
+      "explain": "User wise dates ko rank do"
+     },
+     {
+      "code": "FROM logins)",
+      "at": "Phir,",
+      "explain": "Logins table ko target karo"
+     },
+     {
+      "code": "SELECT u_id FROM t",
+      "at": "Uske",
+      "explain": "Ab result ke liye query likho"
+     },
+     {
+      "code": "GROUP BY u_id, (l_dt - rn)",
+      "at": "Phir,",
+      "explain": "Date minus rank se groups banao"
+     },
+     {
+      "code": "HAVING COUNT(*) >= 3;",
+      "at": "Aakhir",
+      "explain": "3 din ka group filter karo"
+     }
+    ],
+    "output": "u_id: 1",
+    "output_at": "check"
+   },
+   "cap": "Pehle, base table se data select karo. Phir, ranking function shuru karo. Uske baad, user wise dates ko rank do. Phir, logins table ko target karo. Uske baad, ab result ke liye query likho. Phir, date minus rank se groups banao. Aakhir mein, 3 din ka group filter karo.",
+   "say": "Pehle, base table se data select karo. Phir, ranking function shuru karo. Uske baad, user wise dates ko rank do. Phir, logins table ko target karo. Uske baad, ab result ke liye query likho. Phir, date minus rank se groups banao. Aakhir mein, 3 din ka group filter karo.",
+   "cues": [
+    {
+     "word": "Uske",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "baad,",
+     "do": "emoji",
+     "target": "💯"
+    },
+    {
+     "word": "banao.",
+     "do": "shake",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b3",
+   "title": "Streak **Quiz**",
+   "visual": {
+    "type": "quiz",
+    "question": "Kitni rows aayengi?",
+    "q_at": "batao",
+    "wrong": "1 row",
+    "wrong_at": "log",
+    "right": "Zero",
+    "right_at": "Galat!"
+   },
+   "cap": "Toh batao, Amit ne Jan 1, 2 aur 4 ko login kiya, kitni rows aayengi? Zyadatar log bolenge 1 row... Galat! Zero aayengi kyunki gap hai, bro.",
+   "say": "Toh batao, Amit ne Jan 1, 2 aur 4 ko login kiya, kitni rows aayengi? Zyadatar log bolenge 1 row... Galat! Zero aayengi kyunki gap hai, bro.",
+   "cues": [
+    {
+     "word": "Amit",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "Galat!",
+     "do": "shake",
+     "target": 1
+    },
+    {
+     "word": "gap",
+     "do": "emoji",
+     "target": "🚫"
+    }
+   ]
+  },
+  {
+   "id": "b4",
+   "title": "Magic **Logic**",
+   "visual": {
+    "type": "flow",
+    "steps": [
+     {
+      "text": "10 Jan - 1 = 9",
+      "at": "Magic"
+     },
+     {
+      "text": "11 Jan - 2 = 9",
+      "at": "island"
+     },
+     {
+      "text": "Constant Group",
+      "at": "literally"
+     }
+    ]
+   },
+   "cap": "Magic dekho: 10 Jan minus rank 1 equals 9 Jan, aur 11 Jan minus rank 2 bhi 9 Jan. Same value matlab island ban gaya, literally!",
+   "say": "Magic dekho: 10 Jan minus rank 1 equals 9 Jan, aur 11 Jan minus rank 2 bhi 9 Jan. Same value matlab island ban gaya, literally!",
+   "cues": [
+    {
+     "word": "Magic",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "9",
+     "do": "flash"
+    },
+    {
+     "word": "literally",
+     "do": "emoji",
+     "target": "🏝️"
+    }
+   ]
+  },
+  {
+   "id": "galti",
+   "title": "Common **Mistake**",
+   "visual": {
+    "type": "compare",
+    "left": {
+     "label": "COUNT Check",
+     "at": "COUNT",
+     "points": [
+      "Gaps ignore",
+      "Wrong streak"
+     ]
+    },
+    "right": {
+     "label": "Island Logic",
+     "at": "gaps",
+     "points": [
+      "Gap aware",
+      "Perfect count"
+     ]
+    }
+   },
+   "cap": "Sirf COUNT(DISTINCT date) check mat karna, kyunki isse gaps catch nahi hote aur results galat aate hain.",
+   "say": "Sirf COUNT(DISTINCT date) check mat karna, kyunki isse gaps catch nahi hote aur results galat aate hain.",
+   "cues": [
+    {
+     "word": "gaps",
+     "do": "zoom",
+     "target": 2
+    },
+    {
+     "word": "results",
+     "do": "emoji",
+     "target": "❌"
+    },
+    {
+     "word": "karna,",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "recap",
+   "title": "Final **Recap**",
+   "visual": {
+    "type": "checklist",
+    "items": [
+     {
+      "text": "Gap and Island",
+      "at": "combo"
+     },
+     {
+      "text": "Date minus Rank",
+      "at": "sorted"
+     },
+     {
+      "text": "HAVING 3+ days",
+      "at": "cap"
+     }
+    ]
+   },
+   "cap": "ROW_NUMBER aur subtraction ka combo use karo. Consecutive logic ka scene sorted hai, no cap.",
+   "say": "ROW_NUMBER aur subtraction ka combo use karo. Consecutive logic ka scene sorted hai, no cap.",
+   "cues": [
+    {
+     "word": "combo",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "sorted",
+     "do": "flash"
+    },
+    {
+     "word": "cap",
+     "do": "emoji",
+     "target": "💯"
+    }
+   ]
+  }
+ ],
+ "caption": "Rahul aur Amit ne 3-3 baar login kiya, par streak sirf ek ki count hogi! 🔥\n\n✅ Consecutive = Gap and Island problem\n✅ ROW_NUMBER partition by user lo\n✅ Date minus rank = Constant group\n✅ GROUP BY + HAVING se count check karo\n\nSQL Series · Part 88\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #interview #dataanalytics #mysql #postgresql #coding #programming #tech #softwareengineering #gapandisland #dataengineering #learnsql #backend #webdevelopment #faang #datascience #logic #developer #hustle #code #itjobs #interviewprep #consecutive #sqlqueries #dsalgo #techindia #30secdev #education #career"
+}

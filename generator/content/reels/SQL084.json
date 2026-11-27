@@ -1,0 +1,199 @@
+{
+ "theme": "fire",
+ "beats": [
+  {
+   "id": "hook",
+   "cap": "Ek database pe full-on bojh hai? Data sharding se servers par baanto!",
+   "say": "Ek database pe full-on bojh hai? Data sharding se servers par baanto!",
+   "cues": []
+  },
+  {
+   "id": "b1",
+   "title": "Database ka **Tension**",
+   "visual": {
+    "type": "table",
+    "columns": [
+     "user_id",
+     "name",
+     "server"
+    ],
+    "rows": [
+     [
+      "101",
+      "Rahul",
+      "S1"
+     ],
+     [
+      "205",
+      "Amit",
+      "S2"
+     ],
+     [
+      "309",
+      "Priya",
+      "S1"
+     ]
+    ],
+    "row_at": [
+     "Rahul",
+     "Amit",
+     "Priya"
+    ],
+    "highlight": [
+     0,
+     1,
+     2
+    ]
+   },
+   "cap": "Rahul ki app ka data itna hai ki ek server crash ho raha hai, scene samjhati hoon bro.",
+   "say": "Rahul ki app ka data itna hai ki ek server crash ho raha hai, scene samjhati hoon bro.",
+   "cues": [
+    {
+     "word": "crash",
+     "do": "shake",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b2",
+   "title": "Smart **Querying**",
+   "visual": {
+    "type": "query",
+    "file": "sharding.sql",
+    "lines": [
+     {
+      "code": "SELECT *",
+      "at": "Pehle,",
+      "explain": "Saara user data uthane ke liye"
+     },
+     {
+      "code": "FROM users",
+      "at": "Phir,",
+      "explain": "Users table se information nikalne ke liye"
+     },
+     {
+      "code": "WHERE user_id = 205;",
+      "at": "Aakhir",
+      "explain": "Shard key se direct server dhoondo"
+     }
+    ],
+    "output": "user_id: 205 | name: Amit | server: S2",
+    "output_at": "dhoondo"
+   },
+   "cap": "Pehle, saara user data uthane ke liye. Phir, users table se information nikalne ke liye. Aakhir mein, shard key se direct server dhoondo.",
+   "say": "Pehle, saara user data uthane ke liye. Phir, users table se information nikalne ke liye. Aakhir mein, shard key se direct server dhoondo.",
+   "cues": [
+    {
+     "word": "server",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b3",
+   "title": "The Shard **Quiz**",
+   "visual": {
+    "type": "quiz",
+    "question": "Kitni rows scan hongi?",
+    "q_at": "scan",
+    "wrong": "100% rows",
+    "wrong_at": "saari",
+    "right": "50% rows",
+    "right_at": "half"
+   },
+   "cap": "Toh batao, 2 servers pe data baanta toh kitni rows scan hongi? Zyadatar log bolenge saari, galat! Sirf half rows.",
+   "say": "Toh batao, 2 servers pe data baanta toh kitni rows scan hongi? Zyadatar log bolenge saari, galat! Sirf half rows.",
+   "cues": [
+    {
+     "word": "galat",
+     "do": "flash",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b4",
+   "title": "Load **Balance**",
+   "visual": {
+    "type": "bars",
+    "unit": "GB",
+    "bars": [
+     {
+      "label": "Serv 1",
+      "value": 50,
+      "at": "evenly"
+     },
+     {
+      "label": "Serv 2",
+      "value": 50,
+      "at": "spread"
+     }
+    ]
+   },
+   "cap": "Hash sharding se data servers par ekdum evenly spread hota hai, no cap, load balance ho jata hai literally.",
+   "say": "Hash sharding se data servers par ekdum evenly spread hota hai, no cap, load balance ho jata hai literally.",
+   "cues": [
+    {
+     "word": "load",
+     "do": "emoji",
+     "target": "⚖️"
+    }
+   ]
+  },
+  {
+   "id": "galti",
+   "title": "Don't **Overdo**",
+   "visual": {
+    "type": "flow",
+    "steps": [
+     {
+      "text": "Small DB",
+      "at": "zaroorat"
+     },
+     {
+      "text": "Too complex",
+      "at": "complex"
+     }
+    ]
+   },
+   "cap": "Sharding bina zaroorat mat lagao, kyunki yeh lowkey system ko full on complex kar deta hai.",
+   "say": "Sharding bina zaroorat mat lagao, kyunki yeh lowkey system ko full on complex kar deta hai.",
+   "cues": [
+    {
+     "word": "complex",
+     "do": "kinetic",
+     "target": "HEADACHE"
+    }
+   ]
+  },
+  {
+   "id": "recap",
+   "title": "Scale **Out**",
+   "visual": {
+    "type": "checklist",
+    "items": [
+     {
+      "text": "Sharding = Multi-server power",
+      "at": "sharding"
+     },
+     {
+      "text": "Pick Shard Key wisely",
+      "at": "wisely"
+     }
+    ]
+   },
+   "cap": "Scale-out ke liye sharding best hai. Shard key dimaag se chuno aur chill karo.",
+   "say": "Scale-out ke liye sharding best hai. Shard key dimaag se chuno aur chill karo.",
+   "cues": [
+    {
+     "word": "chill",
+     "do": "kinetic",
+     "target": "MAX SPEED ⚡"
+    }
+   ]
+  }
+ ],
+ "caption": "Ek database pe full-on bojh? Data sharding se servers par baanto! 🍕\n\n✅ Badi table ko multiple servers par divide karein\n✅ Query performance ko multiply karein\n✅ Hash aur Range sharding methods\n\nSQL Series · Part 84\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #sharding #backend #systemdesign #softwareengineering #coding #programming #mysql #postgresql #scalability #dataengineer #techhindi #interviewtips #developerlife #webdevelopment #fullstack #dbms #bigdata #distributed #performance #cloudcomputing #techindia #codewithme #internship #placement #softwareengineer #the30secdev"
+}

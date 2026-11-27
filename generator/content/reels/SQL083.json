@@ -1,0 +1,221 @@
+{
+ "theme": "fire",
+ "beats": [
+  {
+   "id": "hook",
+   "cap": "Badi table slow ho rahi? Partitioning se speed badhao, no cap!",
+   "say": "Badi table slow ho rahi? Partitioning se speed badhao, no cap!",
+   "cues": []
+  },
+  {
+   "id": "b1",
+   "title": "**Millions** of Rows",
+   "visual": {
+    "type": "chat",
+    "name": "Priya",
+    "messages": [
+     {
+      "side": "l",
+      "text": "Bro millions rows wali table hang ho rahi!",
+      "at": "millions"
+     },
+     {
+      "side": "r",
+      "text": "Partitioning try kar, scene sorted ho jayega.",
+      "at": "hang"
+     }
+    ]
+   },
+   "cap": "Priya ki table mein millions rows hain, search literally hang ho jata hai, samjhati hoon solution.",
+   "say": "Priya ki table mein millions rows hain, search literally hang ho jata hai, samjhati hoon solution.",
+   "cues": [
+    {
+     "word": "hang",
+     "do": "shake",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b2",
+   "title": "**Range** Partitioning",
+   "visual": {
+    "type": "query",
+    "file": "partition.sql",
+    "lines": [
+     {
+      "code": "CREATE TABLE orders (",
+      "at": "structure",
+      "explain": "Pehle orders table ka structure define karo."
+     },
+     {
+      "code": "  id INT, dt DATE",
+      "at": "partitioning",
+      "explain": "ID aur date columns partitioning ke liye rakho."
+     },
+     {
+      "code": ") PARTITION BY RANGE",
+      "at": "buckets",
+      "explain": "Range logic use karke buckets distribute karo."
+     },
+     {
+      "code": "(YEAR(dt)) (",
+      "at": "apply",
+      "explain": "YEAR function se yearly partition logic apply karo."
+     },
+     {
+      "code": "  PARTITION p24",
+      "at": "define",
+      "explain": "2024 data ke liye p24 partition define karo."
+     },
+     {
+      "code": "  VALUES LESS THAN (2025)",
+      "at": "values",
+      "explain": "Condition rakho, values 2025 se kam hon."
+     },
+     {
+      "code": ");",
+      "at": "execute",
+      "explain": "Statement close karke query execute karo."
+     }
+    ],
+    "output": "Query OK, 0 rows affected",
+    "output_at": "check"
+   },
+   "cap": "Pehle orders table ka structure define karo. ID aur date columns partitioning ke liye rakho. Range logic use karke buckets distribute karo. YEAR function se yearly partition logic apply karo. 2024 data ke liye p24 partition define karo. Condition rakho, values 2025 se kam hon. Statement close karke query execute karo aur result check karo.",
+   "say": "Pehle orders table ka structure define karo. ID aur date columns partitioning ke liye rakho. Range logic use karke buckets distribute karo. YEAR function se yearly partition logic apply karo. 2024 data ke liye p24 partition define karo. Condition rakho, values 2025 se kam hon. Statement close karke query execute karo aur result check karo.",
+   "cues": [
+    {
+     "word": "buckets",
+     "do": "flash"
+    }
+   ]
+  },
+  {
+   "id": "b3",
+   "title": "Partition **Pruning**",
+   "visual": {
+    "type": "quiz",
+    "question": "Kitni rows scan hongi?",
+    "q_at": "Batao",
+    "wrong": "All 50 million",
+    "wrong_at": "all",
+    "right": "Sirf 1 partition",
+    "right_at": "Sirf",
+    "output": "Scanned partitions: p24",
+    "output_at": "p24"
+   },
+   "cap": "Batao, 2024 ka data chahiye toh kitni rows scan hongi? Sab bolenge all. Galat! Sirf p24 partition!",
+   "say": "Batao, 2024 ka data chahiye toh kitni rows scan hongi? Sab bolenge all. Galat! Sirf p24 partition!",
+   "cues": [
+    {
+     "word": "Galat",
+     "do": "kinetic",
+     "target": "PRUNING ⚡"
+    },
+    {
+     "word": "p24",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b4",
+   "title": "**List** Partition",
+   "visual": {
+    "type": "bars",
+    "unit": "M",
+    "bars": [
+     {
+      "label": "India",
+      "value": 90,
+      "at": "values"
+     },
+     {
+      "label": "USA",
+      "value": 60,
+      "at": "sorted"
+     },
+     {
+      "label": "UK",
+      "value": 45,
+      "at": "sorted"
+     }
+    ]
+   },
+   "cap": "List partition specific values ke liye best hai, jaise regions. Scene ekdum sorted rehta hai bro.",
+   "say": "List partition specific values ke liye best hai, jaise regions. Scene ekdum sorted rehta hai bro.",
+   "cues": []
+  },
+  {
+   "id": "galti",
+   "title": "**DB** vs Server",
+   "visual": {
+    "type": "compare",
+    "left": {
+     "label": "Partition",
+     "at": "database",
+     "points": [
+      {
+       "text": "Single Database",
+       "at": "database"
+      },
+      {
+       "text": "Logical Split",
+       "at": "database"
+      }
+     ]
+    },
+    "right": {
+     "label": "Sharding",
+     "at": "servers",
+     "points": [
+      {
+       "text": "Multiple Servers",
+       "at": "servers"
+      },
+      {
+       "text": "Physical Split",
+       "at": "servers"
+      }
+     ]
+    }
+   },
+   "cap": "Partitioning ek database mein hoti hai, aur sharding alag servers par. Inko Mix mat karo bro!",
+   "say": "Partitioning ek database mein hoti hai, aur sharding alag servers par. Inko Mix mat karo bro!",
+   "cues": []
+  },
+  {
+   "id": "recap",
+   "title": "Full on **Speed**",
+   "visual": {
+    "type": "checklist",
+    "items": [
+     {
+      "text": "Partition Pruning",
+      "at": "Pruning"
+     },
+     {
+      "text": "Fast Maintenance",
+      "at": "maintenance"
+     },
+     {
+      "text": "Better Performance",
+      "at": "performance"
+     }
+    ]
+   },
+   "cap": "Pruning se performance aur maintenance super fast. Ab database full on set ho jayega!",
+   "say": "Pruning se performance aur maintenance super fast. Ab database full on set ho jayega!",
+   "cues": [
+    {
+     "word": "performance",
+     "do": "emoji",
+     "target": "🚀"
+    }
+   ]
+  }
+ ],
+ "caption": "Badi table slow ho rahi? Partitioning se speed badhao, no cap! 🚀\n\n✅ Partition Pruning se query speed up\n✅ Range vs List partitioning logic\n✅ Purana data drop karna super easy\n\nSQL Series · Part 83\n\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #partitioning #backend #programming #coding #databasemanagement #mysql #postgresql #internshiptips #softwareengineer #techindia #hinglish #sqlqueries #performance #indexing #sharding #bigdata #developers #codinglife #systemdesign #learntocode #webdev #datacentric #dbadmin #interviewprep #softwaredevelopment #the30secdev #backenddeveloper #dbperformance"
+}

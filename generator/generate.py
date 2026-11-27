@@ -19,6 +19,22 @@ POSTED = os.path.join(SCHED, "posted_posts.csv")
 STOCK = int(os.environ.get("STOCK", "5"))
 MODELS = [os.environ.get("GEMINI_MODEL", "gemini-3-flash-preview"), "gemini-flash-latest",
           "gemini-flash-lite-latest", "gemini-3.1-flash-lite"]
+
+
+def _healthy_order(models):
+    """Use the watchdog's latest model check (scheduler/model_health.json): models that did not answer go last."""
+    try:
+        h = json.load(open(os.path.join(SCHED_DIR_FOR_HEALTH, "model_health.json"), encoding="utf-8"))
+        if time.time() - h.get("checked", 0) < 12 * 3600:
+            down = set(h.get("down", []))
+            return [m for m in models if m not in down] + [m for m in models if m in down]
+    except (OSError, ValueError):
+        pass
+    return models
+
+
+SCHED_DIR_FOR_HEALTH = os.path.join(os.path.dirname(HERE), "scheduler")
+MODELS = _healthy_order(MODELS)
 EXAMPLES = ["SQL045", "SQL068"]
 MAX_PART = 4
 SLIDE_TYPES = {"concept", "code", "table", "compare", "mistake", "recap"}
@@ -445,6 +461,9 @@ def make_reel_for(c):
         video, cover, sc = make_reel(c, OUT)
         upload(video, f"insta/reel/{pid}", "insta/reel", "video")
         upload(cover, f"insta/thumbnails/{pid}", "insta/thumbnails", "image")
+        os.makedirs(os.path.join(CONTENT, "reels"), exist_ok=True)
+        json.dump(sc, open(os.path.join(CONTENT, "reels", f"{pid}.json"), "w", encoding="utf-8"),
+                  ensure_ascii=False, indent=1)  # the watchdog checks the voice against this script
         caption = (sc.get("caption") or c["caption"]).strip()
         with open(REELS_CSV, "a", newline="", encoding="utf-8") as f:
             csv.writer(f).writerow([pid, c["module"], c["topic"], c.get("revisit_of") or "",

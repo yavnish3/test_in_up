@@ -12,6 +12,7 @@ on:
 permissions:
   contents: write
   actions: write
+  issues: write
 
 concurrency:
   group: carousel-loop
@@ -46,6 +47,25 @@ jobs:
           POST_NOW: ${{ inputs.post_now || 'no' }}
           LOOP_KIND: carousel
         run: python -u loop_runner.py
+
+      - name: Watchdog (health checks + safe auto-fixes)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          MEDIA_BASE_URL: ${{ secrets.MEDIA_BASE_URL }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          YT_REPO_TOKEN: ${{ secrets.YT_REPO_TOKEN }}
+        run: |
+          pip install -q requests
+          python -u scheduler/watchdog.py
 
       - name: Start the next loop run
         if: ${{ !cancelled() && hashFiles('scheduler/.loop_done_carousel') == '' }}
