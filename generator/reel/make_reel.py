@@ -54,6 +54,8 @@ The SQL must be 100% correct. Accuracy rules:
 - No performance claims unless they are generally true for MySQL and PostgreSQL. Prefer
   correctness reasons (e.g. "NOT EXISTS is NULL-safe") over "X is faster than Y".
 - Every number, table row and result shown must match each other and the query.
+- Every person / value the voice names must be in the table on screen, and a final result must show ALL rows the
+  query returns (e.g. WHERE rnk = 1 keeps the top earner of EVERY department, not only one department).
 Language: simple, clear Hinglish, the voice is a young FEMALE creator (feminine verbs:
 "batati hoon", "samjhati hoon"). Friendly and modern, but at most ONE light word like
 "yaar" or "bhai" in the whole beat; no slang like "no cap", "fr", "bestie", "it's giving".
@@ -393,9 +395,19 @@ def check_script(sc, post):
         auto_cues(b, i)
         if SCRIPT == "deva" and not re.search(r"[\u0900-\u097F]", b["say"]):
             raise ValueError(f'beat {i + 1}: "say" must have Hindi words in Devanagari')
-    if beats[1].get("visual", {}).get("type") != "define" or not re.search(
-            r"\b(matlab|yaani|yani|means|kehte|definition|ka matlab)\b", beats[1]["cap"].lower()):
-        raise ValueError('b1 must define the topic first ("<topic> matlab ...") with the "define" visual (term + meaning)')
+    b1 = beats[1]
+    if b1.get("visual", {}).get("type") != "define":  # build the card instead of rejecting the script
+        words = b1["cap"].split()
+        b1["visual"] = {"type": "define", "term": post.get("topic", "")[:24],
+                        "meaning": " ".join(words[:14])[:80], "at": words[0] if words else "",
+                        "meaning_at": words[min(3, len(words) - 1)] if words else ""}
+    keys = r"\b(matlab|yaani|yani|means|kehte|definition|ka matlab)\b"
+    if post.get("interview"):
+        keys = keys[:-3] + r"|nikalna|nikalo|nikaalna|dhundhna|dhundho|find|chahiye|sawaal|problem|question)\b"
+    if not re.search(keys, b1["cap"].lower()):
+        raise ValueError('b1 must say what the topic is ("<topic> matlab ...")' +
+                         (' or what the interview question asks ("har department ka top earner nikalna hai")'
+                          if post.get("interview") else ''))
     miss = missing_points(post, " ".join(b["cap"] for b in beats))
     if len(miss) > 1:
         raise ValueError(f"the reel must teach the carousel's key points; these are missing from the voice: {miss}")

@@ -1,0 +1,182 @@
+{
+ "id": "SQL091",
+ "part": 91,
+ "module": "Interview Prep",
+ "topic": "Dept Top Earner",
+ "next": "Audit Trail Log",
+ "hook": "Har department ka [[Hero]] kaun? SQL se nikalo bhai",
+ "cover_sticker": "🏆",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Sawaal kya [[hai]]?",
+   "sticker": "❓",
+   "points": [
+    "Har **department** se sabse zyada salary wala employee",
+    "Agar tie ho toh **dono** aane chahiye",
+    "Interview ki sabse popular [[SQL query]] 👑"
+   ],
+   "note": "Bole toh: Office ka **'Employee of the Month'** har team se! 🎯",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "table",
+   "title": "Sample Table: [[employees]]",
+   "sticker": "📊",
+   "columns": [
+    "ID",
+    "NAME",
+    "DEPT",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "1",
+     "Aarav",
+     "IT",
+     "90000"
+    ],
+    [
+     "2",
+     "Kabir",
+     "IT",
+     "90000"
+    ],
+    [
+     "3",
+     "Priya",
+     "HR",
+     "60000"
+    ],
+    [
+     "4",
+     "Neha",
+     "HR",
+     "50000"
+    ]
+   ],
+   "highlight": [
+    0,
+    1,
+    2
+   ],
+   "note": "IT mein Aarav aur Kabir dono ki **highest salary** 90k hai ⚡",
+   "who": "DHYAAN DO"
+  },
+  {
+   "type": "code",
+   "title": "Asli [[Query]]",
+   "sticker": "💻",
+   "file": "top_earner.sql",
+   "code": "WITH ranked AS (\n  SELECT name, dept, salary,\n    DENSE_RANK() OVER (\n      PARTITION BY dept\n      ORDER BY salary DESC\n    ) as rnk\n  FROM employees\n)\nSELECT name, dept, salary\nFROM ranked\nWHERE rnk = 1;",
+   "note": "DENSE_RANK use karo taaki [[ties]] miss na ho bhai! 🤝",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "concept",
+   "title": "Clause by Clause [[Breakdown]]",
+   "sticker": "🔍",
+   "points": [
+    "**PARTITION BY dept**: Har dept ko alag tod do",
+    "**ORDER BY salary DESC**: Amir log sabse upar",
+    "**DENSE_RANK()**: Rank do (1, 2, 3...)",
+    "**WHERE rnk = 1**: Sirf number [[1]] wale rakho"
+   ],
+   "note": "Simple funda: Pehle ranking do, phir [[filter]] karo! 🧠",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Ranked Result: [[steps]]",
+   "sticker": "📋",
+   "columns": [
+    "NAME",
+    "DEPT",
+    "SALARY",
+    "RNK"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "IT",
+     "90k",
+     "1"
+    ],
+    [
+     "Kabir",
+     "IT",
+     "90k",
+     "1"
+    ],
+    [
+     "Priya",
+     "HR",
+     "60k",
+     "1"
+    ],
+    [
+     "Neha",
+     "HR",
+     "50k",
+     "2"
+    ]
+   ],
+   "highlight": [
+    0,
+    1,
+    2
+   ],
+   "note": "Jahan [[rnk = 1]] hai, wo hamara final output table banega ✨",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "table",
+   "title": "Final [[Output]]",
+   "sticker": "🚀",
+   "columns": [
+    "NAME",
+    "DEPT",
+    "SALARY"
+   ],
+   "rows": [
+    [
+     "Aarav",
+     "IT",
+     "90000"
+    ],
+    [
+     "Kabir",
+     "IT",
+     "90000"
+    ],
+    [
+     "Priya",
+     "HR",
+     "60000"
+    ]
+   ],
+   "note": "Neha gayab kyunki uska rank [[2]] tha, top earner nahi 🚫",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "mistake",
+   "wrong": "GROUP BY dept with MAX(salary) -- naam nahi milega",
+   "right": "DENSE_RANK() OVER (PARTITION BY dept ORDER BY salary DESC)",
+   "why": "GROUP BY se sirf max salary milti hai, employee ka [[naam]] gayab ho jata hai! ⚠️",
+   "wrong_is_code": true,
+   "right_is_code": true
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Har dept ka [[top earner]] nikalna = classic interview q",
+    "**CTE + DENSE_RANK()** sabse best tarika",
+    "**PARTITION BY** dept se team alag hoti hai",
+    "**WHERE rnk = 1** se sirf [[winners]] bachte hain"
+   ]
+  }
+ ],
+ "caption": "Har department ka Hero kaun? SQL se nikalo bhai 🏆\n\nInterview ki sabse famous query - Dept Top Earner!\nIs post mein:\n✅ Sawaal kya hai aur sample table\n✅ DENSE_RANK() wali powerful query\n✅ Clause by clause breakdown\n✅ GROUP BY kyu fail hota hai (Mistake slide)\n\nSQL Series · Part 91/100\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo daily SQL ke liye!\n\n#sql #interviewquestions #learnsql #sqlinhindi #dataanalyst #datascience #sqlqueries #coding #techhindi #sqlinterview",
+ "interview": true,
+ "revisit_of": null
+}

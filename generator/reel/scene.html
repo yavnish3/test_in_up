@@ -267,15 +267,16 @@ R.beats.forEach((b, bi) => {
     els.push({ sel: `#${id}-tl`, kind: 'box' });
     ev.forEach((x, k) => els.push({ sel: `#${id}-t${k}`, at: x.at, kind: 'tev', k, y: k * gap }));
   } else if (t === 'query') {
-    const lines = (v.lines || []).slice(0, 8), ph = 84 + lines.length * 64 + 30, fs = fitFont(lines);
-    h += `<div class="qpanel" id="${id}-qp"><div class="bar"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i>&nbsp;${esc(v.file || 'interview.sql')}</div>` +
+    const lines = (v.lines || []).slice(0, 9), LH = lines.length > 6 ? 52 : 64, top0 = lines.length > 6 ? 470 : 560;
+    const ph = 84 + lines.length * LH + 30, fs = fitFont(lines).replace('style="', `style="line-height:${LH}px;`) || ` style="line-height:${LH}px"`;
+    h += `<div class="qpanel" id="${id}-qp" style="top:${top0}px"><div class="bar"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i>&nbsp;${esc(v.file || 'interview.sql')}</div>` +
       lines.map((l, k) => `<span class="ql" id="${id}-ql${k}"${fs}>${hl(l.code) || ' '}</span>`).join('') + `</div>`;
     els.push({ sel: `#${id}-qp`, kind: 'box' });
     lines.forEach((l, k) => {
-      h += `<div class="qx" id="${id}-qx${k}" style="top:${560 + ph + 30}px"><span class="arr">L${k + 1} →</span>${md(l.explain || '')}</div>`;
+      h += `<div class="qx" id="${id}-qx${k}" style="top:${Math.min(top0 + ph + 24, 1190)}px"><span class="arr">L${k + 1} →</span>${md(l.explain || '')}</div>`;
       els.push({ sel: `#${id}-ql${k}`, at: l.at, kind: 'qline', k, n: lines.length });
     });
-    if (v.output) { h += `<div class="qres" id="${id}-qr" style="top:${560 + ph + 30}px">▶ ${esc(v.output)}</div>`; els.push({ sel: `#${id}-qr`, at: v.output_at, kind: 'qres', n: lines.length }); }
+    if (v.output) { h += `<div class="qres" id="${id}-qr" style="top:${Math.min(top0 + ph + 24, 1190)}px">▶ ${esc(v.output)}</div>`; els.push({ sel: `#${id}-qr`, at: v.output_at, kind: 'qres', n: lines.length }); }
   } else if (t === 'table') {
     const cols = (v.columns || []).slice(0, 4), rows = (v.rows || []).slice(0, 5), w = Math.floor(960 / Math.max(1, cols.length));
     h += `<div class="tb" id="${id}-tb"><div class="tr th">${cols.map(c => `<div style="width:${w}px">${esc(c)}</div>`).join('')}</div>` +

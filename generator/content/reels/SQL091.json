@@ -1,0 +1,393 @@
+{
+ "plan": "INTERVIEWER ASKS: Walk through finding the department top earner using a CTE and DENSE_RANK. Use a query walkthrough for b2, a sample table for b1, a ranked demo table for b3, and the final output for b4.",
+ "theme": "ocean",
+ "beats": [
+  {
+   "id": "hook",
+   "cap": "Har department ka hero kaun hai? SQL mein yeh classic interview question kaise solve karein?",
+   "say": "Har department ka hero kaun hai? SQL mein yeh classic interview question kaise solve karein?",
+   "cues": [
+    {
+     "word": "hero",
+     "do": "kinetic",
+     "target": "HERO 👑"
+    },
+    {
+     "word": "question",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b1",
+   "title": "Sample **Employees**",
+   "visual": {
+    "type": "define",
+    "term": "Dept Top Earner",
+    "meaning": "Har department ka top earner nikalna matlab highest salary wale employees ko find karna!",
+    "at": "department",
+    "meaning_at": "top"
+   },
+   "cap": "Dept top earner matlab har department ka top earner nikalna, jahan IT mein Aarav aur Kabir dono ki highest salary 90k hai, sach mein!",
+   "say": "Dept top earner matlab har department ka top earner nikalna, jahan IT mein Aarav aur Kabir dono ki highest salary 90k hai, sach mein!",
+   "cues": [
+    {
+     "word": "matlab",
+     "do": "emoji",
+     "target": "🔥"
+    },
+    {
+     "word": "90k",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "Aarav",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b2",
+   "title": "Asli **Query**",
+   "visual": {
+    "type": "query",
+    "file": "top_earner.sql",
+    "lines": [
+     {
+      "code": "WITH ranked AS (",
+      "at": "Pehle,",
+      "explain": "Temporary result table banao data safe rahe"
+     },
+     {
+      "code": "  SELECT name, dept, salary,",
+      "at": "Phir,",
+      "explain": "Zaroori columns select karo aage ke liye"
+     },
+     {
+      "code": "    DENSE_RANK() OVER (",
+      "at": "Uske",
+      "explain": "Ties handle karne ke liye rank do"
+     },
+     {
+      "code": "      PARTITION BY dept",
+      "at": "Phir,",
+      "explain": "Har dept ko alag team mein todo"
+     },
+     {
+      "code": "      ORDER BY salary DESC",
+      "at": "Uske",
+      "explain": "Amir log sabse upar rakho descending mein"
+     },
+     {
+      "code": "    ) as rnk",
+      "at": "Phir,",
+      "explain": "Rank column ka naam rnk rakho"
+     },
+     {
+      "code": "FROM employees)",
+      "at": "Uske",
+      "explain": "Employees table se data uthao bro"
+     },
+     {
+      "code": "SELECT name, dept, salary",
+      "at": "Aakhir",
+      "explain": "Final columns select karo output ke liye"
+     },
+     {
+      "code": "FROM ranked WHERE rnk = 1;",
+      "at": "Aakhir",
+      "explain": "Sirf rank 1 wale winners filter karo"
+     }
+    ],
+    "output": "Aarav | IT | 90k\nKabir | IT | 90k\nPriya | HR | 60k",
+    "output_at": "winners"
+   },
+   "cap": "Pehle, temporary result table banao data safe rahe. Phir, zaroori columns select karo aage ke liye. Uske baad, ties handle karne ke liye rank do. Phir, har dept ko alag team mein todo. Uske baad, amir log sabse upar rakho descending mein. Phir, rank column ka naam rnk rakho. Uske baad, employees table se data uthao bro. Aakhir mein, final columns select karo output ke liye. Aakhir mein, sirf rank 1 wale winners filter karo.",
+   "say": "Pehle, temporary result table banao data safe rahe. Phir, zaroori columns select karo aage ke liye. Uske baad, ties handle karne ke liye rank do. Phir, har dept ko alag team mein todo. Uske baad, amir log sabse upar rakho descending mein. Phir, rank column ka naam rnk rakho. Uske baad, employees table se data uthao bro. Aakhir mein, final columns select karo output ke liye. Aakhir mein, sirf rank 1 wale winners filter karo.",
+   "cues": [
+    {
+     "word": "dept",
+     "do": "zoom",
+     "target": 2
+    },
+    {
+     "word": "handle",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "rank",
+     "do": "emoji",
+     "target": "💯"
+    }
+   ]
+  },
+  {
+   "id": "b3",
+   "title": "Ranked **Result**",
+   "visual": {
+    "type": "table",
+    "columns": [
+     "NAME",
+     "DEPT",
+     "SALARY",
+     "RNK"
+    ],
+    "rows": [
+     [
+      "Aarav",
+      "IT",
+      "90k",
+      "1"
+     ],
+     [
+      "Kabir",
+      "IT",
+      "90k",
+      "1"
+     ],
+     [
+      "Neha",
+      "IT",
+      "80k",
+      "2"
+     ],
+     [
+      "Priya",
+      "HR",
+      "60k",
+      "1"
+     ]
+    ],
+    "row_at": [
+     "Aarav",
+     "Kabir",
+     "Priya",
+     "Priya"
+    ],
+    "highlight": [
+     0,
+     1,
+     3
+    ]
+   },
+   "cap": "Live demo dekho bro, rnk column add ho gaya aur tie hone par dono ko 1 rank mila!",
+   "say": "Live demo dekho bro, rnk column add ho gaya aur tie hone par dono ko 1 rank mila!",
+   "cues": [
+    {
+     "word": "bro",
+     "do": "emoji",
+     "target": "bro"
+    },
+    {
+     "word": "1",
+     "do": "shake",
+     "target": 1
+    },
+    {
+     "word": "dekho",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "b4",
+   "title": "Final **Output**",
+   "visual": {
+    "type": "table",
+    "columns": [
+     "NAME",
+     "DEPT",
+     "SALARY"
+    ],
+    "rows": [
+     [
+      "Aarav",
+      "IT",
+      "90k"
+     ],
+     [
+      "Kabir",
+      "IT",
+      "90k"
+     ],
+     [
+      "Priya",
+      "HR",
+      "60k"
+     ]
+    ],
+    "row_at": [
+     "Aarav",
+     "Kabir",
+     "Priya"
+    ],
+    "highlight": [
+     0,
+     1,
+     2
+    ]
+   },
+   "cap": "Ab WHERE rnk = 1 lagao, toh Neha gayab kyunki uska rank 2 tha, no cap!",
+   "say": "Ab WHERE rnk = 1 lagao, toh Neha gayab kyunki uska rank 2 tha, no cap!",
+   "cues": [
+    {
+     "word": "cap",
+     "do": "kinetic",
+     "target": "NO CAP 🚫"
+    },
+    {
+     "word": "1",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "Neha",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "galti",
+   "title": "Common **Mistake**",
+   "visual": {
+    "type": "compare",
+    "left": {
+     "label": "Galat Way",
+     "at": "GROUP",
+     "points": [
+      {
+       "text": "GROUP BY dept",
+       "at": "GROUP"
+      },
+      {
+       "text": "MAX(salary) use karo",
+       "at": "MAX"
+      },
+      {
+       "text": "Naam gayab ho jata hai",
+       "at": "gayab"
+      }
+     ]
+    },
+    "right": {
+     "label": "Sahi Way",
+     "at": "DENSE",
+     "points": [
+      {
+       "text": "CTE + DENSE_RANK()",
+       "at": "DENSE"
+      },
+      {
+       "text": "PARTITION BY dept",
+       "at": "PARTITION"
+      },
+      {
+       "text": "Ties safe rehte hain",
+       "at": "safe"
+      }
+     ]
+    }
+   },
+   "cap": "Galti mat karo bro: GROUP BY se sirf max salary milti hai, employee ka naam gayab ho jata hai!",
+   "say": "Galti mat karo bro: GROUP BY se sirf max salary milti hai, employee ka naam gayab ho jata hai!",
+   "cues": [
+    {
+     "word": "bro",
+     "do": "emoji",
+     "target": "bro"
+    },
+    {
+     "word": "gayab",
+     "do": "shake",
+     "target": 1
+    },
+    {
+     "word": "sirf",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  },
+  {
+   "id": "recap",
+   "title": "Quick **Recap**",
+   "visual": {
+    "type": "checklist",
+    "items": [
+     {
+      "text": "Classic interview question",
+      "at": "interview"
+     },
+     {
+      "text": "CTE + DENSE_RANK() best hai",
+      "at": "best"
+     },
+     {
+      "text": "PARTITION BY team alag karta hai",
+      "at": "alag"
+     },
+     {
+      "text": "WHERE rnk = 1 keeps winners",
+      "at": "winners"
+     }
+    ]
+   },
+   "cap": "Har dept ka top earner nikalna iconic hai, PARTITION BY aur WHERE rnk = 1 use karo!",
+   "say": "Har dept ka top earner nikalna iconic hai, PARTITION BY aur WHERE rnk = 1 use karo!",
+   "cues": [
+    {
+     "word": "iconic",
+     "do": "kinetic",
+     "target": "PRO TIP 💡"
+    },
+    {
+     "word": "1",
+     "do": "zoom",
+     "target": 1
+    },
+    {
+     "word": "nikalna",
+     "do": "zoom",
+     "target": 1
+    }
+   ]
+  }
+ ],
+ "caption": "Har department ka top earner SQL se kaise nikalein? 👑\n\n✅ Classic interview question solved\n✅ CTE + DENSE_RANK() magic\n✅ PARTITION BY dept strategy\n✅ Filter rnk = 1 for winners\n\nSQL Series · Part 91\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #interviewquestions #coding #datastructures #developers #techhacks #learnsql #codinglife #softwareengineer #programming #query #database #techreels #hinenglish #codelearning #sqlqueries #tech #webdev #backend #computerscience #interviewtips #career #growth #learning #data #analytics #engineer #hustle #code #build",
+ "beat_times": [
+  [
+   0.0,
+   4.83
+  ],
+  [
+   4.83,
+   11.91
+  ],
+  [
+   11.91,
+   35.27
+  ],
+  [
+   35.27,
+   40.43
+  ],
+  [
+   40.43,
+   45.64
+  ],
+  [
+   45.64,
+   50.94
+  ],
+  [
+   50.94,
+   56.13
+  ]
+ ]
+}

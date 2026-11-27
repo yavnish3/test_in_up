@@ -89,3 +89,4 @@ SQL087,Database Security,SQL Injection,"SQL Injection = Hacking via input, `' OR
 SQL088,Interview Prep,Consecutive Logins,"Consecutive = Gap and Island problem, ROW_NUMBER partition by user lo, Date - rank = Constant group, GROUP BY + HAVING se count check karo",
 SQL089,Database Programming,Database Triggers,"Trigger = auto-run on DML, BEFORE aur AFTER types, OLD aur NEW values, Use: Audit logs & checks",
 SQL090,Advanced Database Features,JSON in SQL,"Modern DBs mein JSON column type, `->` object deta hai, `->>` text deta hai, Dynamic data ke liye best, NoSQL ki flexibility, SQL ki safety",
+SQL091,Interview Prep,Dept Top Earner,"Har dept ka top earner nikalna = classic interview q, CTE + DENSE_RANK() sabse best tarika, PARTITION BY dept se team alag hoti hai, WHERE rnk = 1 se sirf winners bachte hain",
