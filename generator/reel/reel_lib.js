@@ -78,7 +78,7 @@
       if (!g) { g = { beat: bi, words: [] }; GROUPS.push(g); }
       g.words.push({ text, t: w.t });
       const chars = g.words.reduce((a, x) => a + x.text.length + 1, 0);
-      if (/[.,?!:]$/.test(text) || g.words.length >= 4 || chars > 17) g = null;
+      if (/[.,?!:]$/.test(text) || g.words.length >= 3 || chars > 14) g = null;
     });
   });
   GROUPS.forEach((g, i) => {
@@ -101,9 +101,9 @@
       const w = g.words[i], nxt = g.words[i + 1];
       const active = t >= w.t - 0.03 && (!nxt || t < nxt.t - 0.03);
       const k = Math.max(0, 1 - (t - w.t) / 0.18);
-      el.style.color = active ? '#FFC857' : '#E8EEF8';
-      el.style.opacity = t >= w.t - 0.03 ? 1 : 0.5;
-      el.style.transform = `scale(${active ? 1 + 0.12 * k : 1})`;
+      el.style.color = active ? (getComputedStyle(document.documentElement).getPropertyValue('--gold').trim() || '#FFC857') : '#FFFFFF';
+      el.style.opacity = t >= w.t - 0.03 ? 1 : 0.45;
+      el.style.transform = `scale(${active ? 1 + 0.2 * k : 1}) rotate(${active ? -2 * k : 0}deg)`;
     });
     const e = Math.min(1, (t - g.start) / 0.12);
     capbox.style.transform = `translateY(${(1 - e) * 14}px)`;

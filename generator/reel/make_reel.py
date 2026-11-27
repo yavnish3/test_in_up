@@ -584,7 +584,14 @@ def sfx_times(sc, tl):
         key = v.get("right_at") if v.get("type") == "quiz" else v.get("cta_at") if v.get("type") == "cliff" else None
         hit = next((w["t"] for w in tb["words"] if key and norm(w["w"]) == norm(key)), None)
         if hit is not None:
-            out.append({"t": round(hit, 3), "s": "ding"})
+            out.append({"t": round(hit, 3), "s": "drop" if v.get("type") == "quiz" else "ding"})
+            if v.get("type") == "quiz":
+                out.append({"t": round(max(tb["start"], hit - 1.3), 3), "s": "riser"})
+        if v.get("type") in ("code", "query"):
+            for ln in v.get("lines") or []:
+                t = next((w["t"] for w in tb["words"] if norm(w["w"]) == norm(ln.get("at"))), None)
+                if t is not None:
+                    out.append({"t": round(t, 3), "s": "type" if v["type"] == "code" else "tick"})
         for c in b.get("cues") or []:
             t = next((w["t"] for w in tb["words"] if norm(w["w"]) == norm(c.get("word"))), None)
             if t is not None and c.get("do") in ("kinetic", "emoji", "zoom", "shake", "flash"):
@@ -623,8 +630,20 @@ def mix(wd, tl, silent, final):
     fx = []
     for k, e in enumerate(tl.get("sfx", [])):
         ms = int(round(max(0, e["t"] - (0.12 if e["s"] == "whoosh" else 0)) * 1000))
+        if e["s"] == "drop":
+            ms = max(0, ms - 30)
         if e["s"] == "whoosh":
             src = "aevalsrc=exprs='0.35*(2*random(0)-1)*sin(PI*t/0.32)':s=44100:d=0.32,highpass=f=900,lowpass=f=6000"
+        elif e["s"] == "type":
+            src = ("aevalsrc=exprs='0.22*(2*random(0)-1)*exp(-60*mod(t,0.07))*lt(t,0.6)':s=44100:d=0.6,"
+                   "highpass=f=1800,lowpass=f=7000")
+        elif e["s"] == "tick":
+            src = "aevalsrc=exprs='0.25*sin(2*PI*1800*t)*exp(-60*t)':s=44100:d=0.08"
+        elif e["s"] == "riser":
+            src = ("aevalsrc=exprs='(0.05+0.18*t/1.3)*((2*random(0)-1)*0.5+sin(2*PI*(200+700*t*t)*t))':s=44100:d=1.3,"
+                   "highpass=f=300")
+        elif e["s"] == "drop":
+            src = "aevalsrc=exprs='0.55*sin(2*PI*(48+60*exp(-8*t))*t)*exp(-3.2*t)+0.2*(2*random(0)-1)*exp(-40*t)':s=44100:d=1.1"
         elif e["s"] == "pop":
             src = "aevalsrc=exprs='0.32*sin(2*PI*(520+900*exp(-30*t))*t)*exp(-22*t)':s=44100:d=0.18"
         else:
@@ -725,6 +744,10 @@ def rerender(wd):
     scene = os.path.join(wd, "scene.html")
     open(scene, "w", encoding="utf-8").write(html)
     pid = os.path.basename(wd).replace("reel_", "")
+    try:
+        tl["sfx"] = sfx_times({"beats": json.loads(reel)["beats"]}, tl)
+    except (ValueError, KeyError):
+        pass
     frame = os.path.join(wd, "frame.jpg")
     asyncio.run(capture(scene, os.path.join(wd, "silent.mp4"), frame, tl["duration"]))
     if os.path.exists(frame):
