@@ -271,5 +271,35 @@
    ]
   }
  ],
- "caption": "Rahul aur Amit ne 3-3 baar login kiya, par streak sirf ek ki count hogi! 🔥\n\n✅ Consecutive = Gap and Island problem\n✅ ROW_NUMBER partition by user lo\n✅ Date minus rank = Constant group\n✅ GROUP BY + HAVING se count check karo\n\nSQL Series · Part 88\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #interview #dataanalytics #mysql #postgresql #coding #programming #tech #softwareengineering #gapandisland #dataengineering #learnsql #backend #webdevelopment #faang #datascience #logic #developer #hustle #code #itjobs #interviewprep #consecutive #sqlqueries #dsalgo #techindia #30secdev #education #career"
+ "caption": "Rahul aur Amit ne 3-3 baar login kiya, par streak sirf ek ki count hogi! 🔥\n\n✅ Consecutive = Gap and Island problem\n✅ ROW_NUMBER partition by user lo\n✅ Date minus rank = Constant group\n✅ GROUP BY + HAVING se count check karo\n\nSQL Series · Part 88\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #interview #dataanalytics #mysql #postgresql #coding #programming #tech #softwareengineering #gapandisland #dataengineering #learnsql #backend #webdevelopment #faang #datascience #logic #developer #hustle #code #itjobs #interviewprep #consecutive #sqlqueries #dsalgo #techindia #30secdev #education #career",
+ "beat_times": [
+  [
+   0.0,
+   5.64
+  ],
+  [
+   5.64,
+   12.85
+  ],
+  [
+   12.85,
+   28.15
+  ],
+  [
+   28.15,
+   36.78
+  ],
+  [
+   36.78,
+   45.66
+  ],
+  [
+   45.66,
+   51.46
+  ],
+  [
+   51.46,
+   56.25
+  ]
+ ]
 }

@@ -195,5 +195,35 @@
    ]
   }
  ],
- "caption": "Ek database pe full-on bojh? Data sharding se servers par baanto! 🍕\n\n✅ Badi table ko multiple servers par divide karein\n✅ Query performance ko multiply karein\n✅ Hash aur Range sharding methods\n\nSQL Series · Part 84\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #sharding #backend #systemdesign #softwareengineering #coding #programming #mysql #postgresql #scalability #dataengineer #techhindi #interviewtips #developerlife #webdevelopment #fullstack #dbms #bigdata #distributed #performance #cloudcomputing #techindia #codewithme #internship #placement #softwareengineer #the30secdev"
+ "caption": "Ek database pe full-on bojh? Data sharding se servers par baanto! 🍕\n\n✅ Badi table ko multiple servers par divide karein\n✅ Query performance ko multiply karein\n✅ Hash aur Range sharding methods\n\nSQL Series · Part 84\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #sharding #backend #systemdesign #softwareengineering #coding #programming #mysql #postgresql #scalability #dataengineer #techhindi #interviewtips #developerlife #webdevelopment #fullstack #dbms #bigdata #distributed #performance #cloudcomputing #techindia #codewithme #internship #placement #softwareengineer #the30secdev",
+ "beat_times": [
+  [
+   0.0,
+   5.72
+  ],
+  [
+   5.72,
+   11.8
+  ],
+  [
+   11.8,
+   21.16
+  ],
+  [
+   21.16,
+   28.49
+  ],
+  [
+   28.49,
+   37.19
+  ],
+  [
+   37.19,
+   42.88
+  ],
+  [
+   42.88,
+   48.34
+  ]
+ ]
 }

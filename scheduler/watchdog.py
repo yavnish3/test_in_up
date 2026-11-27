@@ -333,6 +333,95 @@ def transcribe(mp3_url, skip=0):
     return None
 
 
+FIXQ = os.path.join(HERE, "fix_queue.json")
+
+
+def queue_fix(kind, pid):
+    try:
+        q = json.load(open(FIXQ, encoding="utf-8"))
+    except (OSError, ValueError):
+        q = {"carousels": [], "reels": []}
+    if pid not in q.setdefault(kind, []):
+        q[kind].append(pid)
+    json.dump(q, open(FIXQ, "w", encoding="utf-8"), indent=1)
+
+
+def vision_bad(images, what, skip=0):
+    """Ask Gemini to look at images; returns {index: reason} for images with broken layout."""
+    parts = []
+    for k, data in enumerate(images, 1):
+        parts += [{"text": f"Image {k}:"}, {"inline_data": {"mime_type": "image/jpeg", "data": base64.b64encode(data).decode()}}]
+    parts.append({"text": f"These are {what}. Check ONLY layout defects: text overlapping other text or a sticker/box, "
+                          "text cut off at an edge or inside its box, or text going outside the frame. Ignore style, "
+                          "colours, emojis and intentional decorations. Answer ONLY JSON: "
+                          '{"bad": [{"image": <number>, "why": "<short>"}]} (empty list if all fine).'})
+    combos = [(k, m) for m in ("gemini-3-flash-preview", "gemini-flash-lite-latest") for k in gemini_keys()[:2]][skip:]
+    for k, m in combos:
+        try:
+            r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent",
+                              headers={"x-goog-api-key": k}, timeout=120,
+                              json={"contents": [{"parts": parts}], "generationConfig": {"responseMimeType": "application/json"}})
+            if r.ok:
+                t = r.json()["candidates"][0]["content"]["parts"][0]["text"]
+                return {int(x["image"]): x.get("why", "") for x in json.loads(t).get("bad", []) if str(x.get("image", "")).isdigit()}
+        except (requests.RequestException, KeyError, IndexError, ValueError):
+            pass
+    return None
+
+
+def fetch(url):
+    try:
+        r = requests.get(url, timeout=60)
+        return r.content if r.ok else None
+    except requests.RequestException:
+        return None
+
+
+def settled_times(pid):
+    """65% into each beat: the visual is fully on screen and no swipe transition is running."""
+    try:
+        sc = json.load(open(os.path.join(GEN, "content", "reels", f"{pid}.json"), encoding="utf-8"))
+        return [round(a + 0.65 * (z - a), 2) for a, z in sc.get("beat_times", []) if z - a > 1.5]
+    except (OSError, ValueError):
+        return []
+
+
+def check_visuals(base, pid, n_slides, reel_len, carousel_posted, reel_posted):
+    """Carousel slides + reel frames: layout defects confirmed by two looks -> queue a re-render / rebuild."""
+    slides = [fetch(f"{base}/image/upload/w_540,f_jpg/insta/post/{pid}/{k:02d}.png") for k in range(1, n_slides + 1)]
+    slides = [s for s in slides if s]
+    if len(slides) == n_slides:
+        first = vision_bad(slides, "the 10 slides of an Instagram carousel post")
+        if first:
+            idx = sorted(first)
+            again = vision_bad([slides[i - 1] for i in idx if 0 < i <= len(slides)], "Instagram carousel slides", skip=2)
+            if again:
+                why = "; ".join(f"slide {i}: {first[i]}" for i in idx)
+                if carousel_posted:
+                    bad(f"{pid}: carousel layout problem ({why}) - already posted")
+                else:
+                    queue_fix("carousels", pid)
+                    fixed(f"{pid}: carousel layout problem ({why}) -> queued for re-render in the next Generate run")
+                    return False
+            else:
+                print(f"{pid}: carousel layout doubt not confirmed - ignored ({first})", flush=True)
+    if reel_len and not reel_posted:
+        times = settled_times(pid)
+        frames = [fetch(f"{base}/video/upload/so_{t},w_540,f_jpg/insta/reel/{pid}.jpg") for t in times]
+        frames = [f for f in frames if f]
+        if times and len(frames) >= len(times) - 1:
+            first = vision_bad(frames, "frames of a vertical Instagram reel (captions at the bottom are expected)")
+            if first:
+                idx = sorted(first)
+                again = vision_bad([frames[i - 1] for i in idx if 0 < i <= len(frames)], "reel frames", skip=2)
+                if again:
+                    drop_reel_from_queue(pid, "reel frames have overlapping / cut-off text (" +
+                                         "; ".join(f"{times[i - 1]}s: {first[i]}" for i in idx if 0 < i <= len(times)) + ")")
+                    return False
+                print(f"{pid}: reel layout doubt not confirmed - ignored ({first})", flush=True)
+    return True
+
+
 def words(t):
     return re.findall(r"[a-z0-9]+", (t or "").lower())
 
@@ -425,6 +514,10 @@ def qa_posts(state):
                         print(f"{pid}: '{first}' not confirmed by a second transcription - ignored", flush=True)
             if not cover_ok(base, pid):
                 issues.append("reel cover missing")
+        cposted = pid in {r["id"] for r in read_csv(os.path.join(HERE, "posted_posts.csv"))}
+        if not reel_bad and slides_ok:
+            if not check_visuals(base, pid, 10, dur if pid in queued else 0, cposted, pid in posted):
+                issues.append("layout problem queued for a fix")
         if reel_bad:
             if pid in posted:
                 bad(f"{pid}: {reel_bad} (already posted, cannot fix)")
@@ -486,6 +579,7 @@ def report(state):
 
 def save():
     files = ["scheduler/watchdog_report.md", "scheduler/watchdog_state.json", "scheduler/model_health.json",
+             "scheduler/fix_queue.json",
              "scheduler/sql_reel_posts.csv", "generator/content"]
     subprocess.run(["git", "add", *files], cwd=ROOT)
     if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode == 0:

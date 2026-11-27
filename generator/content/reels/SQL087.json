@@ -220,5 +220,35 @@
    ]
   }
  ],
- "caption": "Kya aapka DB hack ho sakta hai? 🔓\n\nSQL Injection ek aisi technique hai jahan hacker aapke input fields ka misuse karke database ka control le leta hai. String concatenation use karna sabse bada security risk hai!\n\n✅ SQL Injection = Hacking via input\n✅ ' OR '1'='1 logic bypass karta hai\n✅ Never use string concatenation\n✅ Always use Prepared Statements 🛡️\n\nSQL Series · Part 87\n\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #hacking #cybersecurity #backend #programming #codingtips #sqlinjection #webdev #security #learnsql #mysql #postgresql #interviewtips #techhindi #hinglish #softwareengineer #infosec #websecurity #codinglife #developer #datasecurity #preparedstatements #fullstack #backenddeveloper #programmer #securitytips #dbms #sqlqueries #the30secdev"
+ "caption": "Kya aapka DB hack ho sakta hai? 🔓\n\nSQL Injection ek aisi technique hai jahan hacker aapke input fields ka misuse karke database ka control le leta hai. String concatenation use karna sabse bada security risk hai!\n\n✅ SQL Injection = Hacking via input\n✅ ' OR '1'='1 logic bypass karta hai\n✅ Never use string concatenation\n✅ Always use Prepared Statements 🛡️\n\nSQL Series · Part 87\n\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #hacking #cybersecurity #backend #programming #codingtips #sqlinjection #webdev #security #learnsql #mysql #postgresql #interviewtips #techhindi #hinglish #softwareengineer #infosec #websecurity #codinglife #developer #datasecurity #preparedstatements #fullstack #backenddeveloper #programmer #securitytips #dbms #sqlqueries #the30secdev",
+ "beat_times": [
+  [
+   0.0,
+   7.11
+  ],
+  [
+   7.11,
+   15.61
+  ],
+  [
+   15.61,
+   26.39
+  ],
+  [
+   26.39,
+   35.16
+  ],
+  [
+   35.16,
+   43.78
+  ],
+  [
+   43.78,
+   50.38
+  ],
+  [
+   50.38,
+   56.05
+  ]
+ ]
 }

@@ -217,5 +217,35 @@
    ]
   }
  ],
- "caption": "Badi table slow ho rahi? Partitioning se speed badhao, no cap! 🚀\n\n✅ Partition Pruning se query speed up\n✅ Range vs List partitioning logic\n✅ Purana data drop karna super easy\n\nSQL Series · Part 83\n\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #partitioning #backend #programming #coding #databasemanagement #mysql #postgresql #internshiptips #softwareengineer #techindia #hinglish #sqlqueries #performance #indexing #sharding #bigdata #developers #codinglife #systemdesign #learntocode #webdev #datacentric #dbadmin #interviewprep #softwaredevelopment #the30secdev #backenddeveloper #dbperformance"
+ "caption": "Badi table slow ho rahi? Partitioning se speed badhao, no cap! 🚀\n\n✅ Partition Pruning se query speed up\n✅ Range vs List partitioning logic\n✅ Purana data drop karna super easy\n\nSQL Series · Part 83\n\nSave karo 📌 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #database #partitioning #backend #programming #coding #databasemanagement #mysql #postgresql #internshiptips #softwareengineer #techindia #hinglish #sqlqueries #performance #indexing #sharding #bigdata #developers #codinglife #systemdesign #learntocode #webdev #datacentric #dbadmin #interviewprep #softwaredevelopment #the30secdev #backenddeveloper #dbperformance",
+ "beat_times": [
+  [
+   0.0,
+   4.76
+  ],
+  [
+   4.76,
+   10.87
+  ],
+  [
+   10.87,
+   34.1
+  ],
+  [
+   34.1,
+   40.42
+  ],
+  [
+   40.42,
+   48.64
+  ],
+  [
+   48.64,
+   54.56
+  ],
+  [
+   54.56,
+   60.16
+  ]
+ ]
 }

@@ -15,7 +15,7 @@ html,body{width:1080px;height:1080px;overflow:hidden}
 .tag b{color:var(--yellow);background:none;padding:0}
 .pgn{position:absolute;right:64px;top:44px;width:74px;height:74px;border-radius:50%;background:#fff;border:4px solid var(--ink);box-shadow:4px 4px 0 #111;font:800 26px/66px var(--head);text-align:center}
 .dots{position:absolute;left:64px;bottom:58px;display:flex;gap:10px}
-.hdl{position:absolute;left:0;right:0;bottom:50px;text-align:center;font:800 26px var(--mono);letter-spacing:.02em;color:var(--ink);opacity:.6;pointer-events:none}
+.hdl{position:absolute;left:50%;transform:translateX(-50%);bottom:50px;white-space:nowrap;text-align:center;font:800 26px var(--mono);letter-spacing:.02em;color:var(--ink);opacity:.6;pointer-events:none}
 #s.iv .hdl{color:#fff;opacity:.75}
 .dots i{width:14px;height:14px;border-radius:7px;background:rgba(17,17,17,.22)}
 .dots i.on{width:46px;background:var(--ink)}
@@ -151,6 +151,26 @@ function pickConv(P) {
   }
   return CONVS[0];
 }
+window.checkLayout = () => {  // overlapping / cut-off / outside-the-slide text after a slide is rendered
+  const s = document.getElementById('s'), out = [];
+  const TEXTBOX = el => el.matches('.cv .hk, #tt, .cv .tp');
+  const R = el => { if (!TEXTBOX(el)) return el.getBoundingClientRect(); const g = document.createRange(); g.selectNodeContents(el); return g.getBoundingClientRect(); };
+  const vis = el => { const r = R(el), cs = getComputedStyle(el); return r.width > 2 && r.height > 2 && cs.visibility !== 'hidden' && cs.opacity !== '0'; };
+  const q = sel => [...s.querySelectorAll(sel)].filter(vis);
+  const nm = el => (el.id ? '#' + el.id : '.' + String(el.className || el.tagName).split(' ')[0]);
+  const inter = (a, b) => Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left)) * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+  const blocks = [...new Set([...q('#tt'), ...q('.body > *'), ...q('.hdl'), ...q('.swipe'), ...q('.dots'), ...q('.ivstamp'),
+                              ...q('.cv .mod'), ...q('.cv .hk'), ...q('.cv .tp'), ...q('.stk'), ...q('.fb'), ...q('.acts'), ...q('.dm')])];
+  for (let a = 0; a < blocks.length; a++) for (let b = a + 1; b < blocks.length; b++) {
+    if (blocks[a].contains(blocks[b]) || blocks[b].contains(blocks[a])) continue;
+    if (inter(R(blocks[a]), R(blocks[b])) > 400) out.push(`${nm(blocks[a])} overlaps ${nm(blocks[b])}`);
+  }
+  q('.code, .pt, .bub, .chk, .box, .col, .cv .hk, .title').forEach(el => {
+    if (el.scrollHeight > el.clientHeight + 3 || el.scrollWidth > el.clientWidth + 3) out.push(`${nm(el)} text is cut off`);
+  });
+  blocks.forEach(el => { const r = R(el); if (r.right > 1082 || r.bottom > 1082 || r.left < -2 || r.top < -2) out.push(`${nm(el)} goes outside the slide`); });
+  return [...new Set(out)];
+};
 window.renderSlide = (P, i) => {
   const s = document.getElementById('s'); const sl = P.slides[i]; const n = P.slides.length;
   s.className = (sl.type === 'cover' || sl.type === 'about') ? '' : 'grid';
@@ -171,7 +191,7 @@ window.renderSlide = (P, i) => {
   if (sl.type === 'cover') {
     html = `<div class="cv">${bgn}${top}${IV ? '<div class="ivstamp">🎯 INTERVIEW QUESTION</div>' : `<div class="mod">${esc(P.module.toUpperCase())}</div>`}<div class="hk" id="hk">${md(sl.hook)}</div>
       <div class="tp">${IV ? 'Aaj ka sawaal' : 'Aaj ka topic'} <span class="tn">${esc(P.topic)}</span></div>
-      <div class="stk" style="right:64px;bottom:230px;transform:rotate(6deg);background:${IV ? '#FFD23F' : '#fff'}">${IV ? 'Interview mein aata hai 🔥' : 'Save kar lo 📌'}</div>
+      ${sl.nostk ? '' : `<div class="stk" style="right:64px;bottom:230px;transform:rotate(6deg);background:${IV ? '#FFD23F' : '#fff'}">${IV ? 'Interview mein aata hai 🔥' : 'Save kar lo 📌'}</div>`}
       ${sl.sticker ? `<div class="emo" style="right:56px;top:250px;transform:rotate(12deg);font-size:110px">${esc(sl.sticker)}</div>` : ''}${dots}${sw}</div>`;
   } else if (sl.type === 'about') {
     html = `<div class="ab">${top}<div class="hd">${HEADS[(P.part * 5 + 3) % HEADS.length]}</div>

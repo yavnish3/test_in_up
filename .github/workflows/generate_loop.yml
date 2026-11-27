@@ -67,7 +67,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           date +%s > scheduler/last_generated.txt
-          git add scheduler/last_generated.txt scheduler/carousels.json scheduler/sql_reel_posts.csv generator/content generator/topics.csv
+          git add scheduler/last_generated.txt scheduler/carousels.json scheduler/sql_reel_posts.csv generator/content generator/topics.csv scheduler/fix_queue.json
           git diff --cached --quiet && exit 0
           git commit -m "Generated new posts"
           for i in 1 2 3 4 5; do git pull --rebase && git push && exit 0; sleep 10; done

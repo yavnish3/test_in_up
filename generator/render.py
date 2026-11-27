@@ -31,6 +31,29 @@ async def _render(c, out_root):
         await pg.wait_for_timeout(600)
         for i in range(10):
             r = await pg.evaluate("([P,i]) => window.renderSlide(P,i)", [c, i])
+            issues = await pg.evaluate("() => window.checkLayout()")
+            if i == 0 and any(".stk" in x for x in issues):  # cover sticker hits the hook: drop the sticker
+                c["slides"][0]["nostk"] = True
+                r = await pg.evaluate("([P,i]) => window.renderSlide(P,i)", [c, i])
+                issues = await pg.evaluate("() => window.checkLayout()")
+                print(f"  cover: sticker removed (it overlapped the hook){' - still: ' + '; '.join(issues) if issues else ''}", flush=True)
+            for fix in (("note", "who"), "trim"):
+                if not issues or i in (0, 9):
+                    break
+                sl = c["slides"][i]
+                if fix == "trim":
+                    for k in ("points", "rows"):
+                        if isinstance(sl.get(k), list) and len(sl[k]) > 3:
+                            sl[k] = sl[k][:3]
+                else:
+                    for k in fix:
+                        sl.pop(k, None)
+                r = await pg.evaluate("([P,i]) => window.renderSlide(P,i)", [c, i])
+                issues = await pg.evaluate("() => window.checkLayout()")
+                print(f"  slide {i + 1}: layout fixed by {fix if fix == 'trim' else 'dropping the note'}"
+                      f"{' (still: ' + '; '.join(issues) + ')' if issues else ''}", flush=True)
+            if issues:
+                warn.append(f"slide {i + 1}: " + "; ".join(issues) + " - shorten this slide")
             if i == 0 and r["scale"] < 0.85:
                 warn.append(f"cover hook too long (font {r['scale']:.0%}): write a shorter hook "
                             f"(<= 40 chars, short words, [[1 short word]])")

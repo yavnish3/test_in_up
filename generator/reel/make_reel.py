@@ -60,6 +60,13 @@ Language: simple, clear Hinglish, the voice is a young FEMALE creator (feminine 
 "batati hoon", "samjhati hoon"). Friendly and modern, but at most ONE light word like
 "yaar" or "bhai" in the whole beat; no slang like "no cap", "fr", "bestie", "it's giving".
 
+INTERVIEW QUERY REELS (the post has "interview": true): the QUERY is the hero and gets most of the time:
+  b1 = "define": SHORT definition + what we must find (12-16 words);
+  b2 = "query": the FULL query walkthrough, 45-60 words, every clause: what it does AND why it is needed;
+  b3 = "quiz": predict the query's output on the sample data -> common wrong answer -> "Galat!" -> right rows;
+  b4 = "table": DRY RUN - the intermediate result the query builds step by step (e.g. the extra columns
+       like rn or date - rn for each row), so the viewer SEES how the query works; 30-40 words;
+  galti = "compare" or "code": the common WRONG query vs the RIGHT one.
 QUERY TOPICS: if the topic is an interview question / a query to write, the query is the hero.
 Use this plan: b1 = the sample data ("table") and what we must find; b2 = ONE "query" walkthrough with
 the FULL, runnable query (SELECT ... FROM ... ;, or the full CREATE/ALTER/INSERT/UPDATE/DELETE statement for DDL/DML topics like partitioning or indexes; 4-7 lines, one clause per line); its cap EXPLAINS each
@@ -216,7 +223,8 @@ def ask_script(post, feedback=None, previous=None, attempt=1):
     slides = [{"index": i, **s, "targets": targets(s)} for i, s in enumerate(post["slides"][:6])]
     prompt = (style() + "\nThe post (carousel content) this reel is about:\n"
               + json.dumps({"part": post["part"], "topic": post["topic"], "hook": post["hook"],
-                            "next": post.get("next"), "must_teach": must_teach(post), "slides": slides,
+                            "next": post.get("next"), "interview": bool(post.get("interview")),
+                            "must_teach": must_teach(post), "slides": slides,
                             "mistake": {**post["slides"][6], "targets": targets(post["slides"][6])},
                             "recap": {**post["slides"][7], "targets": targets(post["slides"][7])}},
                            ensure_ascii=False))
@@ -279,7 +287,7 @@ def check_script(sc, post):
                                      f"saying what the clause does and why (e.g. 'Har user rakho, order ho ya na ho')")
                 code_words = set(re.findall(r"[a-z_]+", full.lower()))
                 said = re.findall(r"[a-z_]+", str(b.get("cap", "")).lower())
-                need = max(28, 6 * len(v["lines"]))
+                need = max(40 if post.get("interview") else 28, 6 * len(v["lines"]))
                 reads_code = said and sum(w in code_words for w in said) / len(said) > 0.5
                 if reads_code or len(str(b.get("cap", "")).split()) < need:
                     lead = ["Pehle,", "Phir,", "Uske baad,", "Phir,", "Uske baad,", "Phir,", "Aur"]
@@ -323,6 +331,12 @@ def check_script(sc, post):
     if len(miss) > 1:
         raise ValueError(f"the reel must teach the carousel's key points; these are missing from the voice: {miss}")
     kinds = [b.get("visual", {}).get("type") for b in beats[1:]]
+    if post.get("interview"):
+        if kinds[1] != "query" or kinds[2] != "quiz" or kinds[3] not in ("table", "flow"):
+            raise ValueError('interview reel plan: b2 = "query" walkthrough, b3 = "quiz" on its output, '
+                             'b4 = "table" dry run of the intermediate result')
+        if len(beats[2]["cap"].split()) < 36:
+            raise ValueError("interview reel: the b2 query walkthrough needs 45-60 words (what + why for every clause)")
     if kinds[:4].count("quiz") != 1 or "quiz" in kinds[:1]:
         raise ValueError('exactly ONE of b2, b3, b4 must use the "quiz" visual (predict -> wrong answer -> right answer)')
     if "cliff" in kinds:
@@ -413,10 +427,46 @@ TAGS = {"hook": "[excited]", "b1": "[excited]", "b2": "[energetic]", "b3": "[ene
         "galti": "[teasing]", "recap": "[confident]"}
 
 
-def tagged(b):
-    """Gemini TTS audio tags for an energetic Gen Z delivery (not spoken, not shown in captions)."""
+def tagged(b, hook_tag=True):
+    """Gemini TTS audio tags for an energetic Gen Z delivery (not spoken, not shown in captions).
+    The very first tag of a recording is sometimes read aloud, so the hook's tag goes after its first sentence."""
     say = re.sub(r"\b(Galat|galat)\b", r"[laughs] \1", b["say"], count=1)
-    return f"{TAGS.get(b.get('id'), '[energetic]')} {say}"
+    tag = TAGS.get(b.get("id"), "[energetic]")
+    if b.get("id") == "hook":
+        if not hook_tag:
+            return say
+        m = re.search(r"[?!.]\s", say)
+        return f"{say[:m.end()]}{tag} {say[m.end():]}" if m else say
+    return f"{tag} {say}"
+
+
+def leaked_tags(wav):
+    """Quick check right after TTS: does the first few seconds contain a spoken audio-tag word?"""
+    import base64
+    import requests
+    from generate import gemini_keys
+    clip = wav + ".head.mp3"
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", wav, "-t", "4", "-ac", "1", clip], check=False)
+    try:
+        data = base64.b64encode(open(clip, "rb").read()).decode()
+    except OSError:
+        return []
+    finally:
+        if os.path.exists(clip):
+            os.remove(clip)
+    for k in gemini_keys()[:2]:
+        for m in ("gemini-flash-lite-latest", "gemini-3.1-flash-lite"):
+            try:
+                r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent",
+                                  headers={"x-goog-api-key": k}, timeout=60, json={"contents": [{"parts": [
+                                      {"inline_data": {"mime_type": "audio/mp3", "data": data}},
+                                      {"text": "Transcribe every spoken word exactly. Output only the words."}]}]})
+                if r.ok:
+                    heard = r.json()["candidates"][0]["content"]["parts"][0]["text"].lower()
+                    return [t for t in ("excited", "playful", "energetic", "teasing", "confident") if t in heard]
+            except (requests.RequestException, KeyError, IndexError):
+                pass
+    return []
 
 
 def gemini_tts_once(texts, wd):
@@ -465,6 +515,11 @@ def build_timeline(sc, wd, rate=RATE):
     os.makedirs(os.path.join(wd, "voice"), exist_ok=True)
     if ENGINE == "gemini":
         lens = gemini_tts_once([tagged(b) for b in sc["beats"]], wd)
+        full = os.path.join(wd, "voice", "full.wav")
+        leak = leaked_tags(full) if lens is not None and os.path.exists(full) else []
+        if leak:
+            print(f"  voice read a tag aloud ({leak}): recording again without the hook tag", flush=True)
+            lens = gemini_tts_once([tagged(b, hook_tag=False) for b in sc["beats"]], wd)
         if lens is None:
             print("  could not split the voice cleanly, using one request per beat", flush=True)
             lens = [gemini_tts(tagged(b), os.path.join(wd, "voice", f"beat_{i}.wav"))
@@ -740,6 +795,7 @@ def make_reel(post, out_root):
     asyncio.run(capture(scene, silent, cover, tl["duration"]))
     asyncio.run(render_thumb(thumb_data(post, sc.get("theme")), cover))
     mix(wd, tl, silent, final)
+    sc["beat_times"] = [[round(b["start"], 2), round(b["end"], 2)] for b in tl["beats"]]
     json.dump({"voice": voice_name, "script": sc, "caption": sc.get("caption", "")},
               open(os.path.join(wd, "reel.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(f"  done: {final}", flush=True)

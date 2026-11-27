@@ -409,6 +409,7 @@ def main():
     if "--preview" in args:
         need = 1
     if "--preview" not in args and "--no-reel" not in args:
+        fix_flagged_carousels()
         retry_missing_reels()
     if need <= 0:
         print(f"Stock is fine: {len(left)} unposted carousels ready.")
@@ -473,6 +474,37 @@ def make_reel_for(c):
     except Exception as e:
         print(f"{pid}: reel failed ({type(e).__name__}: {e}); the carousel is still queued", flush=True)
         return False
+
+
+FIX_QUEUE = os.path.join(SCHED, "fix_queue.json")
+
+
+def fix_flagged_carousels():
+    """Re-render (with the layout auto-fixes) and re-upload carousels the watchdog flagged, if not posted yet."""
+    try:
+        q = json.load(open(FIX_QUEUE, encoding="utf-8"))
+    except (OSError, ValueError):
+        return
+    from render import render
+    with open(os.path.join(SCHED, "posted_posts.csv"), encoding="utf-8") as f:
+        posted = {r["id"] for r in csv.DictReader(f)}
+    left = []
+    for pid in q.get("carousels", []):
+        path = os.path.join(CONTENT, f"{pid}.json")
+        if pid in posted or not os.path.exists(path):
+            continue
+        try:
+            c = json.load(open(path, encoding="utf-8"))
+            warn = render(c, OUT)
+            folder = os.path.join(OUT, pid)
+            for s in sorted(f for f in os.listdir(folder) if f.endswith(".png")):
+                upload(os.path.join(folder, s), f"insta/post/{pid}/{s[:-4]}", f"insta/post/{pid}", "image")
+            print(f"{pid}: carousel re-rendered and re-uploaded (watchdog fix){' - ' + warn if warn else ''}", flush=True)
+        except Exception as e:  # noqa: BLE001
+            print(f"{pid}: carousel fix failed ({e})", flush=True)
+            left.append(pid)
+    q["carousels"] = left
+    json.dump(q, open(FIX_QUEUE, "w", encoding="utf-8"), indent=1)
 
 
 FIRST_AUTO, MAX_REEL_TRIES, RETRIES_PER_RUN = 82, 3, 2
