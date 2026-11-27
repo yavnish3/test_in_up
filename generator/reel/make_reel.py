@@ -58,13 +58,8 @@ Language: simple, clear Hinglish, the voice is a young FEMALE creator (feminine 
 "batati hoon", "samjhati hoon"). Friendly and modern, but at most ONE light word like
 "yaar" or "bhai" in the whole beat; no slang like "no cap", "fr", "bestie", "it's giving".
 
-INTERVIEW QUERY REELS (the post has "interview": true): the QUERY is the hero and gets most of the time:
-  b1 = "define": SHORT definition + what we must find (12-16 words);
-  b2 = "query": WRITE the FULL query line by line, 45-60 words, every clause: what it does AND why it is needed;
-  b3 = "demo": LIVE DRY RUN on the sample rows - the intermediate result the query builds step by step (add_col for
-       extra columns like rn or date - rn, filter / sort ...), so the viewer SEES how the query works; 35-50 words;
-  b4 = "demo" (or "table"): the FINAL result rows highlighted + why exactly those rows; 30-40 words;
-  galti = "compare" or "code": the common WRONG query vs the RIGHT one.
+INTERVIEW QUERY REELS (the post has "interview": true): the QUERY is the hero - one of b2-b4 must WRITE the full
+  query line by line ("query", what + why of every clause), and a live "demo" dry run usually makes it click.
 QUERY TOPICS: if the topic is an interview question / a query to write, the query is the hero.
 Use this plan: b1 = the sample data ("table") and what we must find; b2 = ONE "query" walkthrough with
 the FULL, runnable query (SELECT ... FROM ... ;, or the full CREATE/ALTER/INSERT/UPDATE/DELETE statement for DDL/DML topics like partitioning or indexes; 4-7 lines, one clause per line); its cap EXPLAINS each
@@ -82,18 +77,22 @@ every row. A viewer who only watches the reel must understand as much as the car
 DEFINITION: beat b1 MUST start by defining the topic in one simple line ("<topic> matlab ..." /
 "<topic> yaani ..."), and b1's visual MUST be "define" (the term + its meaning).
 
-PRACTICAL FIRST (every reel): WRITE the query, then VISUALISE what it does on real rows. No quiz.
-  CONCEPT reels: b2 = "query" (or "code"): write the query line by line and explain each line (35-50 words);
-                 b3 = live "demo": that query running on the table step by step (35-50 words);
-                 b4 = second live "demo" (a variation / edge case / the final output) or "code" with its REAL output.
-  INTERVIEW reels: b2 = "query", b3 = live "demo" dry run, b4 = "demo" / "table" final result.
-  Most of the words go to b2-b4. Every demo step shows its SQL line; the voice narrates what happens on the rows and why.
+YOU DESIGN THE REEL for THIS topic (no fixed template). First decide how a viewer understands this topic best,
+write that decision in "plan", then pick the visuals for b2-b4 (and galti). Keep it PRACTICAL: at least one of
+b2-b4 shows real SQL working (a live "demo", a typed "query", or "code" with its real output). Good matches:
+  - INSERT / UPDATE / DELETE / triggers / constraints -> live "demo" (rows change on screen, 2nd table if needed)
+  - a query to write / interview question -> "query" typed line by line + "demo" dry run of the result
+  - JOIN -> "venn" + a two-table "demo"        - GROUP BY / aggregates -> "bars" + "demo"
+  - transactions / ACID / execution order -> "timeline" / "flow"
+  - performance / indexes -> "stat", "compare" (slow vs fast), EXPLAIN "code"
+  - theory (normalization, keys) -> "compare", "flow", "table"
+Most of the words go to b2-b4. Every demo step shows its SQL line; the voice narrates what happens and why.
 Pick the visuals that fit THIS topic (any JOIN / anti-join topic MUST include one "venn" beat; aggregates -> bars, transactions / order -> timeline,
 queries -> query walkthrough...), and a colour "theme" for the mood of the topic:
 "fire" (performance, speed, slow queries), "ocean" (joins, relations), "matrix" (data quality, NULLs,
 cleaning), "gold" (transactions, money, banking), "candy" (functions, strings, dates), "neon" (anything else).
 
-Return JSON: {"theme": "...", "beats": [...], "caption": "..."}
+Return JSON: {"plan": "1-2 lines: why these visuals teach THIS topic best", "theme": "...", "beats": [...], "caption": "..."}
 beats = exactly 7, in this order, ids: "hook", "b1", "b2", "b3", "b4", "galti", "recap"
   hook:  a question that states the real problem this topic solves (__W_HOOK__ words). No visual needed.
   b1-b4: teach the topic step by step (__W_BEAT__ words each; a "query" walkthrough beat needs 6-8 words
@@ -381,18 +380,19 @@ def check_script(sc, post):
     kinds = [b.get("visual", {}).get("type") for b in beats[1:]]
     if "quiz" in kinds:
         raise ValueError('no quiz: use that beat to SHOW the query working on the rows (a live "demo")')
-    if kinds[1] not in ("query", "code"):
-        raise ValueError('practical plan: b2 = "query" (write the query line by line and explain each line)')
-    if kinds[2] != "demo":
-        raise ValueError('practical plan: b3 = live "demo" - the b2 query running on the table step by step')
-    if kinds[3] not in (("demo", "table") if post.get("interview") else ("demo", "code", "query", "table")):
-        raise ValueError('practical plan: b4 = a second live "demo" / the final result rows (or code with its real output)')
-    if len(beats[2]["cap"].split()) < (36 if post.get("interview") else 28):
-        raise ValueError("b2: explain every line of the query (what + why), 35-60 words")
+    practical = [k for k in kinds[1:4] if k in ("demo", "query", "code")]
+    if not practical:
+        raise ValueError('make it practical: at least one of b2-b4 must show real SQL working - a live "demo", '
+                         'a typed "query" walkthrough, or "code" with its real output')
+    if post.get("interview") and "query" not in kinds[1:4]:
+        raise ValueError('interview reel: one of b2-b4 must be the "query" walkthrough (write the full query line by line)')
+    for b in beats[2:5]:
+        if b.get("visual", {}).get("type") == "query" and len(b["cap"].split()) < 28:
+            raise ValueError(f"{b['id']}: explain every line of the query (what + why), 35-60 words")
     demo_beats = [b for b in beats[2:5] if b.get("visual", {}).get("type") == "demo"]
-    if not demo_beats or not any(len(b["visual"].get("steps") or []) >= 3 for b in demo_beats):
-        raise ValueError('at least one of b2-b4 must be a live "demo" table with 3-5 steps (insert / delete / update / '
-                         'filter / sort / highlight / add_col) so the viewer SEES the topic happen on the rows')
+    for b in demo_beats:
+        if len(b["visual"].get("steps") or []) < 2:
+            raise ValueError(f'{b["id"]}: a live "demo" needs 2-5 steps so the rows visibly change')
     for b in demo_beats:
         rows = [list(map(str, r)) for r in b["visual"].get("rows") or []]
         for st in b["visual"].get("steps") or []:
@@ -822,6 +822,8 @@ def make_reel(post, out_root):
         try:
             raw = ask_script(post, feedback, previous, attempt)
             sc = check_script(raw, post)
+            if sc.get("plan"):
+                print(f"  plan: {str(sc['plan'])[:200]}", flush=True)
         except (ValueError, KeyError, TypeError, json.JSONDecodeError) as e:
             print(f"  bad script: {e}", flush=True)
             fb_hist.append(str(e))
