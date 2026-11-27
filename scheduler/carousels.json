@@ -1273,5 +1273,20 @@
    "09.jpg",
    "10.jpg"
   ]
+ },
+ "SQL086": {
+  "caption": "Interview mein Duplicate email dhundo? 📧\n\nIs post mein:\n✅ Duplicate email find karne ki query\n✅ GROUP BY aur HAVING ka combo\n✅ WHERE vs HAVING ka difference\n✅ Query breakdown step-by-step\n\nSQL Series · Part 86\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #sqlqueries #sqlinterview #sqlduplicates #learnsql #sqlinhindi #database #dataanalytics #backend #coding #programming #datascience #mysql #postgresql #sqlserver #dataanalyst #techhindi #codinglife #sqlcommands #interviewprep #dbms #sqlforbeginners #the30secdev #softwareengineer #dataskills #sqltricks #webdevelopment #python #bigdata #datavisualization",
+  "slides": [
+   "01.jpg",
+   "02.jpg",
+   "03.jpg",
+   "04.jpg",
+   "05.jpg",
+   "06.jpg",
+   "07.jpg",
+   "08.jpg",
+   "09.jpg",
+   "10.jpg"
+  ]
  }
 }

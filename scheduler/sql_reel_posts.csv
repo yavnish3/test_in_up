@@ -608,3 +608,15 @@ SQL Series · Part 85
 Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!
 
 #sql #database #backend #replication #systemdesign #codingtips #engineering #mysql #postgresql #dbms #webdev #softwareengineer #techindia #hindi #hinglish #interviewtips #scalability #dataengineering #developer #programmer #codinglife #techlife #internship #masterreplica #loadbalancing #backenddeveloper #computerscience #the30secdev #sqlqueries #databaseoptimization",
+SQL086,Interview Prep,Duplicate Emails,,Part 86 | Duplicate Emails,"Interview mein duplicate emails dhundne ka scene kya hai bro? 🧐
+
+✅ Duplicate matlab COUNT(*) > 1
+✅ Pehle GROUP BY se same entries jodo
+✅ Phir HAVING se filter maaro
+✅ WHERE aggregates par nahi chalta!
+
+SQL Series · Part 86
+
+Save karo 📌 · Follow karo @the30secdev daily SQL ke liye!
+
+#sql #database #duplicate #coding #programming #techinterview #mysql #backend #softwaredeveloper #hinglish #sqlqueries #learncoding #datacleaning #engineering #interviewtips #sqlforbeginners #webdev #datascience #coderlife #development #pune #bangalore #techindia #coders #sqlgrouping #havingclause #databasequestions #codinglife #nocap #the30secdev",

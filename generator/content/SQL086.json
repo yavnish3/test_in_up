@@ -1,0 +1,130 @@
+{
+ "id": "SQL086",
+ "part": 86,
+ "module": "Interview Prep",
+ "topic": "Duplicate Emails",
+ "next": "SQL Injection",
+ "revisit_of": null,
+ "hook": "Interview mein [[Duplicate]] emails dhundo?",
+ "cover_sticker": "📧",
+ "slides": [
+  {
+   "type": "concept",
+   "title": "Duplicate ka [[Funda]]",
+   "sticker": "🤔",
+   "points": [
+    "Interview ka **basic** but fav sawal",
+    "Unique se **duplicate** alag karo",
+    "Email 1 se zyada baar = Duplicate",
+    "**GROUP BY** ka magic chalega ✨"
+   ],
+   "note": "Jaise ek hi **UPI ID** par do accounts 📱",
+   "who": "SIMPLE BHASHA MEIN"
+  },
+  {
+   "type": "table",
+   "title": "Ye raha hamara [[Data]]",
+   "sticker": "📊",
+   "columns": [
+    "id",
+    "email"
+   ],
+   "rows": [
+    [
+     "1",
+     "raj@a.com"
+    ],
+    [
+     "2",
+     "v@b.com"
+    ],
+    [
+     "3",
+     "raj@a.com"
+    ]
+   ],
+   "highlight": [
+    0,
+    2
+   ],
+   "note": "Id 1 aur 3 ka email **same** hai! 🎯",
+   "who": "DHYAAN DO"
+  },
+  {
+   "type": "code",
+   "title": "Hero [[Query]]",
+   "sticker": "💻",
+   "file": "find_dupes.sql",
+   "code": "SELECT email\nFROM users\nGROUP BY email\nHAVING COUNT(*) > 1;",
+   "note": "Bina **GROUP BY** ke query nahi chalegi!",
+   "who": "INTERVIEW TIP"
+  },
+  {
+   "type": "concept",
+   "title": "Query [[Breakdown]]",
+   "sticker": "⚙️",
+   "points": [
+    "**SELECT**: Jo column dikhana hai",
+    "**GROUP BY**: Same emails ek saath",
+    "**COUNT**: Har email kitni baar aaya",
+    "**HAVING**: Jinka count > 1 rakho"
+   ],
+   "note": "Filter ke liye **HAVING** use hota hai 💡",
+   "who": "PRO MOVE"
+  },
+  {
+   "type": "table",
+   "title": "Final [[Result]]",
+   "sticker": "✅",
+   "columns": [
+    "email"
+   ],
+   "rows": [
+    [
+     "raj@a.com"
+    ]
+   ],
+   "note": "Sirf wahi email aaya jo **repeat** hua ✌️",
+   "who": "FUN FACT"
+  },
+  {
+   "type": "compare",
+   "title": "Where vs [[Having]]",
+   "left": {
+    "label": "WHERE 🔍",
+    "points": [
+     "Individual row par",
+     "Grouping se pehle",
+     "No aggregates ❌"
+    ]
+   },
+   "right": {
+    "label": "HAVING 🎯",
+    "points": [
+     "Groups par chalta",
+     "Grouping ke baad",
+     "Aggregates allowed ✅"
+    ]
+   },
+   "note": "Interview mein ye diff **zaroor** puchte hain!",
+   "who": "BHAI TIP 💡"
+  },
+  {
+   "type": "mistake",
+   "wrong": "SELECT email FROM users WHERE COUNT(*) > 1;",
+   "right": "SELECT email FROM users GROUP BY email HAVING COUNT(*) > 1;",
+   "why": "WHERE mein **aggregate** (COUNT) nahi chalta! Pehle group karo phir filter 🚫"
+  },
+  {
+   "type": "recap",
+   "points": [
+    "Duplicate matlab **COUNT > 1**",
+    "**GROUP BY** grouping karta hai",
+    "**HAVING** aggregates filter karta",
+    "Interview ki favorite query 🏆"
+   ]
+  }
+ ],
+ "caption": "Interview mein Duplicate email dhundo? 📧\n\nIs post mein:\n✅ Duplicate email find karne ki query\n✅ GROUP BY aur HAVING ka combo\n✅ WHERE vs HAVING ka difference\n✅ Query breakdown step-by-step\n\nSQL Series · Part 86\nSave karo 📌 · Dost ko bhejo 🔁 · Follow karo @the30secdev daily SQL ke liye!\n\n#sql #sqlqueries #sqlinterview #sqlduplicates #learnsql #sqlinhindi #database #dataanalytics #backend #coding #programming #datascience #mysql #postgresql #sqlserver #dataanalyst #techhindi #codinglife #sqlcommands #interviewprep #dbms #sqlforbeginners #the30secdev #softwareengineer #dataskills #sqltricks #webdevelopment #python #bigdata #datavisualization",
+ "interview": true
+}
